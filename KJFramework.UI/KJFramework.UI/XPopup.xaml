@@ -1,0 +1,34 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="KJFramework.UI.XPopup"
+	x:Name="Window"
+	Title="XPopup"
+	Width="203" Height="295" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
+	<Grid x:Name="LayoutRoot">
+		<Border Name="bd_back" Background="#FFBBBABA" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3" OpacityMask="{x:Null}" BorderBrush="#FF000000" Opacity="1" RenderTransformOrigin="0.5,0.5">
+		 <ItemsControl ItemsSource="{Binding DataList}" AlternationCount="2" x:Name="ic">
+              	<ItemsControl.ItemsPanel>   
+			  			<ItemsPanelTemplate>                            
+							<StackPanel Name="sp" IsItemsHost="True">       
+							</StackPanel>       
+			 	 		</ItemsPanelTemplate>       
+				</ItemsControl.ItemsPanel>
+		 </ItemsControl>
+		</Border>
+	<Grid.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard Name="FormFade">
+                    <DoubleAnimation  Name="FormFadeAnimation"
+                                            Storyboard.TargetName="bd_back" 
+                                            Storyboard.TargetProperty="(Window.Opacity)"
+                                            From="0.0" To="1.0" Duration="0:0:2" 
+                                            AutoReverse="False" RepeatBehavior="1x" 
+                                         />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Grid.Triggers>
+	</Grid>
+</Window>

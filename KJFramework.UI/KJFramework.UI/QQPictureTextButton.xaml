@@ -1,0 +1,48 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="KJFramework.UI.QQPictureTextButton"
+	x:Name="UserControl"
+	d:DesignWidth="78" d:DesignHeight="22" Width="Auto" Height="Auto">
+
+	<Grid x:Name="LayoutRoot">
+		<Viewbox x:Name="Vb_outer" Stretch="Uniform">
+			<Border Width="42.909" Height="12" CornerRadius="1.5,1.5,1.5,1.5" BorderThickness="0.8,0.8,0.8,0.8" BorderBrush="#FF4A7F9E" x:Name="Bd_out">
+				<Border.Background>
+					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+						<GradientStop Color="#FFF5F3F8" Offset="0"/>
+						<GradientStop Color="#FFB6CEEA" Offset="1"/>
+					</LinearGradientBrush>
+				</Border.Background>
+				<Grid Width="Auto" Height="Auto" Margin="0,0,0,0">
+					<Border CornerRadius="0.3,0.3,0.3,0.3" x:Name="Bd_in" BorderBrush="#FFA9E9FF" BorderThickness="1.3,1.3,1.3,1.3" Margin="-0.001,-0.001,0,0" Opacity="0"/>
+					<Grid>
+						<StackPanel Margin="0,0,0,0" x:Name="Sp_Content" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+							<Image Width="8.582" Height="8.582" Margin="0,0,2,0" x:Name="Img" Stretch="Uniform" Source="folder.png"/>
+							<TextBlock Width="Auto" FontSize="6" TextWrapping="Wrap" x:Name="tb_Text" Height="7.07" Text="文本" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</StackPanel>
+					</Grid>
+				</Grid>
+			</Border>
+		</Viewbox>
+		<Grid.Triggers>
+                <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetName="Bd_in" Storyboard.TargetProperty="Opacity" To="1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetName="Bd_in" Storyboard.TargetProperty="Opacity"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+        </Grid.Triggers>
+	</Grid>
+</UserControl>

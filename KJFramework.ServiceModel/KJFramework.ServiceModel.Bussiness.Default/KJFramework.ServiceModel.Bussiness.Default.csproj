@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0BCE2886-4FB3-4B9F-924A-0A7975EF701A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework.ServiceModel.Bussiness.Default</RootNamespace>
+    <AssemblyName>KJFramework.ServiceModel.Bussiness.Default</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;MONO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Centers\ServiceCenter.cs" />
+    <Compile Include="Counters\ServiceModelPerformanceCounter.cs" />
+    <Compile Include="Descriptions\ContractDescription.cs" />
+    <Compile Include="Descriptions\ContractInfomation.cs" />
+    <Compile Include="Descriptions\DescriptionArgument.cs" />
+    <Compile Include="Descriptions\DescriptionMethod.cs" />
+    <Compile Include="Descriptions\IContractDescription.cs" />
+    <Compile Include="Descriptions\IContractInfomation.cs" />
+    <Compile Include="Descriptions\IDescriptionArgument.cs" />
+    <Compile Include="Descriptions\IDescriptionMethod.cs" />
+    <Compile Include="Descriptions\Wrappers\ContractDescriptionWrapper.cs" />
+    <Compile Include="Descriptions\Wrappers\IContractDescriptionWrapper.cs" />
+    <Compile Include="Dispatchers\Cores\ConcurrentCoreDispatcher.cs" />
+    <Compile Include="Dispatchers\Cores\CoreDispatcher.cs" />
+    <Compile Include="Dispatchers\Cores\ICoreDispatcher.cs" />
+    <Compile Include="Dispatchers\Cores\SingletonCoreDispatcher.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="Helpers\TransactionIdentityHelper.cs" />
+    <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\RequestServiceMessage.cs" />
+    <Compile Include="Messages\ResponseServiceMessage.cs" />
+    <Compile Include="Messages\ServiceModelProtocolStack.cs" />
+    <Compile Include="Metadata\Actions\HttpContractOperationArgumentPageAction.cs" />
+    <Compile Include="Metadata\Actions\HttpMetadataArgumentDescriptionAction.cs" />
+    <Compile Include="Metadata\Actions\HttpMetadataContractGeneratePageAction.cs" />
+    <Compile Include="Metadata\Actions\HttpMetadataContractOperationPageAction.cs" />
+    <Compile Include="Metadata\Actions\HttpMetadataContractPreviewPageAction.cs" />
+    <Compile Include="Metadata\Actions\HttpMetadataContractRootPageAction.cs" />
+    <Compile Include="Metadata\Actions\HttpMetadataPageAction.cs" />
+    <Compile Include="Metadata\Actions\IMetadataPageAction.cs" />
+    <Compile Include="Metadata\BinaryArgContext.cs" />
+    <Compile Include="Metadata\HttpMetadataExchangeNode.cs" />
+    <Compile Include="Metadata\IMetadataExchangeNode.cs" />
+    <Compile Include="Metadata\MetadataExchangeNode.cs" />
+    <Compile Include="NetworkLayer.cs" />
+    <Compile Include="Objects\IServiceReturnValue.cs" />
+    <Compile Include="Objects\RequestMethodObject.cs" />
+    <Compile Include="Objects\ServiceReturnValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxy\DefaultClientProxy.cs" />
+    <Compile Include="ServiceModel.cs" />
+    <Compile Include="Services\HostService.cs" />
+    <Compile Include="Services\IHostService.cs" />
+    <Compile Include="Services\IMetadataExchange.cs" />
+    <Compile Include="Services\IServiceHandle.cs" />
+    <Compile Include="Services\ServiceHandle.cs" />
+    <Compile Include="Services\ServiceHost.cs" />
+    <Compile Include="Transactions\RPCTransaction.cs" />
+    <Compile Include="Transactions\RPCTransactionManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\OperationPage.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\RootPage.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
+      <Project>{6F85C222-1CD2-44D4-8D06-22F557D4CF04}</Project>
+      <Name>KJFramework.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
+      <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
+      <Name>KJFramework.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
+      <Project>{33FE11D3-2810-4432-B64C-B16935BB47CD}</Project>
+      <Name>KJFramework.Net.Channels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
+      <Project>{658C4853-7022-4C2F-BB82-7261DBDAE55D}</Project>
+      <Name>KJFramework.Net.Transaction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
+      <Project>{35FD171E-DE60-4E34-9A35-E33C3BA8C02F}</Project>
+      <Name>KJFramework.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.ServiceModel.Core\KJFramework.ServiceModel.Core.csproj">
+      <Project>{2495424E-1415-478E-B9E5-4674BE08CAE8}</Project>
+      <Name>KJFramework.ServiceModel.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.ServiceModel\KJFramework.ServiceModel.csproj">
+      <Project>{67114374-9743-4E0E-8368-6117E6C62184}</Project>
+      <Name>KJFramework.ServiceModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

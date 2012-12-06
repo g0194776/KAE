@@ -1,0 +1,1253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="KJFramework.ServiceModel.Async.AsyncMethodDelegator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="36.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAgAAAAAQAAQAAQAAAAABAAAIAAAAAAABAAAAAAgA=</HashCode>
+      <FileName>Async\AsyncMethodDelegator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Attributes.OperationAttribute" Collapsed="true">
+    <Position X="45" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAgAAACAAAAAAAAASEAAACAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Attributes\OperationAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Attributes.ServiceContractAttribute" Collapsed="true">
+    <Position X="36.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAIAAAAAAgIAAEAAgAAAQAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Attributes\ServiceContractAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Attributes.ServiceMetadataExchangeAttribute" Collapsed="true">
+    <Position X="34.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes\ServiceMetadataExchangeAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Boxes.TaskBox&lt;T&gt;" Collapsed="true">
+    <Position X="10.5" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAoAABAAACAAAAAAEAAAAQAAAAAAAABAABAAAABEAAA=</HashCode>
+      <FileName>Boxes\TaskBox.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Boxes.ThreadTaskBox&lt;T&gt;" Collapsed="true">
+    <Position X="10.5" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAARAAAAABAQgAAAAAAAAAAIAAAAAEQAA=</HashCode>
+      <FileName>Boxes\ThreadTaskBox.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Buffers.ReceiveBuffer" Collapsed="true">
+    <Position X="39.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Buffers\ReceiveBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Caches.AssemblyCache" Collapsed="true">
+    <Position X="34.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAgAACAA=</HashCode>
+      <FileName>Caches\AssemblyCache.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Caches.ClientProxyCache" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAACAACASAAACAAAAEgAAAAAAAAAQAAAAAABA=</HashCode>
+      <FileName>Caches\ClientProxyCache.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Caches.ClientProxyRegistation" Collapsed="true">
+    <Position X="34.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAACACAAAAAAQAAAQAAAAQA=</HashCode>
+      <FileName>Caches\ClientProxyRegistation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Caches.Packages.SubMessagePackageCache" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="36.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACEAACAIECAIAQgAAAAAAAAAAQEAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Caches\Packages\SubMessagePackageCache.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Caches.Packages.SubMessagePartCache" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAiAAAAAAAAAAAAAAAAAAAAAAEAAAIAAAAAA=</HashCode>
+      <FileName>Caches\Packages\SubMessagePartCache.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Callbacks.RequestingCenter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAEABAAASAkCEBAAhAAAAAEEAAAQAIAQAQACgA=</HashCode>
+      <FileName>Callbacks\RequestingCenter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Centers.ServiceCenter" Collapsed="true">
+    <Position X="32.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAwAAAAAAAAAAAAAAAACAAAQAAAAAA=</HashCode>
+      <FileName>Centers\ServiceCenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.EncodeFunctionChannel" Collapsed="true">
+    <Position X="15.25" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\EncodeFunctionChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.FunctionChannel" Collapsed="true">
+    <Position X="15.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAIAAAQAAgDAAAAAIAUAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Channels\FunctionChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.PipeTransportChannel" Collapsed="true">
+    <Position X="3.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAABAAAAAAESAIAABAIAgAAAIAAEQAAAAAAASABA=</HashCode>
+      <FileName>Channels\PipeTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.ProtocolChannel" Collapsed="true">
+    <Position X="1" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQABAAIAACAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Channels\ProtocolChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.RawTcpTransportChannel" Collapsed="true">
+    <Position X="5.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAACBAAAAAEGCAICAAIIAgAIAAABAAAAAAQAACAAA=</HashCode>
+      <FileName>Channels\RawTcpTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.ServiceChannel" Collapsed="true">
+    <Position X="6.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADACBAACIAMCwMIAD0LBAgNAUAgAAAIAEAAACIAAQ=</HashCode>
+      <FileName>Channels\ServiceChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.TcpTransportChannel" Collapsed="true">
+    <Position X="7.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAACBAAAAAEGCAICAAIIAgAIAAABAAAAAAQAACAAA=</HashCode>
+      <FileName>Channels\TcpTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.TransportChannel" Collapsed="true">
+    <Position X="7.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAAEAwEBAAQAKQQGhABIBBAQBwAQgKAAQABkAEQAA=</HashCode>
+      <FileName>Channels\TransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.HostChannels.HostTransportChannel" Collapsed="true">
+    <Position X="11" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CCQgAAAAAAAAAAqgAAAAAIAAAAAAAAAAABAAQAAAAAA=</HashCode>
+      <FileName>Channels\HostChannels\HostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.HostChannels.PipeHostTransportChannel" Collapsed="true">
+    <Position X="10" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABBAIABAAAAAAABgIAAAAAQkAAAAAAAAAAAAQAAAAEA=</HashCode>
+      <FileName>Channels\HostChannels\PipeHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.HostChannels.TcpHostTransportChannel" Collapsed="true">
+    <Position X="12.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAABAAAACAAAgIAAAAAAgCgAAAAAAAAAAQAAABAA=</HashCode>
+      <FileName>Channels\HostChannels\TcpHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.Stacks.ChannelStack" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="43.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iBAAEAACAiECFQAkIiAAABAAAAAAAQBgARAQAAAAAAE=</HashCode>
+      <FileName>Channels\Stacks\ChannelStack.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.Transactions.ClientPipeStreamTransaction" Collapsed="true">
+    <Position X="0.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Channels\Transactions\ClientPipeStreamTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.Transactions.PipeStreamTransaction&lt;TStream&gt;" Collapsed="true">
+    <Position X="1.75" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Channels\Transactions\PipeStreamTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.Transactions.ServerPipeStreamTransaction" Collapsed="true">
+    <Position X="2.75" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Channels\Transactions\ServerPipeStreamTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.Transactions.StreamTransaction&lt;TStream&gt;" Collapsed="true">
+    <Position X="1.75" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wCIAAAAAESAAEAAEAAAAChAACACIACgQAAMAAgAACBA=</HashCode>
+      <FileName>Channels\Transactions\StreamTransaction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.Transactions.Processors.RequestIntellectObjectTransactionProcessor" Collapsed="true">
+    <Position X="18.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\Transactions\Processors\RequestIntellectObjectTransactionProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.Transactions.Processors.ResponseIntellectObjectTransactionProcessor" Collapsed="true">
+    <Position X="20.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\Transactions\Processors\ResponseIntellectObjectTransactionProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Channels.Transactions.Processors.TransactionProcessor&lt;TIn, TOut&gt;" Collapsed="true">
+    <Position X="19.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAEAgAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\Transactions\Processors\TransactionProcessor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Clients.ClientBase&lt;T&gt;" Collapsed="true">
+    <Position X="10.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFQAAgAoACIAISAQBABAAgBAAAAAEQAgQAQBCECAACA=</HashCode>
+      <FileName>Clients\ClientBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.CommunicationObject" Collapsed="true">
+    <Position X="15.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACAAMCgMAAA0LBAAFAAAgAAAAAEAAACIAAQ=</HashCode>
+      <FileName>CommunicationObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.ServiceModel" Collapsed="true">
+    <Position X="38" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAIAkAAAAAAAAgAAAAAAAEAAgAAAAIAAAAAAAEAAA=</HashCode>
+      <FileName>ServiceModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Configurations.EncoderItem" Collapsed="true">
+    <Position X="45" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Configurations\EncoderItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Configurations.ServiceModelConfigSection" Collapsed="true">
+    <Position X="39.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Configurations\ServiceModelConfigSection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Configurations.ServiceModelSettingConfigSection" Collapsed="true">
+    <Position X="43.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Configurations\ServiceModelSettingConfigSection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Configurations.SettingConfiguration" Collapsed="true">
+    <Position X="32.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACEAACAAAAIAAAAABABAgAAIAAgAAAAAAAiAAAAA=</HashCode>
+      <FileName>Configurations\SettingConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Contexts.ChannelContext&lt;TChannel, TArg&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="39.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgAAAAAAACAAAgAEAACAABAAAAAAAAAgAAIgBAAAAAA=</HashCode>
+      <FileName>Contexts\ChannelContext.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Contexts.ServiceCallContext" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAGAAAAACAAAAAAAABAAAAIAACAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Contexts\ServiceCallContext.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Contexts.ServiceContextManager" Collapsed="true">
+    <Position X="34.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAgAAAAAAAAACAAAAAAQAABQAAAAAA=</HashCode>
+      <FileName>Contexts\ServiceContextManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Counters.ServiceModelPerformanceCounter" Collapsed="true">
+    <Position X="41.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAQgAAAAAAQAAAAAAAQAAAAAAAAAACAA=</HashCode>
+      <FileName>Counters\ServiceModelPerformanceCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Counters.PerformanceCountOwner" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Counters\ServiceModelPerformanceCounter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Descriptions.ContractDescription" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="36.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Descriptions\ContractDescription.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Descriptions.ContractInfomation" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="39.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAIAAAAAAgKAAECEAAAAQAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Descriptions\ContractInfomation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Descriptions.DescriptionArgument" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="41.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACMAAAACBAAIAAABBAAAYAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Descriptions\DescriptionArgument.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Descriptions.DescriptionMethod" Collapsed="true">
+    <Position X="16.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAQAAAAAAAABA=</HashCode>
+      <FileName>Descriptions\DescriptionMethod.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Descriptions.Wrappers.ContractDescriptionWrapper" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAgCAAAAAAAAA=</HashCode>
+      <FileName>Descriptions\Wrappers\ContractDescriptionWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Dispatchers.Cores.ConcurrentCoreDispatcher" Collapsed="true">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dispatchers\Cores\ConcurrentCoreDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Dispatchers.Cores.CoreDispatcher" Collapsed="true">
+    <Position X="17" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAACAAAAAEAAAAABAAAAAAAAAgAAAAAQAAAAA=</HashCode>
+      <FileName>Dispatchers\Cores\CoreDispatcher.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Dispatchers.Cores.SingletonCoreDispatcher" Collapsed="true">
+    <Position X="17" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dispatchers\Cores\SingletonCoreDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Dispatchers.Cores.ThreadCoreDispatcher" Collapsed="true">
+    <Position X="19.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dispatchers\Cores\ThreadCoreDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Dispatchers.SeviceRequestDispatcher" Collapsed="true">
+    <Position X="34.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dispatchers\SeviceRequestDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Elements.Binding" Collapsed="true">
+    <Position X="6.75" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQECAABCGAAQAUAAAAAJAAAAAIAQACAAAAAEAAAAA=</HashCode>
+      <FileName>Elements\Binding.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Elements.BindingElement&lt;TChannel&gt;" Collapsed="true">
+    <Position X="18.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACASMCJAAaAAAQAEEIBAIhSAAAAAAAQAAAEEAAAAAAA=</HashCode>
+      <FileName>Elements\BindingElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Elements.PipeBinding" Collapsed="true">
+    <Position X="5.5" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Elements\PipeBinding.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Elements.PipeBindingElement" Collapsed="true">
+    <Position X="17.5" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAISAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Elements\PipeBindingElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Elements.TcpBinding" Collapsed="true">
+    <Position X="7.75" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Elements\TcpBinding.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Elements.TcpBindingElement" Collapsed="true">
+    <Position X="19.75" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAISAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Elements\TcpBindingElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.EventArgs.ClientLowProxyRequestEventArgs" Collapsed="true">
+    <Position X="45" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAgAAAAgAAAAAAAAAIAAAAAAAAIAAAAIAAAAA=</HashCode>
+      <FileName>EventArgs\ClientLowProxyRequestEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Exceptions.GeneralException" Collapsed="true">
+    <Position X="32.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAgAAAAAAAAAAAAABAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\GeneralException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Exceptions.RequestTimeoutException" Collapsed="true">
+    <Position X="39.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\RequestTimeoutException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Extends.ServiceMessageCertificateExtend" Collapsed="true">
+    <Position X="45" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extends\ServiceMessageCertificateExtend.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Helpers.ArgumentHelper" Collapsed="true">
+    <Position X="32.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Helpers\ArgumentHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Helpers.ChannelHelper" Collapsed="true">
+    <Position X="41.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\ChannelHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Helpers.DynamicHelper" Collapsed="true">
+    <Position X="43.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAACIAAAAAAABAAAAAAEAAABAAAAAAAAA=</HashCode>
+      <FileName>Helpers\DynamicHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Helpers.ServiceHelper" Collapsed="true">
+    <Position X="39.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAQAAAAA=</HashCode>
+      <FileName>Helpers\ServiceHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Keys.KeyGenerator" Collapsed="true">
+    <Position X="36.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAACAAEAAAAA=</HashCode>
+      <FileName>Keys\KeyGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Layers.NetworkLayer" Collapsed="true">
+    <Position X="43.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAEAEAAAQAAAAAABoAAAAgAAAAAAAAAQBAACAAAGAI=</HashCode>
+      <FileName>Layers\NetworkLayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.MessageProviders.MessageProvider&lt;TMessage&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="41.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IBAAIABAACAgIAAEAAAAABQAAQAAAEAAIAAABCAQAAA=</HashCode>
+      <FileName>MessageProviders\MessageProvider.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Messages.Headers.ServiceMessageHeader" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAWAUgtAAShQAIEBIAACJEgEBTAgCAkgBAQI=</HashCode>
+      <FileName>Messages\Headers\ServiceMessageHeader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Messages.Headers.SubServiceMessageHeader" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="41.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAiCAmAUkNAAShQBIEBIAACBECEBTIiCAAgBEAI=</HashCode>
+      <FileName>Messages\Headers\SubServiceMessageHeader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Messages.RequestServiceMessage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="36.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAgAIAAAIAAEAAAAACACAACAAEIAAAAAAAAABAEAA=</HashCode>
+      <FileName>Messages\RequestServiceMessage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Messages.ResponseServiceMessage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="41.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAIAAEAAAAASACAACACEAIAAAAAAAABAEAA=</HashCode>
+      <FileName>Messages\ResponseServiceMessage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Messages.SubServiceMessage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="39.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAABAABACAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Messages\SubServiceMessage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Metadata.Actions.HttpMetadataContractGeneratePageAction" Collapsed="true">
+    <Position X="5.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EEAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Actions\HttpMetadataContractGeneratePageAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Metadata.Actions.HttpMetadataContractOperationPageAction" Collapsed="true">
+    <Position X="7.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAgAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Actions\HttpMetadataContractOperationPageAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Metadata.Actions.HttpMetadataContractPreviewPageAction" Collapsed="true">
+    <Position X="0.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAgAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Actions\HttpMetadataContractPreviewPageAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Metadata.Actions.HttpMetadataContractRootPageAction" Collapsed="true">
+    <Position X="3" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Actions\HttpMetadataContractRootPageAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Metadata.Actions.HttpMetadataPageAction" Collapsed="true">
+    <Position X="4" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAQCAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Actions\HttpMetadataPageAction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Metadata.BinaryArgContext" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABACAAAAJAAAAIQAAIBAACJAAAgAAFAABAAAAAAAMAE=</HashCode>
+      <FileName>Metadata\BinaryArgContext.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Metadata.HttpMetadataExchangeNode" Collapsed="true">
+    <Position X="0.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAACAAAAAAAQAAAAAAAAAAAAAAIAAAACAAAAA=</HashCode>
+      <FileName>Metadata\HttpMetadataExchangeNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Metadata.MetadataExchangeNode" Collapsed="true">
+    <Position X="0.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAQAgAAAAAAAAAAAABAAQIACAQCAAAAA=</HashCode>
+      <FileName>Metadata\MetadataExchangeNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Objects.PipeUri" Collapsed="true">
+    <Position X="12.75" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAQAAAAAAAAAAAAAAAAAAABQEAAAAAAAAAA=</HashCode>
+      <FileName>Objects\PipeUri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Objects.RequestCenterWaitObject" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="43.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAQAIAAAAAAAAAAAAAAAAAAAAABEAQA=</HashCode>
+      <FileName>Objects\RequestCenterWaitObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Objects.RequestMessageTaskBoxObject" Collapsed="true">
+    <Position X="32.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Objects\RequestMessageTaskBoxObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Objects.RequestMethodObject" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAgjAABAEAAAAAAABEACACACAAAIAAEIAEEAA=</HashCode>
+      <FileName>Objects\RequestMethodObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Objects.ServiceMethodPickupObject" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="36.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAACABgBAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Objects\ServiceMethodPickupObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Objects.ServiceReturnValue" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICgAQAgAAAAAAAAABgEAAMAgAAAAAAgAAAAKBQAhA=</HashCode>
+      <FileName>Objects\ServiceReturnValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Objects.TcpUri" Collapsed="true">
+    <Position X="10.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAgAAAgAAAAACAAQQAAQAEAAAAAABAA=</HashCode>
+      <FileName>Objects\TcpUri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Objects.Uri" Collapsed="true">
+    <Position X="11.75" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAEAAAAAAACAAQAAAASSABAAEAAAAA=</HashCode>
+      <FileName>Objects\Uri.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Observers.RequestAckObserver" Collapsed="true">
+    <Position X="41.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAACAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Observers\RequestAckObserver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Parsers.Parsers" Collapsed="true">
+    <Position X="32.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parsers\Parsers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Parsers.RequestServiceMessageParser" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkAgAAAAACAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parsers\RequestServiceMessageParser.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Parsers.ResponseServiceMessageParser" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="43.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkAgAAAAACAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parsers\ResponseServiceMessageParser.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Pins.MessageChunkInputPin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAACAgAQAAAAAAAAAAACAAAAIAACAAAAAAAAA=</HashCode>
+      <FileName>Pins\MessageChunkInputPin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Pins.MessageChunkOutputPin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="39.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pins\MessageChunkOutputPin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Security.Certificates.ServiceMessageCertificate" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="43.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAoACAADIEAEAAAAAAAAEAAAEAEAAAAAAABCAA=</HashCode>
+      <FileName>Security\Certificates\ServiceMessageCertificate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Services.HostService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SAACACAAQCCACYEQAABAIAAAgAEABAAgAABIAAAAAAQ=</HashCode>
+      <FileName>Services\HostService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Services.ServiceInstance" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="41.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Services\HostService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Services.ServiceHandle" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQABAgAAACAAIQAUADAAGQBAFCAAAAAACEEAKACIAEA=</HashCode>
+      <FileName>Services\ServiceHandle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Services.ServiceHost" Collapsed="true">
+    <Position X="13" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAACAAAAISAAABAQESAAAAAAAAQAAAAACAiCAAA=</HashCode>
+      <FileName>Services\ServiceHost.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Services.Methods.ExecutableServiceMethod" Collapsed="true">
+    <Position X="14.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAIAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Services\Methods\ExecutableServiceMethod.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Services.Methods.ServiceMethod" Collapsed="true">
+    <Position X="15.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIAAAADECAQFAAABAAAQCAggAAAAEAAAAAAAUABQ=</HashCode>
+      <FileName>Services\Methods\ServiceMethod.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Statistics.PipeHostTransportChannelStatistic" Collapsed="true">
+    <Position X="36.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEAAAAAAAAAAAQAIAAAAAAAAFAAAgAAAAAAAAACAAAA=</HashCode>
+      <FileName>Statistics\PipeHostTransportChannelStatistic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Statistics.PipeTransportChannelStatistic" Collapsed="true">
+    <Position X="38" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAQIIAAAAAAAAFAAAgAAAAAAAAgCAAAA=</HashCode>
+      <FileName>Statistics\PipeTransportChannelStatistic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Statistics.TcpHostTransportChannelStatistic" Collapsed="true">
+    <Position X="43.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEAAAAAAAAAAAQAIAAAAAAAAFAAAgAAAAAAAAACAAAA=</HashCode>
+      <FileName>Statistics\TcpHostTransportChannelStatistic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.ServiceModel.Statistics.TcpTransportChannelStatistic" Collapsed="true">
+    <Position X="45" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAQIIAAAAAAAAFAAAgAAAAAAAAgCAAAA=</HashCode>
+      <FileName>Statistics\TcpTransportChannelStatistic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="KJFramework.ServiceModel.Async.IAsyncMethodDelegator" Collapsed="true">
+    <Position X="32.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAgAAAAAAAAAAAQAAAAAAAAAAAAAAAAABAAAAAAgA=</HashCode>
+      <FileName>Async\IAsyncMethodDelegator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Async.IAsyncMethodDelegatorController" Collapsed="true">
+    <Position X="34.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Async\IAsyncMethodDelegatorController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Boxes.ITaskBox&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAABAAAAAAAAAAAAAAAQAAAAAAAABAAAAAAABAAAA=</HashCode>
+      <FileName>Boxes\ITaskBox.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Boxes.IThreadTaskBox&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="21" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Boxes\IThreadTaskBox.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Caches.IClientProxyCache" Collapsed="true">
+    <Position X="41.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACASAAAAAAAAAgAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Caches\IClientProxyCache.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Caches.Packages.ISubMessagePackageCache" Collapsed="true">
+    <Position X="45" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACEAAAAIAAAAAQAAAAAAAAAAAQEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Caches\Packages\ISubMessagePackageCache.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Caches.Packages.ISubMessagePartCache" Collapsed="true">
+    <Position X="32.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Caches\Packages\ISubMessagePartCache.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.Duplex.IDuplexChannel" Collapsed="true">
+    <Position X="9" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\Duplex\IDuplexChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.IChannelListener&lt;TChannel&gt;" Collapsed="true">
+    <Position X="19.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAQAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Channels\IChannelListener.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.IDecodeChannel" Collapsed="true">
+    <Position X="28" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\IDecodeChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.IEncodeChannel" Collapsed="true">
+    <Position X="30.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\IEncodeChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.IFunctionChannel" Collapsed="true">
+    <Position X="29" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\IFunctionChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.IProtocolChannel" Collapsed="true">
+    <Position X="15" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQABAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Channels\IProtocolChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.IReconnectionTransportChannel" Collapsed="true">
+    <Position X="3.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\IReconnectionTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.IServiceChannel" Collapsed="true">
+    <Position X="15" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\IServiceChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.ITcpTransportChannel" Collapsed="true">
+    <Position X="1" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\ITcpTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.ITransportChannel" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAAAAAABAAQAAAAGAAAIAAAQAQAAAIAAAABgAEQAA=</HashCode>
+      <FileName>Channels\ITransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.HostChannels.IHostTransportChannel" Collapsed="true">
+    <Position X="11.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAABAAQAAAAAA=</HashCode>
+      <FileName>Channels\HostChannels\IHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.HostChannels.IPiepHostTransportChannel" Collapsed="true">
+    <Position X="11.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABgAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\HostChannels\IPiepHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.HostChannels.IPortHostTransportChannel" Collapsed="true">
+    <Position X="34.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\HostChannels\IPortHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.OneWay.IInputChannel" Collapsed="true">
+    <Position X="9" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAIAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\OneWay\IInputChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.OneWay.IOutputChannel" Collapsed="true">
+    <Position X="9" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Channels\OneWay\IOutputChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.ReplyNow.IRequestChannel" Collapsed="true">
+    <Position X="12" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\ReplyNow\IRequestChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.ReplyNow.IResponseChannel" Collapsed="true">
+    <Position X="6" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAIAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Channels\ReplyNow\IResponseChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.Stacks.IChannelStack" Collapsed="true">
+    <Position X="39.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAEAAAAgEAAQAgAgAAAAAAAAAAAQAAAQAQAAAAAAA=</HashCode>
+      <FileName>Channels\Stacks\IChannelStack.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.Transactions.IStreamTransaction&lt;TStream&gt;" Collapsed="true">
+    <Position X="43.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACgAACACIACAAAAAAAgAAAAA=</HashCode>
+      <FileName>Channels\Transactions\IStreamTranscation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Channels.Transactions.Processors.ITransactionProcessor&lt;TIn, TOut&gt;" Collapsed="true">
+    <Position X="36.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Channels\Transactions\Processors\ITransactionProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Clients.IClientBase&lt;T&gt;" Collapsed="true">
+    <Position X="17.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAgAAAAAAAAAABAAgAAAAAAAQAAAAQBAEAAACA=</HashCode>
+      <FileName>Clients\IClientBase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.ICommunicationChannelAddress" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQACAAAAAAAAAAA=</HashCode>
+      <FileName>ICommunicationChannelAddress.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.ICommunicationObject" Collapsed="true">
+    <Position X="18" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAICgIAAAwDAAAFAAAgAAAAAEAAACAAAA=</HashCode>
+      <FileName>ICommunicationObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Contexts.IChannelContext&lt;TChannel, TArg&gt;" Collapsed="true">
+    <Position X="38" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAgAAAACAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Contexts\IChannelContext.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Contexts.IServiceCallContext" Collapsed="true">
+    <Position X="36.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAIAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Contexts\IServiceCallContext.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Descriptions.IContractDescription" Collapsed="true">
+    <Position X="43.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Descriptions\IContractDescription.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Descriptions.IContractInfomation" Collapsed="true">
+    <Position X="32.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAgCAAAAAAAAAQAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Descriptions\IContractInfomation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Descriptions.IDescriptionArgument" Collapsed="true">
+    <Position X="36.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAABAAIAAAAAAAAQAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Descriptions\IDescriptionArgument.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Descriptions.IDescriptionMethod" Collapsed="true">
+    <Position X="5.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Descriptions\IDescriptionMethod.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Descriptions.Wrappers.IContractDescriptionWrapper" Collapsed="true">
+    <Position X="45" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Descriptions\Wrappers\IContractDescriptionWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Dispatchers.Cores.ICoreDispatcher" Collapsed="true">
+    <Position X="34.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dispatchers\Cores\ICoreDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Elements.IBinding" Collapsed="true">
+    <Position X="24.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQEAAAAAGAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Elements\IBinding.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Elements.IBindingElement&lt;TChannel&gt;" Collapsed="true">
+    <Position X="22" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAIAAIAAAQAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Elements\IBindingElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.MessageProviders.IMessageProvider&lt;TMessage&gt;" Collapsed="true">
+    <Position X="45" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAgAAAAAAAAAAQAAQAAAEAAAAAAACAQAAA=</HashCode>
+      <FileName>MessageProviders\IMessageProvider.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Messages.Headers.IBinaryMessageHeader" Collapsed="true">
+    <Position X="16.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQBAAAAAIAAAAAAABCAAAAAAAAAA=</HashCode>
+      <FileName>Messages\Headers\IBinaryMessageHeader.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Messages.Headers.IServiceMessageHeader" Collapsed="true">
+    <Position X="15.5" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAEAAAQA=</HashCode>
+      <FileName>Messages\Headers\IServiceMessageHeader.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Messages.Headers.ISubServiceMessageHeader" Collapsed="true">
+    <Position X="17.75" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Messages\Headers\ISubServiceMessageHeader.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Messages.ISubServiceMessage" Collapsed="true">
+    <Position X="34.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Messages\ISubServiceMessage.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Metadata.Actions.IHttpMetadataPageAction" Collapsed="true">
+    <Position X="39.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Actions\IMetadataPageAction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Metadata.IBinaryArgContext" Collapsed="true">
+    <Position X="36.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAIAAAAIAAAIAAACBAAAgAABAAAACAAAAAAAE=</HashCode>
+      <FileName>Metadata\IBinaryArgContext.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Metadata.IMetadataExchangeNode" Collapsed="true">
+    <Position X="32.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAgAAAAAAAAAAAAAAAAIAAAQAAAAAA=</HashCode>
+      <FileName>Metadata\IMetadataExchangeNode.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Objects.IServiceReturnValue" Collapsed="true">
+    <Position X="41.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAQAgAAAAAAAAAAgAAAAAAAAAAAAAAAAACAAAhA=</HashCode>
+      <FileName>Objects\IServiceReturnValue.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Parsers.IServiceMessageParser&lt;T&gt;" Collapsed="true">
+    <Position X="39.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parsers\IServiceMessageParser.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Pins.IMessageChunkInputPin" Collapsed="true">
+    <Position X="41.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAACAAAAAAAAA=</HashCode>
+      <FileName>Pins\IMessageChunkInputPin.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Pins.IMessageChunkOutputPin" Collapsed="true">
+    <Position X="43.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pins\IMessageChunkOutputPin.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Security.Certificates.IServiceMessageCertificate" Collapsed="true">
+    <Position X="38" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Security\Certificates\IServiceMessageCertificate.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Services.IHostService" Collapsed="true">
+    <Position X="38" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACAAAAAACACAEAAAAAIAAAAAEAAAAgAAAIAAAAAAQ=</HashCode>
+      <FileName>Services\IHostService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Services.IMetadataExchange" Collapsed="true">
+    <Position X="3.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Services\IMetadataExchange.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Services.IServiceHandle" Collapsed="true">
+    <Position X="3.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAIQAAAAAACQAAFAAAAAAACEAAAACAAEA=</HashCode>
+      <FileName>Services\IServiceHandle.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Services.Methods.IExecutableServiceMethod" Collapsed="true">
+    <Position X="7.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Services\Methods\IExecutableServiceMethod.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.ServiceModel.Services.Methods.IServiceMethod" Collapsed="true">
+    <Position X="6.75" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAABACAAAAAAAAAAQAAAgAAAAAAAAAAAAEABQ=</HashCode>
+      <FileName>Services\Methods\IServiceMethod.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="KJFramework.ServiceModel.Enums.HostChannelTypes" Collapsed="true">
+    <Position X="32.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums\HostChannelTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="KJFramework.ServiceModel.Callbacks.AsyncMethodCallback" Collapsed="true">
+    <Position X="32.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Callbacks\RequestingCenter.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

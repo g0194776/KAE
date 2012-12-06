@@ -1,0 +1,1041 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KJFramework.Basic</name>
+    </assembly>
+    <members>
+        <member name="T:KJFramework.Basic.Enum.OnlineState">
+            <summary>
+                在线状态
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OnlineState.Online">
+            <summary>
+                在线
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OnlineState.Busy">
+            <summary>
+                忙碌
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OnlineState.Hidden">
+            <summary>
+                隐身
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OnlineState.Away">
+            <summary>
+                离开
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OnlineState.Offline">
+            <summary>
+                下线
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.KJFrameworkParserTypes">
+            <summary>
+                KJFramework中解析器的大类型分类
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.IntellectOptionalPropertyTypes">
+            <summary>
+                智能的可选属性位置类型
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.IntellectOptionalPropertyTypes.Head">
+            <summary>
+                在头部
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.IntellectOptionalPropertyTypes.End">
+            <summary>
+                在尾部
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Exception.SortPropertyNotFoundException">
+            <summary>
+                排序字段未找到异常
+            </summary>
+            <remarks>
+                当要对给定类型进行排序时，如果给定的类型中不存在 int类型的代表字段则要给定排序字段的标示。
+                但是当该给定的标示未找到的时候，将会触发此异常。
+            </remarks>
+        </member>
+        <member name="M:KJFramework.Basic.Exception.SortPropertyNotFoundException.#ctor">
+            <summary>
+                排序字段未找到异常
+            </summary>
+            <remarks>
+                当要对给定类型进行排序时，如果给定的类型中不存在 int类型的代表字段则要给定排序字段的标示。
+                但是当该给定的标示未找到的时候，将会触发此异常。
+            </remarks>
+        </member>
+        <member name="T:KJFramework.Basic.ICollection`2">
+            <summary>
+                集合元接口, 提供了集合的相关基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Basic.ICollection`2.Add(`0)">
+            <summary>
+                向集合中添加元素
+            </summary>
+            <param name="member" type="T">
+                <para>
+                    元素(接口)
+                </para>
+            </param>
+        </member>
+        <member name="M:KJFramework.Basic.ICollection`2.Remove(`1)">
+            <summary>
+                从集合中移除带有指定关键标示的元素
+            </summary>
+            <param name="key" type="string">
+                <para>
+                    标示 - key
+                </para>
+            </param>
+        </member>
+        <member name="M:KJFramework.Basic.ICollection`2.Remove(`0)">
+            <summary>
+                从集合中移除指定元素
+            </summary>
+            <param name="member" type="T">
+                <para>
+                    元素(接口)
+                </para>
+            </param>
+        </member>
+        <member name="M:KJFramework.Basic.ICollection`2.GetMemberByKey(`1)">
+            <summary>
+                根据关键标示, 得到接口中的指定元素
+            </summary>
+            <param name="key" type="string">
+                <para>
+                    标示 - key
+                </para>
+            </param>
+            <returns>
+                返回null, 表示集合中不存在该元素
+            </returns>
+        </member>
+        <member name="M:KJFramework.Basic.ICollection`2.Equals(`1)">
+            <summary>
+                使用指定标示, 来对比当前集合中的每一个元素
+            </summary>
+            <param name="key" type="string">
+                <para>
+                    标示 - key
+                </para>
+            </param>
+            <returns>
+                返回false, 表示当前集合中不存在指定元素
+            </returns>
+        </member>
+        <member name="M:KJFramework.Basic.ICollection`2.Equals(`0)">
+            <summary>
+                使用指定元素(接口), 来对比当前集合中的每一个元素
+            </summary>
+            <param name="member" type="T">
+                <para>
+                    元素(接口)
+                </para>
+            </param>
+            <returns>
+                返回false, 表示当前集合中不存在指定元素
+            </returns>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.ASRecevieMessageProcessTypes">
+            <summary>
+                应用服务器接收消息处理类型
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ASRecevieMessageProcessTypes.Process">
+            <summary>
+                处理
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ASRecevieMessageProcessTypes.NoProcess">
+            <summary>
+                不处理（返回null）
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ASRecevieMessageProcessTypes.BlackList">
+            <summary>
+                返回黑名单消息
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:KJFramework.Basic.Collection.XSortedDirectory`2" -->
+        <!-- Badly formed XML comment ignored for member "M:KJFramework.Basic.Collection.XSortedDirectory`2.#ctor(System.Collections.Generic.IComparer{`0})" -->
+        <!-- Badly formed XML comment ignored for member "M:KJFramework.Basic.Collection.XSortedDirectory`2.#ctor" -->
+        <member name="P:KJFramework.Basic.Collection.XSortedDirectory`2.Item(`0)">
+            <summary>
+                根据指定索引获取集合中对应值
+            </summary>
+            <param name="indexer">索引</param>
+            <returns>返回对应的值</returns>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.TaskPriority">
+            <summary>
+                任务优先级枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.TaskPriority.Low">
+            <summary>
+                低级
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.TaskPriority.Normal">
+            <summary>
+                普通
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.TaskPriority.High">
+            <summary>
+                高级
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.PerformanceTypes">
+            <summary>
+                性能类型
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PerformanceTypes.Cpu">
+            <summary>
+                CPU
+            </summary>
+            <remarks>
+                一般表示了CPU的使用率
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PerformanceTypes.Memory">
+            <summary>
+                内存
+            </summary>
+            <remarks>
+                一般表示了内存的使用率
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PerformanceTypes.PageMemory">
+            <summary>
+                页面内存
+            </summary>
+            <remarks>
+                一般表示了页面内存的使用率
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PerformanceTypes.Temperature">
+            <summary>
+                温度
+            </summary>
+            <remarks>
+                一般表示了某个硬件温度
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PerformanceTypes.Network">
+            <summary>
+                网络
+            </summary>
+            <remarks>
+                一般表示了对于网络某指标的测试
+            </remarks>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.SchedulerPriority">
+            <summary>
+                调度优先级类型枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SchedulerPriority.Low">
+            <summary>
+                低级
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SchedulerPriority.Normal">
+            <summary>
+                普通
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SchedulerPriority.High">
+            <summary>
+                高级
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.ConfigurationLoaderTypes">
+            <summary>
+                配置加载器类型
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ConfigurationLoaderTypes.Local">
+            <summary>
+                本地
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ConfigurationLoaderTypes.Remote">
+            <summary>
+                远程
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.LogTypes">
+            <summary>
+                记录对象的类型
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.LogTypes.ApplicationDebug">
+            <summary>
+                应用程序错误记录
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.LogTypes.TalkMessage">
+            <summary>
+                聊天记录
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.LogTypes.Mark">
+            <summary>
+                备注
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.HealthStatus">
+            <summary>
+                健康状况枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.HealthStatus.Exellect">
+            <summary>
+                极好
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.HealthStatus.Good">
+            <summary>
+                很好
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.HealthStatus.Normal">
+            <summary>
+                一般
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.HealthStatus.Bad">
+            <summary>
+                糟糕
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.HealthStatus.Death">
+            <summary>
+                死亡
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.TimerStartType">
+            <summary>
+                超时器开始运行的计算方式
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.TimerStartType.RunTimerNow">
+            <summary>
+                立即运行超时器。
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.TimerStartType.WaitOnce">
+            <summary>
+                等待事件间隔的第二次触发时才开始计算
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.ShortcutWindowStyle">
+            <summary>
+                快捷方式窗体样式枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ShortcutWindowStyle.Normal">
+            <summary>
+                正常
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ShortcutWindowStyle.Maximized">
+            <summary>
+                最大
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ShortcutWindowStyle.Minimized">
+            <summary>
+                最小
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.SerializableTypes">
+            <summary>
+                序列化/反序列化类型
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SerializableTypes.Encrypt">
+            <summary>
+                加密
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SerializableTypes.DeEncryptd">
+            <summary>
+                解密
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SerializableTypes.Normal">
+            <summary>
+                不进行加密也不进行解密
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.DebugGrade">
+            <summary>
+                记录错误等级
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.DebugGrade.Fatal">
+            <summary>
+                致命的
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.DebugGrade.High">
+            <summary>
+                高危险
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.DebugGrade.Low">
+            <summary>
+                低危险
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.DebugGrade.Standard">
+            <summary>
+                普通警告
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.OSVersion">
+            <summary>
+                系统版本
+                    * 提供了更加详细的用户系统版本信息
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OSVersion.Windows98">
+            <summary>
+                微软98操作系统。
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OSVersion.Windows2000">
+            <summary>
+                微软2000操作系统。
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OSVersion.Windows2003">
+            <summary>
+                微软2003操作系统。
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OSVersion.WindowsMe">
+            <summary>
+                微软Me操作系统。
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OSVersion.WindowsXP">
+            <summary>
+                微软XP操作系统。
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OSVersion.WindowsVista">
+            <summary>
+                微软Vista操作系统。
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OSVersion.Windows7">
+            <summary>
+                微软Seven操作系统。
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.RemoteServiceState">
+            <summary>
+                远程服务状态枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.RemoteServiceState.NoTest">
+            <summary>
+                未测试
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.RemoteServiceState.Exception">
+            <summary>
+                异常
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.RemoteServiceState.Connected">
+            <summary>
+                连接中
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.RemoteServiceState.Disconnected">
+            <summary>
+                断开中
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.InfomationCollectorTypes">
+            <summary>
+                信息收集器类型枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.InfomationCollectorTypes.Performance">
+            <summary>
+                性能
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.InfomationCollectorTypes.Thread">
+            <summary>
+                线程
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.InfomationCollectorTypes.Process">
+            <summary>
+                进程
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.InfomationCollectorTypes.Special">
+            <summary>
+                指定的模块
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:KJFramework.Basic.Collection.XDictionary`2" -->
+        <member name="P:KJFramework.Basic.Collection.XDictionary`2.Item(`0)">
+            <summary>
+                根据指定索引获取集合中对应值
+            </summary>
+            <param name="indexer">索引</param>
+            <returns>返回对应的值</returns>
+        </member>
+        <member name="T:KJFramework.Basic.Struct.ShortCutData">
+            <summary>
+                快捷方式数据集
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Struct.ShortCutData.Arguments">
+            <summary>
+                传入参数
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Struct.ShortCutData.HotKey">
+            <summary>
+                快捷键
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Struct.ShortCutData.InkPath">
+            <summary>
+                快捷方式存放地址
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Struct.ShortCutData.TargetPath">
+            <summary>
+                目标地址
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Struct.ShortCutData.WorkingDirectory">
+            <summary>
+                工作目录
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Struct.ShortCutData.Description">
+            <summary>
+                描述信息
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Struct.ShortCutData.IconLocation">
+            <summary>
+                图标地址
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Struct.ShortCutData.WindowStyle">
+            <summary>
+                快捷方式窗体样式
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.RemedyServiceTypes">
+            <summary>
+                补救服务类型枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.RemedyServiceTypes.ApplicationServerRegister">
+            <summary>
+                对于应用服务器注册服务的补救
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.RemedyServiceTypes.ApplicationServerMessage">
+            <summary>
+                对于应用服务器消息服务的补救
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.RemedyServiceTypes.GatewayManager">
+            <summary>
+                对于网关管理器的补救
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.IMetadata`1">
+            <summary>
+                元数据接口
+            </summary>
+        </member>
+        <member name="P:KJFramework.Basic.IMetadata`1.Key">
+            <summary>
+                获取或设置用来约束所有对象的唯一标示
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.PluginTypes">
+            <summary>
+                插件类型
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PluginTypes.Network">
+            <summary>
+                网络通讯插件
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PluginTypes.Function">
+            <summary>
+               功能服务插件
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PluginTypes.Reporter">
+            <summary>
+                信息报告插件
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PluginTypes.BasicReqDealer">
+            <summary>
+                基础的请求处理插件
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PluginTypes.RequestHook">
+            <summary>
+                拦截请求插件
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.FileAckableTransmissionTypes">
+            <summary>
+                可回馈的文件传送类型
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.FileAckableTransmissionTypes.Encapsulation">
+            <summary>
+                封装发送
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.FileAckableTransmissionTypes.Raw">
+            <summary>
+                发送源流
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.ISort">
+            <summary>
+                排序元接口, 提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.ShowProcessTypes">
+            <summary>
+                显示进度类型
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ShowProcessTypes.First">
+            <summary>
+                第一次输出进度
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ShowProcessTypes.More">
+            <summary>
+                已经输出过进度
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.ScopePermission">
+            <summary>
+                域权限枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ScopePermission.Super">
+            <summary>
+                Super node
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ScopePermission.Ordinary">
+            <summary>
+                Ordinary node
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ScopePermission.ChildSuper">
+            <summary>
+                Child super node
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ScopePermission.Global">
+            <summary>
+                Global permission
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.ProcessingTypes">
+            <summary>
+                信息状态枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ProcessingTypes.Success">
+            <summary>
+                成功
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ProcessingTypes.Loading">
+            <summary>
+                正在加载
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ProcessingTypes.Failed">
+            <summary>
+                失败
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ProcessingTypes.Wait">
+            <summary>
+                等待
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ProcessingTypes.DoNotWait">
+            <summary>
+                不等待
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.OSType">
+            <summary>
+                系统类别
+                    * 用于区分用户使用的系统环境。
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OSType.Linux">
+            <summary>
+                LINUX系统。
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OSType.Windows">
+            <summary>
+                WINDOWS系统。
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.OSType.Mac">
+            <summary>
+                苹果操作系统。
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.MessageTransferType">
+            <summary>
+                消息传输类型
+            </summary>
+            <remarks>
+                此类型表示了该消息是直接点对点传递，还是经由服务器转发。
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.MessageTransferType.P2P">
+            <summary>
+                点对点传递
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.MessageTransferType.Transmit">
+            <summary>
+                服务器转发
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.ClientNetworkProtocolTypes">
+            <summary>
+                网络客户端协议类型
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ClientNetworkProtocolTypes.TCP">
+            <summary>
+                TCP协议
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ClientNetworkProtocolTypes.UDP">
+            <summary>
+                UDP协议
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.BindingTypes">
+            <summary>
+                绑定方式枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.BindingTypes.Tcp">
+            <summary>
+                TCP绑定
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.BindingTypes.Udp">
+            <summary>
+                UDP绑定
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.BindingTypes.Http">
+            <summary>
+                HTTP绑定
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.BindingTypes.Https">
+            <summary>
+                HTTPS绑定
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.BindingTypes.MessageQueue">
+            <summary>
+                消息队列绑定
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.BindingTypes.Ipc">
+            <summary>
+                消息通道绑定
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.StatisticTypes">
+            <summary>
+                统计类型枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.StatisticTypes.Network">
+            <summary>
+                网络
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.StatisticTypes.Performance">
+            <summary>
+                性能
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.StatisticTypes.Other">
+            <summary>
+                其他
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.SortType">
+            <summary>
+                排序类型
+            </summary>
+            <remarks>
+                提供了 升序 0~x, 降序 x~0的排序功能
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SortType.Desc">
+            <summary>
+                降序
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SortType.Asc">
+            <summary>
+                升序
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.NetMessageFlagType">
+            <summary>
+                网络消息标示类型
+            </summary>
+            <remarks>
+                该表示表示了指定网络消息是接收到的还是要发送的。
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.NetMessageFlagType.Arrive">
+            <summary>
+                接收到的消息
+            </summary>
+            <remarks>
+                如果设置为此项，将不会初始化消息头内容字节数组，节省内存空间
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.NetMessageFlagType.Send">
+            <summary>
+                要发送的消息
+            </summary>
+            <remarks>
+                如果设置为此项，将会初始化消息头内容字节数组，为了发送消息时消息头部内容的填充做准备。
+            </remarks>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.DataPriority">
+            <summary>
+                数据优先级类型枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.DataPriority.Low">
+            <summary>
+                低级数据
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.DataPriority.Normal">
+            <summary>
+                普通数据
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.DataPriority.High">
+            <summary>
+                高级数据
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.DataPriority.CanBeDiscarded">
+            <summary>
+                可丢弃的数据
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.RemoteGatewayHeartBeatState">
+            <summary>
+                远程网关心跳状态枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.RemoteGatewayHeartBeatState.Successful">
+            <summary>
+                成功
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.RemoteGatewayHeartBeatState.Fail">
+            <summary>
+                失败
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.RemoteGatewayHeartBeatState.Block">
+            <summary>
+                黑名单，堵塞中
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.MetadataSerializerTypes">
+            <summary>
+                元数据序列化器类型枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.MetadataSerializerTypes.Class">
+            <summary>
+                类序列化器
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.MetadataSerializerTypes.Array">
+            <summary>
+                数组序列化器
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.MetadataSerializerTypes.Other">
+            <summary>
+                其他
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Comparer.DescIntegerComparer">
+            <summary>
+                按照降序排序的整型比较器
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.UserGrade">
+            <summary>
+                用户等级
+                    * 用户等级的区分用于相应的用户提供不同的服务
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.UserGrade.Normal">
+            <summary>
+                普通用户
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.UserGrade.VIP">
+            <summary>
+                会员用户
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.ProtocolType">
+            <summary>
+                协议类型
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.SessionType">
+            <summary>
+                会话类型
+            </summary>
+            <remarks>
+                不用的会话类型保证了通讯间的信任与唯一性
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SessionType.Base">
+            <summary>
+                基础会话
+            </summary>
+            <remarks>
+                支持一切基本的通讯唯一安全。
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SessionType.FileTransfer">
+            <summary>
+                文件传送会话
+            </summary>
+            <remarks>
+                支持一切文件传输的唯一安全。
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SessionType.Video">
+            <summary>
+                视频传送会话
+            </summary>
+            <remarks>
+                支持了Peer2Peer的视频传输终结点唯一安全。
+            </remarks>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.SessionType.Voice">
+            <summary>
+                语音传送会话
+            </summary>
+            <remarks>
+                支持了Peer2Peer的语音传输终结点唯一安全。
+            </remarks>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.PerformanceTestTypes">
+            <summary>
+                性能评测指标
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PerformanceTestTypes.Excellence">
+            <summary>
+                极好
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PerformanceTestTypes.Well">
+            <summary>
+                良好
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.PerformanceTestTypes.Bad">
+            <summary>
+                糟糕
+            </summary>
+        </member>
+        <member name="T:KJFramework.Basic.Enum.ArgTypes">
+            <summary>
+                参数类型枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ArgTypes.Class">
+            <summary>
+                类
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ArgTypes.Array">
+            <summary>
+                数组
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ArgTypes.Enum">
+            <summary>
+                枚举
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ArgTypes.Other">
+            <summary>
+                其他
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ArgTypes.IntellectObject">
+            <summary>
+                智能对象
+            </summary>
+        </member>
+        <member name="F:KJFramework.Basic.Enum.ArgTypes.UnDefinded">
+            <summary>
+                未定义的
+            </summary>
+        </member>
+    </members>
+</doc>

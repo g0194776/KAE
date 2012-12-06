@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
+    <DefaultClrNameSpace>Button</DefaultClrNameSpace>
+    <AssemblyName>KJFramework.UI</AssemblyName>
+    <RootNamespace>KJFramework.UI</RootNamespace>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <AlwaysCompileMarkupFilesInSeparateDomain>false</AlwaysCompileMarkupFilesInSeparateDomain>
+    <ExpressionBlendCreationVersion>2.0.1523.0</ExpressionBlendCreationVersion>
+    <ProjectGuid>{91B38C53-C814-4878-9A7C-87E07465613A}</ProjectGuid>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OutputType>Library</OutputType>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ExpressionBlendVersion>3.0.1938.0</ExpressionBlendVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DocumentationFile>bin\KJFramework.UI.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="Interop.IWshRuntimeLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\KJFramework\KJFramework\bin\Debug\Interop.IWshRuntimeLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=47d7877cb3620160">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\KJFramework\KJFramework\bin\Debug\zlib.net.dll</HintPath>
+    </Reference>
+    <Page Include="BackgroundFrontOfButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BigOpacityImageButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Calendar\ArrowButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Calendar\CalendarPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Calendar\CalendarSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Calendar\DateButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Calendar\MonthCalendar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Calendar\WinCalendar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Chart\LineChart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="QQContextMenuStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="QQDropableMenuButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="QQPictureTextButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="QQProcessBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="QQTextButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RangeSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SmallfontlineButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\QQContextStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TabItemStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VistaTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="BackgroundFrontOfButton.xaml.cs">
+      <DependentUpon>BackgroundFrontOfButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BigOpacityImageButton.xaml.cs">
+      <DependentUpon>BigOpacityImageButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\ArrowButton.xaml.cs">
+      <DependentUpon>ArrowButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\CalendarPanel.xaml.cs">
+      <DependentUpon>CalendarPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\CalendarSelector.xaml.cs">
+      <DependentUpon>CalendarSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\DateButton.xaml.cs">
+      <DependentUpon>DateButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\MonthCalendar.xaml.cs">
+      <DependentUpon>MonthCalendar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\WinCalendar.xaml.cs">
+      <DependentUpon>WinCalendar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Chart\LineChart.xaml.cs">
+      <DependentUpon>LineChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Convert\ConvertHelper.cs" />
+    <Compile Include="Enums\DropableMenuButtonTypes.cs" />
+    <Compile Include="EventArgs\SelectedDateEventArgs.cs" />
+    <Compile Include="Imaging\GifAnimation.cs" />
+    <Compile Include="Imaging\GifImage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QQDropableMenuButton.xaml.cs">
+      <DependentUpon>QQDropableMenuButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="QQPictureTextButton.xaml.cs">
+      <DependentUpon>QQPictureTextButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="QQProcessBar.xaml.cs">
+      <DependentUpon>QQProcessBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="QQTextButton.xaml.cs">
+      <DependentUpon>QQTextButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RangeSlider.xaml.cs">
+      <DependentUpon>RangeSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SmallfontlineButton.xaml.cs">
+      <DependentUpon>SmallfontlineButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Struct\LinePoint.cs" />
+    <Compile Include="VistaTextBox.xaml.cs">
+      <DependentUpon>VistaTextBox.xaml</DependentUpon>
+    </Compile>
+    <Resource Include="color_big_H.png" />
+    <Resource Include="folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="20076405854336.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SendPic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imaging\fun.png" />
+    <Resource Include="Imaging\MainMenu_RightHighlight.bmp" />
+    <Resource Include="Imaging\selected.jpg" />
+    <Resource Include="work.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
+      <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
+      <Name>KJFramework.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
+      <Project>{35FD171E-DE60-4E34-9A35-E33C3BA8C02F}</Project>
+      <Name>KJFramework.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

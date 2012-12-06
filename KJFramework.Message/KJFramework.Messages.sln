@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Messages", "KJFramework.Messages\KJFramework.Messages.csproj", "{ACA46F02-5B48-4520-8CB2-3CA01F19B498}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{97978956-55F1-41F4-BD90-75AF372C339C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Messages.UnitTest", "KJFramework.Messages.UnitTest\KJFramework.Messages.UnitTest.csproj", "{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{864C5C45-9B90-47EA-9CB7-D2B888E63DC7}"
+	ProjectSection(SolutionItems) = preProject
+		KJFramework.Messages.vsmdi = KJFramework.Messages.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = KJFramework.Messages.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Release|x86.ActiveCfg = Release|Any CPU
+		{97978956-55F1-41F4-BD90-75AF372C339C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{97978956-55F1-41F4-BD90-75AF372C339C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{97978956-55F1-41F4-BD90-75AF372C339C}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{97978956-55F1-41F4-BD90-75AF372C339C}.Debug|x86.ActiveCfg = Debug|x86
+		{97978956-55F1-41F4-BD90-75AF372C339C}.Debug|x86.Build.0 = Debug|x86
+		{97978956-55F1-41F4-BD90-75AF372C339C}.Release|Any CPU.ActiveCfg = Release|x86
+		{97978956-55F1-41F4-BD90-75AF372C339C}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{97978956-55F1-41F4-BD90-75AF372C339C}.Release|Mixed Platforms.Build.0 = Release|x86
+		{97978956-55F1-41F4-BD90-75AF372C339C}.Release|x86.ActiveCfg = Release|x86
+		{97978956-55F1-41F4-BD90-75AF372C339C}.Release|x86.Build.0 = Release|x86
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

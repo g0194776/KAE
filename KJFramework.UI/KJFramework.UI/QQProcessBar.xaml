@@ -1,0 +1,31 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="KJFramework.UI.QQProcessBar"
+	x:Name="QQProcessBar1"
+	d:DesignWidth="374.333" Background="#FFFFFFFF" Height="9">
+
+	<Grid x:Name="LayoutRoot">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid VerticalAlignment="Top" Height="Auto" d:LayoutOverrides="Height" x:Name="Gd_ProcessBar">
+			<Image RenderTransformOrigin="0.5,0.5" Margin="0,0.008,0,0" VerticalAlignment="Top" Height="9.979" Source="color_big_H.png" Stretch="Fill" x:Name="Img_Background" Width="0" HorizontalAlignment="Left">
+				<Image.BitmapEffect>					<BlurBitmapEffect Radius="5"/>
+				</Image.BitmapEffect>
+				<Image.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="0"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Image.RenderTransform>
+			</Image>
+			<Path VerticalAlignment="Top" Height="8.625" Fill="{x:Null}" Stretch="Fill" Stroke="#FF009CFF" Data="M60.125,50.0625 C60.125,50.0625 54.5625,53.7505 60.1875,57.563 L338.6729,57.250979 C338.6729,57.250979 343.23413,54.188275 338.73536,49.937992 z" StrokeThickness="0.7" x:Name="Ph_Border"/>
+		</Grid>
+	</Grid>
+</UserControl>

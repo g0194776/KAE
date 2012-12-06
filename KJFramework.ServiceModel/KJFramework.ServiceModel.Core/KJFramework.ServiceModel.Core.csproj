@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2495424E-1415-478E-B9E5-4674BE08CAE8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework.ServiceModel.Core</RootNamespace>
+    <AssemblyName>KJFramework.ServiceModel.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\OperationAttribute.cs" />
+    <Compile Include="Attributes\ServiceContractAttribute.cs" />
+    <Compile Include="Attributes\ServiceMetadataExchangeAttribute.cs" />
+    <Compile Include="Contracts\ContractDefaultAction.cs" />
+    <Compile Include="Contracts\IContractDefaultAction.cs" />
+    <Compile Include="EventArgs\AfterCallEventArgs.cs" />
+    <Compile Include="EventArgs\ClientLowProxyRequestEventArgs.cs" />
+    <Compile Include="Helpers\ChannelHelper.cs" />
+    <Compile Include="Helpers\DynamicHelper.cs" />
+    <Compile Include="Helpers\IntellectObjectHelper.cs" />
+    <Compile Include="Helpers\ServiceHelper.cs" />
+    <Compile Include="Managers\RequestManager.cs" />
+    <Compile Include="Metadata\IMetadataTypeGenerator.cs" />
+    <Compile Include="Metadata\MetadataTypeGenerator.cs" />
+    <Compile Include="Methods\ExecutableServiceMethod.cs" />
+    <Compile Include="Methods\IExecutableServiceMethod.cs" />
+    <Compile Include="Methods\IServiceMethod.cs" />
+    <Compile Include="Methods\ServiceMethod.cs" />
+    <Compile Include="Objects\RequestCenterWaitObject.cs" />
+    <Compile Include="Objects\ServiceMethodPickupObject.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
+      <Project>{6F85C222-1CD2-44D4-8D06-22F557D4CF04}</Project>
+      <Name>KJFramework.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
+      <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
+      <Name>KJFramework.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
+      <Project>{33FE11D3-2810-4432-B64C-B16935BB47CD}</Project>
+      <Name>KJFramework.Net.Channels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
+      <Project>{35FD171E-DE60-4E34-9A35-E33C3BA8C02F}</Project>
+      <Name>KJFramework.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.ServiceModel\KJFramework.ServiceModel.csproj">
+      <Project>{67114374-9743-4E0E-8368-6117E6C62184}</Project>
+      <Name>KJFramework.ServiceModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="KJFramework.Cache.CacheLease" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACCAkAAAAAAAAAAAAEqIAAAFAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CacheLease.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.CacheTenant" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAIAAACAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>CacheTenant.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Containers.CacheContainer&lt;K, V&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAIACCAEEAAgBQBEAAAAFoACAAFAAAAQAAAAAAAACQA=</HashCode>
+      <FileName>Containers\CacheContainer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Containers.FixedCacheContainer&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAQCACAAAAAgAAAAAAAAAQA=</HashCode>
+      <FileName>Containers\FixedCacheContainer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Containers.RemoteCacheContainer&lt;K, V&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIACAAGGAAAAQBAAAAAFIAGAgMAAAAQAAAAgAAECAA=</HashCode>
+      <FileName>Containers\RemoteCacheContainer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Containers.SegmentCacheContainer&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAIAABAABBAgAQBAAAIgDAQCAAAAAAAwAAAAAAAAQSA=</HashCode>
+      <FileName>Containers\SegmentCacheContainer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Cores.CacheItem&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAIAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cores\CacheItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Cores.CacheStub&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAMAEAAAAAAAAAAAACAAAAAAAAAAAAAlAACA=</HashCode>
+      <FileName>Cores\CacheStub.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Cores.SegmentCacheItem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAIAAACwAAAAAAAAAAAAAAAAAADAAAAAAAAAQ=</HashCode>
+      <FileName>Cores\SegmentCacheItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Cores.SegmentCacheStub" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAABAAgAAAAAQAAAAAAAAAAAIAAAAAABAAAAAlAACA=</HashCode>
+      <FileName>Cores\SegmentCacheStub.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Cores.UnmanagedCacheItem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAACgIAAAAAAAAAAAAAAAAAAgAAAAoAAAI=</HashCode>
+      <FileName>Cores\UnmanagedCacheItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Cores.UnmanagedCacheSlot" Collapsed="true">
+    <Position X="13.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cores\UnmanagedCacheSlot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Cache.Cores.UnmanagedCacheStub" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgIAAAAgAAAAAAAIEAAAAAAgQAAgAAAAlAACA=</HashCode>
+      <FileName>Cores\UnmanagedCacheStub.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Cores.WeakCacheStub&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAMAAAAAAAAAAAAAACAAAAAAAAAAAAAlAACA=</HashCode>
+      <FileName>Cores\WeakCacheStub.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIACBAEBAAAAAAABACAEICACAEAAAAAAAAAAEgAQAA=</HashCode>
+      <FileName>Cores\Segments\HightSpeedSegmentCache.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Cores.Segments.SegmentCachePolicy" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAABARAAAAAAAAAAAAACAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Cores\Segments\SegmentCachePolicy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.EventArgs.ExpiredCacheEventArgs&lt;K, V&gt;" Collapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EventArgs\ExpiredCacheEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Cache.Exception.OutOfRangeException" Collapsed="true">
+    <Position X="17.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exception\OutOfRangeException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Cache.Indexers.CacheIndexer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAACAAAAAAAAAAAAAAAAKAAAAAAAAAQAAgAAA=</HashCode>
+      <FileName>Indexers\CacheIndexer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Cache.Proxy.RemoteCacheProxy&lt;K, V&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIAAAAAAAAAAABAAAAABIAAAAAAAABQAIAAAIAAAAA=</HashCode>
+      <FileName>Proxy\RemoteCacheProxy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="KJFramework.Cache.Cores.Segments.SegmentSizePair" Collapsed="true">
+    <Position X="10.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Cores\Segments\SegmentSizePair.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="KJFramework.Cache.ICacheLease" Collapsed="true">
+    <Position X="12" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAkAAAAAAAAAAAAEIAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICacheLease.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.ICacheTenant" Collapsed="true">
+    <Position X="13.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAIAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICacheTenant.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.IClearable" Collapsed="true">
+    <Position X="15.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>IClearable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.ILeasable" Collapsed="true">
+    <Position X="6.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAEAAAAAAAAAAAAEIAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ILeasable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.IReadonlyCacheLease" Collapsed="true">
+    <Position X="12" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAkAAAAAAAAAAAAEAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IReadonlyCacheLease.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Containers.ICacheContainer&lt;K, V&gt;" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEAAAAQBAAAAABAAAAAAAAAAQAAAAAAAACAA=</HashCode>
+      <FileName>Containers\ICacheContainer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Containers.IFixedCacheContainer&lt;T&gt;" Collapsed="true">
+    <Position X="17.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACACAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Containers\IFixedCacheContainer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Containers.IRemoteCacheContainer&lt;K, V&gt;" Collapsed="true">
+    <Position X="5.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Containers\IRemoteCacheContainer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Containers.ISegmentCacheContainer&lt;T&gt;" Collapsed="true">
+    <Position X="17.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAABAAAAABAACAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Containers\ISegmentCacheContainer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.ICacheItem&lt;T&gt;" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cores\ICacheItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.ICacheStub&lt;T&gt;" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACA=</HashCode>
+      <FileName>Cores\ICacheStub.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.IFixedCacheStub&lt;T&gt;" Collapsed="true">
+    <Position X="10.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cores\IFixedCacheStub.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.IReadonlyCacheStub&lt;T&gt;" Collapsed="true">
+    <Position X="13.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cores\IReadonlyCacheStub.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.ISegmentCacheItem" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAACwAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cores\ISegmentCacheItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.ISegmentCacheStub" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAABAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cores\ISegmentCacheStub.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.IUnmanagedCacheItem" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAgAAAAAAAAI=</HashCode>
+      <FileName>Cores\IUnmanagedCacheItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.IUnmanagedCacheSlot" Collapsed="true">
+    <Position X="12" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAgAAAAAAAIAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Cores\IUnmanagedCacheSlot.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.IUnmanagedCacheStub" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAgAAAgAAAAAAAAA=</HashCode>
+      <FileName>Cores\IUnmanagedCacheStub.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.Segments.IHightSpeedSegmentCache" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAABAAAAAAAAAABAAAAACAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Cores\Segments\IHightSpeedSegmentCache.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Cores.Segments.ISegmentCachePolicy" Collapsed="true">
+    <Position X="10.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABABAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cores\Segments\ISegmentCachePolicy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Indexers.ICacheIndexer" Collapsed="true">
+    <Position X="10.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Indexers\ICacheIndexer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Cache.Proxy.IRemoteCacheProxy&lt;K, V&gt;" Collapsed="true">
+    <Position X="15.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAABAAAAABIAAAAAAAABQAAAAAIAAAAA=</HashCode>
+      <FileName>Proxy\IRemoteCacheProxy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

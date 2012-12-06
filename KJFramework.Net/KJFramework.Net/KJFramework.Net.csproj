@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{35FD171E-DE60-4E34-9A35-E33C3BA8C02F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework.Net</RootNamespace>
+    <AssemblyName>KJFramework.Net</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\KJFramework.Net.XML</DocumentationFile>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Channel\BasicChannelInfomation.cs" />
+    <Compile Include="Channel\IChannel.cs" />
+    <Compile Include="Configurations\LocalConfiguration.cs" />
+    <Compile Include="Configurations\NetworkLayerConfiguration.cs" />
+    <Compile Include="Buffer\BasicBufferPool.cs" />
+    <Compile Include="Buffer\IBufferPool.cs" />
+    <Compile Include="EventArgs\ConnectionCountChanagedEventArgs.cs" />
+    <Compile Include="EventArgs\ConnectionCountFullEventArgs.cs" />
+    <Compile Include="EventArgs\FsHreatTimeoutEventArgs.cs" />
+    <Compile Include="EventArgs\IocpPortListenerConnectedEventArgs.cs" />
+    <Compile Include="EventArgs\IocpPortListenerDisconnectedEventArgs.cs" />
+    <Compile Include="EventArgs\MessageHeaderFillDataUnCorrectException.cs" />
+    <Compile Include="EventArgs\MessageHeaderFlagUnCorrectException.cs" />
+    <Compile Include="EventArgs\ReceiveDataEventArgs.cs" />
+    <Compile Include="EventArgs\RecevierDisconnectedEventArgs.cs" />
+    <Compile Include="EventArgs\ServerDisconnectedEventArgs.cs" />
+    <Compile Include="EventArgs\ServerRetryTimeoutEventArgs.cs" />
+    <Compile Include="EventArgs\SessionExpiredEventArgs.cs" />
+    <Compile Include="EventArgs\TaskCheckerBeginWorkEventArgs.cs" />
+    <Compile Include="EventArgs\TaskCheckerEndWorkEventArgs.cs" />
+    <Compile Include="EventArgs\TcpAsynListenerDisconnectedEventArgs.cs" />
+    <Compile Include="EventArgs\TcpAsynListenerNewConnected.cs" />
+    <Compile Include="EventArgs\TcpServerNetworkStreamNotFoundException.cs" />
+    <Compile Include="EventArgs\TaskFailEventArgs.cs" />
+    <Compile Include="EventArgs\UdpListenerStartedEventArgs.cs" />
+    <Compile Include="EventArgs\UpdateProcessingEventArgs.cs" />
+    <Compile Include="EventArgs\UserDisconnectedEventArgs.cs" />
+    <Compile Include="EventArgs\UserHreatTimeoutEventArgs.cs" />
+    <Compile Include="EventArgs\ChannelDisconnectedEventArgs.cs" />
+    <Compile Include="Exception\BufferPoolNotFoundException.cs" />
+    <Compile Include="Exception\CheckerHasNullException.cs" />
+    <Compile Include="Exception\CheckerMemberNotFoundException.cs" />
+    <Compile Include="Exception\CheckerTimeSpanUnCorrectException.cs" />
+    <Compile Include="Exception\CollectionMemberRemoveException.cs" />
+    <Compile Include="Exception\ComparerHasNullException.cs" />
+    <Compile Include="Exception\ConnectIdUnCorrectException.cs" />
+    <Compile Include="Exception\ConnectionTotalCountUnCorrectException.cs" />
+    <Compile Include="Exception\ConstructMessageHeaderFailException.cs" />
+    <Compile Include="Exception\CreateNetMessageException.cs" />
+    <Compile Include="Exception\DealerFactoryNotFoundException.cs" />
+    <Compile Include="Exception\DefalutChannelGroupLayerUnCorrectException.cs" />
+    <Compile Include="Exception\DeleteObjectHasNullException.cs" />
+    <Compile Include="Exception\DirectPortUnCorrectException.cs" />
+    <Compile Include="Exception\DisclareIndexUnCorrectException.cs" />
+    <Compile Include="Exception\GetResponseMessageTimeoutException.cs" />
+    <Compile Include="Exception\HelperNotFoundException.cs" />
+    <Compile Include="Exception\InitializeFailedException.cs" />
+    <Compile Include="Exception\IPAddressUnCorrectException.cs" />
+    <Compile Include="Exception\IPEndPointUnCorrectException.cs" />
+    <Compile Include="Exception\KeyHasNullException.cs" />
+    <Compile Include="Exception\ListenPortUnCorrectException.cs" />
+    <Compile Include="Exception\MessageBodyHasNullException.cs" />
+    <Compile Include="Exception\MessageBodyLengthUnCorrectException.cs" />
+    <Compile Include="Exception\MessageBuilderHasNullException.cs" />
+    <Compile Include="Exception\MessageDispatcherHasNullException.cs" />
+    <Compile Include="Exception\MessageEntryHasNullException.cs" />
+    <Compile Include="Exception\MessageHeaderHasNullException.cs" />
+    <Compile Include="Exception\MessageHelperHasNullException.cs" />
+    <Compile Include="Exception\MessageRecevierHasNullException.cs" />
+    <Compile Include="Exception\NakeDispatcherNotFoundException.cs" />
+    <Compile Include="Exception\NetMessageFlagTypeUnCorrectException.cs" />
+    <Compile Include="Exception\NetMessageHasNullException.cs" />
+    <Compile Include="Exception\NetMessageHelperHasNullException.cs" />
+    <Compile Include="Exception\ObserverRuleHasNullException.cs" />
+    <Compile Include="Exception\P2PChannelManagerNotFoundException.cs" />
+    <Compile Include="Exception\PluginPathNotFoundException.cs" />
+    <Compile Include="Exception\PortUnCorrectException.cs" />
+    <Compile Include="Exception\ProtocolKeyUnCorrectException.cs" />
+    <Compile Include="Exception\QueueNotFoundException.cs" />
+    <Compile Include="Exception\RecevieBufferSizeUnCorrectException.cs" />
+    <Compile Include="Exception\ResponseManagerNotFoundException.cs" />
+    <Compile Include="Exception\RetryCountUnCorrectException.cs" />
+    <Compile Include="Exception\SendMessageHasNullException.cs" />
+    <Compile Include="Exception\ServerAgentHasNullException.cs" />
+    <Compile Include="Exception\ServerConnectObjectHasNullException.cs" />
+    <Compile Include="Exception\ServerIdUnCorrectException.cs" />
+    <Compile Include="Exception\ServerIPEndPointUnCorrectException.cs" />
+    <Compile Include="Exception\ServerStreamHasNullException.cs" />
+    <Compile Include="Exception\ServiceKeyUnCorrectException.cs" />
+    <Compile Include="Exception\SessionBuilderHasNullException.cs" />
+    <Compile Include="Exception\SessionTemplateStringUnCorrectException.cs" />
+    <Compile Include="Exception\EndDateTimeUnCorrectException.cs" />
+    <Compile Include="Exception\SpyListNotFoundException.cs" />
+    <Compile Include="Exception\SupportProtocolIdUnCorrectException.cs" />
+    <Compile Include="Exception\TcpListenerNotFoundException.cs" />
+    <Compile Include="Exception\TcpResponseManagerNotFoundException.cs" />
+    <Compile Include="Exception\TimeoutSpanUnCorrectException.cs" />
+    <Compile Include="Exception\TransmessionMessageBuilderNotFoundException.cs" />
+    <Compile Include="Exception\UdpListenerNotFoundException.cs" />
+    <Compile Include="Exception\UdpMessageRecevierNotFoundException.cs" />
+    <Compile Include="Exception\UdpResponseManagerNotFoundException.cs" />
+    <Compile Include="Exception\UserIdUnCorrectExpcetion.cs" />
+    <Compile Include="Exception\UserNetworkNotFoundException.cs" />
+    <Compile Include="Helper\IMessageHelper.cs" />
+    <Compile Include="Helper\NetHelper.cs" />
+    <Compile Include="IReconnectable.cs" />
+    <Compile Include="IUpdatable.cs" />
+    <Compile Include="Listener\Asynchronous\BasicTcpAsynListenerV2.cs" />
+    <Compile Include="Listener\BasicPortListenerInfomation.cs" />
+    <Compile Include="Listener\IPortListener.cs" />
+    <Compile Include="Listener\IPortListenerInfomation.cs" />
+    <Compile Include="Listener\ITcpIocpListener.cs" />
+    <Compile Include="Pool\SocketAsyncEventArgsPool.cs" />
+    <Compile Include="Processor\IDataProcessor.cs" />
+    <Compile Include="Processor\IProcessor.cs" />
+    <Compile Include="ProtocolStacks\IProtocolStack.cs" />
+    <Compile Include="ProtocolStacks\ProtocolStack.cs" />
+    <Compile Include="Listener\IListener.cs" />
+    <Compile Include="NetworkDirecter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UPnP.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Config\app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DllReference\ICSharpCode.SharpZipLib.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
+      <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
+      <Name>KJFramework.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework.Basic</RootNamespace>
+    <AssemblyName>KJFramework.Basic</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\KJFramework.Basic.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collection\XDictionary.cs" />
+    <Compile Include="Collection\XSortedDirectory.cs" />
+    <Compile Include="Comparer\DescIntegerComparer.cs" />
+    <Compile Include="Enum\ArgTypes.cs" />
+    <Compile Include="Enum\BindingTypes.cs" />
+    <Compile Include="Enum\ClientNetworkProtocolTypes.cs" />
+    <Compile Include="Enum\ConfigurationLoaderTypes.cs" />
+    <Compile Include="Enum\HealthStatus.cs" />
+    <Compile Include="Enum\InfomationCollectorTypes.cs" />
+    <Compile Include="Enum\IntellectOptionalPropertyTypes.cs" />
+    <Compile Include="Enum\MetadataSerializerTypes.cs" />
+    <Compile Include="Enum\RemedyServiceTypes.cs" />
+    <Compile Include="Enum\RemoteGatewayHeartBeatState.cs" />
+    <Compile Include="Enum\RemoteServiceState.cs" />
+    <Compile Include="Enum\SchedulerPriority.cs" />
+    <Compile Include="Enum\DataPriority.cs" />
+    <Compile Include="Enum\DebugGrade.cs" />
+    <Compile Include="Enum\FileAckableTransmissionTypes.cs" />
+    <Compile Include="Enum\KJFrameworkParserTypes.cs" />
+    <Compile Include="Enum\LogType.cs" />
+    <Compile Include="Enum\MessageTransferType.cs" />
+    <Compile Include="Enum\NetMessageFlagType.cs" />
+    <Compile Include="Enum\OSType.cs" />
+    <Compile Include="Enum\OSVersion.cs" />
+    <Compile Include="Enum\PerformanceType.cs" />
+    <Compile Include="Enum\PerformanceTestTypes.cs" />
+    <Compile Include="Enum\PluginType.cs" />
+    <Compile Include="Enum\ProcessingTypes.cs" />
+    <Compile Include="Enum\ProtocolType.cs" />
+    <Compile Include="Enum\ScopePermission.cs" />
+    <Compile Include="Enum\SerializableTypes.cs" />
+    <Compile Include="Enum\SessionType.cs" />
+    <Compile Include="Enum\ShortcutWindowStyle.cs" />
+    <Compile Include="Enum\ShowProcessTypes.cs" />
+    <Compile Include="Enum\SortType.cs" />
+    <Compile Include="Enum\ASRecevieMessageProcessTypes.cs" />
+    <Compile Include="Enum\StatisticTypes.cs" />
+    <Compile Include="Enum\TaskPriority.cs" />
+    <Compile Include="Enum\TimerStartType.cs" />
+    <Compile Include="Enum\UserGrade.cs" />
+    <Compile Include="Enum\OnlineState.cs" />
+    <Compile Include="Exception\SortPropertyNotFoundException.cs" />
+    <Compile Include="IMetadata.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Struct\ShortCutData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

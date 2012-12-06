@@ -1,0 +1,1802 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KJFramework.Cache</name>
+    </assembly>
+    <members>
+        <member name="T:KJFramework.Cache.EventArgs.ExpiredCacheEventArgs`2">
+            <summary>
+                缓存已过期事件
+            </summary>
+            <typeparam name="K">缓存对象Key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.EventArgs.ExpiredCacheEventArgs`2.#ctor(`0,`1)">
+            <summary>
+                缓存已过期事件
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <param name="obj">缓存对象</param>
+        </member>
+        <member name="P:KJFramework.Cache.EventArgs.ExpiredCacheEventArgs`2.Key">
+            <summary>
+                缓存对象Key
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.EventArgs.ExpiredCacheEventArgs`2.Obj">
+            <summary>
+                缓存对象
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.Segments.SegmentSizePair">
+            <summary>
+                片段分布
+            </summary>
+        </member>
+        <member name="F:KJFramework.Cache.Cores.Segments.SegmentSizePair.Size">
+            <summary>
+                片段大小
+            </summary>
+        </member>
+        <member name="F:KJFramework.Cache.Cores.Segments.SegmentSizePair.Percent">
+            <summary>
+                百分比
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Containers.SegmentCacheContainer`1">
+            <summary>
+                片段式缓存容器，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">唯一标识类型</typeparam>
+        </member>
+        <member name="T:KJFramework.Cache.Containers.ISegmentCacheContainer`1">
+            <summary>
+                片段式缓存容器元接口，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">唯一标识类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ISegmentCacheContainer`1.Add(`0,System.Byte[])">
+            <summary>
+                添加一个缓存
+            </summary>
+            <param name="key">缓存唯一标识</param>
+            <param name="obj">缓存数据</param>
+            <returns>返回添加后的标示</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ISegmentCacheContainer`1.Add(`0,System.Byte[],System.TimeSpan)">
+            <summary>
+                添加一个缓存
+            </summary>
+            <param name="key">缓存唯一标识</param>
+            <param name="obj">缓存数据</param>
+            <param name="timeSpan">续租时间</param>
+            <returns>返回添加后的标示</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ISegmentCacheContainer`1.Add(`0,System.Byte[],System.DateTime)">
+            <summary>
+                添加一个缓存
+            </summary>
+            <param name="key">缓存唯一标识</param>
+            <param name="obj">缓存数据</param>
+            <param name="expireTime">过期时间</param>
+            <returns>返回添加后的标示</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ISegmentCacheContainer`1.Get(`0)">
+            <summary>
+                获取具有指定唯一标识的缓存数据
+            </summary>
+            <param name="key">缓存唯一标识</param>
+            <returns>返回缓存数据</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ISegmentCacheContainer`1.IsExists(`0)">
+            <summary>
+                检查当前是否存在具有指定唯一标识的缓存
+            </summary>
+            <param name="key">缓存唯一标识</param>
+            <returns>返回是否存在的标识</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ISegmentCacheContainer`1.Remove(`0)">
+            <summary>
+                移除具有指定唯一标示的缓存
+            </summary>
+            <param name="key">缓存唯一标识</param>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.ISegmentCacheContainer`1.Capacity">
+            <summary>
+                获取最大容量
+            </summary>
+        </member>
+        <member name="E:KJFramework.Cache.Containers.ISegmentCacheContainer`1.Expired">
+            <summary>
+                过期事件
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.#ctor(System.Int32,KJFramework.Cache.Cores.Segments.ISegmentCachePolicy)">
+            <summary>
+                片段式缓存容器，提供了相关的基本操作
+            </summary>
+            <param name="capacity">最大容量</param>
+            <param name="policy">分段式缓存分布策略</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.Initialize">
+            <summary>
+                初始化
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.CreateStub(System.Int32@,System.Int32,System.Single)">
+            <summary>
+                根据百分比创建缓存存根
+            </summary>
+            <param name="offset">内存段的偏移量</param>
+            <param name="size">片段大小</param>
+            <param name="percent">百分比</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.GetStubs(System.Int32)">
+            <summary>
+                获取指定大小缓存所需要的内存片段数量
+            </summary>
+            <param name="size">缓存大小</param>
+            <returns>返回所需要的缓存数量</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.GivebackRang(KJFramework.Cache.Cores.ISegmentCacheStub[])">
+            <summary>
+                归还一个具有相同片段大小的缓存存根
+            </summary>
+            <param name="stubs">缓存存根集合</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.Giveback(System.Collections.Generic.IList{KJFramework.Cache.Cores.ISegmentCacheStub})">
+            <summary>
+                回归缓存存根
+            </summary>
+            <param name="segmentCacheStubs">缓存存根集合</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.Giveback(KJFramework.Cache.Cores.ISegmentCacheStub[])">
+            <summary>
+                回归缓存存根
+            </summary>
+            <param name="segmentCacheStubs">缓存存根集合</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.Add(`0,System.Byte[])">
+            <summary>
+                添加一个缓存
+            </summary>
+            <param name="key">缓存唯一标识</param>
+            <param name="obj">缓存数据</param>
+            <returns>返回添加后的标示</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.Add(`0,System.Byte[],System.TimeSpan)">
+            <summary>
+                添加一个缓存
+            </summary>
+            <param name="key">缓存唯一标识</param>
+            <param name="obj">缓存数据</param>
+            <param name="timeSpan">续租时间</param>
+            <returns>返回添加后的标示</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.Add(`0,System.Byte[],System.DateTime)">
+            <summary>
+                添加一个缓存
+            </summary>
+            <param name="key">缓存唯一标识</param>
+            <param name="obj">缓存数据</param>
+            <param name="expireTime">过期时间</param>
+            <returns>返回添加后的标示</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.Get(`0)">
+            <summary>
+                获取具有指定唯一标识的缓存数据
+            </summary>
+            <param name="key">缓存唯一标识</param>
+            <returns>返回缓存数据</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.IsExists(`0)">
+            <summary>
+                检查当前是否存在具有指定唯一标识的缓存
+            </summary>
+            <param name="key">缓存唯一标识</param>
+            <returns>返回是否存在的标识</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.SegmentCacheContainer`1.Remove(`0)">
+            <summary>
+                移除具有指定唯一标示的缓存
+            </summary>
+            <param name="key">缓存唯一标识</param>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.SegmentCacheContainer`1.Capacity">
+            <summary>
+                获取最大容量
+            </summary>
+        </member>
+        <member name="E:KJFramework.Cache.Containers.SegmentCacheContainer`1.Expired">
+            <summary>
+                过期事件
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.ICacheTenant">
+            <summary>
+                缓存租赁者元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.ICacheTenant.Discard(System.String)">
+            <summary>
+                放弃具有指定分类的缓存容器
+            </summary>
+            <param name="category">分类名称</param>
+        </member>
+        <member name="M:KJFramework.Cache.ICacheTenant.Get``1(System.String)">
+            <summary>
+                获取具有指定分类名称的缓存容器
+            </summary>
+            <typeparam name="T">缓存容器类型</typeparam>
+            <param name="category">分类名称</param>
+            <returns>返回缓存容器</returns>
+        </member>
+        <member name="M:KJFramework.Cache.ICacheTenant.Rent``1(System.String,System.Int32)">
+            <summary>
+                租借一个新的固态缓存容器
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="category">分类名称</param>
+            <param name="capacity">最大容量</param>
+            <returns>返回缓存容器</returns>
+        </member>
+        <member name="M:KJFramework.Cache.ICacheTenant.Rent``2(System.String)">
+            <summary>
+                租借一个新的本地缓存容器
+            </summary>
+            <typeparam name="K">缓存key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+            <param name="category">分类名称</param>
+            <returns>返回本地缓存容器</returns>
+        </member>
+        <member name="M:KJFramework.Cache.ICacheTenant.Rent``2(System.String,KJFramework.Cache.Proxy.IRemoteCacheProxy{``0,``1})">
+            <summary>
+                租借一个新的远程缓存容器
+            </summary>
+            <typeparam name="K">缓存key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+            <param name="category">分类名称</param>
+            <param name="proxy">远程缓存代理器</param>
+            <returns>返回远程缓存容器</returns>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.IUnmanagedCacheStub">
+            <summary>
+                非托管缓存存根元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.ICacheStub`1">
+            <summary>
+                缓存存根元接口，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.ICacheStub`1.GetLease">
+            <summary>
+                获取缓存生命周期
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.ICacheStub`1.Fixed">
+            <summary>
+                获取或设置一个值，该值表示了当前缓存存根是否表示为一种固态的缓存状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.ICacheStub`1.Cache">
+            <summary>
+                获取或设置缓存项
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.IUnmanagedCacheStub.Discard">
+            <summary>
+                放弃当前缓存
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IUnmanagedCacheStub.Handle">
+            <summary>
+                获取内存句柄
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IUnmanagedCacheStub.CurrentSize">
+            <summary>
+                获取当前内部的缓存使用量
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IUnmanagedCacheStub.MaxSize">
+            <summary>
+                获取当前缓存的最大容量
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.IUnmanagedCacheItem">
+            <summary>
+                非托管缓存项元接口，提供了相关的基本操作。
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.ICacheItem`1">
+            <summary>
+                缓存项元接口，提供了最基础的缓存提取和存储功能
+            </summary>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.ICacheItem`1.GetValue">
+            <summary>
+                获取缓存内容
+            </summary>
+            <returns>返回缓存内容</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.ICacheItem`1.SetValue(`0)">
+            <summary>
+                设置缓存内容
+            </summary>
+            <param name="obj">缓存对象</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.IUnmanagedCacheItem.Free">
+            <summary>
+                释放当前所持有的非托管缓存
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IUnmanagedCacheItem.Handle">
+            <summary>
+                获取内存句柄
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IUnmanagedCacheItem.UsageSize">
+            <summary>
+                获取当前的使用大小
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IUnmanagedCacheItem.MaxSize">
+            <summary>
+                获取当前的最大容量
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.CacheTenant">
+            <summary>
+                缓存租赁者，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.CacheTenant.Discard(System.String)">
+            <summary>
+                放弃具有指定分类的缓存容器
+            </summary>
+            <param name="category">分类名称</param>
+        </member>
+        <member name="M:KJFramework.Cache.CacheTenant.Get``1(System.String)">
+            <summary>
+                获取具有指定分类名称的缓存容器
+            </summary>
+            <typeparam name="T">缓存容器类型</typeparam>
+            <param name="category">分类名称</param>
+            <returns>返回缓存容器</returns>
+        </member>
+        <member name="M:KJFramework.Cache.CacheTenant.Rent``1(System.String,System.Int32)">
+            <summary>
+                租借一个新的固态缓存容器
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+            <param name="category">分类名称</param>
+            <param name="capacity">最大容量</param>
+            <returns>返回缓存容器</returns>
+        </member>
+        <member name="M:KJFramework.Cache.CacheTenant.Rent``2(System.String)">
+            <summary>
+                租借一个新的本地缓存容器
+            </summary>
+            <typeparam name="K">缓存key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+            <param name="category">分类名称</param>
+            <returns>返回本地缓存容器</returns>
+        </member>
+        <member name="M:KJFramework.Cache.CacheTenant.Rent``2(System.String,KJFramework.Cache.Proxy.IRemoteCacheProxy{``0,``1})">
+            <summary>
+                租借一个新的远程缓存容器
+            </summary>
+            <typeparam name="K">缓存key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+            <param name="category">分类名称</param>
+            <param name="proxy">远程缓存代理器</param>
+            <returns>返回远程缓存容器</returns>
+        </member>
+        <member name="T:KJFramework.Cache.ILeasable">
+            <summary>
+                可控的生命周期元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.ILeasable.Discard">
+            <summary>
+                将当前缓存的生命周期置为死亡状态
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.ILeasable.Renew(System.TimeSpan)">
+            <summary>
+                将当前租期续约一段时间
+            </summary>
+            <param name="timeSpan">续约时间</param>
+            <returns>返回续约后的到期时间</returns>
+            <exception cref="T:System.Exception">更新失败</exception>
+        </member>
+        <member name="P:KJFramework.Cache.ILeasable.IsDead">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经处于死亡的状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.ILeasable.CreateTime">
+            <summary>
+                获取生命周期创建的时间
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.ILeasable.ExpireTime">
+            <summary>
+                获取超时时间
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.IUnmanagedCacheSlot">
+            <summary>
+                非托管缓存槽元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.IUnmanagedCacheSlot.Discard">
+            <summary>
+                放弃当前非托管内存
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.IUnmanagedCacheSlot.GetLease">
+            <summary>
+                获取生命租约
+            </summary>
+            <returns>返回生命租约</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.IUnmanagedCacheSlot.GetValue">
+            <summary>
+                获取缓存数据
+            </summary>
+            <returns>返回缓存内容</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.IUnmanagedCacheSlot.SetValue(System.Byte[])">
+            <summary>
+                设置缓存数据
+            </summary>
+            <param name="data">要设置的数据</param>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IUnmanagedCacheSlot.Handle">
+            <summary>
+                获取内存句柄
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Containers.IRemoteCacheContainer`2">
+            <summary>
+                远程缓存容器元接口，提供了相关的基本操作
+            </summary>
+            <typeparam name="K">缓存对象Key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+        </member>
+        <member name="T:KJFramework.Cache.Containers.ICacheContainer`2">
+            <summary>
+                缓存容器元接口，提供了相关的基本操作
+            </summary>
+            <typeparam name="K">缓存对象Key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ICacheContainer`2.IsExists(`0)">
+            <summary>
+                查询具有指定key的缓存是否已经存在
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回是否存在的状态</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ICacheContainer`2.Remove(`0)">
+            <summary>
+                移除一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ICacheContainer`2.Add(`0,`1)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ICacheContainer`2.Add(`0,`1,System.TimeSpan)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <param name="timeSpan">续租时间</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ICacheContainer`2.Add(`0,`1,System.DateTime)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <param name="expireTime">过期时间</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.ICacheContainer`2.Get(`0)">
+            <summary>
+                获取一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.ICacheContainer`2.Category">
+            <summary>
+                获取当前缓存容器的分类名称
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.ICacheContainer`2.IsRemotable">
+            <summary>
+                获取一个值，该值表示了当前的缓存容器是否为远程缓存的代理器
+            </summary>
+        </member>
+        <member name="E:KJFramework.Cache.Containers.ICacheContainer`2.CacheExpired">
+            <summary>
+                缓存过期事件
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.IRemoteCacheContainer`2.Proxy">
+            <summary>
+                获取远程缓存代理器
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.Segments.ISegmentCachePolicy">
+            <summary>
+                片段式缓存分布策略元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.ISegmentCachePolicy.Set(System.Int32,System.Decimal)">
+            <summary>
+                设置一个片段分布策略
+            </summary>
+            <param name="size">片段大小</param>
+            <param name="percent">占用总体内存的百分比</param>
+            <exception cref="T:KJFramework.Cache.Exception.OutOfRangeException">超出预定的范围</exception>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.ISegmentCachePolicy.Get">
+            <summary>
+                获取所有的片段分布
+            </summary>
+            <returns>返回片段分布集合</returns>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.Segments.ISegmentCachePolicy.SegmentLevel">
+            <summary>
+                获取片段分布等级
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.IFixedCacheStub`1">
+            <summary>
+                固态缓存存根元接口，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IFixedCacheStub`1.Cache">
+            <summary>
+                获取缓存
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IFixedCacheStub`1.Lease">
+            <summary>
+                获取缓存的生命周期
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.CacheStub`1">
+            <summary>
+                缓存存根，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.IReadonlyCacheStub`1">
+            <summary>
+                只读缓存存根元接口，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IReadonlyCacheStub`1.Cache">
+            <summary>
+                获取缓存
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.IReadonlyCacheStub`1.Lease">
+            <summary>
+                获取缓存的生命周期
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.CacheStub`1.#ctor">
+            <summary>
+                缓存存根，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.CacheStub`1.#ctor(System.DateTime)">
+            <summary>
+                缓存存根，提供了相关的基本操作
+            </summary>
+            <param name="expireTime">过期时间</param>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.CacheStub`1.Clear">
+            <summary>
+                清除所有内部资料
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.CacheStub`1.GetLease">
+            <summary>
+                获取缓存生命周期
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.CacheStub`1.Fixed">
+            <summary>
+                获取或设置一个值，该值表示了当前缓存存根是否表示为一种固态的缓存状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.CacheStub`1.Cache">
+            <summary>
+                获取或设置缓存项
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.CacheStub`1.KJFramework#Cache#Cores#IFixedCacheStub{T}#Cache">
+            <summary>
+                获取缓存
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.CacheStub`1.Lease">
+            <summary>
+                获取缓存的生命周期
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.CacheStub`1.KJFramework#Cache#Cores#IReadonlyCacheStub{T}#Cache">
+            <summary>
+                获取缓存
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.CacheItem`1">
+            <summary>
+                缓存项，提供了最基础的缓存提取和存储功能
+            </summary>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.CacheItem`1.GetValue">
+            <summary>
+                获取缓存内容
+            </summary>
+            <returns>返回缓存内容</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.CacheItem`1.SetValue(`0)">
+            <summary>
+                设置缓存内容
+            </summary>
+            <param name="obj">缓存对象</param>
+        </member>
+        <member name="T:KJFramework.Cache.Containers.RemoteCacheContainer`2">
+            <summary>
+                远程缓存容器，提供了相关的基本操作
+            </summary>
+            <typeparam name="K">缓存对象Key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.#ctor(System.String,KJFramework.Cache.Proxy.IRemoteCacheProxy{`0,`1})">
+            <summary>
+                远程缓存容器，提供了相关的基本操作
+            </summary>
+            <param name="category">分类名称</param>
+            <param name="proxy">远程缓存代理器</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.Discard">
+            <summary>
+                将当前缓存的生命周期置为死亡状态
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.Renew(System.TimeSpan)">
+            <summary>
+                将当前租期续约一段时间
+            </summary>
+            <param name="timeSpan">续约时间</param>
+            <returns>返回续约后的到期时间</returns>
+            <exception cref="T:System.Exception">更新失败</exception>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.IsExists(`0)">
+            <summary>
+                查询具有指定key的缓存是否已经存在
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回是否存在的状态</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.Remove(`0)">
+            <summary>
+                移除一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.Add(`0,`1)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.Add(`0,`1,System.TimeSpan)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <param name="timeSpan">续租时间</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.Add(`0,`1,System.DateTime)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <param name="expireTime">过期时间</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.Get(`0)">
+            <summary>
+                获取一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.LocalIsExists(`0)">
+            <summary>
+                查询具有指定key的缓存是否已经存在
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回是否存在的状态</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.LocalRemove(`0)">
+            <summary>
+                移除一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.LocalGet(`0)">
+            <summary>
+                获取一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.LocalAdd(`0,`1)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.LocalAdd(`0,`1,System.TimeSpan)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <param name="timeSpan">续租时间</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.RemoteCacheContainer`2.LocalAdd(`0,`1,System.DateTime)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <param name="expireTime">过期时间</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.RemoteCacheContainer`2.IsDead">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经处于死亡的状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.RemoteCacheContainer`2.CreateTime">
+            <summary>
+                获取生命周期创建的时间
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.RemoteCacheContainer`2.ExpireTime">
+            <summary>
+                获取超时时间
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.RemoteCacheContainer`2.Category">
+            <summary>
+                获取当前缓存容器的分类名称
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.RemoteCacheContainer`2.IsRemotable">
+            <summary>
+                获取一个值，该值表示了当前的缓存容器是否为远程缓存的代理器
+            </summary>
+        </member>
+        <member name="E:KJFramework.Cache.Containers.RemoteCacheContainer`2.CacheExpired">
+            <summary>
+                缓存过期事件
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.RemoteCacheContainer`2.Proxy">
+            <summary>
+                获取远程缓存代理器
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Proxy.RemoteCacheProxy`2">
+            <summary>
+                远程缓存代理器抽象父类，提供了相关的基本操作
+            </summary>
+            <typeparam name="K">缓存对象Key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+        </member>
+        <member name="T:KJFramework.Cache.Proxy.IRemoteCacheProxy`2">
+            <summary>
+                远程缓存代理器元接口，提供了相关的基本操作
+            </summary>
+            <typeparam name="K">缓存对象Key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.IRemoteCacheProxy`2.Discard">
+            <summary>
+                放弃当前容器内所有的缓存
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.IRemoteCacheProxy`2.IsExists(`0)">
+            <summary>
+                查询具有指定key的缓存是否已经存在
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回是否存在的状态</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.IRemoteCacheProxy`2.Remove(`0)">
+            <summary>
+                移除一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.IRemoteCacheProxy`2.Add(`0,`1,System.DateTime)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <param name="expireTime">过期时间</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.IRemoteCacheProxy`2.Get(`0)">
+            <summary>
+                获取一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="P:KJFramework.Cache.Proxy.IRemoteCacheProxy`2.IsAvailable">
+            <summary>
+                获取当前远程缓存代理器的可用性
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Proxy.IRemoteCacheProxy`2.LocalContainer">
+            <summary>
+                获取或设置本地缓存容器
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.RemoteCacheProxy`2.#ctor">
+            <summary>
+                远程缓存代理器抽象父类，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.RemoteCacheProxy`2.#ctor(KJFramework.Cache.Containers.ICacheContainer{`0,`1})">
+            <summary>
+                远程缓存代理器抽象父类，提供了相关的基本操作
+            </summary>
+            <param name="localContainer">本地缓存容器</param>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.RemoteCacheProxy`2.Discard">
+            <summary>
+                放弃当前容器内所有的缓存
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.RemoteCacheProxy`2.IsExists(`0)">
+            <summary>
+                查询具有指定key的缓存是否已经存在
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回是否存在的状态</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.RemoteCacheProxy`2.Remove(`0)">
+            <summary>
+                移除一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.RemoteCacheProxy`2.Add(`0,`1,System.DateTime)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <param name="expireTime">过期时间</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Proxy.RemoteCacheProxy`2.Get(`0)">
+            <summary>
+                获取一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="P:KJFramework.Cache.Proxy.RemoteCacheProxy`2.IsAvailable">
+            <summary>
+                获取当前远程缓存代理器的可用性
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Proxy.RemoteCacheProxy`2.LocalContainer">
+            <summary>
+                获取或设置本地缓存容器
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.ICacheLease">
+            <summary>
+                缓存生命周期租约元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.ICacheLease.Discard">
+            <summary>
+                将当前缓存的生命周期置为死亡状态
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.ICacheLease.Renew(System.TimeSpan)">
+            <summary>
+                将当前租期续约一段时间
+            </summary>
+            <param name="timeSpan">续约时间</param>
+            <returns>返回续约后的到期时间</returns>
+            <exception cref="T:System.Exception">更新失败</exception>
+        </member>
+        <member name="P:KJFramework.Cache.ICacheLease.CanTimeout">
+            <summary>
+                获取或设置一个值，该值表示了当前的缓存是否支持超时检查
+                <para>* 如果CanTimeout = false, 则ExpireTime = max(DateTime)</para>
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.ICacheLease.IsDead">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经处于死亡的状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.ICacheLease.CreateTime">
+            <summary>
+                获取生命周期创建的时间
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.ICacheLease.ExpireTime">
+            <summary>
+                获取超时时间
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.SegmentCacheStub">
+            <summary>
+                内存段缓存存根，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.ISegmentCacheStub">
+            <summary>
+                内存段缓存存根元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.ISegmentCacheStub.Initialize">
+            <summary>
+                初始化
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.ISegmentCacheStub.IsUsed">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经被使用
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.ISegmentCacheStub.Indexer">
+            <summary>
+                获取缓存索引器
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.SegmentCacheStub.#ctor(KJFramework.Cache.Indexers.ICacheIndexer)">
+            <summary>
+                内存段缓存存根，提供了相关的基本操作
+            </summary>
+            <param name="indexer">缓存索引器</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.SegmentCacheStub.#ctor(KJFramework.Cache.Indexers.ICacheIndexer,System.DateTime)">
+            <summary>
+                内存段缓存存根，提供了相关的基本操作
+            </summary>
+            <param name="indexer">缓存索引器</param>
+            <param name="expireTime">过期时间</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.SegmentCacheStub.GetLease">
+            <summary>
+                获取缓存生命周期
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.SegmentCacheStub.Initialize">
+            <summary>
+                初始化
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.SegmentCacheStub.Fixed">
+            <summary>
+                获取或设置一个值，该值表示了当前缓存存根是否表示为一种固态的缓存状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.SegmentCacheStub.Cache">
+            <summary>
+                获取或设置缓存项
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.SegmentCacheStub.IsUsed">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经被使用
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.SegmentCacheStub.Indexer">
+            <summary>
+                获取缓存索引器
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.SegmentCacheItem">
+            <summary>
+                内存段缓存项，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.ISegmentCacheItem">
+            <summary>
+                内存段缓存项元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.ISegmentCacheItem.Initialize">
+            <summary>
+                初始化
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.ISegmentCacheItem.SetValue(System.Byte[],System.Int32)">
+            <summary>
+                设置缓存内容
+            </summary>
+            <param name="obj">缓存对象</param>
+            <param name="usedSize">使用大小</param>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.ISegmentCacheItem.IsUsed">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经被使用
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.ISegmentCacheItem.UsageSize">
+            <summary>
+                获取当前的使用大小
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.SegmentCacheItem.#ctor(KJFramework.Cache.Indexers.ICacheIndexer)">
+            <summary>
+                内存段缓存项，提供了相关的基本操作
+            </summary>
+            <param name="indexer">缓存索引器</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.SegmentCacheItem.GetValue">
+            <summary>
+                获取缓存内容
+            </summary>
+            <returns>返回缓存内容</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.SegmentCacheItem.SetValue(System.Byte[])">
+            <summary>
+                设置缓存内容
+            </summary>
+            <param name="obj">缓存对象</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.SegmentCacheItem.Initialize">
+            <summary>
+                初始化
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.SegmentCacheItem.SetValue(System.Byte[],System.Int32)">
+            <summary>
+                设置缓存内容
+            </summary>
+            <param name="obj">缓存对象</param>
+            <param name="usedSize">使用大小</param>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.SegmentCacheItem.IsUsed">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经被使用
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.SegmentCacheItem.UsageSize">
+            <summary>
+                获取当前的使用大小
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.UnmanagedCacheStub">
+            <summary>
+                非托管缓存存根，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheStub.#ctor(System.Int32)">
+            <summary>
+                非托管缓存存根，提供了相关的基本操作
+            </summary>
+            <param name="maxSize">最大容量</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheStub.#ctor(System.Int32,System.DateTime)">
+            <summary>
+                非托管缓存存根，提供了相关的基本操作
+            </summary>
+            <param name="maxSize">最大容量</param>
+            <param name="expireTime">过期时间</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheStub.#ctor(System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+                非托管缓存存根，提供了相关的基本操作
+            </summary>
+            <param name="ptr">内存句柄</param>
+            <param name="maxSize">最大容量</param>
+            <param name="useageSize">已使用大小</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheStub.#ctor(System.IntPtr,System.Int32,System.Int32,System.DateTime)">
+            <summary>
+                非托管缓存存根，提供了相关的基本操作
+            </summary>
+            <param name="ptr">内存句柄</param>
+            <param name="maxSize">最大容量</param>
+            <param name="useageSize">已使用大小</param>
+            <param name="expireTime">过期时间</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheStub.GetLease">
+            <summary>
+                获取缓存生命周期
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheStub.GetValue">
+            <summary>
+                获取缓存数据
+            </summary>
+            <returns>返回缓存内容</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheStub.SetValue(System.Byte[])">
+            <summary>
+                设置缓存数据
+            </summary>
+            <param name="data">要设置的数据</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheStub.Discard">
+            <summary>
+                放弃当前缓存
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.UnmanagedCacheStub.Fixed">
+            <summary>
+                获取或设置一个值，该值表示了当前缓存存根是否表示为一种固态的缓存状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.UnmanagedCacheStub.Cache">
+            <summary>
+                获取或设置缓存项
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.UnmanagedCacheStub.KJFramework#Cache#Cores#IUnmanagedCacheStub#Handle">
+            <summary>
+                获取内存句柄
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.UnmanagedCacheStub.CurrentSize">
+            <summary>
+                获取当前内部的缓存使用量
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.UnmanagedCacheStub.MaxSize">
+            <summary>
+                获取当前缓存的最大容量
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.UnmanagedCacheStub.KJFramework#Cache#Cores#IUnmanagedCacheSlot#Handle">
+            <summary>
+                获取内存句柄
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.UnmanagedCacheItem">
+            <summary>
+                非托管缓存项，提供了相关的基本操作。
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheItem.#ctor(System.Int32)">
+            <summary>
+                非托管缓存项，提供了相关的基本操作。
+            </summary>
+            <param name="size">需要申请的内存大小</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheItem.#ctor(System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+                非托管缓存项，提供了相关的基本操作。
+            </summary>
+            <param name="ptr">内存句柄</param>
+            <param name="size">需要申请的内存大小</param>
+            <param name="useageSize">已使用长度</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheItem.GetValue">
+            <summary>
+                获取缓存内容
+            </summary>
+            <returns>返回缓存内容</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheItem.SetValue(System.Byte[])">
+            <summary>
+                设置缓存内容
+            </summary>
+            <param name="obj">缓存对象</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheItem.Free">
+            <summary>
+                释放当前所持有的非托管缓存
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.UnmanagedCacheItem.Handle">
+            <summary>
+                获取内存句柄
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.UnmanagedCacheItem.UsageSize">
+            <summary>
+                获取当前的使用大小
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.UnmanagedCacheItem.MaxSize">
+            <summary>
+                获取当前的最大容量
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache">
+            <summary>
+                高速片段缓存，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.Segments.IHightSpeedSegmentCache">
+            <summary>
+                高速片段缓存元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.IHightSpeedSegmentCache.Add(KJFramework.Cache.Cores.ISegmentCacheStub)">
+            <summary>
+                打入新的片段缓存存根
+            </summary>
+            <param name="stub">片段缓存存根</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.IHightSpeedSegmentCache.GetBody">
+            <summary>
+                返回内部数据
+            </summary>
+            <returns>内部数据</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.IHightSpeedSegmentCache.GetStubs">
+            <summary>
+                获取内部所有的缓存存根
+            </summary>
+            <returns>返回缓存存根集合</returns>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.Segments.IHightSpeedSegmentCache.RealSize">
+            <summary>
+                获取内部真实缓存数据大小
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.Segments.IHightSpeedSegmentCache.Changed">
+            <summary>
+                获取一个值，该值标示了当前的值是否已经发生了变化
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.#ctor(KJFramework.Cache.ICacheLease,System.Int32)">
+            <summary>
+                高速片段缓存，提供了相关的基本操作
+            </summary>
+            <param name="lease">生命周期租约</param>
+            <param name="realSize">内部真实缓存数据大小</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.Discard">
+            <summary>
+                将当前缓存的生命周期置为死亡状态
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.Renew(System.TimeSpan)">
+            <summary>
+                将当前租期续约一段时间
+            </summary>
+            <param name="timeSpan">续约时间</param>
+            <returns>返回续约后的到期时间</returns>
+            <exception cref="T:System.Exception">更新失败</exception>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.Add(KJFramework.Cache.Cores.ISegmentCacheStub)">
+            <summary>
+                打入新的片段缓存存根
+            </summary>
+            <param name="stub">片段缓存存根</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.GetStubs">
+            <summary>
+                获取内部所有的缓存存根
+            </summary>
+            <returns>返回缓存存根集合</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.GetBody">
+            <summary>
+                返回内部数据
+            </summary>
+            <returns>内部数据</returns>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.IsDead">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经处于死亡的状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.CreateTime">
+            <summary>
+                获取生命周期创建的时间
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.ExpireTime">
+            <summary>
+                获取超时时间
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.RealSize">
+            <summary>
+                获取内部真实缓存数据大小
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.Segments.HightSpeedSegmentCache.Changed">
+            <summary>
+                获取一个值，该值标示了当前的值是否已经发生了变化
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Indexers.ICacheIndexer">
+            <summary>
+                缓存索引器元接口，提供了相关的基本操作。
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Indexers.ICacheIndexer.BeginOffset">
+            <summary>
+                获取索引器开始的偏移量
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Indexers.ICacheIndexer.SegmentSize">
+            <summary>
+                获取当前缓存数据段大小
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Indexers.ICacheIndexer.CacheBuffer">
+            <summary>
+                获取缓存缓冲区
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.UnmanagedCacheSlot">
+            <summary>
+                非托管缓存槽静态类，提供了相关的基本操作。
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheSlot.New(System.Int32)">
+            <summary>
+                创建一个新的非托管缓存槽
+            </summary>
+            <param name="size">缓存最大容量</param>
+            <returns>返回非托管内存槽</returns>
+            <exception cref="T:System.OutOfMemoryException">内存溢出</exception>
+            <exception cref="T:System.ArgumentException">参数错误</exception>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheSlot.New(System.Int32,System.DateTime)">
+            <summary>
+                创建一个新的非托管缓存槽
+            </summary>
+            <param name="size">缓存最大容量</param>
+            <param name="expireTime">过期时间</param>
+            <returns>返回非托管内存槽</returns>
+            <exception cref="T:System.OutOfMemoryException">内存溢出</exception>
+            <exception cref="T:System.ArgumentException">参数错误</exception>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheSlot.New(System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+                创建一个新的非托管缓存槽
+            </summary>
+            <param name="ptr">内存句柄</param>
+            <param name="size">缓存最大容量</param>
+            <param name="useageSize">已使用大小</param>
+            <returns>返回非托管内存槽</returns>
+            <exception cref="T:System.OutOfMemoryException">内存溢出</exception>
+            <exception cref="T:System.ArgumentException">参数错误</exception>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.UnmanagedCacheSlot.New(System.IntPtr,System.Int32,System.Int32,System.DateTime)">
+            <summary>
+                创建一个新的非托管缓存槽
+            </summary>
+            <param name="ptr">内存句柄</param>
+            <param name="size">缓存最大容量</param>
+            <param name="useageSize">已使用大小</param>
+            <param name="expireTime">过期时间</param>
+            <returns>返回非托管内存槽</returns>
+            <exception cref="T:System.OutOfMemoryException">内存溢出</exception>
+            <exception cref="T:System.ArgumentException">参数错误</exception>
+        </member>
+        <member name="T:KJFramework.Cache.Containers.CacheContainer`2">
+            <summary>
+                缓存容器，提供了相关的基本操作
+            </summary>
+            <typeparam name="K">缓存对象Key类型</typeparam>
+            <typeparam name="V">缓存对象类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.#ctor(System.String)">
+            <summary>
+                缓存容器，提供了相关的基本操作
+            </summary>
+            <param name="category">分类名称</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.Initialize">
+            <summary>
+                初始化
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.RecycleResource">
+            <summary>
+                回收资源
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.Discard">
+            <summary>
+                将当前缓存的生命周期置为死亡状态
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.Renew(System.TimeSpan)">
+            <summary>
+                将当前租期续约一段时间
+            </summary>
+            <param name="timeSpan">续约时间</param>
+            <returns>返回续约后的到期时间</returns>
+            <exception cref="T:System.Exception">更新失败</exception>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.IsExists(`0)">
+            <summary>
+                查询具有指定key的缓存是否已经存在
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回是否存在的状态</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.Remove(`0)">
+            <summary>
+                移除一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.Add(`0,`1)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.Add(`0,`1,System.TimeSpan)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <param name="timeSpan">续租时间</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.Add(`0,`1,System.DateTime)">
+            <summary>
+                添加一个新的缓存
+            </summary>
+            <param name="key">缓存Key</param>
+            <param name="obj">要缓存对的象</param>
+            <param name="expireTime">过期时间</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.CacheContainer`2.Get(`0)">
+            <summary>
+                获取一个具有指定key的缓存对象
+            </summary>
+            <param name="key">缓存对象Key</param>
+            <returns>返回缓存对象</returns>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.CacheContainer`2.IsDead">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经处于死亡的状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.CacheContainer`2.CreateTime">
+            <summary>
+                获取生命周期创建的时间
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.CacheContainer`2.ExpireTime">
+            <summary>
+                获取超时时间
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.CacheContainer`2.Category">
+            <summary>
+                获取当前缓存容器的分类名称
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.CacheContainer`2.IsRemotable">
+            <summary>
+                获取一个值，该值表示了当前的缓存容器是否为远程缓存的代理器
+            </summary>
+        </member>
+        <member name="E:KJFramework.Cache.Containers.CacheContainer`2.CacheExpired">
+            <summary>
+                缓存过期事件
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.CacheLease">
+            <summary>
+                缓存生命周期租约，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.IReadonlyCacheLease">
+            <summary>
+                只读的缓存生命周期租约元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.IReadonlyCacheLease.CanTimeout">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否支持超时检查
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.IReadonlyCacheLease.IsDead">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经处于死亡的状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.IReadonlyCacheLease.CreateTime">
+            <summary>
+                获取生命周期创建的时间
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.IReadonlyCacheLease.ExpireTime">
+            <summary>
+                获取超时时间
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.CacheLease.#ctor">
+            <summary>
+                缓存生命周期租约，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.CacheLease.#ctor(System.DateTime)">
+            <summary>
+                缓存生命周期租约，提供了相关的基本操作
+            </summary>
+            <param name="expireTime">过期时间</param>
+        </member>
+        <member name="M:KJFramework.Cache.CacheLease.Discard">
+            <summary>
+                将当前缓存的生命周期置为死亡状态
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.CacheLease.Renew(System.TimeSpan)">
+            <summary>
+                将当前租期续约一段时间
+            </summary>
+            <param name="timeSpan">续约时间</param>
+            <returns>返回续约后的到期时间</returns>
+            <exception cref="T:System.Exception">更新失败</exception>
+        </member>
+        <member name="F:KJFramework.Cache.CacheLease.DeadLease">
+            <summary>
+                表示一个已经死亡的租赁契约
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.CacheLease.CanTimeout">
+            <summary>
+                获取或设置一个值，该值表示了当前的缓存是否支持超时检查
+                <para>* 如果CanTimeout = false, 则ExpireTime = max(DateTime)</para>
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.CacheLease.IsDead">
+            <summary>
+                获取一个值，该值表示了当前的缓存是否已经处于死亡的状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.CacheLease.CreateTime">
+            <summary>
+                获取生命周期创建的时间
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.CacheLease.ExpireTime">
+            <summary>
+                获取超时时间
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.IClearable">
+            <summary>
+                可清除对象元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.IClearable.Clear">
+            <summary>
+                清除对象自身
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.WeakCacheStub`1">
+            <summary>
+                弱缓存存根，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.WeakCacheStub`1.#ctor">
+            <summary>
+                弱缓存存根，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.WeakCacheStub`1.#ctor(System.DateTime)">
+            <summary>
+                弱缓存存根，提供了相关的基本操作
+            </summary>
+            <param name="expireTime">过期时间</param>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.WeakCacheStub`1.GetLease">
+            <summary>
+                获取缓存生命周期
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.WeakCacheStub`1.Fixed">
+            <summary>
+                获取或设置一个值，该值表示了当前缓存存根是否表示为一种固态的缓存状态
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.WeakCacheStub`1.Cache">
+            <summary>
+                获取或设置缓存项
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.WeakCacheStub`1.Lease">
+            <summary>
+                获取缓存的生命周期
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.WeakCacheStub`1.KJFramework#Cache#Cores#IReadonlyCacheStub{T}#Cache">
+            <summary>
+                获取缓存
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Cores.Segments.SegmentCachePolicy">
+            <summary>
+                片段式缓存分布策略，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.SegmentCachePolicy.#ctor">
+            <summary>
+                片段式缓存分布策略，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.SegmentCachePolicy.#ctor(KJFramework.Cache.Cores.Segments.SegmentSizePair[])">
+            <summary>
+                片段式缓存分布策略，提供了相关的基本操作
+            </summary>
+            <param name="pairs">片段分布集合</param>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.SegmentCachePolicy.Set(System.Int32)">
+            <summary>
+                设置一个片段分布策略
+                <para>* 此方法将会把剩余的片段百分比全都分给当前的大小</para>
+            </summary>
+            <param name="size">片段大小</param>
+            <exception cref="T:KJFramework.Cache.Exception.OutOfRangeException">超出预定的范围</exception>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.SegmentCachePolicy.Set(System.Int32,System.Decimal)">
+            <summary>
+                设置一个片段分布策略
+            </summary>
+            <param name="size">片段大小</param>
+            <param name="percent">占用总体内存的百分比</param>
+            <exception cref="T:KJFramework.Cache.Exception.OutOfRangeException">超出预定的范围</exception>
+        </member>
+        <member name="M:KJFramework.Cache.Cores.Segments.SegmentCachePolicy.Get">
+            <summary>
+                获取所有的片段分布
+            </summary>
+            <returns>返回片段分布集合</returns>
+        </member>
+        <member name="P:KJFramework.Cache.Cores.Segments.SegmentCachePolicy.SegmentLevel">
+            <summary>
+                获取片段分布等级
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Indexers.CacheIndexer">
+            <summary>
+                缓存索引器，提供了相关的基本属性结构
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Indexers.CacheIndexer.BeginOffset">
+            <summary>
+                获取索引器开始的偏移量
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Indexers.CacheIndexer.SegmentSize">
+            <summary>
+                获取当前缓存数据段大小
+            </summary>
+        </member>
+        <member name="P:KJFramework.Cache.Indexers.CacheIndexer.CacheBuffer">
+            <summary>
+                获取缓存缓冲区
+            </summary>
+        </member>
+        <member name="T:KJFramework.Cache.Exception.OutOfRangeException">
+            <summary>
+                超出范围异常
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Exception.OutOfRangeException.#ctor(System.String)">
+            <summary>
+                超出范围异常
+            </summary>
+            <param name="message">异常信息</param>
+        </member>
+        <member name="T:KJFramework.Cache.Containers.FixedCacheContainer`1">
+            <summary>
+                固态的缓存容器，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">缓存对象类型</typeparam>
+        </member>
+        <member name="T:KJFramework.Cache.Containers.IFixedCacheContainer`1">
+            <summary>
+                固定容量的缓存容器元接口，提供了相关的基本操作
+            </summary>
+            <typeparam name="T">缓存类型</typeparam>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.IFixedCacheContainer`1.Rent">
+            <summary>
+                租借一个缓存
+            </summary>
+            <returns>返回一个新的缓存</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.IFixedCacheContainer`1.Giveback(KJFramework.Cache.Cores.IFixedCacheStub{`0})">
+            <summary>
+                归还一个缓存
+            </summary>
+            <param name="cache">缓存</param>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.IFixedCacheContainer`1.Capacity">
+            <summary>
+                获取当前容器的最大容量
+            </summary>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.FixedCacheContainer`1.#ctor(System.Int32)">
+            <summary>
+                固态的缓存容器，提供了相关的基本操作
+            </summary>
+            <param name="capacity">最大容量</param>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.FixedCacheContainer`1.Rent">
+            <summary>
+                租借一个缓存
+            </summary>
+            <returns>返回一个新的缓存</returns>
+        </member>
+        <member name="M:KJFramework.Cache.Containers.FixedCacheContainer`1.Giveback(KJFramework.Cache.Cores.IFixedCacheStub{`0})">
+            <summary>
+                归还一个缓存
+            </summary>
+            <param name="cache">缓存</param>
+        </member>
+        <member name="P:KJFramework.Cache.Containers.FixedCacheContainer`1.Capacity">
+            <summary>
+                获取当前容器的最大容量
+            </summary>
+        </member>
+    </members>
+</doc>

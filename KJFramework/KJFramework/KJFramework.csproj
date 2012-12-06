@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework</RootNamespace>
+    <AssemblyName>KJFramework</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\KJFramework.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attribute\CustomerSectionAttribute.cs" />
+    <Compile Include="Attribute\InjectionAttribute.cs" />
+    <Compile Include="Attribute\CustomerFieldAttribute.cs" />
+    <Compile Include="Attribute\PerformanceCounterAttribute.cs" />
+    <Compile Include="Common\Utility.cs" />
+    <Compile Include="Compress\Compressor.cs" />
+    <Compile Include="Compress\DeflateCompressor.cs" />
+    <Compile Include="Compress\ICompressor.cs" />
+    <Compile Include="Configurations\Items\ConfigurationSettingsItem.cs" />
+    <Compile Include="Configurations\CustomerSection.cs" />
+    <Compile Include="Configurations\ICustomerSection.cs" />
+    <Compile Include="Configurations\Loaders\IConfigurationLoader.cs" />
+    <Compile Include="Configurations\Loaders\LocalConfigurationLoader.cs" />
+    <Compile Include="Configurations\Objects\FieldWithAttribute.cs" />
+    <Compile Include="Configurations\Objects\FieldWithName.cs" />
+    <Compile Include="Configurations\Objects\InnerXmlNodeInfomation.cs" />
+    <Compile Include="Configurations\Objects\PropertyWithName.cs" />
+    <Compile Include="Configurations\Statistics\LocalConfigurationLoaderStatistics.cs" />
+    <Compile Include="Configurations\SystemConfigurationSection.cs" />
+    <Compile Include="Core\Native\Native.cs" />
+    <Compile Include="Core\Native\Network.cs" />
+    <Compile Include="Core\Native\Win32API.cs" />
+    <Compile Include="Datas\CmdParameter.cs" />
+    <Compile Include="Datas\Database.cs" />
+    <Compile Include="Datas\DbPerfCounter.cs" />
+    <Compile Include="Datas\DbReader.cs" />
+    <Compile Include="Datas\MsSqlDatabase.cs" />
+    <Compile Include="Exception\LightException.cs" />
+    <Compile Include="Helpers\AttributeHelper.cs" />
+    <Compile Include="Helpers\ConfigurationHelper.cs" />
+    <Compile Include="Configurations\Configurations.cs" />
+    <Compile Include="Configurations\CustomerConfig.cs" />
+    <Compile Include="Delegate\ILightDelegateItem.cs" />
+    <Compile Include="Delegate\LightDelegate.cs" />
+    <Compile Include="Delegate\LightDelegateItem.cs" />
+    <Compile Include="Diagnostics\Collectors\FunctionInfomationCollector.cs" />
+    <Compile Include="Diagnostics\Collectors\ProcessInfomationCollector.cs" />
+    <Compile Include="Diagnostics\Collectors\ThreadInfomationCollector.cs" />
+    <Compile Include="Diagnostics\ICollector.cs" />
+    <Compile Include="Diagnostics\IFunctionInfomationCollector.cs" />
+    <Compile Include="Diagnostics\IInfomationCollector.cs" />
+    <Compile Include="Diagnostics\IInfomationReviewer.cs" />
+    <Compile Include="Diagnostics\InfomationCollector.cs" />
+    <Compile Include="Diagnostics\InfomationReviewer.cs" />
+    <Compile Include="EventArgs\CanDisposeEventArgs.cs" />
+    <Compile Include="EventArgs\LightSingleArgEventArgs.cs" />
+    <Compile Include="EventArgs\MemoryPerformanceValueChanged.cs" />
+    <Compile Include="EventArgs\CpuPerformanceValueChanged.cs" />
+    <Compile Include="EventArgs\NewInfomationEventArgs.cs" />
+    <Compile Include="EventArgs\LightMultiArgEventArgs.cs" />
+    <Compile Include="Helpers\SerializableHelper.cs" />
+    <Compile Include="Helpers\TypeHelper.cs" />
+    <Compile Include="Helpers\XmlHelper.cs" />
+    <Compile Include="Installers\IServiceInstaller.cs" />
+    <Compile Include="Logger\Logs.cs" />
+    <Compile Include="MessageStacks\IMessageStack.cs" />
+    <Compile Include="MessageStacks\MessageStack.cs" />
+    <Compile Include="Observers\IObservable.cs" />
+    <Compile Include="Observers\IObserver.cs" />
+    <Compile Include="Observers\Observer.cs" />
+    <Compile Include="PerformanceProvider\PerfCategoryAttribute.cs" />
+    <Compile Include="PerformanceProvider\PerfCounter.cs" />
+    <Compile Include="PerformanceProvider\PerfCounterAttribute.cs" />
+    <Compile Include="PerformanceProvider\PerfCounterFactory.cs" />
+    <Compile Include="PerformanceProvider\PerformanceCounters.cs" />
+    <Compile Include="Reflection\IMsilInstruction.cs" />
+    <Compile Include="Reflection\MsilInstruction.cs" />
+    <Compile Include="Reflection\MsilParser.cs" />
+    <Compile Include="Reflection\Reflector.cs" />
+    <Compile Include="Security\IAuthorization .cs" />
+    <Compile Include="Security\ICertificate.cs" />
+    <Compile Include="Security\IToken.cs" />
+    <Compile Include="Security\Policy\IPolicy.cs" />
+    <Compile Include="Security\Policy\IPolicyInfomation.cs" />
+    <Compile Include="Security\Policy\IRemedyPolicy.cs" />
+    <Compile Include="Security\Policy\PolicyInfomation.cs" />
+    <Compile Include="Security\Token.cs" />
+    <Compile Include="Services\IWindowsService.cs" />
+    <Compile Include="Services\WindowsService.cs" />
+    <Compile Include="Statistics\IStatistic.cs" />
+    <Compile Include="Statistics\IStatisticable.cs" />
+    <Compile Include="Statistics\Statistic.cs" />
+    <Compile Include="Tasks\ITask.cs" />
+    <Compile Include="Tasks\Task.cs" />
+    <Compile Include="Encrypt\EncrptyRijndaelHelper.cs" />
+    <Compile Include="Encrypt\EncryptHelper.cs" />
+    <Compile Include="Encrypt\EncryptHashHelper.cs" />
+    <Compile Include="Encrypt\EncryptTEAHelper.cs" />
+    <Compile Include="Engin\IEngin.cs" />
+    <Compile Include="Engin\IWorkerEngin.cs" />
+    <Compile Include="Engin\Scheduler\IWorkerScheduler.cs" />
+    <Compile Include="Engin\Scheduler\Rule\IWorkerSchedulerRule.cs" />
+    <Compile Include="EventArgs\BeginWorkEventArgs.cs" />
+    <Compile Include="EventArgs\ChangeServiceListEventArgs.cs" />
+    <Compile Include="EventArgs\EndWorkEventArgs.cs" />
+    <Compile Include="EventArgs\DeleteServerEventArgs.cs" />
+    <Compile Include="EventArgs\PluginConfigChangedEventArgs.cs" />
+    <Compile Include="EventArgs\ServerHreatEventArgs.cs" />
+    <Compile Include="EventArgs\TickEventArgs.cs" />
+    <Compile Include="EventArgs\TimeoutEventArgs.cs" />
+    <Compile Include="EventArgs\WorkerProcessingEventArgs.cs" />
+    <Compile Include="Exception\LogFilePathUnCorrectException.cs" />
+    <Compile Include="Exception\LogFilePathNotFoundException.cs" />
+    <Compile Include="Exception\LogObjectHasNullException.cs" />
+    <Compile Include="Exception\SaveLogFileException.cs" />
+    <Compile Include="Exception\XmlTextWriterNotFoundException.cs" />
+    <Compile Include="IConfigurable.cs" />
+    <Compile Include="IControlable.cs" />
+    <Compile Include="Matcher\IMatcher.cs" />
+    <Compile Include="IRecordable.cs" />
+    <Compile Include="Loader\ILoader.cs" />
+    <Compile Include="Logger\BasicDebugLogger.cs" />
+    <Compile Include="Logger\BasicTextLogger.cs" />
+    <Compile Include="Logger\IDebugLogger.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\IMultiItemLogger.cs" />
+    <Compile Include="Logger\ISingleItemLogger.cs" />
+    <Compile Include="Logger\ITextLogger.cs" />
+    <Compile Include="Logger\LogObject\BasicApplicationServerSettingLog.cs" />
+    <Compile Include="Logger\LogObject\BasicDebugLog.cs" />
+    <Compile Include="Logger\LogObject\BasicTextLog.cs" />
+    <Compile Include="Logger\LogObject\BasicTextLogFormat.cs" />
+    <Compile Include="Logger\LogObject\IApplicationServerSettingLog.cs" />
+    <Compile Include="Logger\LogObject\IDebugLog.cs" />
+    <Compile Include="Logger\LogObject\ILog.cs" />
+    <Compile Include="Logger\LogObject\ITextLog.cs" />
+    <Compile Include="Logger\LogObject\ITextLogFormat.cs" />
+    <Compile Include="Logger\LogObject\SerializableDebugLogList.cs" />
+    <Compile Include="Matcher\Rule\IMatcherRule.cs" />
+    <Compile Include="Plugin\IConfiger.cs" />
+    <Compile Include="Plugin\IExecutable.cs" />
+    <Compile Include="Plugin\IPlugin.cs" />
+    <Compile Include="Plugin\IPluginConfig.cs" />
+    <Compile Include="Plugin\IPluginManagement.cs" />
+    <Compile Include="Plugin\PluginInfomation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Timer\CodeTimer.cs" />
+    <Compile Include="Timer\ITimeout.cs" />
+    <Compile Include="Timer\ITimer.cs" />
+    <Compile Include="Timer\CallBackTimeout.cs" />
+    <Compile Include="Timer\LightTimer.cs" />
+    <Compile Include="Timer\Timer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Engin\Worker\IWorker.cs" />
+    <Compile Include="Engin\Worker\Worker.cs" />
+    <Compile Include="Tracing\Configuration\TracingDescriptionConfigSection.cs" />
+    <Compile Include="Tracing\Configuration\TracingItemConfigration.cs" />
+    <Compile Include="Tracing\DbTracingProvider.cs" />
+    <Compile Include="Tracing\ITracing.cs" />
+    <Compile Include="Tracing\ITracingProvider.cs" />
+    <Compile Include="Tracing\PerfCounter.cs" />
+    <Compile Include="Tracing\TracingManager.cs" />
+    <Compile Include="Tracing\TracingSettings.cs" />
+    <Compile Include="Tracing\TxTracingProvider.cs" />
+    <Compile Include="UnmanagedArraySegment.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CD 2009-11-16.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DllReference\zlib.net.dll" />
+    <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

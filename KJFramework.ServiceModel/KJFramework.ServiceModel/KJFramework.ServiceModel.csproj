@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{67114374-9743-4E0E-8368-6117E6C62184}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework.ServiceModel</RootNamespace>
+    <AssemblyName>KJFramework.ServiceModel</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Comparers\TransactionIdentityComparer.cs" />
+    <Compile Include="Configurations\EncoderItem.cs" />
+    <Compile Include="Configurations\ServiceModelConfigSection.cs" />
+    <Compile Include="Configurations\ServiceModelSettingConfigSection.cs" />
+    <Compile Include="Configurations\SettingConfiguration.cs" />
+    <Compile Include="Contexts\IServiceCallContext.cs" />
+    <Compile Include="Contexts\ServiceCallContext.cs" />
+    <Compile Include="Contexts\ServiceContextManager.cs" />
+    <Compile Include="Elements\Binding.cs" />
+    <Compile Include="Elements\BindingElement.cs" />
+    <Compile Include="Elements\IBinding.cs" />
+    <Compile Include="Elements\IBindingElement.cs" />
+    <Compile Include="Elements\PipeBinding.cs" />
+    <Compile Include="Elements\PipeBindingElement.cs" />
+    <Compile Include="Elements\TcpBinding.cs" />
+    <Compile Include="Elements\TcpBindingElement.cs" />
+    <Compile Include="Enums\ArgTypes.cs" />
+    <Compile Include="Enums\HostChannelTypes.cs" />
+    <Compile Include="Enums\ProxyStatus.cs" />
+    <Compile Include="Enums\ServiceConcurrentTypes.cs" />
+    <Compile Include="Enums\ServiceProcessResult.cs" />
+    <Compile Include="Exceptions\CannotReachableException.cs" />
+    <Compile Include="Exceptions\NonresponseException.cs" />
+    <Compile Include="Exceptions\GeneralException.cs" />
+    <Compile Include="Exceptions\RequestTimeoutException.cs" />
+    <Compile Include="Identity\MessageIdentity.cs" />
+    <Compile Include="Identity\TransactionIdentity.cs" />
+    <Compile Include="IRequestManager.cs" />
+    <Compile Include="Keys\KeyGenerator.cs" />
+    <Compile Include="Comparers\MessageIdentityComparer.cs" />
+    <Compile Include="Metadata\IBinaryArgContext.cs" />
+    <Compile Include="Objects\AsyncCallResult.cs" />
+    <Compile Include="Objects\IAsyncCallResult.cs" />
+    <Compile Include="Processors\MessageIdentityIntellectTypeProcessor.cs" />
+    <Compile Include="Processors\TransactionIdentityIntellectTypeProcessor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxy\IClientProxy.cs" />
+    <Compile Include="Statistics\TcpHostTransportChannelStatistic.cs" />
+    <Compile Include="Statistics\TcpTransportChannelStatistic.cs" />
+    <Compile Include="Statistics\PipeHostTransportChannelStatistic.cs" />
+    <Compile Include="Statistics\PipeTransportChannelStatistic.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
+      <Project>{6F85C222-1CD2-44D4-8D06-22F557D4CF04}</Project>
+      <Name>KJFramework.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
+      <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
+      <Name>KJFramework.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
+      <Project>{33FE11D3-2810-4432-B64C-B16935BB47CD}</Project>
+      <Name>KJFramework.Net.Channels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
+      <Project>{35FD171E-DE60-4E34-9A35-E33C3BA8C02F}</Project>
+      <Name>KJFramework.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="2011-05-08.cd" />
+    <None Include="2011-08-09.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

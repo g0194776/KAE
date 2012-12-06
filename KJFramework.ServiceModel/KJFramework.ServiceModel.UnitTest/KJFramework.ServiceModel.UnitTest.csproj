@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D4BC98A0-3A77-46D6-A91D-B630F3BBCE06}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework.ServiceModel.UnitTest</RootNamespace>
+    <AssemblyName>KJFramework.ServiceModel.UnitTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IHelloWorld.cs" />
+    <Compile Include="ITestContract.cs" />
+    <Compile Include="MessageIdentityIntellectTypeProcessorTest.cs" />
+    <Compile Include="MetadataGeneratorTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteClientUnitTest.cs" />
+    <Compile Include="TransactionIdentityIntellectTypeProcessorTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
+      <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
+      <Name>KJFramework.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
+      <Project>{33FE11D3-2810-4432-B64C-B16935BB47CD}</Project>
+      <Name>KJFramework.Net.Channels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
+      <Project>{35FD171E-DE60-4E34-9A35-E33C3BA8C02F}</Project>
+      <Name>KJFramework.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.ServiceModel.Bussiness.Default\KJFramework.ServiceModel.Bussiness.Default.csproj">
+      <Project>{0BCE2886-4FB3-4B9F-924A-0A7975EF701A}</Project>
+      <Name>KJFramework.ServiceModel.Bussiness.Default</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.ServiceModel.Core\KJFramework.ServiceModel.Core.csproj">
+      <Project>{2495424E-1415-478E-B9E5-4674BE08CAE8}</Project>
+      <Name>KJFramework.ServiceModel.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.ServiceModel\KJFramework.ServiceModel.csproj">
+      <Project>{67114374-9743-4E0E-8368-6117E6C62184}</Project>
+      <Name>KJFramework.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerTest.Contract\ServerTest.Contract.csproj">
+      <Project>{5AD80C17-EB97-4209-A3F0-A76BCA223800}</Project>
+      <Name>ServerTest.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerTest\ServerTest.csproj">
+      <Project>{6202E0C8-B4F6-4AA4-832A-564C88A3FD24}</Project>
+      <Name>ServerTest</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

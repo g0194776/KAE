@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AE41152B-69DA-4F04-BBD9-4E3927EA9552}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework.Net.Cloud</RootNamespace>
+    <AssemblyName>KJFramework.Net.Cloud</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accessors\IAccessor.cs" />
+    <Compile Include="Accessors\Rules\IAccessRule.cs" />
+    <Compile Include="Enums\RuntimeTypes.cs" />
+    <Compile Include="Enums\ServerAreaTypes.cs" />
+    <Compile Include="Exceptions\BroadcastFailedException.cs" />
+    <Compile Include="Exceptions\CreateServerAreaFaultException.cs" />
+    <Compile Include="Exceptions\FunctionProcessorNotEnableException.cs" />
+    <Compile Include="Exceptions\NotSupportedProcessException.cs" />
+    <Compile Include="Exceptions\ServerAreaErrorOperationException.cs" />
+    <Compile Include="Exceptions\ServerAreaUnBindFailedException.cs" />
+    <Compile Include="Exceptions\TransportChannelNotFoundException.cs" />
+    <Compile Include="Nodes\FunctionNode.cs" />
+    <Compile Include="Nodes\IFunctionNode.cs" />
+    <Compile Include="Nodes\IIndependentFunctionNode.cs" />
+    <Compile Include="Nodes\IMessageFunctionNode.cs" />
+    <Compile Include="Nodes\IndependentFunctionNode.cs" />
+    <Compile Include="Nodes\INetServiceNode.cs" />
+    <Compile Include="Nodes\INetworkNode.cs" />
+    <Compile Include="Nodes\MessageFunctionNode.cs" />
+    <Compile Include="Nodes\NetworkNode.cs" />
+    <Compile Include="Objects\ReceivedMessageObject.cs" />
+    <Compile Include="Pools\IRequestTaskPool.cs" />
+    <Compile Include="Pools\RequestTaskPool.cs" />
+    <Compile Include="Processors\FunctionProcessor.cs" />
+    <Compile Include="Processors\IFunctionProcessor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedulers\IRequestScheduler.cs" />
+    <Compile Include="Schedulers\RequestScheduler.cs" />
+    <Compile Include="Tasks\IRequestTask.cs" />
+    <Compile Include="Tasks\RequestTask.cs" />
+    <Compile Include="Urls\IServerAreaUri.cs" />
+    <Compile Include="Urls\Parsers\IServerAreaUriParser.cs" />
+    <Compile Include="Urls\Parsers\ServeAreaUriParsers.cs" />
+    <Compile Include="Urls\Parsers\ServerAreaTcpUriParser.cs" />
+    <Compile Include="Urls\Parsers\ServerAreaUriParser.cs" />
+    <Compile Include="Urls\ServerAreaUri.cs" />
+    <Compile Include="Urls\TcpServerAreaUri.cs" />
+    <Compile Include="Virtuals\Accessors\PuppetAccessor.cs" />
+    <Compile Include="Virtuals\Accessors\Rules\PuppetAccessRule.cs" />
+    <Compile Include="Virtuals\Channels\PuppetTransportChannel.cs" />
+    <Compile Include="Virtuals\IPuppetBehavior.cs" />
+    <Compile Include="Virtuals\Processors\ConnectPuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\BroadcastDataPuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\BroadcastMessagePuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\ClosePuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\RegistServicePuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\OpenPuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\RandomGetTransportChannelPuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\GetTransportChannelPuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\UnRegistServicePuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\UnRegistPuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\RegistPuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\SendPuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\RandomConnectPuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\IPuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\Processors\PuppetFunctionProcessor.cs" />
+    <Compile Include="Virtuals\PuppetNetworkNode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="2011-6-9.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extends\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
+      <Project>{6F85C222-1CD2-44D4-8D06-22F557D4CF04}</Project>
+      <Name>KJFramework.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Dynamic\KJFramework.Dynamic\KJFramework.Dynamic.csproj">
+      <Project>{47672612-8AA3-4729-A210-4F30E3FB39E4}</Project>
+      <Name>KJFramework.Dynamic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
+      <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
+      <Name>KJFramework.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
+      <Project>{33FE11D3-2810-4432-B64C-B16935BB47CD}</Project>
+      <Name>KJFramework.Net.Channels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
+      <Project>{35FD171E-DE60-4E34-9A35-E33C3BA8C02F}</Project>
+      <Name>KJFramework.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.ServiceModel\KJFramework.ServiceModel.Bussiness.Default\KJFramework.ServiceModel.Bussiness.Default.csproj">
+      <Project>{0BCE2886-4FB3-4B9F-924A-0A7975EF701A}</Project>
+      <Name>KJFramework.ServiceModel.Bussiness.Default</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.ServiceModel\KJFramework.ServiceModel.Core\KJFramework.ServiceModel.Core.csproj">
+      <Project>{2495424E-1415-478E-B9E5-4674BE08CAE8}</Project>
+      <Name>KJFramework.ServiceModel.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.ServiceModel\KJFramework.ServiceModel\KJFramework.ServiceModel.csproj">
+      <Project>{67114374-9743-4E0E-8368-6117E6C62184}</Project>
+      <Name>KJFramework.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

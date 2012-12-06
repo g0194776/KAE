@@ -1,0 +1,12 @@
+[Options]
+1=#P0#=1:2:1:1	.
+[HIGHLIGHT]
+1=#P0#=ce	#P1#=ConsoleApplication1|Program.cs	#P2#=3	#P3#=793542673_ConsoleApplication1_Program.cs_H4D61696E5F436F6E736F6C654170706C69636174696F6E312E50726F6772616D2E4D61696E5F436F6E736F6C654170706C69636174696F6E312E50726F6772616D2E4D61696E28737472696E675B5D29	#P4#=20100322153026	#P5#=793542673_ConsoleApplication1_Program.cs_H50726F6772616D5F436F6E736F6C654170706C69636174696F6E312E50726F6772616D	.
+[Version]
+1=#P0#=2008	.
+[History]
+1=#P0#=ce	#P1#=Test	#P2#=ConsoleApplication1|Program|Test	#P3#=ConsoleApplication1.Program.Test()	#P4#=	#P5#=ConsoleApplication1|Program.cs	#P6#=74	#P7#=20100322153215	#P8#=False	#P9#=Test   [Program.cs]	#P10#=0	.
+2=#P0#=ce	#P1#=Program	#P2#=ConsoleApplication1|Program	#P3#=Program	#P4#=	#P5#=ConsoleApplication1|Program.cs	#P6#=70	#P7#=20100322153125	#P8#=False	#P9#=Program   [Program.cs]	#P10#=49	.
+3=#P0#=ce	#P1#=Main	#P2#=ConsoleApplication1|Program|Main	#P3#=ConsoleApplication1.Program.Main(string[])	#P4#=	#P5#=ConsoleApplication1|Program.cs	#P6#=74	#P7#=20100322153026	#P8#=False	#P9#=Main   [Program.cs]	#P10#=3	.
+4=#P0#=ce	#P1#=~Program	#P2#=ConsoleApplication1|Program|~Program	#P3#=ConsoleApplication1.Program.#dtor()	#P4#=	#P5#=ConsoleApplication1|Program.cs	#P6#=118	#P7#=20100322151950	#P8#=False	#P9#=~Program   [Program.cs]	#P10#=3	.
+5=#P0#=ce	#P1#=Dispose	#P2#=ConsoleApplication1|Program|Dispose	#P3#=ConsoleApplication1.Program.Dispose()	#P4#=	#P5#=ConsoleApplication1|Program.cs	#P6#=74	#P7#=20100322151922	#P8#=False	#P9#=Dispose   [Program.cs]	#P10#=0	.

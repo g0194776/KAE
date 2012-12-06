@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{47672612-8AA3-4729-A210-4F30E3FB39E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework.Dynamic</RootNamespace>
+    <AssemblyName>KJFramework.Dynamic</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\DynamicDomainComponent.cs" />
+    <Compile Include="Components\DynamicDomainObject.cs" />
+    <Compile Include="Components\DynamicDomainService.cs" />
+    <Compile Include="Components\IDynamicDomainComponent.cs" />
+    <Compile Include="Components\IDynamicDomainObject.cs" />
+    <Compile Include="Components\IDynamicDomainService.cs" />
+    <Compile Include="Configurations\InfoConfiguration.cs" />
+    <Compile Include="Configurations\ServiceDescriptionConfigSection.cs" />
+    <Compile Include="Exceptions\DynamicDomainObjectUpdateFailedException.cs" />
+    <Compile Include="Extends\DynamicDomainObjectExtend.cs" />
+    <Compile Include="Finders\BasicDynamicDomainComponentFinder.cs" />
+    <Compile Include="Finders\BasicDynamicDomainServiceFinder.cs" />
+    <Compile Include="Finders\IDynamicDomainComponentFinder.cs" />
+    <Compile Include="Finders\IDynamicDomainServiceFinder.cs" />
+    <Compile Include="Finders\IDynamicFinder.cs" />
+    <Compile Include="Installers\DynamicServiceInstaller.cs" />
+    <Compile Include="Loaders\AssemblyLoader.cs" />
+    <Compile Include="Loaders\IDynamicLoader.cs" />
+    <Compile Include="Pools\DynamicDomainServiceRegistation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Statistics\DynamicDomainObjectStatistic.cs" />
+    <Compile Include="Structs\DomainComponentEntryInfo.cs" />
+    <Compile Include="Structs\DynamicDomainServiceInfo.cs" />
+    <Compile Include="Structs\ServiceDescriptionInfo.cs" />
+    <Compile Include="Tables\DomainObjectVisitRuleTable.cs" />
+    <Compile Include="Tables\IDomainObjectVisitRuleTable.cs" />
+    <Compile Include="Visitors\ComponentTunnelVisitor.cs" />
+    <Compile Include="Visitors\DynamicObjectVisitor.cs" />
+    <Compile Include="Visitors\IComponentTunnelVisitor.cs" />
+    <Compile Include="Visitors\IDynamicObjectVisitor.cs" />
+    <Compile Include="Visitors\Visitor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
+      <Project>{33FE11D3-2810-4432-B64C-B16935BB47CD}</Project>
+      <Name>KJFramework.Net.Channels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
+      <Project>{35FD171E-DE60-4E34-9A35-E33C3BA8C02F}</Project>
+      <Name>KJFramework.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.ServiceModel\KJFramework.ServiceModel.Bussiness.Default\KJFramework.ServiceModel.Bussiness.Default.csproj">
+      <Project>{0BCE2886-4FB3-4B9F-924A-0A7975EF701A}</Project>
+      <Name>KJFramework.ServiceModel.Bussiness.Default</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.ServiceModel\KJFramework.ServiceModel\KJFramework.ServiceModel.csproj">
+      <Project>{67114374-9743-4E0E-8368-6117E6C62184}</Project>
+      <Name>KJFramework.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

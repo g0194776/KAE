@@ -1,0 +1,8 @@
+﻿<Window x:Class="KJFramework.UI.ScreenShorter.Win_Shortcut"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Window1" ShowInTaskbar="False" WindowStyle="None" BorderBrush="Transparent" BorderThickness="0" ResizeMode="NoResize"> 
+    <Canvas Opacity="0.4" Background="LightGray" AllowDrop="True" Name="Cav_Back">
+        
+    </Canvas>
+</Window>

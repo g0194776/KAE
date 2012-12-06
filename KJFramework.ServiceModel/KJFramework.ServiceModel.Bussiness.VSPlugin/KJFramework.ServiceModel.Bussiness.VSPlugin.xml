@@ -1,0 +1,481 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KJFramework.ServiceModel.Bussiness.VSPlugin</name>
+    </assembly>
+    <members>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Connect">
+            <summary>The object for implementing an Add-in.</summary>
+            <seealso class='IDTExtensibility2' />
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Connect.OnConnection(System.Object,Extensibility.ext_ConnectMode,System.Object,System.Array@)">
+            <summary>Implements the OnConnection method of the IDTExtensibility2 interface. Receives notification that the Add-in is being loaded.</summary>
+            <param term='application'>Root object of the host application.</param>
+            <param term='connectMode'>Describes how the Add-in is being loaded.</param>
+            <param term='addInInst'>Object representing this Add-in.</param>
+            <seealso class='IDTExtensibility2' />
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Connect.OnDisconnection(Extensibility.ext_DisconnectMode,System.Array@)">
+            <summary>Implements the OnDisconnection method of the IDTExtensibility2 interface. Receives notification that the Add-in is being unloaded.</summary>
+            <param term='disconnectMode'>Describes how the Add-in is being unloaded.</param>
+            <param term='custom'>Array of parameters that are host application specific.</param>
+            <seealso class='IDTExtensibility2' />
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Connect.OnAddInsUpdate(System.Array@)">
+            <summary>Implements the OnAddInsUpdate method of the IDTExtensibility2 interface. Receives notification when the collection of Add-ins has changed.</summary>
+            <param term='custom'>Array of parameters that are host application specific.</param>
+            <seealso class='IDTExtensibility2' />		
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Connect.OnStartupComplete(System.Array@)">
+            <summary>Implements the OnStartupComplete method of the IDTExtensibility2 interface. Receives notification that the host application has completed loading.</summary>
+            <param term='custom'>Array of parameters that are host application specific.</param>
+            <seealso class='IDTExtensibility2' />
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Connect.OnBeginShutdown(System.Array@)">
+            <summary>Implements the OnBeginShutdown method of the IDTExtensibility2 interface. Receives notification that the host application is being unloaded.</summary>
+            <param term='custom'>Array of parameters that are host application specific.</param>
+            <seealso class='IDTExtensibility2' />
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Argument">
+            <summary>
+                参数信息
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IArgument">
+            <summary>
+                参数描述
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IArgument.Id">
+            <summary>
+                获取参数编号
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IArgument.Type">
+            <summary>
+                获取参数类型
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IArgument.Name">
+            <summary>
+                获取参数名称
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IArgument.ReferenceId">
+            <summary>
+                获取参数相关类型信息
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Argument.Id">
+            <summary>
+                获取参数编号
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Argument.Type">
+            <summary>
+                获取参数类型
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Argument.Name">
+            <summary>
+                获取参数名称
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Argument.ReferenceId">
+            <summary>
+                获取参数相关类型信息
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod">
+            <summary>
+                异步方法，用于自动生成使用
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method">
+            <summary>
+                    预览方法
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod">
+            <summary>
+                预览方法元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod.Name">
+            <summary>
+                获取方法名
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod.FullName">
+            <summary>
+                获取方法全名
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod.MethodToken">
+            <summary>
+                获取方法令牌
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod.ReturnType">
+            <summary>
+                获取返回值类型
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod.ReferenceId">
+            <summary>
+                返回值类型定义Id
+                <para>* 此值仅当返回值类型为客户端自定义的时候才有效.</para>
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod.HasReturnValue">
+            <summary>
+                 获取一个标示，该标示表示了当前方法时候具有返回值
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod.IsAsync">
+            <summary>
+                获取一个标示，该标示表示了当前方法是否为异步方法
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod.IsOneway">
+            <summary>
+                获取一个标示，该标示表示了当前方法是否为单向的
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod.Arguments">
+            <summary>
+                获取参数集合
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.#ctor(System.String)">
+            <summary>
+                预览方法
+            </summary>
+            <param name="basePath">契约基础地址</param>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.InitializeArgument">
+            <summary>
+                初始化参数信息
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.Clone">
+            <summary>
+            Creates a new object that is a copy of the current instance.
+            </summary>
+            <returns>
+            A new object that is a copy of this instance.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.Name">
+            <summary>
+                获取方法名
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.FullName">
+            <summary>
+                获取方法全名
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.MethodToken">
+            <summary>
+                获取方法令牌
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.ReturnType">
+            <summary>
+                获取返回值类型
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.ReferenceId">
+            <summary>
+                返回值类型定义Id
+                <para>* 此值仅当IsRetTypeCustome = true时有效.</para>
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.HasReturnValue">
+            <summary>
+                 获取一个标示，该标示表示了当前方法时候具有返回值
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.IsAsync">
+            <summary>
+                获取一个标示，该标示表示了当前方法是否为异步方法
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.IsOneway">
+            <summary>
+                获取一个标示，该标示表示了当前方法是否为单向的
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.Arguments">
+            <summary>
+                获取参数集合
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.#ctor(KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method,System.String)">
+            <summary>
+                异步方法，用于自动生成使用
+            </summary>
+            <param name="method">基础方法</param>
+            <param name="basePath">契约基础地址</param>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.Name">
+            <summary>
+                获取方法名
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.IsAsync">
+            <summary>
+                获取一个标示，该标示表示了当前方法是否为异步方法
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.FullName">
+            <summary>
+                获取方法全名
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.MethodToken">
+            <summary>
+                获取方法令牌
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.Arguments">
+            <summary>
+                获取参数集合
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.HasReturnValue">
+            <summary>
+                 获取一个标示，该标示表示了当前方法时候具有返回值
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.ReturnType">
+            <summary>
+                获取返回值类型
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.ReferenceId">
+            <summary>
+                返回值类型定义Id
+                <para>* 此值仅当IsRetTypeCustome = true时有效.</para>
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.IsOneway">
+            <summary>
+                获取一个标示，该标示表示了当前方法是否为单向的
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IRemotingService">
+            <summary>
+                远程服务代理接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IRemotingService.GetPreviewMethods">
+            <summary>
+                获取服务的描述方法集合
+            </summary>
+            <returns>返回描述方法集合</returns>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IRemotingService.Infomation">
+            <summary>
+                获取服务相关信息
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IServiceInfomation">
+            <summary>
+                服务信息接口
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IServiceInfomation.Name">
+            <summary>
+                获取服务名称
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IServiceInfomation.FullName">
+            <summary>
+                获取服务全名称
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IServiceInfomation.Description">
+            <summary>
+                获取服务描述
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IServiceInfomation.Version">
+            <summary>
+                获取服务当前版本号
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IServiceInfomation.EndPoint">
+            <summary>
+                获取远程服务地址
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.RemotingService">
+            <summary>
+                远程服务
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.RemotingService.#ctor(System.String,System.Boolean)">
+            <summary>
+                远程服务
+            </summary>
+            <param name="path">远程服务地址</param>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.RemotingService.GetPreviewMethods">
+            <summary>
+                获取服务的描述方法集合
+            </summary>
+            <returns>返回描述方法集合</returns>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.RemotingService.Infomation">
+            <summary>
+                获取服务相关信息
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation">
+            <summary>
+                服务信息
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation.Name">
+            <summary>
+                获取服务名称
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation.FullName">
+            <summary>
+                获取服务全名称
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation.Description">
+            <summary>
+                获取服务描述
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation.Version">
+            <summary>
+                获取服务当前版本号
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation.EndPoint">
+            <summary>
+                获取远程服务地址
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.ContractGenerator">
+            <summary>
+                契约生成器，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.IContractGenerator">
+            <summary>
+                契约生成器元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.IContractGenerator.Generate(KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IRemotingService)">
+            <summary>
+                为指定远程服务生成本地契约文件
+            </summary>
+            <param name="service">远程服务</param>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.ContractGenerator.#ctor(System.String)">
+            <summary>
+                契约生成器，提供了相关的基本操作
+            </summary>
+            <param name="path">
+                 文件地址
+                <para>比如: c:\</para>
+            </param>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.ContractGenerator.Generate(KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IRemotingService)">
+            <summary>
+                为指定远程服务生成本地契约文件
+            </summary>
+            <param name="service">远程服务</param>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.DefaultSourceFileGenerator">
+            <summary>
+                CONNECT.技术源代码文件生成器
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.ISourceFileGenerator">
+            <summary>
+                源代码文件生成器元接口，提供了相关的基本操作
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.ISourceFileGenerator.GenerateProperty(System.String,System.String,System.Int32,System.Boolean)">
+            <summary>
+                创建一个字段
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.ISourceFileGenerator.Generate">
+            <summary>
+                生成文件
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.DefaultSourceFileGenerator.#ctor(System.String,System.String)">
+            <summary>
+                CONNECT.技术源代码文件生成器
+            </summary>
+            <param name="className">类名</param>
+            <param name="path">
+                 保存地址
+                <para>比如: c:\</para>
+            </param>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.DefaultSourceFileGenerator.GenerateProperty(System.String,System.String,System.Int32,System.Boolean)">
+            <summary>
+                创建一个字段
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.DefaultSourceFileGenerator.Generate">
+            <summary>
+                生成文件
+            </summary>
+        </member>
+        <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="F:KJFramework.ServiceModel.Bussiness.VSPlugin.ReferencePreviewWindow.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.ReferencePreviewWindow.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.ReferencePreviewWindow.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+    </members>
+</doc>

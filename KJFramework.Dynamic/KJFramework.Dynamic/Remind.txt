@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<configuration>
+  <runtime>
+    <legacyUnhandledExceptionPolicy enabled="true"/>
+  </runtime>
+</configuration>
+
+
+Add this config item to your app.config file.
