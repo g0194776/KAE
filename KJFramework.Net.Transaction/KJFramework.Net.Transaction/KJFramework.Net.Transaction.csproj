@@ -49,10 +49,12 @@
     <Compile Include="Agent\ConnectionAgent.cs" />
     <Compile Include="Agent\IConnectionAgent.cs" />
     <Compile Include="Agent\IServerConnectionAgent.cs" />
+    <Compile Include="CommonCounter.cs" />
     <Compile Include="Comparers\ProtocolsComparer.cs" />
     <Compile Include="Comparers\TransactionIdentityComparer.cs" />
     <Compile Include="Contexts\BusinessTransactionContext.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
+    <Compile Include="Schedulers\IRequestScheduler.cs" />
     <Compile Include="Managers\MessageTransactionManager.cs" />
     <Compile Include="Messages\BaseMessage.cs" />
     <Compile Include="Identities\MessageIdentity.cs" />
@@ -67,10 +69,12 @@
     <Compile Include="Objects\Protocols.cs" />
     <Compile Include="Pools\ConnectionPool.cs" />
     <Compile Include="Pools\SystemConnectionPool.cs" />
+    <Compile Include="Processors\IMessageProcessor.cs" />
     <Compile Include="Processors\MessageIdentityProcessor.cs" />
     <Compile Include="Processors\TransactionIdentityProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolStack\BusinessProtocolStack.cs" />
+    <Compile Include="Schedulers\RequestScheduler.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="TransactionManager.cs" />
     <Compile Include="BusinessMessageTransaction.cs" />

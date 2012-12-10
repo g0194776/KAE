@@ -72,9 +72,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collection\XDictionary.cs" />
-    <Compile Include="Collection\XSortedDirectory.cs" />
-    <Compile Include="Comparer\DescIntegerComparer.cs" />
     <Compile Include="Enum\ArgTypes.cs" />
     <Compile Include="Enum\BindingTypes.cs" />
     <Compile Include="Enum\ClientNetworkProtocolTypes.cs" />

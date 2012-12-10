@@ -71,7 +71,6 @@
   <ItemGroup>
     <Compile Include="Buffers\ByteArrayBuffer.cs" />
     <Compile Include="Buffers\IByteArrayBuffer.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="EventArgs\FulfilEventArgs.cs" />
     <Compile Include="EventArgs\MouseMoveEventArgs.cs" />
     <Compile Include="Exception\FileHasExistsException.cs" />
@@ -88,9 +87,6 @@
     <Compile Include="Hook\IKeyboardHook.cs" />
     <Compile Include="Hook\IMouseHook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
