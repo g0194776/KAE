@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{29C7DE1C-E8E2-4531-A9FF-7A5FAF8C4FB2}</ProjectGuid>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{09C9CD08-DB98-41A5-AE44-D581138C88D2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KJFramework.Platform.Deploy.CSN.BNL</RootNamespace>
-    <AssemblyName>KJFramework.Platform.Deploy.CSN.BNL</AssemblyName>
+    <RootNamespace>KJFramework.Platform.Deploy.CSN.Common</RootNamespace>
+    <AssemblyName>KJFramework.Platform.Deploy.CSN.Common</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -24,7 +25,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="mysql.data">
+      <HintPath>..\Depend Files\mysql.data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,16 +47,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caches\DataCacheManager.cs" />
+    <Compile Include="Caches\DBDataCache.cs" />
+    <Compile Include="Caches\DBDataCacheFactory.cs" />
+    <Compile Include="Caches\IDataCache.cs" />
+    <Compile Include="Caches\IDataCacheFactory.cs" />
+    <Compile Include="Caches\KeyDataCache.cs" />
+    <Compile Include="Configurations\CSNSettingConfigSection.cs" />
+    <Compile Include="Configurations\SettingConfiguration.cs" />
+    <Compile Include="Datas\CmdParameter.cs" />
+    <Compile Include="Datas\Database.cs" />
+    <Compile Include="Datas\DbPerfCounter.cs" />
+    <Compile Include="Datas\DbReader.cs" />
+    <Compile Include="Datas\DBTaskQueuePerfCounter.cs" />
+    <Compile Include="Datas\MsSqlDatabase.cs" />
+    <Compile Include="Datas\MySqlDatabase.cs" />
+    <Compile Include="Helpers\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Transactions\CSNMessageTransaction.cs" />
-    <Compile Include="Transactions\CSNTransactionManager.cs" />
+    <Compile Include="SessionGenerator.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
-      <Project>{d5a0178c-16f7-453e-a301-d1d61910d2af}</Project>
-      <Name>KJFramework.Basic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
       <Project>{12309506-18a3-48bf-8a55-e950a87a905e}</Project>
       <Name>KJFramework.IO</Name>
@@ -62,28 +75,8 @@
       <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
       <Name>KJFramework.Messages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
-      <Project>{33fe11d3-2810-4432-b64c-b16935bb47cd}</Project>
-      <Name>KJFramework.Net.Channels</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
-      <Project>{658c4853-7022-4c2f-bb82-7261dbdae55d}</Project>
-      <Name>KJFramework.Net.Transaction</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
-      <Project>{35fd171e-de60-4e34-9a35-e33c3ba8c02f}</Project>
-      <Name>KJFramework.Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Platform.Deploy.CSN.Common\KJFramework.Platform.Deploy.CSN.Common.csproj">
-      <Project>{09c9cd08-db98-41a5-ae44-d581138c88d2}</Project>
-      <Name>KJFramework.Platform.Deploy.CSN.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Platform.Deploy.CSN.ProtocolStack\KJFramework.Platform.Deploy.CSN.ProtocolStack.csproj">
-      <Project>{d7ba6901-69e9-47ba-b52d-2d7d08420246}</Project>
-      <Name>KJFramework.Platform.Deploy.CSN.ProtocolStack</Name>
-    </ProjectReference>
     <ProjectReference Include="..\KJFramework.Platform.Deploy.Metadata\KJFramework.Platform.Deploy.Metadata.csproj">
-      <Project>{6c3a90bd-9a96-446b-86c2-079d728f65c7}</Project>
+      <Project>{6C3A90BD-9A96-446B-86C2-079D728F65C7}</Project>
       <Name>KJFramework.Platform.Deploy.Metadata</Name>
     </ProjectReference>
     <ProjectReference Include="..\KJFramework\KJFramework\KJFramework.csproj">

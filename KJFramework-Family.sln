@@ -105,9 +105,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Platform.Deploy
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration Station Node", "Configuration Station Node", "{3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Platform.Deploy.CSN.Common", "KJFramework.Platform.Deploy.CSN.Common\KJFramework.Platform.Deploy.CSN.Common.csproj", "{09C9CD08-DB98-41A5-AE44-D581138C88D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Platform.Deploy.CSN.CP.Connector", "KJFramework.Platform.Deploy.CSN.CP.Connector\KJFramework.Platform.Deploy.CSN.CP.Connector.csproj", "{A1380A80-DC86-46AE-89C6-31FE11E16FB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Platform.Deploy.CSN.ProtocolStack", "KJFramework.Platform.Deploy.CSN.ProtocolStack\KJFramework.Platform.Deploy.CSN.ProtocolStack.csproj", "{D7BA6901-69E9-47BA-B52D-2D7D08420246}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Platform.Deploy.Metadata", "KJFramework.Platform.Deploy.Metadata\KJFramework.Platform.Deploy.Metadata.csproj", "{6C3A90BD-9A96-446B-86C2-079D728F65C7}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 38
+		SccNumberOfProjects = 42
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs34
 		SccLocalPath0 = .
@@ -259,6 +267,22 @@ Global
 		SccProjectTopLevelParentUniqueName37 = KJFramework-Family.sln
 		SccProjectName37 = KJFramework.Platform.Deploy.CSN
 		SccLocalPath37 = KJFramework.Platform.Deploy.CSN
+		SccProjectUniqueName38 = KJFramework.Platform.Deploy.CSN.Common\\KJFramework.Platform.Deploy.CSN.Common.csproj
+		SccProjectTopLevelParentUniqueName38 = KJFramework-Family.sln
+		SccProjectName38 = KJFramework.Platform.Deploy.CSN.Common
+		SccLocalPath38 = KJFramework.Platform.Deploy.CSN.Common
+		SccProjectUniqueName39 = KJFramework.Platform.Deploy.CSN.CP.Connector\\KJFramework.Platform.Deploy.CSN.CP.Connector.csproj
+		SccProjectTopLevelParentUniqueName39 = KJFramework-Family.sln
+		SccProjectName39 = KJFramework.Platform.Deploy.CSN.CP.Connector
+		SccLocalPath39 = KJFramework.Platform.Deploy.CSN.CP.Connector
+		SccProjectUniqueName40 = KJFramework.Platform.Deploy.CSN.ProtocolStack\\KJFramework.Platform.Deploy.CSN.ProtocolStack.csproj
+		SccProjectTopLevelParentUniqueName40 = KJFramework-Family.sln
+		SccProjectName40 = KJFramework.Platform.Deploy.CSN.ProtocolStack
+		SccLocalPath40 = KJFramework.Platform.Deploy.CSN.ProtocolStack
+		SccProjectUniqueName41 = KJFramework.Platform.Deploy.Metadata\\KJFramework.Platform.Deploy.Metadata.csproj
+		SccProjectTopLevelParentUniqueName41 = KJFramework-Family.sln
+		SccProjectName41 = KJFramework.Platform.Deploy.Metadata
+		SccLocalPath41 = KJFramework.Platform.Deploy.Metadata
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KJFramework.vsmdi
@@ -642,6 +666,46 @@ Global
 		{5844CBA9-FCCB-4D7A-ACEE-9C33AA11C996}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5844CBA9-FCCB-4D7A-ACEE-9C33AA11C996}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5844CBA9-FCCB-4D7A-ACEE-9C33AA11C996}.Release|x86.ActiveCfg = Release|Any CPU
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2}.Release|x86.ActiveCfg = Release|Any CPU
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6}.Release|x86.ActiveCfg = Release|Any CPU
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246}.Release|x86.ActiveCfg = Release|Any CPU
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -690,5 +754,9 @@ Global
 		{7647A48C-0A33-4210-9EB5-6D5E485ECC81} = {BF86659C-D45A-4B08-83C7-A04E354737A5}
 		{3A2D1580-FF48-4C65-98E7-C7F7AAA64C58} = {DABF1239-3C69-49DD-80FA-5B5448F59E49}
 		{5844CBA9-FCCB-4D7A-ACEE-9C33AA11C996} = {3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}
+		{09C9CD08-DB98-41A5-AE44-D581138C88D2} = {3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}
+		{A1380A80-DC86-46AE-89C6-31FE11E16FB6} = {3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}
+		{D7BA6901-69E9-47BA-B52D-2D7D08420246} = {3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}
+		{6C3A90BD-9A96-446B-86C2-079D728F65C7} = {3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}
 	EndGlobalSection
 EndGlobal
