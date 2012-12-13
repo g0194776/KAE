@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using KJFramework.Logger;
-using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.HostChannels;
 using KJFramework.ServiceModel.Bussiness.Default.Centers;
 using KJFramework.ServiceModel.Bussiness.Default.Descriptions;
 using KJFramework.ServiceModel.Bussiness.Default.Dispatchers.Cores;
-using KJFramework.ServiceModel.Bussiness.Default.Messages;
 using KJFramework.ServiceModel.Bussiness.Default.Transactions;
 using KJFramework.ServiceModel.Core.Helpers;
 using KJFramework.ServiceModel.Core.Objects;
 using KJFramework.ServiceModel.Elements;
 using KJFramework.ServiceModel.Enums;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
 using Uri = KJFramework.Net.Channels.Uri.Uri;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Services
@@ -61,6 +59,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Services
         protected IContractDescription _description;
         protected readonly ICoreDispatcher _dispatcher;
         protected List<IHostTransportChannel> _hostChannels = new List<IHostTransportChannel>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ServiceHandle));
 
         #endregion
 
@@ -116,7 +115,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Services
                 ServiceCenter.Regist(this);
                 OpenedHandler(null);
             }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
         }
 
         /// <summary>
@@ -170,7 +169,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Services
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
         }
 

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using KJFramework.IO.Helper;
+using KJFramework.Tracing;
+using System;
 using System.IO;
 using System.IO.Pipes;
-using KJFramework.IO.Helper;
-using KJFramework.Logger;
 
 namespace KJFramework.Net.Channels.Transactions
 {
@@ -36,6 +36,12 @@ namespace KJFramework.Net.Channels.Transactions
         {
             _callback = callback;
         }
+
+        #endregion
+
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PipeStreamTransaction<TStream>));
 
         #endregion
 
@@ -93,14 +99,14 @@ namespace KJFramework.Net.Channels.Transactions
             //cannot read datas from this channel any more!
             catch(IOException ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 _enable = false;
                 InnerEndWork();
                 return;
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 //continue async read.
                 if (_stream.CanRead && _stream.IsConnected)
                 {

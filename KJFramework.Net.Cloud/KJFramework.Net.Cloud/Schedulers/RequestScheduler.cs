@@ -1,16 +1,17 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using KJFramework.Basic.Enum;
 using KJFramework.Logger;
+using KJFramework.Net.Channels;
 using KJFramework.Net.Cloud.Nodes;
 using KJFramework.Net.Cloud.Objects;
 using KJFramework.Net.Cloud.Pools;
 using KJFramework.Net.Cloud.Processors;
 using KJFramework.Net.Cloud.Tasks;
 using KJFramework.Net.Exception;
-using KJFramework.Net.Channels;
 using KJFramework.Statistics;
+using KJFramework.Tracing;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace KJFramework.Net.Cloud.Schedulers
 {
@@ -49,6 +50,7 @@ namespace KJFramework.Net.Cloud.Schedulers
         protected Dictionary<Guid, INetworkNode<T>> _networkNodes = new Dictionary<Guid, INetworkNode<T>>();
         protected Dictionary<Guid, IMessageFunctionNode<T>> _functionNodes = new Dictionary<Guid, IMessageFunctionNode<T>>();
         protected Dictionary<Type, IFunctionProcessor<T>> _cacheProcessor = new Dictionary<Type, IFunctionProcessor<T>>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(RequestScheduler<T>));
         protected RequestTaskPool<T> _taskPool;
 
         #endregion
@@ -179,7 +181,7 @@ namespace KJFramework.Net.Cloud.Schedulers
                     }
                     catch (System.Exception ex)
                     {
-                        Logs.Logger.Log(ex);
+                        _tracing.Error(ex, null);
                     }
                     finally
                     {
@@ -235,7 +237,7 @@ namespace KJFramework.Net.Cloud.Schedulers
                     }
                     catch (System.Exception ex)
                     {
-                        Logs.Logger.Log(ex);
+                        _tracing.Error(ex, null);
                     }
                 }
             }
@@ -286,7 +288,7 @@ namespace KJFramework.Net.Cloud.Schedulers
                     return;
                 }
             }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
             finally { Giveback(task); }
         }
 

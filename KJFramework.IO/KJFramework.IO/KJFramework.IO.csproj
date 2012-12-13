@@ -80,7 +80,6 @@
     <Compile Include="Helper\ConsoleHelper.cs" />
     <Compile Include="Helper\DirectoryHelper.cs" />
     <Compile Include="Exception\PluginPathNotFoundException.cs" />
-    <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\ProcessHelper.cs" />
     <Compile Include="Helper\ResourceHelper.cs" />
     <Compile Include="Hook\IIOHook.cs" />

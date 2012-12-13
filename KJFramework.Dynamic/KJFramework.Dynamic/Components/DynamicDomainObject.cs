@@ -1,17 +1,17 @@
+using KJFramework.Basic.Enum;
+using KJFramework.Dynamic.Exceptions;
+using KJFramework.Dynamic.Statistics;
+using KJFramework.Dynamic.Structs;
+using KJFramework.EventArgs;
+using KJFramework.Plugin;
+using KJFramework.Statistics;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Threading;
-using KJFramework.Basic.Enum;
-using KJFramework.Dynamic.Exceptions;
-using KJFramework.Dynamic.Statistics;
-using KJFramework.Dynamic.Structs;
-using KJFramework.EventArgs;
-using KJFramework.Logger;
-using KJFramework.Plugin;
-using KJFramework.Statistics;
 
 namespace KJFramework.Dynamic.Components
 {
@@ -56,6 +56,7 @@ namespace KJFramework.Dynamic.Components
         private DynamicDomainComponent _orgComponent;
         private PluginInfomation _infomation;
         private Dictionary<StatisticTypes, IStatistic> _statistics = new Dictionary<StatisticTypes, IStatistic>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DynamicDomainObject));
 
         /// <summary>
         ///     获取或设置一个值，该值标示了当前组件是否正在升级中
@@ -220,7 +221,7 @@ namespace KJFramework.Dynamic.Components
                 catch (System.Exception ex)
                 {
                     WorkProcessingHandler(new LightSingleArgEventArgs<string>("开启动态程序域组件错误: " + _entryInfo.EntryPoint + ", Error trace : " + ex.Message));
-                    Logs.Logger.Log(ex);
+                    _tracing.Error(ex, null);
                     throw;
                 }
                 return;
@@ -228,7 +229,7 @@ namespace KJFramework.Dynamic.Components
             try { _component.Start(); }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }
@@ -249,7 +250,7 @@ namespace KJFramework.Dynamic.Components
                 }
                 _component = null;
             }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
             finally
             {
                 try
@@ -257,7 +258,7 @@ namespace KJFramework.Dynamic.Components
                     WorkProcessingHandler(new LightSingleArgEventArgs<string>("UNLOADING appdomain: " + _domain.FriendlyName));
                     AppDomain.Unload(_domain);
                 }
-                catch (System.Exception ex) { if (!(ex is ThreadAbortException)) Logs.Logger.Log(ex); }
+                catch (System.Exception ex) { if (!(ex is ThreadAbortException)) _tracing.Error(ex, null); }
             }
             _domain = null;
         }
@@ -280,7 +281,7 @@ namespace KJFramework.Dynamic.Components
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
             finally

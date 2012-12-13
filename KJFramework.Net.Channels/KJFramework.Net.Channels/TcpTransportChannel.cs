@@ -8,6 +8,7 @@ using KJFramework.Net.Channels.Receivers;
 using KJFramework.Net.Channels.Statistics;
 using KJFramework.Net.EventArgs;
 using KJFramework.Statistics;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -27,6 +28,8 @@ namespace KJFramework.Net.Channels
         protected Socket _socket;
         protected int _channelKey;
         protected TcpAsynDataRecevier _receiver;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(TcpTransportChannel));
+
         /// <summary>
         ///     获取本地终结点地址
         /// </summary>
@@ -160,6 +163,7 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取或设置延迟设置
         /// </summary>
+        /// <exception cref="System.Exception">无效的Socket</exception>
         public override LingerOption LingerState
         {
             get
@@ -195,7 +199,7 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     连接
+        ///     连接到远程终结点地址
         /// </summary>
         public override void Connect()
         {
@@ -256,7 +260,7 @@ namespace KJFramework.Net.Channels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
             finally
             {
@@ -358,7 +362,7 @@ namespace KJFramework.Net.Channels
                     _receiver = null;
                 }
             }
-            catch(System.Exception ex) { Logs.Logger.Log(ex); }
+            catch(System.Exception ex) { _tracing.Error(ex, null); }
             finally
             {
                 _connected = false;

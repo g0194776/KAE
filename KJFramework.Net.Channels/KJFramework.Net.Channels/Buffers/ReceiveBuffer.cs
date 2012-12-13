@@ -1,7 +1,7 @@
+using KJFramework.IO.Buffers;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
-using KJFramework.IO.Buffers;
-using KJFramework.Logger;
 
 namespace KJFramework.Net.Channels.Buffers
 {
@@ -19,6 +19,12 @@ namespace KJFramework.Net.Channels.Buffers
         public ReceiveBuffer(int bufferSize)
             : base(bufferSize)
         { }
+
+        #endregion
+
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ReceiveBuffer));
 
         #endregion
 
@@ -49,7 +55,7 @@ namespace KJFramework.Net.Channels.Buffers
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return null;
             }
         }

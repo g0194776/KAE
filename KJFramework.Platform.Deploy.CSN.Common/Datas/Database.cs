@@ -1,8 +1,8 @@
+using KJFramework.Tracing;
 using System;
-using System.Diagnostics;
 using System.Data;
 using System.Data.Common;
-using KJFramework.Logger;
+using System.Diagnostics;
 
 namespace KJFramework.Platform.Deploy.CSN.Common.Datas
 {
@@ -10,7 +10,7 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Datas
 
     public abstract class Database
     {
-        //private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(Database));
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(Database));
 
         public abstract DatabaseType Provider { get; }
 
@@ -74,7 +74,7 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Datas
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
         }
 

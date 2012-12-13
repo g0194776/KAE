@@ -1,12 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.IO.Pipes;
 using KJFramework.Basic.Enum;
 using KJFramework.EventArgs;
 using KJFramework.Logger;
 using KJFramework.Net.Channels.Statistics;
 using KJFramework.Net.Channels.Uri;
 using KJFramework.Statistics;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
+using System.IO.Pipes;
 
 namespace KJFramework.Net.Channels.HostChannels
 {
@@ -80,6 +81,7 @@ namespace KJFramework.Net.Channels.HostChannels
         protected readonly string _name;
         protected readonly int _instanceCount;
         protected NamedPipeServerStream[] _pipeStreams;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PipeHostTransportChannel));
 
         #endregion
 
@@ -174,7 +176,7 @@ namespace KJFramework.Net.Channels.HostChannels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
         }
        

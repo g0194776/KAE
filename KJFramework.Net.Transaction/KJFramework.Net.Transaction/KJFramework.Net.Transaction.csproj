@@ -52,7 +52,10 @@
     <Compile Include="CommonCounter.cs" />
     <Compile Include="Comparers\ProtocolsComparer.cs" />
     <Compile Include="Comparers\TransactionIdentityComparer.cs" />
+    <Compile Include="Configurations\TransactionSettingConfigSection.cs" />
+    <Compile Include="Configurations\SettingConfiguration.cs" />
     <Compile Include="Contexts\BusinessTransactionContext.cs" />
+    <Compile Include="Global.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
     <Compile Include="Schedulers\IRequestScheduler.cs" />
     <Compile Include="Managers\MessageTransactionManager.cs" />

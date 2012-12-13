@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using KJFramework.IO.Helper;
-using KJFramework.Logger;
+﻿using KJFramework.IO.Helper;
 using KJFramework.ServiceModel.Bussiness.Default.Metadata.Actions;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Metadata
 {
@@ -28,7 +28,8 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Metadata
         protected bool _isEnable;
         protected Dictionary<String, IHttpMetadataPageAction> _actions = new Dictionary<string, IHttpMetadataPageAction>();
         private static Dictionary<Type, String> _typeTable = new Dictionary<Type, String>();
-        protected readonly Dictionary<string, string> _argMetadatas = new Dictionary<string, string>(); 
+        protected readonly Dictionary<string, string> _argMetadatas = new Dictionary<string, string>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(MetadataExchangeNode));
 
         #endregion
 
@@ -53,7 +54,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Metadata
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
 
             #endregion
@@ -72,7 +73,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Metadata
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }

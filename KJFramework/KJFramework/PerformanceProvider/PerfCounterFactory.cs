@@ -4,19 +4,25 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Web;
 using KJFramework.Logger;
+using KJFramework.Tracing;
 
 namespace KJFramework.PerformanceProvider
 {
     public static class PerfCounterFactory
     {
+        #region Members
+
         private static object _syncRoot = new object();
         private static List<PerfCounter> _counters = new List<PerfCounter>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PerfCounterFactory));
+
+        #endregion
 
         static PerfCounterFactory()
         {
             AppDomain.CurrentDomain.DomainUnload += delegate(object sender, System.EventArgs e) 
             {
-                PerfCounter[] counters = null;
+                PerfCounter[] counters;
                 lock (_syncRoot)
                 {
                     counters = new PerfCounter[_counters.Count];
@@ -65,7 +71,7 @@ namespace KJFramework.PerformanceProvider
 			}
 			catch (System.Exception ex) 
             {
-                Logs.Logger.Log(string.Format("failed to create PerfCounter, PerfCategory ({0}) disabled.\r\n{1}", category.Name, ex));
+                _tracing.Error(ex, null);
 				return CreateEmptyInstance<T>(category, instance, counters);
 			}
         }

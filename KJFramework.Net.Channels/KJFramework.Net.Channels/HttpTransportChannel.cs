@@ -1,11 +1,12 @@
+using KJFramework.EventArgs;
+using KJFramework.Logger;
+using KJFramework.Net.Channels.Enums;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
-using KJFramework.EventArgs;
-using KJFramework.Logger;
-using KJFramework.Net.Channels.Enums;
 
 namespace KJFramework.Net.Channels
 {
@@ -77,6 +78,7 @@ namespace KJFramework.Net.Channels
         protected readonly HttpChannelTypes _channelType;
         protected readonly HttpWebRequest _request;
         private HttpWebResponse _response;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(HttpTransportChannel));
 
         #endregion
 
@@ -146,7 +148,7 @@ namespace KJFramework.Net.Channels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
             finally
             {
@@ -203,7 +205,7 @@ namespace KJFramework.Net.Channels
             catch (System.Exception ex)
             {
                 _communicationState = CommunicationStates.Faulte;
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return -1;
             } finally { Disconnect(); }
         }

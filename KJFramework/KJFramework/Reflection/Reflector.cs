@@ -1,11 +1,10 @@
+using KJFramework.Helpers;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using KJFramework.Basic.Enum;
-using KJFramework.Helpers;
-using KJFramework.Logger;
 
 namespace KJFramework.Reflection
 {
@@ -28,10 +27,11 @@ namespace KJFramework.Reflection
 
         #region Members
 
-        public static Dictionary<int, object> Cache = new Dictionary<int, object>();
+        public static Module[] Modules;
         public static OpCode[] MultiByteOpCodes;
         public static OpCode[] SingleByteOpCodes;
-        public static Module[] Modules;
+        public static Dictionary<int, object> Cache = new Dictionary<int, object>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(Reflector));
 
         #endregion
 
@@ -59,7 +59,7 @@ namespace KJFramework.Reflection
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.Standard, Logs.Name);
+                _tracing.Error(ex, null);
                 return null;
             }
         }

@@ -1,7 +1,7 @@
+using KJFramework.EventArgs;
+using KJFramework.Tracing;
 using System;
 using System.Net;
-using KJFramework.EventArgs;
-using KJFramework.Logger;
 
 namespace KJFramework.Net.Channels.HostChannels
 {
@@ -25,6 +25,7 @@ namespace KJFramework.Net.Channels.HostChannels
         #region Members
 
         private readonly HttpListener _listener;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(HttpHostTransportChannel));
 
         #endregion
 
@@ -48,7 +49,7 @@ namespace KJFramework.Net.Channels.HostChannels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return false;
             }
         }
@@ -117,7 +118,7 @@ namespace KJFramework.Net.Channels.HostChannels
                 //active this event.
                 ChannelCreatedHandler(new LightSingleArgEventArgs<ITransportChannel>(transportChannel));
             }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
             finally
             {
                 if (_listener.IsListening)

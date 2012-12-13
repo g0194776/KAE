@@ -1,13 +1,14 @@
-using System;
-using System.IO.Pipes;
-using System.Net;
-using System.Threading;
 using KJFramework.Basic.Enum;
 using KJFramework.EventArgs;
 using KJFramework.Logger;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.Transactions;
 using KJFramework.Net.Channels.Uri;
+using KJFramework.Tracing;
+using System;
+using System.IO.Pipes;
+using System.Net;
+using System.Threading;
 
 namespace KJFramework.Net.Channels
 {
@@ -18,6 +19,7 @@ namespace KJFramework.Net.Channels
     {
         #region 成员
 
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PipeTransportChannel));
         protected PipeStream _stream;
         /// <summary>
         ///    获取内部流对象
@@ -159,7 +161,7 @@ namespace KJFramework.Net.Channels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 _communicationState = CommunicationStates.Closed;
             }
         }
@@ -201,7 +203,7 @@ namespace KJFramework.Net.Channels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
             finally
             {
@@ -223,7 +225,7 @@ namespace KJFramework.Net.Channels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return false;
             }
         }
@@ -320,7 +322,7 @@ namespace KJFramework.Net.Channels
                 _stream.EndWrite(result);
                 _stream.Flush();
             }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
         }
 
         #endregion

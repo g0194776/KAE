@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using KJFramework.Basic.Enum;
 using KJFramework.Cache.Cores;
-using KJFramework.Logger;
 using KJFramework.Messages.Helpers;
 using KJFramework.ServiceModel.Bussiness.Default.Counters;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
@@ -13,6 +10,9 @@ using KJFramework.ServiceModel.Core.Objects;
 using KJFramework.ServiceModel.Enums;
 using KJFramework.ServiceModel.Metadata;
 using KJFramework.Statistics;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Dispatchers.Cores
 {
@@ -21,6 +21,12 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Dispatchers.Cores
     /// </summary>
     internal abstract class CoreDispatcher : ICoreDispatcher
     {
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(CoreDispatcher));
+
+        #endregion
+
         #region Implementation of IStatisticable<IStatistic>
 
         protected Dictionary<StatisticTypes, IStatistic> _statistics = new Dictionary<StatisticTypes, IStatistic>();
@@ -81,7 +87,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Dispatchers.Cores
                 {
                     #region Inner call failed.
 
-                    Logs.Logger.Log(ex);
+                    _tracing.Error(ex, null);
                     ServiceModelPerformanceCounter.Instance.RateOfExecuteFailed.Increment();
                     if (!rpcTrans.Request.TransactionIdentity.IsOneway)
                     {
@@ -105,7 +111,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Dispatchers.Cores
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 ServiceModelPerformanceCounter.Instance.RateOfExecuteFailed.Increment();
             }
             finally
@@ -139,7 +145,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Dispatchers.Cores
                 serviceMessage.ServiceReturnValue = returnValue;
                 rpcTrans.SendResponse(serviceMessage);
             }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
             finally
             {
                 ServiceModelPerformanceCounter.Instance.RateOfCallback.Increment();

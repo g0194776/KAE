@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using KJFramework.Logger;
 using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Contracts;
@@ -10,6 +7,9 @@ using KJFramework.Messages.Objects;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors;
 using KJFramework.Messages.TypeProcessors.Maps;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
 
 namespace KJFramework.Messages.Engine
 {
@@ -18,6 +18,12 @@ namespace KJFramework.Messages.Engine
     /// </summary>
     public class IntellectObjectEngine
     {
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(IntellectObjectEngine));
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -34,7 +40,7 @@ namespace KJFramework.Messages.Engine
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }

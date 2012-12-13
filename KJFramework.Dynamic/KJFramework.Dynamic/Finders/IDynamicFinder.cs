@@ -6,7 +6,7 @@ namespace KJFramework.Dynamic.Finders
     ///     动态查找器，提供了相关的基本操作。
     /// </summary>
     /// <typeparam name="T">查找类型</typeparam>
-    public interface IDynamicFinder<T> : IDisposable
+    public interface IDynamicFinder<T>
     {
         /// <summary>
         ///     查找一个路径下所有的动态程序域组件

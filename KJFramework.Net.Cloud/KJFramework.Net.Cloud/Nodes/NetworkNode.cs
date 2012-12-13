@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using KJFramework.Basic.Enum;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
+using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Enums;
+using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.Cloud.Accessors;
 using KJFramework.Net.Cloud.Accessors.Rules;
 using KJFramework.Net.Cloud.Enums;
@@ -15,13 +11,16 @@ using KJFramework.Net.Cloud.Virtuals;
 using KJFramework.Net.Cloud.Virtuals.Accessors;
 using KJFramework.Net.Cloud.Virtuals.Processors;
 using KJFramework.Net.ProtocolStacks;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.HostChannels;
 using KJFramework.ServiceModel.Bussiness.Default.Proxy;
 using KJFramework.ServiceModel.Bussiness.Default.Services;
 using KJFramework.ServiceModel.Elements;
 using KJFramework.ServiceModel.Enums;
 using KJFramework.ServiceModel.Proxy;
+using KJFramework.Tracing;
+using System;
+using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Uri = KJFramework.Net.Channels.Uri.Uri;
 
 namespace KJFramework.Net.Cloud.Nodes
@@ -59,6 +58,7 @@ namespace KJFramework.Net.Cloud.Nodes
         protected Dictionary<Uri, ServiceHost> _hostServices = new Dictionary<Uri, ServiceHost>();
         //protected LightTimer _timer;
         protected ArrayList _clients = new ArrayList();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(NetworkNode<T>));
 
         #endregion
 
@@ -86,7 +86,7 @@ namespace KJFramework.Net.Cloud.Nodes
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }
@@ -122,7 +122,7 @@ namespace KJFramework.Net.Cloud.Nodes
             //    }
             //    catch (System.Exception ex)
             //    {
-            //        Logs.Logger.Log(ex);
+            //        _tracing.Error(ex, null);
             //        return null;
             //    }
             //}
@@ -153,7 +153,7 @@ namespace KJFramework.Net.Cloud.Nodes
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }
@@ -175,7 +175,7 @@ namespace KJFramework.Net.Cloud.Nodes
                 }
                 catch (System.Exception ex)
                 {
-                    Logs.Logger.Log(ex);
+                    _tracing.Error(ex, null);
                     throw;
                 }
             }
@@ -226,7 +226,7 @@ namespace KJFramework.Net.Cloud.Nodes
                 }
                 catch (System.Exception ex)
                 {
-                    Logs.Logger.Log(ex);
+                    _tracing.Error(ex, null);
                 }
             }
         }
@@ -267,7 +267,7 @@ namespace KJFramework.Net.Cloud.Nodes
                         hostTransportChannel.Value.ChannelDisconnected -= ChannelDisconnected;
                         hostTransportChannel.Value.UnRegist();
                     }
-                    catch (System.Exception ex) { Logs.Logger.Log(ex); }
+                    catch (System.Exception ex) { _tracing.Error(ex, null); }
                 }
                 _hostChannels.Clear();
             }
@@ -285,7 +285,7 @@ namespace KJFramework.Net.Cloud.Nodes
                 }
                 catch (System.Exception ex)
                 {
-                    Logs.Logger.Log(ex);
+                    _tracing.Error(ex, null);
                 }
             }
             _transportChannels.Clear();
@@ -305,7 +305,7 @@ namespace KJFramework.Net.Cloud.Nodes
                     }
                     catch (System.Exception ex)
                     {
-                        Logs.Logger.Log(ex);
+                        _tracing.Error(ex, null);
                     }
                 }
                 _hostServices.Clear();
@@ -325,7 +325,7 @@ namespace KJFramework.Net.Cloud.Nodes
                     }
                     catch (System.Exception ex)
                     {
-                        Logs.Logger.Log(ex);
+                        _tracing.Error(ex, null);
                     }
                 }
                 _clients.Clear();
@@ -350,7 +350,7 @@ namespace KJFramework.Net.Cloud.Nodes
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return false;
             }
         }
@@ -387,7 +387,7 @@ namespace KJFramework.Net.Cloud.Nodes
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }

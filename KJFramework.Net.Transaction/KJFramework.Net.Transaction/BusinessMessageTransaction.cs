@@ -1,11 +1,10 @@
-﻿using System;
-using KJFramework.Logger;
-using KJFramework.Net.Channels;
+﻿using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction.Contexts;
 using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
+using System;
 
 namespace KJFramework.Net.Transaction
 {
@@ -118,9 +117,9 @@ namespace KJFramework.Net.Transaction
         #region Overrides of MessageTransaction<BaseMessage>
 
         /// <summary>
-        ///     ÉèÖÃÏìÓ¦ÏûÏ¢£¬²¢¼¤»î´¦ÀíÁ÷³Ì
+        ///     发送一个应答消息
         /// </summary>
-        /// <param name="response">ÏìÓ¦ÏûÏ¢</param>
+        /// <param name="response">要发送的应答消息</param>
         public override void SetResponse(BaseMessage response)
         {
             //calc RSP time.
@@ -140,7 +139,7 @@ namespace KJFramework.Net.Transaction
             _request = message;
             if (!_channel.IsConnected)
             {
-                Logs.Logger.Log(string.Format("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint));
+                _tracing.Warn("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint);
                 TransactionManager.Remove(Identity);
                 FailedHandler(null);
                 return;
@@ -159,8 +158,8 @@ namespace KJFramework.Net.Transaction
                 //calc REQ time.
                 RequestTime = DateTime.Now;
                 _tracing.Info("SendCount: {0}\r\nL: {1}\r\nR: {2}\r\n{3}", sendCount, _channel.LocalEndPoint, _channel.RemoteEndPoint, message.ToString());
-                //30s
-                GetLease().Change(DateTime.Now.AddSeconds(30));
+                //change transaction lease.
+                GetLease().Change(DateTime.Now.Add(Global.TransactionTimeout));
             }
             catch
             {
@@ -195,10 +194,9 @@ namespace KJFramework.Net.Transaction
             }
             //the same tid for client.
             if (Request != null && message.MessageIdentity != null) message.MessageIdentity.Tid = Request.MessageIdentity.Tid; 
-            TransactionManager.Remove(Identity);
             if (!_channel.IsConnected)
             {
-                Logs.Logger.Log(string.Format("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint));
+                _tracing.Warn("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint);
                 return;
             }
             try

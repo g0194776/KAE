@@ -1,6 +1,3 @@
-using System;
-using System.Net.Sockets;
-using System.Threading;
 using KJFramework.Basic.Enum;
 using KJFramework.Cache.Cores;
 using KJFramework.Cache.Objects;
@@ -8,6 +5,10 @@ using KJFramework.Logger;
 using KJFramework.Net.Channels.Caches;
 using KJFramework.Net.Channels.Events;
 using KJFramework.Net.EventArgs;
+using KJFramework.Tracing;
+using System;
+using System.Net.Sockets;
+using System.Threading;
 
 namespace KJFramework.Net.Channels.Receivers
 {
@@ -38,6 +39,12 @@ namespace KJFramework.Net.Channels.Receivers
 
         #endregion
 
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(TcpAsynDataRecevier));
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -65,7 +72,7 @@ namespace KJFramework.Net.Channels.Receivers
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 Stop();
             }
         }

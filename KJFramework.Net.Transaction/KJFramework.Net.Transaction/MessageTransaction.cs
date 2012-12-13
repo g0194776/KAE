@@ -1,8 +1,8 @@
-using System;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
+using KJFramework.Tracing;
+using System;
 
 namespace KJFramework.Net.Transaction
 {
@@ -42,6 +42,12 @@ namespace KJFramework.Net.Transaction
         {
             _channel = channel;
         }
+
+        #endregion
+
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(MessageTransaction<T>));
 
         #endregion
 
@@ -87,7 +93,7 @@ namespace KJFramework.Net.Transaction
         {
             _response = response;
             try { ResponseArrivedHandler(new LightSingleArgEventArgs<T>(_response)); }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
         }
 
         /// <summary>

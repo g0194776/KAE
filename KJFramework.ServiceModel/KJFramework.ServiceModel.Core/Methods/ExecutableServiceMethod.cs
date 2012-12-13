@@ -1,7 +1,7 @@
+using KJFramework.ServiceModel.Core.Helpers;
+using KJFramework.Tracing;
 using System;
 using System.Reflection;
-using KJFramework.Logger;
-using KJFramework.ServiceModel.Core.Helpers;
 
 namespace KJFramework.ServiceModel.Core.Methods
 {
@@ -38,6 +38,7 @@ namespace KJFramework.ServiceModel.Core.Methods
         #region Members
 
         internal DynamicHelper.FastInvokeHandler Handler;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ExecutableServiceMethod));
 
         #endregion
 
@@ -76,7 +77,7 @@ namespace KJFramework.ServiceModel.Core.Methods
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }

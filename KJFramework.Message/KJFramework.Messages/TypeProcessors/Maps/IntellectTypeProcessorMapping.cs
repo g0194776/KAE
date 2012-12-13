@@ -1,7 +1,7 @@
+using KJFramework.Messages.Attributes;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
-using KJFramework.Messages.Attributes;
-using KJFramework.Logger;
 
 namespace KJFramework.Messages.TypeProcessors.Maps
 {
@@ -28,6 +28,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
         private readonly Dictionary<int?, IIntellectTypeProcessor> _customerIdProcessor = new Dictionary<int?, IIntellectTypeProcessor>();
         public static readonly IntellectTypeProcessorMapping Instance = new IntellectTypeProcessorMapping();
         public readonly static IntellectPropertyAttribute DefaultAttribute = new IntellectPropertyAttribute(0, false);
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(IntellectTypeProcessorMapping));
 
         #endregion
 
@@ -77,7 +78,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
                 }
                 _processor.Add(processor.SupportedType, processor);
             }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
             if (processor.SupportedId != null) _customerIdProcessor.Add(processor.SupportedId, processor);
         }
 
@@ -89,7 +90,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
         {
             if (supportedType == null) return;
             try {  _processor.Remove(supportedType); }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
         }
 
         /// <summary>
@@ -107,7 +108,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return null;
             }
         }
@@ -126,7 +127,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return null;
             }
         }

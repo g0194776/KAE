@@ -1,13 +1,13 @@
-﻿using System;
+﻿using KJFramework.EventArgs;
+using KJFramework.Net.Channels.Buffers;
+using KJFramework.Net.Channels.Spy;
+using KJFramework.Net.ProtocolStacks;
+using KJFramework.Tracing;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using KJFramework.EventArgs;
-using KJFramework.Logger;
-using KJFramework.Net.Channels.Buffers;
-using KJFramework.Net.Channels.Spy;
-using KJFramework.Net.ProtocolStacks;
 
 namespace KJFramework.Net.Channels.OneWay
 {
@@ -56,6 +56,7 @@ namespace KJFramework.Net.Channels.OneWay
         #region Members
 
         protected IRawTransportChannel _channel;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(OnewayChannel<T>));
         private readonly ConcurrentDictionary<Type, IMessageSpy<T>> _spys = new ConcurrentDictionary<Type, IMessageSpy<T>>();
 
         #endregion
@@ -179,7 +180,7 @@ namespace KJFramework.Net.Channels.OneWay
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }
@@ -197,7 +198,7 @@ namespace KJFramework.Net.Channels.OneWay
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }

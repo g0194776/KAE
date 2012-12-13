@@ -1,7 +1,7 @@
+using KJFramework.Platform.Deploy.CSN.Common.Configurations;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
-using KJFramework.Logger;
-using KJFramework.Platform.Deploy.CSN.Common.Configurations;
 
 namespace KJFramework.Platform.Deploy.CSN.Common.Caches
 {
@@ -29,10 +29,11 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Caches
 
         #region Members
 
-        private Dictionary<string, IDataCache<T>> _caches = new Dictionary<string, IDataCache<T>>();
-        private object _lockObj = new object();
-        private System.Timers.Timer _timer;
         private TimeSpan _liveTime;
+        private System.Timers.Timer _timer;
+        private object _lockObj = new object();
+        private Dictionary<string, IDataCache<T>> _caches = new Dictionary<string, IDataCache<T>>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DataCacheManager<T>));
 
         #endregion
 
@@ -112,7 +113,7 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Caches
                 }
                 catch (System.Exception ex)
                 {
-                    Logs.Logger.Log(ex);
+                    _tracing.Error(ex, null);
                 }
             }
         }

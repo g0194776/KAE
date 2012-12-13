@@ -1,10 +1,10 @@
+using KJFramework.Dynamic.Components;
+using KJFramework.Dynamic.Structs;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using KJFramework.Dynamic.Components;
-using KJFramework.Dynamic.Structs;
-using KJFramework.Logger;
 
 namespace KJFramework.Dynamic.Finders
 {
@@ -13,16 +13,13 @@ namespace KJFramework.Dynamic.Finders
     /// </summary>
     public class BasicDynamicDomainComponentFinder : IDynamicDomainComponentFinder
     {
-        #region Implementation of IDisposable
+        #region Members
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(BasicDynamicDomainComponentFinder));
+
+        #endregion
+
+        #region Implementation of IDisposable
 
         /// <summary>
         ///     查找一个路径下所有的动态程序域组件
@@ -62,20 +59,24 @@ namespace KJFramework.Dynamic.Finders
                             }
                             catch (System.Exception ex)
                             {
-                                Logs.Logger.Log(ex);
+                                _tracing.Error(ex, null);
                                 continue;
                             }
                         }
                     }
                     catch (System.Exception ex)
                     {
-                        Logs.Logger.Log(ex);
+                        _tracing.Error(ex, null);
                         continue;
                     }
                 }
                 return result;
             }
             return result;
+        }
+
+        public void Dispose()
+        {
         }
 
         #endregion

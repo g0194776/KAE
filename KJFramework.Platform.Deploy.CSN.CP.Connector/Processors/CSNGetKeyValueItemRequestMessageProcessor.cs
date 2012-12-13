@@ -1,13 +1,19 @@
-﻿using System;
-using KJFramework.Logger;
-using KJFramework.Net.Transaction;
+﻿using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Processors;
 using KJFramework.Platform.Deploy.CSN.ProtocolStack;
+using KJFramework.Tracing;
+using System;
 
 namespace KJFramework.Platform.Deploy.CSN.CP.Connector.Processors
 {
     public class CSNGetKeyValueItemRequestMessageProcessor : IMessageProcessor
     {
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(CSNGetKeyValueItemRequestMessageProcessor));
+
+        #endregion
+
         public void Process(BusinessMessageTransaction transaction)
         {
             CSNGetKeyDataRequestMessage msg = (CSNGetKeyDataRequestMessage)transaction.Request;
@@ -25,7 +31,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector.Processors
                     }
                     catch (System.Exception ex)
                     {
-                        Logs.Logger.Log(ex);
+                        _tracing.Error(ex, null);
                         rspMsg.LastError = ex.Message;
                     }
                 }
@@ -35,7 +41,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector.Processors
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 transaction.SendResponse(new CSNGetDataTableResponseMessage { LastError = "Can not get data table config infomation, because there has some errors happened." });
             }
         }

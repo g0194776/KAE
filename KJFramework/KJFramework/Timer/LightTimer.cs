@@ -1,6 +1,6 @@
+using KJFramework.Tracing;
 using System;
 using System.Timers;
-using KJFramework.Logger;
 
 namespace KJFramework.Timer
 {
@@ -26,9 +26,11 @@ namespace KJFramework.Timer
 
         #region 成员
 
-        private int _currentTimeoutCount;
         private int _interval;
         private int _timeoutCount = 1;
+        private int _currentTimeoutCount;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(LightTimer));
+
         /// <summary>
         ///     获取或设置间隔时间
         ///         * 时间：毫秒
@@ -161,7 +163,7 @@ namespace KJFramework.Timer
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
         }
 

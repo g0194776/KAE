@@ -79,11 +79,14 @@ namespace KJFramework.Net.Transaction.Agent
                     _transactionManager.Active(identity, message);
                     continue;
                 }
-                IMessageTransaction<BaseMessage> transaction;
                 //create transaction by IsOneway flag.
-                transaction = !identity.IsOneway ? _transactionManager.Create(identity, _channel) : new BusinessMessageTransaction(_channel) { NeedResponse = false, TransactionManager = _transactionManager, Identity = identity};
-                if (transaction == null) continue;
-                transaction.Request = message;
+                IMessageTransaction<BaseMessage> transaction = new BusinessMessageTransaction(_channel)
+                {
+                    NeedResponse = !identity.IsOneway,
+                    TransactionManager = _transactionManager,
+                    Identity = identity,
+                    Request = message
+                };
                 NewTransactionHandler(new LightSingleArgEventArgs<IMessageTransaction<BaseMessage>>(transaction));
             }
         }
@@ -137,6 +140,7 @@ namespace KJFramework.Net.Transaction.Agent
         ///     创建一个新的事务
         /// </summary>
         /// <returns>返回新创建的事务</returns>
+        /// <exception cref="ArgumentNullException">参数错误</exception>
         public BusinessMessageTransaction CreateTransaction()
         {
             return _transactionManager.Create(IdentityHelper.Create(_channel.LocalEndPoint), _channel);
@@ -146,6 +150,7 @@ namespace KJFramework.Net.Transaction.Agent
         ///     创建一个新的单向事务
         /// </summary>
         /// <returns>返回新创建的单向事务</returns>
+        /// <exception cref="ArgumentNullException">参数错误</exception>
         public BusinessMessageTransaction CreateOnewayTransaction()
         {
             return _transactionManager.Create(IdentityHelper.CreateOneway(_channel.LocalEndPoint), _channel);
@@ -182,6 +187,7 @@ namespace KJFramework.Net.Transaction.Agent
         /// <param name="protocolStack">协议栈</param>
         /// <param name="transactionManager">事务管理器</param>
         /// <returns>如果无法连接到远程地址，则返回null.</returns>
+        /// <exception cref="System.ArgumentNullException">非法参数</exception>
         public static IServerConnectionAgent Create(IPEndPoint iep, IProtocolStack<BaseMessage> protocolStack, MessageTransactionManager transactionManager)
         {
             if (iep == null) throw new ArgumentNullException("iep");

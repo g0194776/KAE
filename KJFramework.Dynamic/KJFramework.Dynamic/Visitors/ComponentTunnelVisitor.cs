@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using KJFramework.Logger;
 using KJFramework.ServiceModel.Bussiness.Default.Proxy;
 using KJFramework.ServiceModel.Elements;
 using KJFramework.ServiceModel.Proxy;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
 
 namespace KJFramework.Dynamic.Visitors
 {
@@ -30,6 +30,7 @@ namespace KJFramework.Dynamic.Visitors
 
         private readonly Dictionary<string, string> _addresses;
         private readonly Dictionary<string, Object> _clients = new Dictionary<string, Object>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ComponentTunnelVisitor));
 
         #endregion
 
@@ -72,7 +73,7 @@ namespace KJFramework.Dynamic.Visitors
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return null;
             }
         }

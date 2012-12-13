@@ -1,10 +1,12 @@
-using System;
-using System.Runtime.InteropServices;
 using KJFramework.Core.Native;
 using KJFramework.Dynamic.Structs;
 using KJFramework.Installers;
 using KJFramework.Logger;
 using KJFramework.Services;
+using KJFramework.Tracing;
+using System;
+using System.Runtime.InteropServices;
+
 #if !MONO
 namespace KJFramework.Dynamic.Installers
 {
@@ -13,6 +15,12 @@ namespace KJFramework.Dynamic.Installers
     /// </summary>
     public class DynamicServiceInstaller : IServiceInstaller<DynamicDomainServiceInfo>
     {
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DynamicServiceInstaller));
+
+        #endregion
+
         #region Implementation of IDisposable
 
         /// <summary>
@@ -74,7 +82,7 @@ namespace KJFramework.Dynamic.Installers
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
             finally
@@ -132,7 +140,7 @@ namespace KJFramework.Dynamic.Installers
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
             finally

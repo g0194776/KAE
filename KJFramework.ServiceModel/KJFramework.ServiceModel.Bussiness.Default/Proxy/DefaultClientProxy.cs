@@ -331,7 +331,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Proxy
                 }
                 catch (System.Exception ex)
                 {
-                    Logs.Logger.Log(ex);
+                    _tracing.Error(ex, null);
                     throw;
                 }
                 finally
@@ -345,7 +345,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Proxy
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
             finally { if (stub != null) ServiceModel.FixedRequestMessage.Giveback(stub); }

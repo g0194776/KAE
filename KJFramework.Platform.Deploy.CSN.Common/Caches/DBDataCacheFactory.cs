@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-using KJFramework.Logger;
 using KJFramework.Platform.Deploy.CSN.Common.Datas;
 using KJFramework.Platform.Deploy.Metadata.Objects;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
 
 namespace KJFramework.Platform.Deploy.CSN.Common.Caches
 {
@@ -13,9 +13,10 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Caches
     {
         #region Members
 
-        private static Dictionary<string, Database> _databases = new Dictionary<string, Database>();
         private object _lockObj = new object();
         private Dictionary<string, string> _dtProcMapping = new Dictionary<string, string>();
+        private static Dictionary<string, Database> _databases = new Dictionary<string, Database>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DBDataCacheFactory));
 
         #endregion
 
@@ -37,7 +38,7 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Caches
             Database database = GetDatabase(databaseName);
             if (database == null)
             {
-                Logs.Logger.Log("Can not create a new data cache, because the dest database obj is null.");
+                _tracing.Error(new System.Exception("Can not create a new data cache, because the dest database obj is null."), null);
                 return null;
             }
             DbReader dataReader = null;
@@ -85,7 +86,7 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Caches
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return cache;
             }
             finally
@@ -100,7 +101,7 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Caches
             Database database = GetDatabase(dbName);
             if (database == null)
             {
-                Logs.Logger.Log("Can not create a new data cache, because the dest database obj is null.");
+                _tracing.Error(new System.Exception("Can not create a new data cache, because the dest database obj is null."), null);
                 return null;
             }
             DbReader dataReader = null;
@@ -127,7 +128,7 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Caches
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return cache;
             }
             finally

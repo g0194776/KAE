@@ -1,11 +1,11 @@
-using System;
-using System.Net;
-using System.Net.Sockets;
-using KJFramework.Basic.Enum;
 using KJFramework.Logger;
 using KJFramework.Logger.LogObject;
 using KJFramework.Net.EventArgs;
 using KJFramework.Net.Helper;
+using KJFramework.Tracing;
+using System;
+using System.Net;
+using System.Net.Sockets;
 
 namespace KJFramework.Net.Listener.Asynchronous
 {
@@ -48,6 +48,7 @@ namespace KJFramework.Net.Listener.Asynchronous
         #region 成员
 
         private IPEndPoint _ipEndPoint;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(BasicTcpAsynListenerV2<TListenerInfo>));
 
         #endregion
 
@@ -82,7 +83,7 @@ namespace KJFramework.Net.Listener.Asynchronous
                 if (_listener != null)
                     if (!_listener.AcceptAsync(e)) ProcessAccept(e);
             }
-            catch(System.Exception ex) { Logs.Logger.Log(ex); }
+            catch(System.Exception ex) { _tracing.Error(ex, null); }
         }
 
         /// <summary>
@@ -99,7 +100,7 @@ namespace KJFramework.Net.Listener.Asynchronous
                     e.AcceptSocket.IOControl(IOControlCode.KeepAliveValues, NetHelper.KeepAliveValue, null);
                     //business exceptions way.
                     try { ConnectedHandler(new IocpPortListenerConnectedEventArgs<TListenerInfo>(e.AcceptSocket, _listenerInfomation)); }
-                    catch (System.Exception innerEx) { Logs.Logger.Log(innerEx, DebugGrade.Standard); }
+                    catch (System.Exception innerEx) { _tracing.Error(innerEx, null); }
                 }
                 StartAccept(e);
             }
@@ -108,20 +109,7 @@ namespace KJFramework.Net.Listener.Asynchronous
                 e.Completed -= SocketAcceptCompleted;
                 e.Dispose();
                 Stop();
-                Logs.Logger.Log(ex, DebugGrade.High);
-            }
-        }
-
-        /// <summary>
-        ///     记录异常
-        /// </summary>
-        /// <param name="e">异常对象</param>
-        /// <param name="debugGrade">异常等级</param>
-        private void Log(System.Exception e, DebugGrade debugGrade)
-        {
-            if (_debugLogger != null)
-            {
-                _debugLogger.Log(e, debugGrade);
+                _tracing.Error(ex, null); 
             }
         }
 
@@ -294,7 +282,7 @@ namespace KJFramework.Net.Listener.Asynchronous
                 if (_listener != null)
                 {
                     try { _listener.Shutdown(SocketShutdown.Both); }
-                    catch (System.Exception e) { Log(e, DebugGrade.Fatal); }
+                    catch (System.Exception e) { _tracing.Error(e, null); }
                     _listener.Close();
                     _listener = null;
                 }

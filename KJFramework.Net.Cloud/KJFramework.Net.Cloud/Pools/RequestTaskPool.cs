@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Concurrent;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
 using KJFramework.Net.Cloud.Tasks;
 using KJFramework.Net.Exception;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Concurrent;
 
 namespace KJFramework.Net.Cloud.Pools
 {
@@ -46,6 +46,7 @@ namespace KJFramework.Net.Cloud.Pools
         private readonly EventHandler _failEvent;
         private readonly EventHandler<LightSingleArgEventArgs<T>> _timeoutEvent;
         private ConcurrentQueue<IRequestTask<T>> _tasks = new ConcurrentQueue<IRequestTask<T>>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(RequestTaskPool<T>));
 
         #endregion
 
@@ -97,7 +98,7 @@ namespace KJFramework.Net.Cloud.Pools
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return null;
             }
         }

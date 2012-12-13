@@ -1,7 +1,7 @@
+using KJFramework.Messages.Attributes;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
-using KJFramework.Messages.Attributes;
-using KJFramework.Logger;
 
 namespace KJFramework.Messages.TypeProcessors.Maps
 {
@@ -27,6 +27,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
         private readonly Dictionary<Type, IIntellectTypeProcessor> _processor = new Dictionary<Type, IIntellectTypeProcessor>();
         public static readonly ArrayTypeProcessorMapping Instance = new ArrayTypeProcessorMapping();
         public readonly static IntellectPropertyAttribute DefaultAttribute = new IntellectPropertyAttribute(0, false);
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ArrayTypeProcessorMapping));
 
         #endregion
 
@@ -74,7 +75,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
                 }
                 _processor.Add(processor.SupportedType, processor);
             }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
         }
 
         /// <summary>
@@ -85,7 +86,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
         {
             if (supportedType == null) return;
             try {  _processor.Remove(supportedType); }
-            catch (System.Exception ex) { Logs.Logger.Log(ex); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
         }
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return null;
             }
         }

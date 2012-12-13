@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Components;
-using KJFramework.Logger;
 using KJFramework.Statistics;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
 
 namespace KJFramework.Dynamic.Visitors
 {
@@ -26,6 +26,12 @@ namespace KJFramework.Dynamic.Visitors
             }
             _component = component;
         }
+
+        #endregion
+
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DynamicObjectVisitor));
 
         #endregion
 
@@ -85,7 +91,7 @@ namespace KJFramework.Dynamic.Visitors
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }

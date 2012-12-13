@@ -1,9 +1,9 @@
+using KJFramework.Dynamic.Components;
+using KJFramework.Dynamic.Structs;
+using KJFramework.Tracing;
 using System;
 using System.IO;
 using System.Reflection;
-using KJFramework.Dynamic.Components;
-using KJFramework.Dynamic.Structs;
-using KJFramework.Logger;
 
 namespace KJFramework.Dynamic.Finders
 {
@@ -12,6 +12,12 @@ namespace KJFramework.Dynamic.Finders
     /// </summary>
     public class BasicDynamicDomainServiceFinder : IDynamicDomainServiceFinder
     {
+        #region Members
+        
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(BasicDynamicDomainServiceFinder));
+
+	    #endregion
+
         #region Implementation of IDisposable
 
         /// <summary>
@@ -49,14 +55,14 @@ namespace KJFramework.Dynamic.Finders
                             }
                             catch (System.Exception ex)
                             {
-                                Logs.Logger.Log(ex);
+                                _tracing.Error(ex, null);
                                 continue;
                             }
                         }
                     }
                     catch (System.Exception ex)
                     {
-                        Logs.Logger.Log(ex);
+                        _tracing.Error(ex, null);
                         continue;
                     }
                 }

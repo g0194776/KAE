@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using KJFramework.Logger;
 using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Engine;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
 
 namespace KJFramework.Messages.Contracts
 {
@@ -20,6 +19,7 @@ namespace KJFramework.Messages.Contracts
         protected bool _isPickup;
         protected byte[] _body;
         protected bool _compatibleMode;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(IntellectObject));
 
         #endregion
 
@@ -74,7 +74,7 @@ namespace KJFramework.Messages.Contracts
             {
                 _isBind = false;
                 _body = null;
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
         }
 

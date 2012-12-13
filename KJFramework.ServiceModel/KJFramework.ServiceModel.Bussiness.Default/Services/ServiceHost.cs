@@ -1,11 +1,11 @@
-using System;
-using KJFramework.Logger;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Helper;
 using KJFramework.ServiceModel.Bussiness.Default.Counters;
 using KJFramework.ServiceModel.Bussiness.Default.Descriptions;
 using KJFramework.ServiceModel.Elements;
+using KJFramework.Tracing;
+using System;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Services
 {
@@ -19,6 +19,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Services
         private IServiceHandle _serviceHandle;
         private bool _hasPerformanceCounters;
         private bool _needPerformanceCounter;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ServiceHost));
         
         #endregion
 
@@ -67,7 +68,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Services
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 _communicationState = CommunicationStates.Faulte;
                 throw;
             }
@@ -87,7 +88,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Services
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 _communicationState = CommunicationStates.Faulte;
                 throw;
             }
@@ -148,7 +149,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Services
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
         }
 

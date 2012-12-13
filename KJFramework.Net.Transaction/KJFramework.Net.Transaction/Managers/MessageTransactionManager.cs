@@ -18,6 +18,15 @@ namespace KJFramework.Net.Transaction.Managers
 
         /// <summary>
         ///     消息事务管理器，提供了相关的基本操作
+        ///     * 默认时间：从配置文件中读取.
+        /// </summary>
+        public MessageTransactionManager()
+            : base(Global.TransactionCheckInterval, new TransactionIdentityComparer())
+        {
+        }
+
+        /// <summary>
+        ///     消息事务管理器，提供了相关的基本操作
         ///     * 默认时间：30s.
         /// </summary>
         /// <param name="interval">事务检查时间间隔</param>

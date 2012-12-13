@@ -5,10 +5,10 @@ using KJFramework.Dynamic.Tables;
 using KJFramework.Dynamic.Visitors;
 using KJFramework.Logger;
 using KJFramework.Logger.LogObject;
-using KJFramework.Net.Channels.Uri;
 using KJFramework.Plugin;
 using KJFramework.ServiceModel.Bussiness.Default.Services;
 using KJFramework.ServiceModel.Elements;
+using KJFramework.Tracing;
 
 namespace KJFramework.Dynamic.Components
 {
@@ -45,6 +45,7 @@ namespace KJFramework.Dynamic.Components
         protected string _tunnelAddress;
         private ServiceHost _tunnelHost;
         private IComponentTunnelVisitor _tunnelVisitor;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DynamicDomainComponent));
 
         /// <summary>
         ///     获取或设置当前组件所宿主的服务
@@ -249,7 +250,7 @@ namespace KJFramework.Dynamic.Components
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }

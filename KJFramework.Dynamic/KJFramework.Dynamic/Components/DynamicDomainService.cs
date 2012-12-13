@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Configurations;
 using KJFramework.Dynamic.Extends;
@@ -14,6 +7,14 @@ using KJFramework.Dynamic.Pools;
 using KJFramework.Dynamic.Structs;
 using KJFramework.EventArgs;
 using KJFramework.Logger;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace KJFramework.Dynamic.Components
 {
@@ -90,6 +91,7 @@ namespace KJFramework.Dynamic.Components
         private readonly AssemblyLoader _assemblyLoader;
         private readonly ServiceDescriptionInfo _infomation;
         private object _tag;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DynamicDomainService));
         //dynamic component key(EntryPoint)-values.
         private ConcurrentDictionary<string, DynamicDomainObject> _dynamicObjects = new ConcurrentDictionary<string, DynamicDomainObject>();
 
@@ -177,7 +179,7 @@ namespace KJFramework.Dynamic.Components
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return null;
             }
         }
@@ -209,7 +211,7 @@ namespace KJFramework.Dynamic.Components
                 }
                 catch (System.Exception ex)
                 {
-                    Logs.Logger.Log(ex);
+                    _tracing.Error(ex, null);
                     WorkingProcessHandler(new LightSingleArgEventArgs<string>("#Dynamic domain object : " + dynamicObject.EntryInfo.EntryPoint + " cannot be work."));
                 }
             }
@@ -235,7 +237,7 @@ namespace KJFramework.Dynamic.Components
                         dynamicObject.Exited -= DomainObjectExited;
                         dynamicObject.Stop(); 
                     }
-                    catch (System.Exception ex) { Logs.Logger.Log(ex); }
+                    catch (System.Exception ex) { _tracing.Error(ex, null); }
                 }
             }
             //×¢²á·þÎñ
@@ -265,7 +267,7 @@ namespace KJFramework.Dynamic.Components
                 }
                 catch (System.Exception ex)
                 {
-                    Logs.Logger.Log(ex);
+                    _tracing.Error(ex, null);
                     keys.Add(pair.Key);
                 }
             }
@@ -345,7 +347,7 @@ namespace KJFramework.Dynamic.Components
                     }
                     catch (System.Exception ex)
                     {
-                        Logs.Logger.Log(ex);
+                        _tracing.Error(ex, null);
                         statuses.Add(HealthStatus.Death);
                     }
                 });

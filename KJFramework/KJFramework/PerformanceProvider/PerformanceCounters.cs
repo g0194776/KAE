@@ -1,9 +1,9 @@
+using KJFramework.Attribute;
+using KJFramework.Helpers;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using KJFramework.Attribute;
-using KJFramework.Helpers;
-using KJFramework.Logger;
 
 namespace KJFramework.PerformanceProvider
 {
@@ -15,8 +15,8 @@ namespace KJFramework.PerformanceProvider
         #region Members
 
         private static Dictionary<string, string> _counterKey = new Dictionary<string, string>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PerformanceCounters));
         private static Dictionary<string, Dictionary<int, PerformanceCounter>> _counters = new Dictionary<string, Dictionary<int, PerformanceCounter>>();
-        private static Dictionary<string, Dictionary<string, PerformanceCounter>> _customerCounters = new Dictionary<string, Dictionary<string, PerformanceCounter>>();
 
         #endregion
 
@@ -88,7 +88,7 @@ namespace KJFramework.PerformanceProvider
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }
@@ -129,7 +129,7 @@ namespace KJFramework.PerformanceProvider
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return null;
             }
         }

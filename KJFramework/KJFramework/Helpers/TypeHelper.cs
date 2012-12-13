@@ -1,10 +1,9 @@
+using KJFramework.Configurations.Objects;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using KJFramework.Basic.Enum;
-using KJFramework.Configurations.Objects;
-using KJFramework.Logger;
 
 namespace KJFramework.Helpers
 {
@@ -13,6 +12,14 @@ namespace KJFramework.Helpers
     /// </summary>
     public class TypeHelper
     {
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(TypeHelper));
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///     获取一个类型中所有带有指定属性标记的字段集合
         /// </summary>
@@ -25,7 +32,7 @@ namespace KJFramework.Helpers
             {
                 return null;
             }
-            var result = type.GetFields().Where(field=> AttributeHelper.GetCustomerAttribute<T>(field) != null);
+            var result = type.GetFields().Where(field => AttributeHelper.GetCustomerAttribute<T>(field) != null);
             return result.Count() == 0 ? null : result.Select(field => new FieldWithAttribute<T> { FieldInfo = field, Attribute = AttributeHelper.GetCustomerAttribute<T>(field) }).ToList();
         }
 
@@ -40,7 +47,7 @@ namespace KJFramework.Helpers
             {
                 return null;
             }
-            return type.GetFields().Select(field => new FieldWithName {FieldInfo = field, Name = field.Name}).ToList();
+            return type.GetFields().Select(field => new FieldWithName { FieldInfo = field, Name = field.Name }).ToList();
         }
 
         /// <summary>
@@ -118,7 +125,7 @@ namespace KJFramework.Helpers
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.Standard, Logs.Name);
+                _tracing.Error(ex, null);
                 return null;
             }
         }
@@ -136,5 +143,7 @@ namespace KJFramework.Helpers
             }
             return methodInfo.GetParameters();
         }
+
+        #endregion
     }
 }

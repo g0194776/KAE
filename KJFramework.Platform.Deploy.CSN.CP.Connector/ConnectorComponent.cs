@@ -1,7 +1,6 @@
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Components;
 using KJFramework.IO.Helper;
-using KJFramework.Logger;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.TypeProcessors.Maps;
 using KJFramework.Net.Channels;
@@ -19,6 +18,7 @@ using KJFramework.Platform.Deploy.CSN.Common.Datas;
 using KJFramework.Platform.Deploy.CSN.CP.Connector.Processors;
 using KJFramework.Platform.Deploy.CSN.ProtocolStack;
 using KJFramework.Plugin;
+using KJFramework.Tracing;
 using System;
 using System.Configuration;
 
@@ -51,6 +51,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
         private IRequestScheduler _requestScheduler;
         private static MessageTransactionManager _transactionManager;
         private static IProtocolStack<BaseMessage> _protocolStack;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ConnectorComponent));
 
         #endregion
 
@@ -119,7 +120,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
                 }
                 catch (System.Exception ex)
                 {
-                    Logs.Logger.Log(ex);
+                    _tracing.Error(ex, null);
                     ConsoleHelper.PrintLine(ex.Message, ConsoleColor.DarkRed);
                 }
             }

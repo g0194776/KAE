@@ -1,11 +1,11 @@
-using System;
 using KJFramework.Basic.Enum;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
+using KJFramework.Net.Channels;
 using KJFramework.Net.Cloud.Nodes;
 using KJFramework.Net.Cloud.Processors;
-using KJFramework.Net.Channels;
 using KJFramework.Tasks;
+using KJFramework.Tracing;
+using System;
 
 namespace KJFramework.Net.Cloud.Tasks
 {
@@ -63,7 +63,7 @@ namespace KJFramework.Net.Cloud.Tasks
             catch (System.Exception ex)
             {
                 _isFinished = false;
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 ExecuteFailHandler(null);
             }
         }
@@ -81,6 +81,7 @@ namespace KJFramework.Net.Cloud.Tasks
         protected int _timeoutValue = 3000;
         protected bool _isTimeout;
         private readonly Guid _taskId;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(RequestTask<T>));
 
         #endregion
 

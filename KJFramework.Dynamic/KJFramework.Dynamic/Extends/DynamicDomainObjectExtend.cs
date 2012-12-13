@@ -1,11 +1,17 @@
 using KJFramework.Dynamic.Components;
 using KJFramework.Dynamic.Structs;
-using KJFramework.Logger;
+using KJFramework.Tracing;
 
 namespace KJFramework.Dynamic.Extends
 {
     internal static class DynamicDomainObjectExtend
     {
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DynamicDomainObjectExtend));
+
+        #endregion
+
         #region ·½·¨
 
         /// <summary>
@@ -18,7 +24,7 @@ namespace KJFramework.Dynamic.Extends
             try { return new DynamicDomainObject(info); }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return null;
             }
         }

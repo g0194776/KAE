@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Threading;
-using KJFramework.Cache.Cores;
+﻿using KJFramework.Cache.Cores;
 using KJFramework.Cache.Cores.Segments;
 using KJFramework.Cache.Exception;
 using KJFramework.Cache.Indexers;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
 using KJFramework.Timer;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace KJFramework.Cache.Containers
 {
@@ -45,15 +45,15 @@ namespace KJFramework.Cache.Containers
 
         #region Members
 
-        private readonly byte[] _data;
-        private readonly ISegmentCachePolicy _policy;
-        private Dictionary<int, ConcurrentStack<ISegmentCacheStub>> _pools;
-        private readonly ConcurrentDictionary<T, IHightSpeedSegmentCache> _caches = new ConcurrentDictionary<T, IHightSpeedSegmentCache>();
         private int _lastSize;
         private int[] _levels;
-        private LightTimer _timer;
-        private const int _timeoutInterval = 30000;
         private int _lastLevelSize;
+        private readonly byte[] _data;
+        private const int _timeoutInterval = 30000;
+        private readonly ISegmentCachePolicy _policy;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (SegmentCacheContainer<T>));
+        private Dictionary<int, ConcurrentStack<ISegmentCacheStub>> _pools;
+        private readonly ConcurrentDictionary<T, IHightSpeedSegmentCache> _caches = new ConcurrentDictionary<T, IHightSpeedSegmentCache>();
 
         #endregion
 
@@ -81,7 +81,7 @@ namespace KJFramework.Cache.Containers
             Array.Reverse(_levels);
             _lastLevelSize = _levels[_levels.Length - 1];
             //30s.
-            _timer = LightTimer.NewTimer(_timeoutInterval, -1).Start(
+            LightTimer.NewTimer(_timeoutInterval, -1).Start(
                 delegate
                     {
                         IList<T> values = new List<T>();
@@ -191,12 +191,12 @@ namespace KJFramework.Cache.Containers
             catch (OutOfMemoryException ex)
             {
                 GivebackRang(result.ToArray());
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 return null;
             }
             catch(System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }

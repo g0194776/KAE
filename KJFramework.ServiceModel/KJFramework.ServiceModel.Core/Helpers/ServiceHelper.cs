@@ -1,17 +1,25 @@
+using KJFramework.Helpers;
+using KJFramework.ServiceModel.Core.Attributes;
+using KJFramework.ServiceModel.Core.Methods;
+using KJFramework.ServiceModel.Core.Objects;
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using KJFramework.Helpers;
-using KJFramework.Logger;
-using KJFramework.ServiceModel.Core.Attributes;
-using KJFramework.ServiceModel.Core.Methods;
-using KJFramework.ServiceModel.Core.Objects;
 
 namespace KJFramework.ServiceModel.Core.Helpers
 {
     public class ServiceHelper
     {
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ServiceHelper));
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///     获取一个类型的所有服务方法
         /// </summary>
@@ -40,19 +48,18 @@ namespace KJFramework.ServiceModel.Core.Helpers
                             throw new System.Exception("当前的服务契约中不允许一个带有合法返回值的操作, 标有IsOneWay=true的标记 !");
                         }
                         serviceMethods.Add(new ServiceMethodPickupObject
-                                               {
-                                                   Method =
-                                                       new ExecutableServiceMethod(temp.Method)
-                                                           {Handler = DynamicHelper.GetMethodInvoker(temp.Method)},
-                                                   Operation = temp.Operation
-                                               });
+                        {
+                            Method =
+                                new ExecutableServiceMethod(temp.Method) { Handler = DynamicHelper.GetMethodInvoker(temp.Method) },
+                            Operation = temp.Operation
+                        });
                     }
                     return serviceMethods.ToArray();
                 }
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
             return null;
@@ -73,5 +80,7 @@ namespace KJFramework.ServiceModel.Core.Helpers
             }
             return builder.ToString();
         }
+
+        #endregion
     }
 }

@@ -1,7 +1,7 @@
+using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using KJFramework.Logger;
 
 namespace KJFramework.Platform.Deploy.CSN.CP.Connector.SubscribeObjs
 {
@@ -12,6 +12,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector.SubscribeObjs
     {
         #region Members
 
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DBSubscribeObject));
         private Dictionary<string, List<string>> _databases = new Dictionary<string, List<string>>();
         private Dictionary<string, List<string>> _tables = new Dictionary<string, List<string>>();
 
@@ -41,7 +42,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector.SubscribeObjs
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex);
+                _tracing.Error(ex, null);
             }
         }
 
