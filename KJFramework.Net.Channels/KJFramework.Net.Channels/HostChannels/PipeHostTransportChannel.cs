@@ -1,6 +1,5 @@
 using KJFramework.Basic.Enum;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
 using KJFramework.Net.Channels.Statistics;
 using KJFramework.Net.Channels.Uri;
 using KJFramework.Statistics;
@@ -130,7 +129,7 @@ namespace KJFramework.Net.Channels.HostChannels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.Standard, Logs.Name);
+                _tracing.Error(ex, null);
                 return true;
             }
         }

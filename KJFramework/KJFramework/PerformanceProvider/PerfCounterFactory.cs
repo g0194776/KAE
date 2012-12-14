@@ -1,10 +1,9 @@
-using System;
-using System.Reflection;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Web;
-using KJFramework.Logger;
 using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
+using System.Web;
 
 namespace KJFramework.PerformanceProvider
 {

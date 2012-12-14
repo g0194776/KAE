@@ -6,7 +6,6 @@ using KJFramework.Dynamic.Loaders;
 using KJFramework.Dynamic.Pools;
 using KJFramework.Dynamic.Structs;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Concurrent;
@@ -151,21 +150,21 @@ namespace KJFramework.Dynamic.Components
                 //开始查找插件
                 using (IDynamicDomainComponentFinder finder = new BasicDynamicDomainComponentFinder())
                 {
-                    Logs.Logger.Log("#Begin initializing dynamic domain component finder at path: " + _workRoot + "......");
+                    _tracing.Info("#Begin initializing dynamic domain component finder at path: " + _workRoot + "......");
                     List<DomainComponentEntryInfo> infos = finder.Execute(_workRoot);
-                    Logs.Logger.Log("#Find components done, result count: " + infos.Count + ".");
+                    _tracing.Info("#Find components done, result count: " + infos.Count + ".");
                     if (infos.Count == 0) return null;
                     IList<DynamicDomainObject> dynamicObjects = new List<DynamicDomainObject>(infos.Count);
                     foreach (DomainComponentEntryInfo domainComponentEntryInfo in infos)
                     {
-                        Logs.Logger.Log("#Prepare to wrap components, name: " + domainComponentEntryInfo.EntryPoint + "......");
+                        _tracing.Info("#Prepare to wrap components, name: " + domainComponentEntryInfo.EntryPoint + "......");
                         DynamicDomainObject domainObject = domainComponentEntryInfo.Wrap();
-                        Logs.Logger.Log(domainObject != null
+                        _tracing.Info(domainObject != null
                                             ? "#Wrap components, name: " + domainComponentEntryInfo.EntryPoint + " successed!"
                                             :  "#Wrap components, name: " + domainComponentEntryInfo.EntryPoint + " failed!");
                         if(domainObject == null)
                         {
-                            Logs.Logger.Log(string.Format("#Component {0} lose the wrap chance.", domainComponentEntryInfo.EntryPoint));
+                            _tracing.Info(string.Format("#Component {0} lose the wrap chance.", domainComponentEntryInfo.EntryPoint));
                             #if(DEBUG)
                             Console.WriteLine(string.Format("#Component {0} lose the wrap chance.", domainComponentEntryInfo.EntryPoint));
                             #endif
@@ -300,7 +299,7 @@ namespace KJFramework.Dynamic.Components
             DynamicDomainObject domainObject;
             if (!_dynamicObjects.TryGetValue(fullname, out domainObject))
             {
-                Logs.Logger.Log(string.Format("#UPDATE component {0} failed, because the target component don't existed.", fullname));
+                _tracing.Info(string.Format("#UPDATE component {0} failed, because the target component don't existed.", fullname));
                 #if(DEBUG)
                 Console.WriteLine(string.Format("#UPDATE component {0} failed, because the target component don't existed.", fullname));
                 #endif
@@ -308,15 +307,15 @@ namespace KJFramework.Dynamic.Components
             }
             try
             {
-                Logs.Logger.Log(string.Format("*BEGIN* update component {0}...", fullname));
+                _tracing.Info(string.Format("*BEGIN* update component {0}...", fullname));
                 domainObject.Update();
-                Logs.Logger.Log(string.Format("   ->*UPDATE* component {0} succeed!", fullname));
+                _tracing.Info(string.Format("   ->*UPDATE* component {0} succeed!", fullname));
                 return true;
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.Fatal);
-                Logs.Logger.Log(string.Format("   ->*UPDATE* component {0} failed, some useful message below:\r\n", ex.Message));
+                _tracing.Error(ex, null);
+                _tracing.Info(string.Format("   ->*UPDATE* component {0} failed, some useful message below:\r\n", ex.Message));
                 DynamicDomainObject removedObj;
                 _dynamicObjects.TryRemove(fullname, out removedObj);
                 removedObj.Exited -= DomainObjectExited;
@@ -325,7 +324,7 @@ namespace KJFramework.Dynamic.Components
                 #endif
                 return false;
             }
-            finally { Logs.Logger.Log(string.Format("*END* update component {0}...", fullname)); }
+            finally { _tracing.Info(string.Format("*END* update component {0}...", fullname)); }
         }
 
         /// <summary>

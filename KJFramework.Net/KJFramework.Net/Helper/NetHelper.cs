@@ -1,11 +1,10 @@
-﻿using System;
+﻿using KJFramework.Net.Configurations;
+using KJFramework.Tracing;
+using System;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
-using KJFramework.Net.Configurations;
-using KJFramework.Logger;
-using KJFramework.Basic.Enum;
 
 namespace KJFramework.Net.Helper
 {
@@ -76,6 +75,8 @@ namespace KJFramework.Net.Helper
         /// </summary>
         public static byte[] KeepAliveValue;
 
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (NetHelper));
+
         #endregion
 
         #region 方法
@@ -117,7 +118,7 @@ namespace KJFramework.Net.Helper
             }
             catch (System.Exception e)
             {
-                Logs.Logger.Log(e, DebugGrade.Low, Logs.Name);
+                _tracing.Error(e, null);
                 return null;
             }
         }

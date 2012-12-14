@@ -1,6 +1,5 @@
+using KJFramework.Tracing;
 using System;
-using KJFramework.Basic.Enum;
-using KJFramework.Logger;
 
 namespace KJFramework.Net.Channels.Uri
 {
@@ -13,6 +12,7 @@ namespace KJFramework.Net.Channels.Uri
 
         protected String _machineName;
         protected String _pipeName;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PipeUri));
 
         /// <summary>
         ///     获取或设置IPC名称
@@ -88,7 +88,7 @@ namespace KJFramework.Net.Channels.Uri
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.High, Logs.Name);
+                _tracing.Error(ex, null);
                 throw new System.Exception("非法的Pipe资源地址标示。");
             }
         }

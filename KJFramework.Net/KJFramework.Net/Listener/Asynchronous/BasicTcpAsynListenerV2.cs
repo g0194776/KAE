@@ -1,5 +1,3 @@
-using KJFramework.Logger;
-using KJFramework.Logger.LogObject;
 using KJFramework.Net.EventArgs;
 using KJFramework.Net.Helper;
 using KJFramework.Tracing;
@@ -198,23 +196,6 @@ namespace KJFramework.Net.Listener.Asynchronous
         #endregion
 
         #region IListener<int> Members
-
-        private IDebugLogger<IDebugLog> _debugLogger;
-
-        /// <summary>
-        ///     获取或设置异常记录器
-        /// </summary>
-        public IDebugLogger<IDebugLog> DebugLogger
-        {
-            get
-            {
-                return _debugLogger;
-            }
-            set
-            {
-                _debugLogger = value;
-            }
-        }
 
         private bool _state;
 

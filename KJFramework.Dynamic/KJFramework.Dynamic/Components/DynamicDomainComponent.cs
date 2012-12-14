@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Tables;
 using KJFramework.Dynamic.Visitors;
-using KJFramework.Logger;
-using KJFramework.Logger.LogObject;
 using KJFramework.Plugin;
 using KJFramework.ServiceModel.Bussiness.Default.Services;
 using KJFramework.ServiceModel.Elements;
 using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
 
 namespace KJFramework.Dynamic.Components
 {
@@ -25,7 +23,6 @@ namespace KJFramework.Dynamic.Components
         protected DynamicDomainComponent()
         {
             _id = Guid.NewGuid();
-            _logger = Logs.Logger;
             _ruleTable = new DomainObjectVisitRuleTable();
             //by default.
             _name = GetType().Name;
@@ -51,10 +48,6 @@ namespace KJFramework.Dynamic.Components
         ///     获取或设置当前组件所宿主的服务
         /// </summary>
         public IDynamicDomainService OwnService { get; set; }
-        /// <summary>
-        ///     组件日志记录器
-        /// </summary>
-        protected readonly ITextLogger<ITextLog> _logger;
 
         #endregion
 
@@ -68,7 +61,7 @@ namespace KJFramework.Dynamic.Components
             try { InnerOnLoading(); }
             catch (System.Exception ex)
             {
-                _logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }
@@ -119,7 +112,7 @@ namespace KJFramework.Dynamic.Components
             try { return InnerCheckHealth(); }
             catch (System.Exception ex)
             {
-                _logger.Log(ex);
+                _tracing.Error(ex, null);
                 return HealthStatus.Death;
             }
         }
@@ -198,7 +191,7 @@ namespace KJFramework.Dynamic.Components
             catch (System.Exception ex)
             {
                 _enable = false;
-                _logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
         }
@@ -222,7 +215,7 @@ namespace KJFramework.Dynamic.Components
             }
             catch (System.Exception ex)
             {
-                _logger.Log(ex);
+                _tracing.Error(ex, null);
                 throw;
             }
             finally { _enable = false; }

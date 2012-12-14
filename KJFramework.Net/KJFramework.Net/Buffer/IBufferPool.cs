@@ -1,17 +1,10 @@
-﻿using KJFramework.Logger.LogObject;
-using KJFramework.Logger;
-
-namespace KJFramework.Net.Buffer
+﻿namespace KJFramework.Net.Buffer
 {
     /// <summary>
     ///     缓冲区元接口, 提供了相关的基本操作
     /// </summary>
     public interface IBufferPool
     {
-        /// <summary>
-        ///     获取或设置异常记录器
-        /// </summary>
-        IDebugLogger<IDebugLog> DebugLogger { get; set; }
         /// <summary>
         ///     向缓冲区写入指定数据
         /// </summary>

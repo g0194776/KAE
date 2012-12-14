@@ -1,7 +1,7 @@
-using System.Net.Sockets;
 using KJFramework.Cache;
 using KJFramework.Cache.Cores;
-using KJFramework.Logger;
+using KJFramework.Tracing;
+using System.Net.Sockets;
 
 namespace KJFramework.Net.Channels.Caches
 {
@@ -26,6 +26,7 @@ namespace KJFramework.Net.Channels.Caches
         #region Members
 
         private readonly SocketAsyncEventArgs _target;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (NoBuffSocketStub));
 
         /// <summary>
         ///     获取缓存目标
@@ -73,7 +74,7 @@ namespace KJFramework.Net.Channels.Caches
                     ChannelConst.NoBuffAsyncStubPool.Giveback(stub);
                     if (e.SocketError != SocketError.Success && channel.IsConnected)
                     {
-                        Logs.Logger.Log(
+                        _tracing.Warn(
                             string.Format(
                                 "The target channel SendAsync status has incorrectly, so the framework decided to disconnect it.\r\nL: {0}\r\nR: {1}\r\nSocket-Error: {2}\r\nBytesTransferred: {3}\r\n",
                                 channel.LocalEndPoint, 

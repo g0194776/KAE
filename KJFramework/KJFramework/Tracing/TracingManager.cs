@@ -8,9 +8,7 @@ namespace KJFramework.Tracing
 {
     public static class TracingManager
     {
-        private const int Capacity = 10000;
-        private static Queue<TraceItem> _items = new Queue<TraceItem>(Capacity);
-        private static ITracingProvider _provider;
+        #region Constructor
 
         static TracingManager()
         {
@@ -18,10 +16,20 @@ namespace KJFramework.Tracing
             proc.IsBackground = true;
             proc.Name = "TracingManager::TraceItemWatcher";
             proc.Start();
-
             LoadProvider();
-            //TracingSettings.WatchProviderChange(LoadProvider);
         }
+
+        #endregion
+
+        #region Members
+
+        private const int Capacity = 10000;
+        private static ITracingProvider _provider;
+        private static Queue<TraceItem> _items = new Queue<TraceItem>(Capacity);
+
+        #endregion
+
+        #region Methods
 
         private static void LoadProvider()
         {
@@ -62,7 +70,6 @@ namespace KJFramework.Tracing
 
         private static void TraceItemWatcher()
         {
-           
             string pid;
             string pname;
             if (HttpRuntime.AppDomainAppId == null)
@@ -97,10 +104,10 @@ namespace KJFramework.Tracing
                         for (int i = 0; i < items.Length; ++i)
                             if (items[i].Level == TracingLevel.Crtitical)
                                 WriteEventLog(string.Concat(
-                                        pid, items[i].Timestamp.ToString(" @ yyyy-MM-dd HH:mm:ss.fff "), 
-                                        items[i].Logger, Environment.NewLine, Environment.NewLine, 
-                                        items[i].Message, Environment.NewLine, Environment.NewLine, 
-                                        items[i].Error == null ? string.Empty : items[i].Error.ToString() 
+                                        pid, items[i].Timestamp.ToString(" @ yyyy-MM-dd HH:mm:ss.fff "),
+                                        items[i].Logger, Environment.NewLine, Environment.NewLine,
+                                        items[i].Message, Environment.NewLine, Environment.NewLine,
+                                        items[i].Error == null ? string.Empty : items[i].Error.ToString()
                                 ), true);
                     }
                     catch (System.Exception ex)
@@ -138,5 +145,7 @@ namespace KJFramework.Tracing
                 Trace.WriteLine(ex);
             }
         }
+
+        #endregion
     }
 }

@@ -1,13 +1,11 @@
 using KJFramework.Core.Native;
 using KJFramework.Dynamic.Structs;
 using KJFramework.Installers;
-using KJFramework.Logger;
 using KJFramework.Services;
 using KJFramework.Tracing;
 using System;
 using System.Runtime.InteropServices;
 
-#if !MONO
 namespace KJFramework.Dynamic.Installers
 {
     /// <summary>
@@ -49,7 +47,7 @@ namespace KJFramework.Dynamic.Installers
             if (scIntptr == IntPtr.Zero)
             {
                 Native.Win32API.CloseServiceHandle(scIntptr);
-                Logs.Logger.Log("无法打开服务控制面板 !");
+                _tracing.Warn("无法打开服务控制面板 !");
                 return null;
             }
             IntPtr svcIntPtr = Native.Win32API.CreateService(scIntptr, obj.Service.Infomation.ServiceName,
@@ -63,7 +61,7 @@ namespace KJFramework.Dynamic.Installers
             if (svcIntPtr == IntPtr.Zero)
             {
                 Native.Win32API.CloseServiceHandle(svcIntPtr);
-                Logs.Logger.Log("创建服务失败 !");
+                _tracing.Warn("创建服务失败 !");
                 return null;
             }
             Native.SERVICE_DESCRIPTION serviceDescription = new Native.SERVICE_DESCRIPTION();
@@ -108,7 +106,7 @@ namespace KJFramework.Dynamic.Installers
             if (scIntptr == IntPtr.Zero)
             {
                 Native.Win32API.CloseServiceHandle(scIntptr);
-                Logs.Logger.Log("无法打开服务控制面板 !");
+                _tracing.Warn("无法打开服务控制面板 !");
                 return null;
             }
             IntPtr svcIntPtr = Native.Win32API.CreateService(scIntptr, serviceName, name,
@@ -121,7 +119,7 @@ namespace KJFramework.Dynamic.Installers
             if (svcIntPtr == IntPtr.Zero)
             {
                 Native.Win32API.CloseServiceHandle(svcIntPtr);
-                Logs.Logger.Log("创建服务失败 !");
+                _tracing.Warn("创建服务失败 !");
                 return null;
             }
             Native.SERVICE_DESCRIPTION serviceDescription = new Native.SERVICE_DESCRIPTION();
@@ -164,7 +162,7 @@ namespace KJFramework.Dynamic.Installers
             if (scIntptr == IntPtr.Zero)
             {
                 Native.Win32API.CloseServiceHandle(scIntptr);
-                Logs.Logger.Log("无法打开服务控制面板 !");
+                _tracing.Warn("无法打开服务控制面板 !");
                 return false;
             }
             IntPtr svcIntptr = Native.Win32API.OpenService(scIntptr, name, Native.Win32API.SERVICE_ALL_ACCESS);
@@ -172,7 +170,7 @@ namespace KJFramework.Dynamic.Installers
             if (svcIntptr == IntPtr.Zero)
             {
                 Native.Win32API.CloseServiceHandle(svcIntptr);
-                Logs.Logger.Log("打开服务失败 !");
+                _tracing.Warn("打开服务失败 !");
                 return false;
             }
             bool state = Native.Win32API.DeleteService(svcIntptr) > 0;
@@ -183,4 +181,3 @@ namespace KJFramework.Dynamic.Installers
         #endregion
     }
 }
-#endif

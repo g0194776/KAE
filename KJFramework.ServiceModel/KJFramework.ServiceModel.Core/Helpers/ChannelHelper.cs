@@ -1,16 +1,24 @@
-using System;
-using System.Net;
 using KJFramework.Basic.Enum;
-using KJFramework.Logger;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.Channels.Uri;
 using KJFramework.ServiceModel.Elements;
+using KJFramework.Tracing;
+using System;
+using System.Net;
 
 namespace KJFramework.ServiceModel.Core.Helpers
 {
     public class ChannelHelper
     {
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (ChannelHelper));
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         ///     根据制定绑定类型创建宿主通道
         /// </summary>
@@ -27,11 +35,11 @@ namespace KJFramework.ServiceModel.Core.Helpers
                     return hostTransportChannel;
                 //TCP
                 case BindingTypes.Tcp:
-                    TcpUri tcpUri = (TcpUri) binding.LogicalAddress;
+                    TcpUri tcpUri = (TcpUri)binding.LogicalAddress;
                     TcpHostTransportChannel tcphostTransportChannel = new TcpHostTransportChannel(tcpUri.Port);
                     return tcphostTransportChannel;
                 default:
-                    Logs.Logger.Log("un supported binding type : " + binding.BindingType);
+                    _tracing.Warn("un supported binding type : " + binding.BindingType);
                     break;
             }
             return null;
@@ -54,14 +62,16 @@ namespace KJFramework.ServiceModel.Core.Helpers
                     return transportChannel;
                 //TCP
                 case BindingTypes.Tcp:
-                    TcpUri tcpUri = (TcpUri) uri;
+                    TcpUri tcpUri = (TcpUri)uri;
                     TcpTransportChannel tcpTransportChannel = new TcpTransportChannel(new IPEndPoint(IPAddress.Parse(tcpUri.HostAddress), tcpUri.Port));
                     return tcpTransportChannel;
                 default:
-                    Logs.Logger.Log("un supported binding type : " + binding.BindingType);
+                    _tracing.Warn("un supported binding type : " + binding.BindingType);
                     break;
             }
             return null;
         }
+
+        #endregion
     }
 }

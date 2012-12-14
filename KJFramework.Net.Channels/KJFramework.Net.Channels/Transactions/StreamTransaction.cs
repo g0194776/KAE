@@ -1,9 +1,9 @@
-﻿using System;
+﻿using KJFramework.Basic.Enum;
+using KJFramework.Statistics;
+using KJFramework.Tracing;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using KJFramework.Basic.Enum;
-using KJFramework.Statistics;
-using KJFramework.Logger;
 
 namespace KJFramework.Net.Channels.Transactions
 {
@@ -55,6 +55,7 @@ namespace KJFramework.Net.Channels.Transactions
         protected bool _enable = true;
         protected TStream _stream;
         protected Dictionary<StatisticTypes, IStatistic> _statistics = new Dictionary<StatisticTypes,IStatistic>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (StreamTransaction<TStream>));
         protected Action<byte[]> _callback;
 
         #endregion
@@ -72,7 +73,7 @@ namespace KJFramework.Net.Channels.Transactions
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.High, Logs.Name);
+                _tracing.Error(ex, null);
                 EndWork();
             }
         }
@@ -89,7 +90,7 @@ namespace KJFramework.Net.Channels.Transactions
             }
             catch (System.Exception e)
             {
-                Logs.Logger.Log(e, DebugGrade.High, Logs.Name);
+                _tracing.Error(e, null);
             }
         }
 

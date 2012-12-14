@@ -1,9 +1,9 @@
+using KJFramework.Tracing;
 using System;
 using System.Collections.Concurrent;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Reflection.Emit;
-using KJFramework.Logger;
 
 namespace KJFramework.Net.Pool
 {
@@ -21,6 +21,7 @@ namespace KJFramework.Net.Pool
         ///     <para>* 初始化数量：10000。</para>
         /// </summary>
         public static readonly SocketAsyncEventArgsPool Instance = new SocketAsyncEventArgsPool(10000);
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (SocketAsyncEventArgsPool));
         private static Action<SocketAsyncEventArgs> _clrearMethod;
 
         #endregion
@@ -115,7 +116,7 @@ namespace KJFramework.Net.Pool
                 {
                     return args;
                 }
-                Logs.Logger.Log("无法租借SocketAsyncEventArgs, 因为尝试出队列的动作没有成功执行。");
+                _tracing.Warn("无法租借SocketAsyncEventArgs, 因为尝试出队列的动作没有成功执行。");
             }
             return null;
         }

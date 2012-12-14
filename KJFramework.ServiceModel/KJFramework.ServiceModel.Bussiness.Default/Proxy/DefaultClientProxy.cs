@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Threading;
-using KJFramework.Cache.Containers;
+﻿using KJFramework.Cache.Containers;
 using KJFramework.Cache.Cores;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
 using KJFramework.Net.Channels;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
 using KJFramework.ServiceModel.Bussiness.Default.Metadata;
@@ -25,6 +20,10 @@ using KJFramework.ServiceModel.Identity;
 using KJFramework.ServiceModel.Objects;
 using KJFramework.ServiceModel.Proxy;
 using KJFramework.Tracing;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading;
 using Uri = KJFramework.Net.Channels.Uri.Uri;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Proxy
@@ -217,7 +216,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Proxy
                     callback = (AsyncMethodCallback)e.Arguments[e.Arguments.Length - 1];
                     //default timeout: 1min.
                     if (_delegators.Add(e.Identity, callback, new TimeSpan(0, 1, 0)) == null)
-                        Logs.Logger.Log("#Cannot add callback func for current request. #session id: " + e.Identity);
+                        _tracing.Warn("#Cannot add callback func for current request. #session id: " + e.Identity);
                 }
                 //打入请求参数, index 0 == Session Id， index 1 == Method Full name
                 if (e.Arguments != null)

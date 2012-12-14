@@ -1,5 +1,4 @@
 using System;
-using KJFramework.Logger;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.ProtocolStacks;
 

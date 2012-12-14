@@ -1,8 +1,8 @@
-using System;
-using KJFramework.Logger;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Messages;
+using KJFramework.Tracing;
+using System;
 
 namespace KJFramework.Data.Synchronization.Transactions
 {
@@ -47,6 +47,7 @@ namespace KJFramework.Data.Synchronization.Transactions
         ///     获取或设置重试次数
         /// </summary>
         public int RetryCount { get; set; }
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (SyncDataTransaction));
 
         #endregion
 
@@ -76,7 +77,7 @@ namespace KJFramework.Data.Synchronization.Transactions
             _request = message;
             if (!_channel.IsConnected)
             {
-                Logs.Logger.Log(string.Format("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint));
+                _tracing.Warn(string.Format("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint));
                 SyncDataTransactionManager.Instance.Remove(Identity);
                 FailedHandler(null);
                 return;
@@ -133,7 +134,7 @@ namespace KJFramework.Data.Synchronization.Transactions
             if (Request != null && message.MessageIdentity != null) message.MessageIdentity.Tid = Request.MessageIdentity.Tid;
             if (!_channel.IsConnected)
             {
-                Logs.Logger.Log(string.Format("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint));
+                _tracing.Warn(string.Format("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint));
                 return;
             }
             try

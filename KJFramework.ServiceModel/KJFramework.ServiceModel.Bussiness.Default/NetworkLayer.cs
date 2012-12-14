@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.HostChannels;
 using KJFramework.ServiceModel.Bussiness.Default.Centers;
@@ -11,6 +7,9 @@ using KJFramework.ServiceModel.Bussiness.Default.Messages;
 using KJFramework.ServiceModel.Bussiness.Default.Services;
 using KJFramework.ServiceModel.Bussiness.Default.Transactions;
 using KJFramework.Tracing;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace KJFramework.ServiceModel.Bussiness.Default
 {
@@ -168,7 +167,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default
                 ServiceHandle serviceHandle = ServiceCenter.GetHandle(requestServiceMessage.LogicalRequestAddress);
                 if (serviceHandle == null)
                 {
-                    Logs.Logger.Log("Cannot dispatch a request message to ServiceHandle, Invaild logical address. #address: " + requestServiceMessage.LogicalRequestAddress);
+                    _tracing.Warn("Cannot dispatch a request message to ServiceHandle, Invaild logical address. #address: " + requestServiceMessage.LogicalRequestAddress);
                     continue;
                 }
                 //≈…∑¢

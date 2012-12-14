@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using KJFramework.Basic.Enum;
 using KJFramework.Cache;
 using KJFramework.Cache.Cores;
 using KJFramework.Cache.Objects;
-using KJFramework.Logger;
 using KJFramework.Net.Channels.Receivers;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 
 namespace KJFramework.Net.Channels.Caches
@@ -37,6 +36,7 @@ namespace KJFramework.Net.Channels.Caches
 
         private readonly SocketAsyncEventArgs _target;
         private readonly IMemorySegment _segment;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (BuffSocketStub));
 
         /// <summary>
         ///     获取缓存目标
@@ -92,7 +92,7 @@ namespace KJFramework.Net.Channels.Caches
                     TcpTransportChannel channel = (TcpTransportChannel) stub.Tag;
                     if (e.SocketError != SocketError.Success && channel.IsConnected)
                     {
-                        Logs.Logger.Log(
+                        _tracing.Warn(
                             string.Format(
                                 "The target channel SendAsync status has incorrectly, so the framework decided to disconnect it.\r\nL: {0}\r\nR: {1}\r\nSocket-Error: {2}\r\nBytesTransferred: {3}\r\n",
                                 channel.LocalEndPoint, 
@@ -113,7 +113,7 @@ namespace KJFramework.Net.Channels.Caches
                     stub = (IFixedCacheStub<BuffSocketStub>)e.UserToken;
                     TcpAsynDataRecevier recevier = (TcpAsynDataRecevier)stub.Tag;
                     try { recevier.ProcessReceive(stub.Cache.Target, stub.Cache.Segment); }
-                    catch (System.Exception ex) { Logs.Logger.Log(ex, DebugGrade.High); }
+                    catch (System.Exception ex) { _tracing.Error(ex, null); }
                     finally { ChannelConst.BuffAsyncStubPool.Giveback(stub); }
 
                     #endregion

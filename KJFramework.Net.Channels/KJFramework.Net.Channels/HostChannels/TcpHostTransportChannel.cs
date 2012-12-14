@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
 using KJFramework.Basic.Enum;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
 using KJFramework.Net.Channels.Statistics;
 using KJFramework.Net.EventArgs;
 using KJFramework.Net.Listener;
 using KJFramework.Net.Listener.Asynchronous;
 using KJFramework.Statistics;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace KJFramework.Net.Channels.HostChannels
 {
@@ -51,6 +51,8 @@ namespace KJFramework.Net.Channels.HostChannels
 
         protected readonly int _port;
         protected BasicTcpAsynListenerV2<BasicPortListenerInfomation> _listener;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (TcpHostTransportChannel));
+
         /// <summary>
         ///     获取监听的端口
         /// </summary>
@@ -100,7 +102,7 @@ namespace KJFramework.Net.Channels.HostChannels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.Fatal, Logs.Name);
+                _tracing.Error(ex, null);
                 return false;
             }
         }
@@ -124,7 +126,7 @@ namespace KJFramework.Net.Channels.HostChannels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.Fatal, Logs.Name);
+                _tracing.Error(ex, null);
                 return false;
             }
         }

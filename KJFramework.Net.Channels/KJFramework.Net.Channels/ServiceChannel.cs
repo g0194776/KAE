@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using KJFramework.Basic.Enum;
-using KJFramework.Logger;
-using KJFramework.Logger.LogObject;
 using KJFramework.Net.Channel;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Statistics;
+using KJFramework.Tracing;
 
 namespace KJFramework.Net.Channels
 {
@@ -44,9 +43,14 @@ namespace KJFramework.Net.Channels
 
         #endregion
 
+        #region Members
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (ServiceChannel));
+
+        #endregion
+
         #region Implementation of IChannel<BasicChannelInfomation>
 
-        protected IDebugLogger<IDebugLog> _logger;
         protected BasicChannelInfomation _channelInfo;
         protected Dictionary<StatisticTypes, IStatistic> _statistics;
         protected bool _enable;
@@ -54,15 +58,6 @@ namespace KJFramework.Net.Channels
         protected DateTime _createTime;
         protected Guid _key;
         protected int _id;
-
-        /// <summary>
-        /// 获取或设置调试记录器
-        /// </summary>
-        public IDebugLogger<IDebugLog> Logger
-        {
-            get { return _logger; }
-            set { _logger = value; }
-        }
 
         /// <summary>
         /// 获取或设置当前通道信息
@@ -117,7 +112,7 @@ namespace KJFramework.Net.Channels
             catch (System.Exception ex)
             {
                 _communicationState = CommunicationStates.Faulte;
-                Logs.Logger.Log(ex, DebugGrade.Fatal, Logs.Name);
+                _tracing.Error(ex, null);
                 FaultedHandler(null);
                 throw;
             }
@@ -139,7 +134,7 @@ namespace KJFramework.Net.Channels
             catch (System.Exception ex)
             {
                 _communicationState = CommunicationStates.Faulte;
-                Logs.Logger.Log(ex, DebugGrade.Fatal, Logs.Name);
+                _tracing.Error(ex, null);
                 FaultedHandler(null);
                 throw;
             }
@@ -160,7 +155,7 @@ namespace KJFramework.Net.Channels
             catch (System.Exception ex)
             {
                 _communicationState = CommunicationStates.Faulte;
-                Logs.Logger.Log(ex, DebugGrade.Fatal, Logs.Name);
+                _tracing.Error(ex, null);
                 FaultedHandler(null);
                 throw;
             }

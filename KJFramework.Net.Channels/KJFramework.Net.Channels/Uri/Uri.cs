@@ -1,6 +1,5 @@
+using KJFramework.Tracing;
 using System;
-using KJFramework.Basic.Enum;
-using KJFramework.Logger;
 
 namespace KJFramework.Net.Channels.Uri
 {
@@ -16,6 +15,7 @@ namespace KJFramework.Net.Channels.Uri
         protected String _url;
         protected String _splitFlag = "://";
         protected string _serverUri;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Uri));
 
         /// <summary>
         ///     获取或设置完整的URL
@@ -125,7 +125,7 @@ namespace KJFramework.Net.Channels.Uri
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.High, Logs.Name);
+                _tracing.Error(ex, null);
                 throw new System.Exception("非法的资源地址标示。");
             }
         }

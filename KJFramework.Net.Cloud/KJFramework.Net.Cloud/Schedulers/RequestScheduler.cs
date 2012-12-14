@@ -1,5 +1,4 @@
 using KJFramework.Basic.Enum;
-using KJFramework.Logger;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Cloud.Nodes;
 using KJFramework.Net.Cloud.Objects;
@@ -108,7 +107,7 @@ namespace KJFramework.Net.Cloud.Schedulers
                 //can not found any processor can process it.
                 if (processor == null)
                 {
-                    Logs.Logger.Log("can not found any processor can process it. MESSAGE TYPE = " + message.GetType());
+                    _tracing.Info("can not found any processor can process it. MESSAGE TYPE = " + message.GetType());
                     return;
                 }
                 //rent a task to process it.
@@ -116,7 +115,7 @@ namespace KJFramework.Net.Cloud.Schedulers
                 //rent successed.
                 if (task == null)
                 {
-                    Logs.Logger.Log("Can not rent a IRequestTask<T>, because return value is null.");
+                    _tracing.Info("Can not rent a IRequestTask<T>, because return value is null.");
                     return;
                 }
                 task.Node = networkNode;
@@ -258,7 +257,7 @@ namespace KJFramework.Net.Cloud.Schedulers
         void TaskExecuteTimeout(object sender, KJFramework.EventArgs.LightSingleArgEventArgs<T> e)
         {
             IRequestTask<T> task = (IRequestTask<T>)sender;
-            Logs.Logger.Log(String.Format("Request task {0} had timeout ! when it process message {1}.", task.TaskId, task.Message.GetType()));
+            _tracing.Info(String.Format("Request task {0} had timeout ! when it process message {1}.", task.TaskId, task.Message.GetType()));
             Giveback(task);
         }
         //execute successed.
@@ -275,13 +274,13 @@ namespace KJFramework.Net.Cloud.Schedulers
                     IMessageTransportChannel<T> channel = task.Channel;
                     if (channel == null)
                     {
-                        Logs.Logger.Log("This result message lost the org transport channel.");
+                        _tracing.Info("This result message lost the org transport channel.");
                         return;
                     }
                     //disconencted.
                     if (!channel.IsConnected)
                     {
-                        Logs.Logger.Log("Remote connection has been disconnected. #key: " + channel.Key);
+                        _tracing.Info("Remote connection has been disconnected. #key: " + channel.Key);
                         return;
                     }
                     channel.Send(message);
@@ -296,7 +295,7 @@ namespace KJFramework.Net.Cloud.Schedulers
         void TaskExecuteFail(object sender, System.EventArgs e)
         {
             IRequestTask<T> task = (IRequestTask<T>)sender;
-            Logs.Logger.Log(String.Format("Request task {0} has failed ! when it process message {1}.", task.TaskId, task.Message.GetType()));
+            _tracing.Info(String.Format("Request task {0} has failed ! when it process message {1}.", task.TaskId, task.Message.GetType()));
             Giveback(task);
         }
 

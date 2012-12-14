@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using KJFramework.Basic.Enum;
+﻿using KJFramework.Basic.Enum;
 using KJFramework.EventArgs;
 using KJFramework.IO.Buffers;
-using KJFramework.Logger;
-using KJFramework.Logger.LogObject;
 using KJFramework.Net.Channel;
 using KJFramework.Net.Channels.Buffers;
 using KJFramework.Net.Channels.Enums;
@@ -15,6 +9,10 @@ using KJFramework.Net.Channels.Managers;
 using KJFramework.Net.Channels.Parsers;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Statistics;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
 
 namespace KJFramework.Net.Channels
 {
@@ -93,15 +91,6 @@ namespace KJFramework.Net.Channels
         #endregion
 
         #region Implementation of IChannel<BasicChannelInfomation>
-
-        /// <summary>
-        /// 获取或设置调试记录器
-        /// </summary>
-        public IDebugLogger<IDebugLog> Logger
-        {
-            get { return _rawChannel.Logger; }
-            set { _rawChannel.Logger = value; }
-        }
 
         /// <summary>
         /// 获取或设置当前通道信息

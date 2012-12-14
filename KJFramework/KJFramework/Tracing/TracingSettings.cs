@@ -10,14 +10,12 @@ namespace KJFramework.Tracing
     {
         private const string Section = "Tracing";
 
-        private static int _version = 0;
-        private static Action _handler = null;
+        private static int _version;
+        private static Action _handler;
 
         internal static void WatchProviderChange(Action handler)
         {
             _handler = handler;
-            //CfgLoader.WatchChange(Section, "Provider", OnTracingProviderChanged);
-            //CfgLoader.WatchChange(Section, "Datasource", OnTracingProviderChanged);
         }
 
         private static void OnTracingProviderChanged(int version, string section, string name)

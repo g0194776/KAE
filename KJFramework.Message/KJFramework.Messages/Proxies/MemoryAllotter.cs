@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using KJFramework.Logger;
+using KJFramework.Tracing;
 
 namespace KJFramework.Messages.Proxies
 {
@@ -24,6 +25,7 @@ namespace KJFramework.Messages.Proxies
 
         #region Members
 
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (MemoryAllotter));
         private Stack<IMemorySegment> _segments = new Stack<IMemorySegment>();
         private object _lockObj = new object();
         private bool _initialized;
@@ -78,7 +80,7 @@ namespace KJFramework.Messages.Proxies
             }
             _initialized = true;
             if(AllowPrintInfo)
-                Logs.Logger.Log(string.Format("\r\n[KJFramework.Message Unmanaged Memory Info]\r\n#Unmanaged Memory: {0} bytes.\r\n#Segments: {1}.", totalSize, Multiples));
+                _tracing.Info(string.Format("\r\n[KJFramework.Message Unmanaged Memory Info]\r\n#Unmanaged Memory: {0} bytes.\r\n#Segments: {1}.", totalSize, Multiples));
         }
 
         /// <summary>

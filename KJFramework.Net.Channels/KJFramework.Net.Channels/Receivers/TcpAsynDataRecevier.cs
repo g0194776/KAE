@@ -1,7 +1,5 @@
-using KJFramework.Basic.Enum;
 using KJFramework.Cache.Cores;
 using KJFramework.Cache.Objects;
-using KJFramework.Logger;
 using KJFramework.Net.Channels.Caches;
 using KJFramework.Net.Channels.Events;
 using KJFramework.Net.EventArgs;
@@ -88,7 +86,7 @@ namespace KJFramework.Net.Channels.Receivers
             {
                 //接收成功
                 try { ProcessData(segment, e.BytesTransferred); }
-                catch (System.Exception ex) { Logs.Logger.Log(ex, DebugGrade.Standard); }
+                catch (System.Exception ex) { _tracing.Error(ex, null); }
                 finally { StartReceive(); }
             }
             else Stop();
@@ -219,7 +217,7 @@ namespace KJFramework.Net.Channels.Receivers
                     _socket.Shutdown(SocketShutdown.Both);
                     _socket.Close();
                 }
-                catch (System.Exception e) { Logs.Logger.Log(e); }
+                catch (System.Exception e) { _tracing.Error(e, null); }
                 _socket = null;
                 _state = false;
             }

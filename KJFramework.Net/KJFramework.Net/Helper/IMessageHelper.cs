@@ -1,6 +1,4 @@
 ﻿using System;
-using KJFramework.Logger.LogObject;
-using KJFramework.Logger;
 
 namespace KJFramework.Net.Helper
 {
@@ -9,10 +7,6 @@ namespace KJFramework.Net.Helper
     /// </summary>
     public interface IMessageHelper
     {
-        /// <summary>
-        ///     获取或设置异常记录器
-        /// </summary>
-        IDebugLogger<IDebugLog> DebugLogger { get; set; }
         /// <summary>
         ///     获取或设置消息头结束标记
         /// </summary>

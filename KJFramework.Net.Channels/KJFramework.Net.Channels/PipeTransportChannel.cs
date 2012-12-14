@@ -1,6 +1,4 @@
-using KJFramework.Basic.Enum;
 using KJFramework.EventArgs;
-using KJFramework.Logger;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.Transactions;
 using KJFramework.Net.Channels.Uri;
@@ -196,7 +194,7 @@ namespace KJFramework.Net.Channels
                     }
                     catch (System.Exception ex)
                     {
-                        Logs.Logger.Log(ex, DebugGrade.Standard, Logs.Name);
+                        _tracing.Error(ex, null);
                     }
                     _stream = null;
                 }
@@ -242,7 +240,7 @@ namespace KJFramework.Net.Channels
             {
                 if (data.Length > ChannelConst.MaxMessageDataLength)
                 {
-                    Logs.Logger.Log(string.Format("#Illegal data size: {0}, current allow size: {1}", data.Length, ChannelConst.MaxMessageDataLength));
+                    _tracing.Warn(string.Format("#Illegal data size: {0}, current allow size: {1}", data.Length, ChannelConst.MaxMessageDataLength));
                     return -1;
                 }
                 //ÅÐ¶ÏÁ÷×´Ì¬
@@ -255,7 +253,7 @@ namespace KJFramework.Net.Channels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.Standard, Logs.Name);
+                _tracing.Error(ex, null);
                 return -1;
             }
         }

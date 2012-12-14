@@ -1,6 +1,3 @@
-using KJFramework.Logger;
-using KJFramework.Logger.LogObject;
-
 namespace KJFramework.Net.Channel
 {
     /// <summary>
@@ -10,10 +7,6 @@ namespace KJFramework.Net.Channel
     public interface IChannel<TInfomation>
         where TInfomation : BasicChannelInfomation, new()
     {
-        /// <summary>
-        ///     获取或设置调试记录器
-        /// </summary>
-        IDebugLogger<IDebugLog> Logger { get; set; }
         /// <summary>
         ///     获取或设置当前通道信息
         /// </summary>

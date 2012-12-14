@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using KJFramework.Logger;
-using KJFramework.Logger.LogObject;
 using KJFramework.Net.Helper;
 
 namespace KJFramework.Net.Buffer
@@ -46,23 +44,6 @@ namespace KJFramework.Net.Buffer
         }
 
         #region IBufferPool 成员
-
-        private IDebugLogger<IDebugLog> _debuglogger;
-
-        /// <summary>
-        ///     获取或设置异常记录器
-        /// </summary>
-        public IDebugLogger<IDebugLog> DebugLogger
-        {
-            get
-            {
-                return _debuglogger;
-            }
-            set
-            {
-                _debuglogger = value;
-            }
-        }
 
         /// <summary>
         ///     向缓冲区写入指定数据

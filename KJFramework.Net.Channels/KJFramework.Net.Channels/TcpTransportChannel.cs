@@ -1,6 +1,5 @@
 using KJFramework.Basic.Enum;
 using KJFramework.Cache.Cores;
-using KJFramework.Logger;
 using KJFramework.Net.Channels.Caches;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.Events;
@@ -215,7 +214,7 @@ namespace KJFramework.Net.Channels
                     }
                     catch(System.Exception ex)
                     {
-                        Logs.Logger.Log(ex, DebugGrade.Standard, Logs.Name);
+                        _tracing.Error(ex, null);
                     }
                 }
                 _socket = null;
@@ -239,7 +238,7 @@ namespace KJFramework.Net.Channels
             {
                 _connected = false;
                 _communicationState = CommunicationStates.Closed;
-                Logs.Logger.Log(ex, DebugGrade.Standard, Logs.Name);
+                _tracing.Error(ex, null);
             }
         }
 
@@ -277,17 +276,7 @@ namespace KJFramework.Net.Channels
         /// <returns>返回尝试后的状态</returns>
         public bool Reconnect()
         {
-            #if (DEBUG)
-            {
-                Logs.Logger.Log(String.Format("正在尝试重新建立与{0}的连接......", _address));
-            }
-            #endif
             Connect();
-            #if (DEBUG)
-            {
-                Logs.Logger.Log(String.Format("重新建立与{0}的连接......{1}", _address, (_connected ? "成功" : "失败")));
-            }
-            #endif
             return _connected;
         }
 
@@ -305,14 +294,14 @@ namespace KJFramework.Net.Channels
                 if (_socket == null || !_socket.Connected) return -1;
                 if (data.Length > ChannelConst.MaxMessageDataLength)
                 {
-                    Logs.Logger.Log(string.Format("#Illegal data size: {0}, current allow size: {1}", data.Length, ChannelConst.MaxMessageDataLength));
+                    _tracing.Warn(string.Format("#Illegal data size: {0}, current allow size: {1}", data.Length, ChannelConst.MaxMessageDataLength));
                     return -1;
                 }
                 //get fixed cache.
                 IFixedCacheStub<NoBuffSocketStub> stub = ChannelConst.NoBuffAsyncStubPool.Rent();
                 if (stub == null)
                 {
-                    Logs.Logger.Log("Cannot rent a socket async event args cache.");
+                    _tracing.Warn("Cannot rent a socket async event args cache.");
                     return -2;
                 }
                 stub.Tag = this;
@@ -333,7 +322,7 @@ namespace KJFramework.Net.Channels
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.Standard, Logs.Name);
+                _tracing.Error(ex, null);
                 return sendCount;
             }
         }

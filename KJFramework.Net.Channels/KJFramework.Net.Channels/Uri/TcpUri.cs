@@ -1,6 +1,5 @@
+using KJFramework.Tracing;
 using System;
-using KJFramework.Basic.Enum;
-using KJFramework.Logger;
 
 namespace KJFramework.Net.Channels.Uri
 {
@@ -15,6 +14,7 @@ namespace KJFramework.Net.Channels.Uri
         protected String _serviceName;
         private int _port;
         protected bool _isHost;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (TcpUri));
 
         /// <summary>
         ///     获取或设置服务名称
@@ -126,7 +126,7 @@ namespace KJFramework.Net.Channels.Uri
             }
             catch (System.Exception ex)
             {
-                Logs.Logger.Log(ex, DebugGrade.High, Logs.Name);
+                _tracing.Error(ex, null);
                 throw new System.Exception("非法的TCP资源地址标示。");
             }
         }
