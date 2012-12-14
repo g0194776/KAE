@@ -88,5 +88,52 @@ namespace KJFramework.Data.Synchronization.UnitTest
             Assert.IsTrue(((IComparable<Test>)recvKey).CompareTo(testKey) == 0);
             Assert.IsTrue(((IComparable<Test>)recvValue).CompareTo(testValue) == 0);
         }
+
+
+        /// <summary>
+        ///     广播者自动重连测试
+        ///     <para>Key: string, Value: string</para>
+        /// </summary>
+        [TestMethod]
+        public void BroadcasterReconnectTest()
+        {
+            string stringKey = "a";
+            string stringValue = "b";
+            string recvKey = null;
+            string recvValue = null;
+            IDataBroadcaster<string, string> broadcaster = DataBroadcasterFactory.Instance.Create<string, string>("Catalog_string", new NetworkResource("127.0.0.1:8888"), true);
+            Assert.IsTrue(broadcaster.State == BroadcasterState.Reconnecting);
+            IDataPublisher<string, string> dataPublisher = DataPublisherFactory.Instance.Create<string, string>("Catalog_string", new NetworkResource(8888));
+            Assert.IsTrue(dataPublisher.Open() == PublisherState.Open);
+            //10s.
+            Thread.Sleep(10000);
+            Assert.IsTrue(broadcaster.State == BroadcasterState.Connected);
+            IRemoteDataSubscriber<string, string> remoteDataSubscriber = DataSubscriberFactory.Instance.Create<string, string>("Catalog_string", new NetworkResource("127.0.0.1:8888"));
+            AutoResetEvent are = new AutoResetEvent(false);
+            remoteDataSubscriber.MessageRecv += delegate(object sender, LightSingleArgEventArgs<DataRecvEventArgs<string, string>> e)
+            {
+                recvKey = e.Target.Key;
+                recvValue = e.Target.Value;
+                if (e.Target != null)
+                {
+                    Console.WriteLine("Receive Key:" + e.Target.Key);
+                    Console.WriteLine("Receive Value:" + e.Target.Value);
+                }
+                are.Set();
+            };
+            remoteDataSubscriber.Open();
+            if (!broadcaster.Broadcast(stringKey, stringValue)) throw new System.Exception("Broadcaster failed!");
+            Console.WriteLine("Send Key:" + stringKey);
+            Console.WriteLine("Send Value:" + stringValue);
+            if (!are.WaitOne(60 * 1000)) throw new System.Exception("Broadcaster Timeout!");
+            remoteDataSubscriber.Close();
+            dataPublisher.Close();
+            Thread.Sleep(2000);
+            Assert.IsTrue(broadcaster.State == BroadcasterState.Reconnecting);
+            broadcaster.Close();
+            Assert.IsTrue(broadcaster.State == BroadcasterState.Disconnected);
+            Assert.IsTrue(recvKey.CompareTo(stringKey) == 0);
+            Assert.IsTrue(recvValue.CompareTo(stringValue) == 0);
+        }
     }
 }

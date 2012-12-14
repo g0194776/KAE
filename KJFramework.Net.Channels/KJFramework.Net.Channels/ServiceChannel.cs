@@ -51,13 +51,12 @@ namespace KJFramework.Net.Channels
 
         #region Implementation of IChannel<BasicChannelInfomation>
 
+        protected bool _enable;
+        protected readonly Guid _key;
+        protected DateTime _createTime;
         protected BasicChannelInfomation _channelInfo;
         protected Dictionary<StatisticTypes, IStatistic> _statistics;
-        protected bool _enable;
         protected CommunicationStates _communicationState;
-        protected DateTime _createTime;
-        protected Guid _key;
-        protected int _id;
 
         /// <summary>
         /// 获取或设置当前通道信息
@@ -291,15 +290,6 @@ namespace KJFramework.Net.Channels
         public Guid Key
         {
             get { return _key; }
-        }
-
-        /// <summary>
-        ///     获取或设置通道编号
-        /// </summary>
-        public int Id
-        {
-            get { return _id; }
-            set { _id = value; }
         }
 
         #endregion

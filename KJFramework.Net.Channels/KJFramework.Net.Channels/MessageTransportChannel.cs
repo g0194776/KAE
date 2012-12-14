@@ -237,15 +237,6 @@ namespace KJFramework.Net.Channels
             get { return _key; }
         }
 
-        /// <summary>
-        ///     获取或设置通道编号
-        /// </summary>
-        public int Id
-        {
-            get { return _rawChannel.Id; }
-            set { _rawChannel.Id = value; }
-        }
-
         #endregion
 
         #region Implementation of ICommunicationChannelAddress

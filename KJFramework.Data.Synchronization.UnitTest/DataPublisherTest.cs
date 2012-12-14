@@ -169,11 +169,13 @@ namespace KJFramework.Data.Synchronization.UnitTest
             Assert.IsTrue(publisher.State == PublisherState.Prepared);
             Assert.IsTrue(publisher.Open() == PublisherState.Open);
             Assert.IsTrue(publisher.State == PublisherState.Open);
+            Assert.IsTrue(publisher.SubscriberCount == 0);
             IRemoteDataSubscriber<string, string> subscriber = DataSubscriberFactory.Instance.Create<string, string>("PublishTest", new NetworkResource("127.0.0.1:9898"));
             Assert.IsNotNull(subscriber);
             Assert.IsTrue(subscriber.State == SubscriberState.ToBeSubscribe);
             subscriber.Open();
             Assert.IsTrue(subscriber.State == SubscriberState.Subscribed);
+            Assert.IsTrue(publisher.SubscriberCount == 1);
             AutoResetEvent resetEvent = new AutoResetEvent(false);
             subscriber.MessageRecv += delegate (object sender, LightSingleArgEventArgs<DataRecvEventArgs<string, string>> e)
             {
@@ -183,7 +185,9 @@ namespace KJFramework.Data.Synchronization.UnitTest
             };
             publisher.Publish("K_user", "V_pass");
             if (!resetEvent.WaitOne(10000)) throw new System.Exception("Wait publish message timeout!");
-            Thread.Sleep(5000);
+            subscriber.Close();
+            Thread.Sleep(2000);
+            Assert.IsTrue(publisher.SubscriberCount == 0);
         }
 
         #endregion

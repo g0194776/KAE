@@ -96,8 +96,7 @@ namespace KJFramework.Data.Synchronization.Transactions
                 //calc REQ time.
                 RequestTime = DateTime.Now;
                 _tracing.Info("SendCount: {0}\r\nL: {1}\r\nR: {2}\r\n{3}", sendCount, _channel.LocalEndPoint, _channel.RemoteEndPoint, message.ToString());
-                //30s
-                GetLease().Change(DateTime.Now.AddSeconds(30));
+                GetLease().Change(DateTime.Now.Add(Net.Transaction.Global.TransactionTimeout));
             }
             catch
             {

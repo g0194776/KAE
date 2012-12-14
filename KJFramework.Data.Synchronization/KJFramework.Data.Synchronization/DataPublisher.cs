@@ -3,6 +3,7 @@ using KJFramework.Data.Synchronization.EventArgs;
 using KJFramework.Data.Synchronization.Messages;
 using KJFramework.Data.Synchronization.Policies;
 using KJFramework.Messages.Helpers;
+using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
 using System;
@@ -74,7 +75,8 @@ namespace KJFramework.Data.Synchronization
         protected readonly IPublisherPolicy _policy;
         protected INetworkResource _resource;
         protected PublisherState _state = PublisherState.Unknown;
-        protected Dictionary<string, ILocalDataSubscriber> _subscribers = new Dictionary<string, ILocalDataSubscriber>();
+        protected IDictionary<Guid, ILocalDataSubscriber> _subscribers = new Dictionary<Guid, ILocalDataSubscriber>();
+        protected IDictionary<Guid, IMessageTransportChannel<BaseMessage>> _broadcasters = new Dictionary<Guid, IMessageTransportChannel<BaseMessage>>();
         private static readonly object _lockSubObj = new object();
 
         /// <summary>
@@ -163,6 +165,16 @@ namespace KJFramework.Data.Synchronization
                     }
                     _subscribers.Clear();
                 }
+                //disconnect all Broadcaster.
+                lock (_broadcasters)
+                {
+                    foreach (var pair in _broadcasters)
+                    {
+                        pair.Value.Disconnected -= BroadcasterDisconnected;
+                        pair.Value.Close();
+                    }
+                    _broadcasters.Clear();
+                }
             }
         }
 
@@ -226,7 +238,7 @@ namespace KJFramework.Data.Synchronization
                 if (req.Catalog.ToLower() != _catalog.ToLower()) return;
                 LocalDataSubscriber subscriber = new LocalDataSubscriber(_policy, args.Channel);
                 subscriber.Disconnected += SubscriberDisconnected;
-                lock (_lockSubObj) _subscribers.Add(subscriber.Id.ToString(), subscriber);
+                lock (_lockSubObj) _subscribers.Add(subscriber.Id, subscriber);
                 e.Target.Transaction.SendResponse(new SubscribeResponseMessage
                                                       {
                                                           Policy = (PublisherPolicy)_policy,
@@ -247,19 +259,35 @@ namespace KJFramework.Data.Synchronization
                 lock (_lockSubObj)
                 {
                     ILocalDataSubscriber subscriber;
-                    if (!_subscribers.TryGetValue(req.Id.ToString(), out subscriber)) return;
+                    if (!_subscribers.TryGetValue(req.Id, out subscriber)) return;
                     subscriber.Disconnected -= SubscriberDisconnected;
                     subscriber.Close();
-                    _subscribers.Remove(req.Id.ToString());
+                    _subscribers.Remove(req.Id);
                 }
                 e.Target.Transaction.SendResponse(new UnSubscribeResponseMessage());
                 return;
             }
 
+            #endregion
+
+            #region Broadcast.
+
             if (msg.MessageIdentity.ProtocolId == 3 && msg.MessageIdentity.ServiceId == 0 && msg.MessageIdentity.DetailsId == 0)
             {
                 BroadcastRequestMessage broadcastRequest = (BroadcastRequestMessage)msg;
                 if (broadcastRequest.Catalog.ToLower() != _catalog.ToLower()) return;
+                #region Add to broadcaster list.
+
+                lock (_broadcasters)
+                {
+                    if(!_broadcasters.ContainsKey(e.Target.Channel.Key))
+                    {
+                        _broadcasters.Add(e.Target.Channel.Key, e.Target.Channel);
+                        e.Target.Channel.Disconnected += BroadcasterDisconnected;
+                    }
+                }
+
+                #endregion
                 //send rsp at first.
                 e.Target.Transaction.SendResponse(new BroadcastResponseMessage());
                 //broadcast it for each subscriber.
@@ -276,11 +304,20 @@ namespace KJFramework.Data.Synchronization
             #endregion
         }
 
+        //broadcaster disconnected.
+        void BroadcasterDisconnected(object sender, System.EventArgs e)
+        {
+            IMessageTransportChannel<BaseMessage> msgChannel = (IMessageTransportChannel<BaseMessage>) sender;
+            msgChannel.Disconnected -= BroadcasterDisconnected;
+            lock (_broadcasters) _broadcasters.Remove(msgChannel.Key);
+        }
+
+        //subscriber disconnected.
         void SubscriberDisconnected(object sender, System.EventArgs e)
         {
             ILocalDataSubscriber subscriber = (ILocalDataSubscriber)sender;
             subscriber.Disconnected -= SubscriberDisconnected;
-            lock (_lockSubObj) _subscribers.Remove(subscriber.Id.ToString());
+            lock (_lockSubObj) _subscribers.Remove(subscriber.Id);
         }
 
         #endregion

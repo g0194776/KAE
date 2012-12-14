@@ -6,7 +6,7 @@ namespace KJFramework.Net.Transaction
     /// <summary>
     ///     全局配置项
     /// </summary>
-    internal static class Global
+    public static class Global
     {
         /// <summary>
         ///     全局的事务超时时间

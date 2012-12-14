@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using KJFramework.IO.Helper;
+﻿using KJFramework.IO.Helper;
 using KJFramework.Messages.Engine;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.Objects;
 using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace KJFramework.Net.Transaction.ProtocolStack
 {

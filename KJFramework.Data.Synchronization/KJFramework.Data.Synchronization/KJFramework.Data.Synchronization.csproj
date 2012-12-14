@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\BroadcasterState.cs" />
     <Compile Include="Factories\DataBroadcasterFactory.cs" />
     <Compile Include="Messages\BroadcastResponseMessage.cs" />
     <Compile Include="Configurations\SyncDataConfigSection.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="Messages\BroadcastRequestMessage.cs" />
     <Compile Include="NetworkResource.cs" />
     <Compile Include="PublisherResourceStub.cs" />
-    <Compile Include="RemoteDataBroadcaster.cs" />
     <Compile Include="RemoteDataSubscriber.cs" />
     <Compile Include="SyncCounter.cs" />
     <Compile Include="IDataPublisher.cs" />

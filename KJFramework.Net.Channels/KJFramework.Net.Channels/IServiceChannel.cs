@@ -16,9 +16,5 @@ namespace KJFramework.Net.Channels
         ///     获取通道唯一标示
         /// </summary>
         Guid Key { get; }
-        /// <summary>
-        ///     获取或设置通道编号
-        /// </summary>
-        int Id { get; set; }
     }
 }
