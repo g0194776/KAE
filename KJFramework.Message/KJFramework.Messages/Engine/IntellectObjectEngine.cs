@@ -16,7 +16,7 @@ namespace KJFramework.Messages.Engine
     /// <summary>
     ///     智能对象引擎，提供了相关的基本操作。
     /// </summary>
-    public class IntellectObjectEngine
+    public sealed class IntellectObjectEngine
     {
         #region Members
 

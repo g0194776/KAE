@@ -143,10 +143,21 @@ namespace KJFramework.Messages.TypeProcessors
                 fixed (byte* old = &data[offset])
                 {
                     int charCount = Encoding.UTF8.GetCharCount(old, length);
-                    fixed (char* newObj = new char[charCount])
+                    //allcate memory at thread stack.
+                    if(charCount <= MemoryAllotter.CharSizeCanAllcateAtStack)
                     {
+                        char* newObj = stackalloc char[charCount];
                         int len = Encoding.UTF8.GetChars(old, length, newObj, charCount);
                         result.SetValue(instance, new string(newObj, 0, len));
+                    }
+                    //allocate memory at heap.
+                    else
+                    {
+                        fixed (char* newObj = new char[charCount])
+                        {
+                            int len = Encoding.UTF8.GetChars(old, length, newObj, charCount);
+                            result.SetValue(instance, new string(newObj, 0, len));
+                        }
                     }
                 }
             }

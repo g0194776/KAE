@@ -3,7 +3,6 @@ using System.Text;
 using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Exceptions;
-using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Proxies;
 
 namespace KJFramework.Messages.TypeProcessors
@@ -164,10 +163,21 @@ namespace KJFramework.Messages.TypeProcessors
                         fixed (byte* old = &data[innerOffset])
                         {
                             int charCount = Encoding.UTF8.GetCharCount(old, size);
-                            fixed (char* newObj = new char[charCount])
+                            //allcate memory at thread stack.
+                            if(charCount <= MemoryAllotter.CharSizeCanAllcateAtStack)
                             {
+                                char* newObj = stackalloc char[charCount];
                                 int len = Encoding.UTF8.GetChars(old, size, newObj, charCount);
                                 str = new string(newObj, 0, len);
+                            }
+                            //allocate memory at heap.
+                            else
+                            {
+                                fixed (char* newObj = new char[charCount])
+                                {
+                                    int len = Encoding.UTF8.GetChars(old, size, newObj, charCount);
+                                    str = new string(newObj, 0, len);
+                                }
                             }
                         }
                     }

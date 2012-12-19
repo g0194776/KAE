@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using KJFramework.Logger;
 using KJFramework.Tracing;
 
 namespace KJFramework.Messages.Proxies
@@ -9,7 +8,7 @@ namespace KJFramework.Messages.Proxies
     /// <summary>
     ///     内存申请器
     /// </summary>
-    public unsafe class MemoryAllotter
+    public sealed unsafe class MemoryAllotter
     {
         #region Constructor
 
@@ -26,7 +25,7 @@ namespace KJFramework.Messages.Proxies
         #region Members
 
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (MemoryAllotter));
-        private Stack<IMemorySegment> _segments = new Stack<IMemorySegment>();
+        private readonly Stack<IMemorySegment> _segments = new Stack<IMemorySegment>();
         private object _lockObj = new object();
         private bool _initialized;
         private byte* _data;
@@ -50,6 +49,10 @@ namespace KJFramework.Messages.Proxies
         ///     获取或设置一个值，该值标示了当前框架的实体类解析操作是否支持兼容模式
         /// </summary>
         public static bool AllowCompatibleMode = true;
+        /// <summary>
+        ///     获取一个值，如果反序列化一个字符串的时候，该字符串的字节数量小于或者等于此值，则将会从线程栈上分配内存
+        /// </summary>
+        public static readonly int CharSizeCanAllcateAtStack = 32;
         /// <summary>
         ///     内存申请器
         /// </summary>
