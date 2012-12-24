@@ -640,7 +640,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(proxy.SegmentCount == 1);
             proxy.WriteString("kevin");
             Assert.IsTrue(proxy.SegmentCount == 2);
-            byte[] data = proxy.GetBytes(true);
+            byte[] data = proxy.GetBytes();
             Assert.IsNotNull(data);
             Assert.IsTrue(proxy.SegmentCount == 0);
             Assert.IsTrue(data.Length == MemoryAllotter.SegmentSize + "kevin".Length);
@@ -673,7 +673,7 @@ namespace KJFramework.Messages.UnitTest
             //base on zero.
             Assert.IsTrue(position.SegmentIndex == 2);
             Assert.IsTrue(position.SegmentOffset == 4);
-            byte[] data = proxy.GetBytes(true);
+            byte[] data = proxy.GetBytes();
             Assert.IsTrue(proxy.SegmentCount == 0);
             Assert.IsNotNull(data);
             Assert.IsTrue(data.Length == elements * 4);

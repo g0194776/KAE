@@ -654,6 +654,12 @@ namespace KJFramework.Messages.UnitTest
         public TimeSpan? M { get; set; }
     }
 
+    internal class Test64 : IntellectObject
+    {
+        [IntellectProperty(0)]
+        public int X { get; set; }
+    }
+
     public class CMode : IntellectObject
     {
         [IntellectProperty(0)]
@@ -3752,6 +3758,26 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.N == Guid.Empty);
             Assert.IsTrue(newObj.M == new TimeSpan(1, 0, 0));
             Console.WriteLine(newObj);
+        }
+
+        [TestMethod]
+        [Description("将一个定义为非公共开类转换为二进制数据测试")]
+        public void BindUnpublicClassTest()
+        {
+            Test64 test64 = new Test64 { X = 3 };
+            System.Exception throwEx = null;
+            try
+            {
+                test64.Bind();
+            }
+            catch (System.Exception ex)
+            {
+                throwEx = ex;
+            }
+            Assert.IsFalse(test64.IsBind);
+            Assert.IsNotNull(throwEx);
+            Console.WriteLine(throwEx.Message);
+            Assert.IsTrue(throwEx is MethodAccessException);
         }
 
         public static void PrintBytes(byte[] data)

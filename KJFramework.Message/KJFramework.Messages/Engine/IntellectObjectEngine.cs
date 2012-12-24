@@ -57,15 +57,23 @@ namespace KJFramework.Messages.Engine
         /// <exception cref="PropertyNullValueException">字段相关的Attribute.IsRequire = true, 并且该字段的值为null</exception>
         /// <exception cref="NotSupportedException">系统不支持的序列化类型</exception>
         /// <exception cref="DefineNoMeaningException">无意义的智能字段Attribute值</exception>
+        /// <exception cref="MethodAccessException">类型权限定义错误</exception>
         /// <exception cref="Exception">内部错误</exception>
         public static byte[] ToBytes(IIntellectObject obj)
         {
-            MemoryAllotter.Instance.Initialize();
             if (obj == null) return null;
-            using (IMemorySegmentProxy proxy = MemorySegmentProxyFactory.Create())
+            MemoryAllotter.Instance.Initialize();
+            IMemorySegmentProxy proxy = null;
+            try
             {
+                proxy = MemorySegmentProxyFactory.Create();
                 ToBytes(obj, proxy);
-                return proxy.GetBytes(true);
+                return proxy.GetBytes();
+            }
+            catch
+            {
+                if (proxy != null) proxy.Dispose();
+                throw;
             }
         }
 

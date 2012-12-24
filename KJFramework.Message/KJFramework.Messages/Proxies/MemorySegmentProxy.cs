@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using KJFramework.Core.Native;
 using KJFramework.Messages.Helpers;
@@ -16,13 +17,12 @@ namespace KJFramework.Messages.Proxies
     {
         #region Members
 
-        private bool _dispose;
         private int _currentIndex;
         private IList<IMemorySegment> _segments = new List<IMemorySegment>();
         /// <summary>
         ///     获取当前代理器内部所包含的内存片段个数
         /// </summary>
-        public int SegmentCount { get { return _segments.Count; } }
+        public int SegmentCount { get { return _segments == null ? 0 : _segments.Count; } }
 
         #endregion
 
@@ -346,31 +346,8 @@ namespace KJFramework.Messages.Proxies
         /// <param name="value">指定类型的值</param>
         public void WriteString(string value)
         {
-            IMemorySegment segment = GetSegment(_currentIndex);
             byte[] data = Encoding.UTF8.GetBytes(value);
-            uint remainingSize, trueRemainingSize;
-            if (segment.EnsureSize((trueRemainingSize = (uint)data.Length), out remainingSize))
-                fixed (byte* pByte = data) segment.WriteMemory(new IntPtr(pByte), (uint)data.Length);
-            else
-            {
-                fixed(byte* pByte = data)
-                {
-                    uint usedByte = 0U;
-                    while (trueRemainingSize > 0U)
-                    {
-                        if (remainingSize > 0U)
-                        {
-                            segment.WriteMemory(new IntPtr(pByte + usedByte), remainingSize);
-                            trueRemainingSize -= remainingSize;
-                            usedByte += remainingSize;
-                        }
-                        segment = GetSegment(++_currentIndex);
-                        if (!segment.EnsureSize(trueRemainingSize, out remainingSize)) continue;
-                        segment.WriteMemory(new IntPtr(pByte + usedByte), trueRemainingSize);
-                        break;
-                    }
-                }
-            }
+            WriteMemory(data, 0U, (uint) data.Length);
         }
 
         /// <summary>
@@ -721,20 +698,54 @@ namespace KJFramework.Messages.Proxies
         }
 
         /// <summary>
+        ///     写入一个指定类型的值
+        /// </summary>
+        /// <param name="data">需要写入的内存</param>
+        /// <param name="offset">起始内存偏移</param>
+        /// <param name="length">写入长度</param>
+        public void WriteMemory(byte[] data, uint offset, uint length)
+        {
+            IMemorySegment segment = GetSegment(_currentIndex);
+            uint remainingSize;
+            uint continueSize = 0U;
+            if (segment.EnsureSize(length, out remainingSize)) segment.WriteMemory(data, offset, length);
+            else
+            {
+                uint trueRemainingSize = length;
+                fixed (byte* pData = &data[offset])
+                {
+                    do
+                    {
+                        if (remainingSize > 0U)
+                        {
+                            segment.WriteMemory(new IntPtr(pData + continueSize), remainingSize);
+                            trueRemainingSize -= remainingSize;
+                            continueSize += remainingSize;
+                        }
+                        segment = GetSegment(++_currentIndex);
+                        if (!segment.EnsureSize(trueRemainingSize, out remainingSize)) continue;
+                        segment.WriteMemory(new IntPtr(pData + continueSize), trueRemainingSize);
+                        break;
+                    } while (trueRemainingSize > 0U);
+                }
+            }
+        }
+
+        /// <summary>
         ///     获取一个当前内部缓冲区位置的记录点
         /// </summary>
         /// <returns>返回内部缓冲区位置的记录点</returns>
         public MemoryPosition GetPosition()
         {
-            return new MemoryPosition(_currentIndex, _segments.Count == 0 ? 0 : _segments[_currentIndex].Offset);
+            return new MemoryPosition(_currentIndex, (_segments == null || _segments.Count == 0) ? 0 : _segments[_currentIndex].Offset);
         }
 
         /// <summary>
         ///     获取内部的缓冲区内存
+        ///     <para>* 使用此方法后总是会强制回收内部资源</para>
         /// </summary>
-        /// <param name="recoverResource">回收内部资源标识，如果为ture则执行完当前操作后，会回收内部所拥有的内存片段</param>
         /// <returns>返回缓冲区内存</returns>
-        public byte[] GetBytes(bool recoverResource = false)
+        public byte[] GetBytes()
         {
             if (_segments.Count == 0) return null;
             int totalSize = _segments.Count == 1
@@ -742,21 +753,21 @@ namespace KJFramework.Messages.Proxies
                                 : (int) _segments.Sum(segment => MemoryAllotter.SegmentSize - segment.RemainingSize);
             uint offset = 0;
             byte[] data = new byte[totalSize];
-            fixed (byte* pByte = data)
+            for (int i = 0; i < _segments.Count; i++)
             {
-                for (int i = 0; i < _segments.Count; i++)
+                IMemorySegment segment = _segments[i];
+                if (i != _segments.Count - 1)
                 {
-                    IMemorySegment segment = _segments[i];
-                    if (i != _segments.Count - 1)
-                    {
-                        Native.Win32API.memcpy(new IntPtr(pByte + offset), new IntPtr(segment.GetPointer()), MemoryAllotter.SegmentSize);
-                        offset += MemoryAllotter.SegmentSize;
-                    }
-                    else Native.Win32API.memcpy(new IntPtr(pByte + offset), new IntPtr(segment.GetPointer()), segment.Offset);
+                    Marshal.Copy(new IntPtr(segment.GetPointer()), data, (int) offset, (int) MemoryAllotter.SegmentSize);
+                    offset += MemoryAllotter.SegmentSize;
                 }
+                else Marshal.Copy(new IntPtr(segment.GetPointer()), data, (int)offset, (int)segment.Offset);
+                //always recover used resource.
+                MemoryAllotter.Instance.Giveback(segment);
             }
             //recover resources.
-            if(recoverResource) Dispose();
+            _currentIndex = 0;
+            _segments = null;
             return data;
         }
 
@@ -789,18 +800,13 @@ namespace KJFramework.Messages.Proxies
 
         #region Implementation of IDisposable
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-            if (_dispose) return;
-            for (int i = 0; i < _segments.Count; i++)
-                MemoryAllotter.Instance.Giveback(_segments[i]);
+            if (_segments == null) return;
+            foreach (IMemorySegment segment in _segments)
+                MemoryAllotter.Instance.Giveback(segment);
             _currentIndex = 0;
-            _segments.Clear();
-            _dispose = true;
+            _segments = null;
         }
 
         #endregion

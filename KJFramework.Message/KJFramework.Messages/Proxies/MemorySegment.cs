@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using KJFramework.Core.Native;
 using KJFramework.Messages.Helpers;
@@ -292,6 +293,18 @@ namespace KJFramework.Messages.Proxies
         public void WriteMemory(IntPtr value, uint length)
         {
             Native.Win32API.memcpy(new IntPtr(_startData + _currentOffset), value, length);
+            _currentOffset += length;
+        }
+
+        /// <summary>
+        ///     写入一个指定类型的值
+        /// </summary>
+        /// <param name="data">需要写入的内存</param>
+        /// <param name="offset">起始内存偏移</param>
+        /// <param name="length">写入长度</param>
+        public void WriteMemory(byte[] data, uint offset, uint length)
+        {
+            Marshal.Copy(data, (int)offset, new IntPtr(_startData + _currentOffset), (int)length);
             _currentOffset += length;
         }
 

@@ -48,7 +48,7 @@ namespace KJFramework.Messages.TypeProcessors
         /// <param name="analyseResult">分析结果</param>
         /// <param name="target">目标对象实例</param>
         /// <param name="isArrayElement">当前写入的值是否为数组元素标示</param>
-        public unsafe override void Process(IMemorySegmentProxy proxy, IntellectPropertyAttribute attribute, ToBytesAnalyseResult analyseResult, object target, bool isArrayElement = false, bool isNullable = false)
+        public override void Process(IMemorySegmentProxy proxy, IntellectPropertyAttribute attribute, ToBytesAnalyseResult analyseResult, object target, bool isArrayElement = false, bool isNullable = false)
         {
             string[] value = analyseResult.GetValue<string[]>(target);
             if (value == null)
@@ -74,7 +74,7 @@ namespace KJFramework.Messages.TypeProcessors
                 {
                     byte[] elementData = Encoding.UTF8.GetBytes(elementValue);
                     proxy.WriteUInt16((ushort)elementData.Length);
-                    fixed (byte* pByte = elementData) proxy.WriteMemory(pByte, (uint)elementData.Length);
+                    proxy.WriteMemory(elementData, 0U, (uint)elementData.Length);
                 }
             }
             MemoryPosition endPosition = proxy.GetPosition();

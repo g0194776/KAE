@@ -1,5 +1,6 @@
 using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Engine;
+using KJFramework.Messages.Exceptions;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
@@ -63,12 +64,21 @@ namespace KJFramework.Messages.Contracts
         /// <summary>
         ///     绑定到元数据
         /// </summary>
+        /// <exception cref="MethodAccessException">错误的类型权限定义</exception>
         public virtual void Bind()
         {
             try
             {
                 _body = IntellectObjectEngine.ToBytes(this);
                 _isBind = true;
+            }
+            catch (MethodAccessException ex)
+            {
+                _isBind = false;
+                _body = null;
+                _tracing.Error(ex, null);
+                //redirect to friendly exception message.
+                throw new MethodAccessException(string.Format(ExceptionMessage.EX_METHOD_ACCESS, GetType().FullName));
             }
             catch (System.Exception ex)
             {

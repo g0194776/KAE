@@ -168,15 +168,22 @@ namespace KJFramework.Messages.Proxies
         /// <param name="length">写入长度</param>
         void WriteMemory(void* value, uint length);
         /// <summary>
+        ///     写入一个指定类型的值
+        /// </summary>
+        /// <param name="data">需要写入的内存</param>
+        /// <param name="offset">起始内存偏移</param>
+        /// <param name="length">写入长度</param>
+        void WriteMemory(byte[] data, uint offset, uint length);
+        /// <summary>
         ///     获取一个当前内部缓冲区位置的记录点
         /// </summary>
         /// <returns>返回内部缓冲区位置的记录点</returns>
         MemoryPosition GetPosition();
         /// <summary>
         ///     获取内部的缓冲区内存
+        ///     <para>* 使用此方法后总是会强制回收内部资源</para>
         /// </summary>
-        /// <param name="recoverResource">回收内部资源标识，如果为ture则执行完当前操作后，会回收内部所拥有的内存片段</param>
         /// <returns>返回缓冲区内存</returns>
-        byte[] GetBytes(bool recoverResource = false);
+        byte[] GetBytes();
     }
 }

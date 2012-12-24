@@ -138,6 +138,13 @@ namespace KJFramework.Messages.Proxies
         /// <param name="length">写入长度</param>
         void WriteMemory(IntPtr value, uint length);
         /// <summary>
+        ///     写入一个指定类型的值
+        /// </summary>
+        /// <param name="data">需要写入的内存</param>
+        /// <param name="offset">起始内存偏移</param>
+        /// <param name="length">写入长度</param>
+        void WriteMemory(byte[] data, uint offset, uint length);
+        /// <summary>
         ///     确定当前内存片段是否还有足够的大小空间
         /// </summary>
         /// <param name="size">需求的空间大小</param>
