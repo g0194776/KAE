@@ -52,7 +52,7 @@ namespace KJFramework.Messages.Analysers
         {
             if (_getDelegate == null)
             {
-                MethodInfo methodInfo = Property.GetGetMethod();
+                MethodInfo methodInfo = Property.GetGetMethod(true);
                 _getDelegate = DynamicHelper.GetMethodInvoker(methodInfo);
             }
             return _getDelegate(instance, null);
@@ -65,7 +65,7 @@ namespace KJFramework.Messages.Analysers
         {
             if (_setStub == null)
             {
-                MethodInfo methodInfo = Property.GetSetMethod();
+                MethodInfo methodInfo = Property.GetSetMethod(true);
                 _setStub = PropertySetStubHelper.Create(TargetType, Property.PropertyType);
                 _setStub.Initialize(methodInfo);
             }
@@ -92,7 +92,7 @@ namespace KJFramework.Messages.Analysers
         {
             if (_delegate == null)
             {
-                MethodInfo methodInfo = Property.GetSetMethod();
+                MethodInfo methodInfo = Property.GetSetMethod(true);
                 _delegate = DynamicHelper.GetMethodInvoker(methodInfo);
             }
             _delegate(instance, args);

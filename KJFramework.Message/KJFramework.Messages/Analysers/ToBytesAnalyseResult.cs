@@ -48,7 +48,7 @@ namespace KJFramework.Messages.Analysers
         {
             if (_stub == null)
             {
-                MethodInfo methodInfo = Property.GetGetMethod();
+                MethodInfo methodInfo = Property.GetGetMethod(true);
                 _stub = PropertyStubHelper.Create(TargetType, Property.PropertyType, methodInfo);
                 _stub.Initialize(methodInfo);
             }

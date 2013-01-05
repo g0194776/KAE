@@ -660,6 +660,21 @@ namespace KJFramework.Messages.UnitTest
         public int X { get; set; }
     }
 
+    public class Test65 : IntellectObject
+    {
+        public Test65()
+        {
+        }
+
+        public Test65(string name)
+        {
+            Name = name;
+        }
+
+        [IntellectProperty(0)]
+        public string Name { get; private set; }
+    }
+
     public class CMode : IntellectObject
     {
         [IntellectProperty(0)]
@@ -3778,6 +3793,31 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsNotNull(throwEx);
             Console.WriteLine(throwEx.Message);
             Assert.IsTrue(throwEx is MethodAccessException);
+        }
+
+        [TestMethod]
+        [Description("将一个定义为非公共开SET可序列化字段的类转换为二进制数据测试")]
+        public void BindUnpublicPropertyTest()
+        {
+            Test65 test65 = new Test65("kevin");
+            test65.Bind();
+            Assert.IsTrue(test65.IsBind);
+            PrintBytes(test65.Body);
+        }
+
+        [TestMethod]
+        [Description("将一个定义为非公共开SET可序列化字段的类反序列化测试")]
+        public void PickupUnpublicPropertyTest()
+        {
+            Test65 test65 = new Test65("kevin");
+            test65.Bind();
+            Assert.IsTrue(test65.IsBind);
+            PrintBytes(test65.Body);
+
+            Test65 newObj = IntellectObjectEngine.GetObject<Test65>(test65.Body);
+            Assert.IsNotNull(newObj);
+            Assert.IsTrue(newObj.Name == "kevin");
+            Console.WriteLine(newObj);
         }
 
         public static void PrintBytes(byte[] data)

@@ -27,7 +27,7 @@ namespace KJFramework.Net.Transaction.Pools
         {
             try
             {
-                string fullKey = string.Format("{0}#{1}", roleId, key);
+                string fullKey = string.Format("{0}#{1}", roleId.ToString(), key);
                 IServerConnectionAgent agent = GetChannel(fullKey);
                 if (agent != null) return agent;
                 _rwLocker.EnterWriteLock();

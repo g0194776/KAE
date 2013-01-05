@@ -49,8 +49,8 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
         #region Members
 
         private IRequestScheduler _requestScheduler;
-        private static MessageTransactionManager _transactionManager;
-        private static IProtocolStack<BaseMessage> _protocolStack;
+        private MessageTransactionManager _transactionManager;
+        private IProtocolStack<BaseMessage> _protocolStack;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ConnectorComponent));
 
         #endregion
@@ -69,6 +69,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             Console.WriteLine("Initializing CSN protocol stack......");
             _protocolStack = new CSNProtocolStack();
             Global.ProtocolStack = (CSNProtocolStack) _protocolStack;
+            _transactionManager = new MessageTransactionManager();
             Console.WriteLine("Initializing scheduler......");
             _requestScheduler = new RequestScheduler()
             .Regist(new Protocols { ProtocolId = 0, ServiceId = 2, DetailsId = 0 }, new CSNGetDataTableRequestMessageProcessor())
