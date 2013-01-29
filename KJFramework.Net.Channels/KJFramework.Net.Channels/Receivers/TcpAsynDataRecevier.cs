@@ -1,5 +1,4 @@
 using KJFramework.Cache.Cores;
-using KJFramework.Cache.Objects;
 using KJFramework.Net.Channels.Caches;
 using KJFramework.Net.Channels.Events;
 using KJFramework.Net.EventArgs;
@@ -54,6 +53,7 @@ namespace KJFramework.Net.Channels.Receivers
             {
                 IFixedCacheStub<BuffSocketStub> stub = ChannelConst.BuffAsyncStubPool.Rent();
                 if (stub == null) throw new System.Exception("#Cannot rent an async recv io-stub for socket recv async action.");
+                ChannelCounter.Instance.RateOfRentFixedBufferStub.Increment();
                 SocketAsyncEventArgs e = stub.Cache.Target;
                 //set callback var = receiver
                 stub.Tag = this;
@@ -62,11 +62,8 @@ namespace KJFramework.Net.Channels.Receivers
                 bool result;
                 using (ExecutionContext.SuppressFlow())
                     result = e.AcceptSocket.ReceiveAsync(e);
-                if (!result)
-                {
-                    ChannelConst.BuffAsyncStubPool.Giveback(stub);
-                    ProcessReceive(e, stub.Cache.Segment);
-                }
+                //Sync process data.
+                if (!result) ProcessReceive(stub);
             }
             catch (System.Exception ex)
             {
@@ -78,14 +75,13 @@ namespace KJFramework.Net.Channels.Receivers
         /// <summary>
         ///     处理接收的数据
         /// </summary>
-        /// <param name="e">异步上下文对象</param>
-        /// <param name="segment">内存片段</param>
-        internal void ProcessReceive(SocketAsyncEventArgs e, IMemorySegment segment)
+        /// <param name="stub">带缓冲区的固定缓存存根</param>
+        internal void ProcessReceive(IFixedCacheStub<BuffSocketStub> stub)
         {
-            if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
+            if (stub.Cache.Target.BytesTransferred > 0 && stub.Cache.Target.SocketError == SocketError.Success)
             {
                 //接收成功
-                try { ProcessData(segment, e.BytesTransferred); }
+                try { ProcessData(stub, stub.Cache.Target.BytesTransferred); }
                 catch (System.Exception ex) { _tracing.Error(ex, null); }
                 finally { StartReceive(); }
             }
@@ -95,11 +91,11 @@ namespace KJFramework.Net.Channels.Receivers
         /// <summary>
         ///     处理数据
         /// </summary>
-        /// <param name="segment">内存片段</param>
+        /// <param name="stub">带缓冲区的固定缓存存根</param>
         /// <param name="bytesTransferred">接收到的数据长度</param>
-        private void ProcessData(IMemorySegment segment, int bytesTransferred)
+        private void ProcessData(IFixedCacheStub<BuffSocketStub> stub, int bytesTransferred)
         {
-            ReceivedDataHandler(new SegmentReceiveEventArgs(segment, bytesTransferred));
+            ReceivedDataHandler(new SegmentReceiveEventArgs(stub, bytesTransferred));
         }
 
         #endregion

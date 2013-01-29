@@ -1,4 +1,5 @@
-﻿using KJFramework.Cache.Objects;
+﻿using KJFramework.Cache.Cores;
+using KJFramework.Net.Channels.Caches;
 
 namespace KJFramework.Net.Channels.Events
 {
@@ -12,11 +13,11 @@ namespace KJFramework.Net.Channels.Events
         /// <summary>
         ///     接收到内存片段的事件
         /// </summary>
-        /// <param name="segment">内存片段</param>
+        /// <param name="stub">带缓冲区的固定缓存存根</param>
         /// <param name="bytesTransferred">接收到的数据长度</param>
-        public SegmentReceiveEventArgs(IMemorySegment segment, int bytesTransferred)
+        public SegmentReceiveEventArgs(IFixedCacheStub<BuffSocketStub> stub, int bytesTransferred)
         {
-            Segment = segment;
+            Stub = stub;
             BytesTransferred = bytesTransferred;
         }
 
@@ -25,9 +26,9 @@ namespace KJFramework.Net.Channels.Events
         #region Members
 
         /// <summary>
-        ///     获取接收到的内存片段
+        ///     获取带缓冲区的固定缓存存根
         /// </summary>
-        public IMemorySegment Segment { get; private set; }
+        public IFixedCacheStub<BuffSocketStub> Stub { get; private set; }
         /// <summary>
         ///     获取接收到的数据真实长度
         /// </summary>

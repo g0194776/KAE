@@ -17,7 +17,7 @@ namespace KJFramework.Net.Channels.Objects
         /// </summary>
         public SegmentNode(SegmentReceiveEventArgs value)
         {
-            Value = value;
+            Args = value;
         }
 
         #endregion
@@ -27,11 +27,11 @@ namespace KJFramework.Net.Channels.Objects
         /// <summary>
         ///     当前值
         /// </summary>
-        public SegmentReceiveEventArgs Value { get; private set; }
+        public SegmentReceiveEventArgs Args { get; private set; }
         /// <summary>
         ///     获取或设置剩余数据长度
         /// </summary>
-        public int RemainingSize { get { return Value.BytesTransferred - Value.Segment.UsedBytes; } }
+        public int RemainingSize { get { return Args.BytesTransferred - Args.Stub.Cache.Segment.UsedBytes; } }
         /// <summary>
         ///     下一个节点
         /// </summary>
@@ -50,7 +50,7 @@ namespace KJFramework.Net.Channels.Objects
         /// <filterpriority>2</filterpriority>
         public object Clone()
         {
-            return new SegmentNode(Value) {Next = Next};
+            return new SegmentNode(Args) { Next = Next };
         }
 
         #endregion

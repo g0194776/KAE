@@ -28,6 +28,16 @@ namespace KJFramework.Net.Channels
         /// </summary>
         [PerfCounter("Rent mem-segment. /sec.", PerformanceCounterType.RateOfCountsPerSecond32)]
         public PerfCounter RateOfRentMemSegment;
+        /// <summary>
+        ///   带缓冲区的固定内存存根每秒钟归还次数
+        /// </summary>
+        [PerfCounter("Giveback fixed buffer stub. /sec.", PerformanceCounterType.RateOfCountsPerSecond32)]
+        public PerfCounter RateOfFixedBufferStubGiveback;
+        /// <summary>
+        ///   带缓冲区的固定内存存根每秒钟租借次数
+        /// </summary>
+        [PerfCounter("Rent fixed buffer stub. /sec.", PerformanceCounterType.RateOfCountsPerSecond32)]
+        public PerfCounter RateOfRentFixedBufferStub;
 
         #endregion
 

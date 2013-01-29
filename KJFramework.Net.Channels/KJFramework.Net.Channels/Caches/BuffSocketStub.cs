@@ -72,6 +72,7 @@ namespace KJFramework.Net.Channels.Caches
             _target.AcceptSocket = null;
             _target.UserToken = null;
             _target.RemoteEndPoint = null;
+            _segment.UsedBytes = 0;
             SocketHelper.Clear(_target);
         }
 
@@ -112,9 +113,8 @@ namespace KJFramework.Net.Channels.Caches
 
                     stub = (IFixedCacheStub<BuffSocketStub>)e.UserToken;
                     TcpAsynDataRecevier recevier = (TcpAsynDataRecevier)stub.Tag;
-                    try { recevier.ProcessReceive(stub.Cache.Target, stub.Cache.Segment); }
+                    try { recevier.ProcessReceive(stub); }
                     catch (System.Exception ex) { _tracing.Error(ex, null); }
-                    finally { ChannelConst.BuffAsyncStubPool.Giveback(stub); }
 
                     #endregion
                     break;
