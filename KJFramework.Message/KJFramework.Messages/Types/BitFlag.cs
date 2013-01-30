@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Text;
 
 namespace KJFramework.Messages.Types
 {
@@ -33,7 +34,7 @@ namespace KJFramework.Messages.Types
 
         #region Members
 
-        private BitArray _arr;
+        private readonly BitArray _arr;
 
         #endregion
 
@@ -57,6 +58,21 @@ namespace KJFramework.Messages.Types
                 if (index < 0 || index > 8) throw new ArgumentException("Illegal flag index! #" + index);
                 _arr[index] = value;
             }
+        }
+
+        /// <summary>
+        ///     返回内部可呈现的内容结构
+        /// </summary>
+        /// <returns>返回内部可呈现的内容结构</returns>
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder().Append("(");
+            for (int i = 0; i < 8; i++)
+            {
+                if (i != 7) builder.Append(_arr[i] ? 0x01 : 0x00).Append(", ");
+                else builder.Append(_arr[i] ? 0x01 : 0x00);
+            }
+            return builder.Append(")").ToString();
         }
 
         #endregion
