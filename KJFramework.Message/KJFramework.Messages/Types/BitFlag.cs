@@ -66,13 +66,13 @@ namespace KJFramework.Messages.Types
         /// <returns>返回内部可呈现的内容结构</returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder().Append("(");
+            StringBuilder builder = new StringBuilder(17).Append('(');
             for (int i = 0; i < 8; i++)
             {
-                if (i != 7) builder.Append(_arr[i] ? 0x01 : 0x00).Append(", ");
+                if (i != 7) builder.Append(_arr[i] ? 0x01 : 0x00).Append('-');
                 else builder.Append(_arr[i] ? 0x01 : 0x00);
             }
-            return builder.Append(")").ToString();
+            return builder.Append(')').ToString();
         }
 
         #endregion
