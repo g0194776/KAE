@@ -29,7 +29,7 @@ namespace KJFramework.Messages.Contracts
         /// <summary>
         ///     获取或设置二进制数据体
         /// </summary>
-        public byte[] Body
+        public virtual byte[] Body
         {
             get { return _body; }
             set { _body = value; }
@@ -38,7 +38,7 @@ namespace KJFramework.Messages.Contracts
         /// <summary>
         ///     获取一个值，该值表示了当前是否已经从第三方客户数据转换为元数据。
         /// </summary>
-        public bool IsBind
+        public virtual bool IsBind
         {
             get { return _isBind; }
         }
@@ -46,7 +46,7 @@ namespace KJFramework.Messages.Contracts
         /// <summary>
         ///     获取一个值，该值表示了当前实体类是不是以兼容模式解析的。
         /// </summary>
-        public bool CompatibleMode
+        public virtual bool CompatibleMode
         {
             get { return _compatibleMode; }
             internal set { _compatibleMode = value; }
@@ -55,7 +55,7 @@ namespace KJFramework.Messages.Contracts
         /// <summary>
         ///     获取一个值，该值表示了当前是否已经从元数据第转换为三方客户数据。
         /// </summary>
-        public bool IsPickup
+        public virtual bool IsPickup
         {
             get { return _isPickup; }
             internal set { _isPickup = value; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Attributes;
+using KJFramework.Messages.Exceptions;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.Types;
@@ -51,6 +52,14 @@ namespace KJFramework.Messages.TypeProcessors
         public override void Process(IMemorySegmentProxy proxy, IntellectPropertyAttribute attribute, ToBytesAnalyseResult analyseResult, object target, bool isArrayElement = false, bool isNullable = false)
         {
             BitFlag value = analyseResult.GetValue<BitFlag>(target);
+            if(value == null)
+            {
+                if (!attribute.IsRequire) return;
+                throw new PropertyNullValueException(
+                    string.Format(ExceptionMessage.EX_PROPERTY_VALUE, attribute.Id,
+                                    analyseResult.Property.Name,
+                                    analyseResult.Property.PropertyType));
+            }
             proxy.WriteByte((byte)attribute.Id);
             proxy.WriteBitFlag(value);
         }
