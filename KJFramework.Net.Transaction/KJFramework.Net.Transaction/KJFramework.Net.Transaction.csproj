@@ -57,6 +57,7 @@
     <Compile Include="Contexts\BusinessTransactionContext.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
+    <Compile Include="Objects\ProcessorObject.cs" />
     <Compile Include="Schedulers\IRequestScheduler.cs" />
     <Compile Include="Managers\MessageTransactionManager.cs" />
     <Compile Include="Messages\BaseMessage.cs" />

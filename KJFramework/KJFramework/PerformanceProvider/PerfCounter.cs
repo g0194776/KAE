@@ -7,7 +7,7 @@ namespace KJFramework.PerformanceProvider
         private PerformanceCounter _counter;
         private PerformanceCounter _base;
 
-        internal PerfCounter(string category, string instance, PerfCounterAttribute attr)
+        public PerfCounter(string category, string instance, PerfCounterAttribute attr)
         {
             if (!string.IsNullOrEmpty(category) && attr != null)
             {
