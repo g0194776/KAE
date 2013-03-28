@@ -64,12 +64,6 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\KJFramework.Messages\KJFramework.Messages.csproj">
-      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
-      <Name>KJFramework.Messages</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

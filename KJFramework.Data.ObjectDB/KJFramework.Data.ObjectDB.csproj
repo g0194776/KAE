@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{09C9CD08-DB98-41A5-AE44-D581138C88D2}</ProjectGuid>
+    <ProjectGuid>{14FFF597-5294-4DD4-8373-923B270D7D37}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KJFramework.Platform.Deploy.CSN.Common</RootNamespace>
-    <AssemblyName>KJFramework.Platform.Deploy.CSN.Common</AssemblyName>
+    <RootNamespace>KJFramework.Data.ObjectDB</RootNamespace>
+    <AssemblyName>KJFramework.Data.ObjectDB</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -25,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="mysql.data">
-      <HintPath>..\Depend Files\mysql.data.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,33 +44,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caches\DataCacheManager.cs" />
-    <Compile Include="Caches\DBDataCache.cs" />
-    <Compile Include="Caches\DBDataCacheFactory.cs" />
-    <Compile Include="Caches\IDataCache.cs" />
-    <Compile Include="Caches\IDataCacheFactory.cs" />
-    <Compile Include="Caches\KeyDataCache.cs" />
-    <Compile Include="Configurations\CSNSettingConfigSection.cs" />
-    <Compile Include="Configurations\SettingConfiguration.cs" />
-    <Compile Include="Datas\CmdParameter.cs" />
-    <Compile Include="Datas\Database.cs" />
-    <Compile Include="Datas\DbPerfCounter.cs" />
-    <Compile Include="Datas\DbReader.cs" />
-    <Compile Include="Datas\DBTaskQueuePerfCounter.cs" />
-    <Compile Include="Datas\MsSqlDatabase.cs" />
-    <Compile Include="Datas\MySqlDatabase.cs" />
-    <Compile Include="Helpers\Utility.cs" />
+    <Compile Include="Controllers\IPageController.cs" />
+    <Compile Include="Enums\StoreModes.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="Helpers\DBFileHelper.cs" />
+    <Compile Include="IObjectDatabase.cs" />
+    <Compile Include="LocalObjectDatabase.cs" />
+    <Compile Include="Controllers\IFileHeaderController.cs" />
+    <Compile Include="Controllers\FileHeaderController.cs" />
+    <Compile Include="ObjectDatabases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SessionGenerator.cs" />
+    <Compile Include="Structures\FileFlag.cs" />
+    <Compile Include="Structures\IAuthorization.cs" />
+    <Compile Include="Structures\IDataHead.cs" />
+    <Compile Include="Structures\IDataPage.cs" />
+    <Compile Include="Structures\IDataRange.cs" />
+    <Compile Include="Structures\IDataSegment.cs" />
+    <Compile Include="Structures\IFileController.cs" />
+    <Compile Include="Structures\IFileFlag.cs" />
+    <Compile Include="Structures\IIndexTable.cs" />
+    <Compile Include="Structures\IndexTable.cs" />
+    <Compile Include="Structures\IPage.cs" />
+    <Compile Include="Structures\ISegmentHead.cs" />
+    <Compile Include="Structures\ITypeToken.cs" />
+    <Compile Include="Structures\PositionData.cs" />
+    <Compile Include="Structures\StorePositionData.cs" />
+    <Compile Include="Structures\TypeToken.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{d5a0178c-16f7-453e-a301-d1d61910d2af}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
       <Project>{12309506-18a3-48bf-8a55-e950a87a905e}</Project>
       <Name>KJFramework.IO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Platform.Deploy.Metadata\KJFramework.Platform.Deploy.Metadata.csproj">
-      <Project>{6C3A90BD-9A96-446B-86C2-079D728F65C7}</Project>
-      <Name>KJFramework.Platform.Deploy.Metadata</Name>
     </ProjectReference>
     <ProjectReference Include="..\KJFramework\KJFramework\KJFramework.csproj">
       <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>

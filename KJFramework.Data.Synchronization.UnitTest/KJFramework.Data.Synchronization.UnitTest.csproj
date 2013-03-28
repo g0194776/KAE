@@ -56,10 +56,6 @@
       <Project>{9C08AC15-9965-4F6E-BFD8-C37BDA1EE845}</Project>
       <Name>KJFramework.Data.Synchronization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
-      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
-      <Name>KJFramework.Messages</Name>
-    </ProjectReference>
     <ProjectReference Include="..\KJFramework\KJFramework\KJFramework.csproj">
       <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
       <Name>KJFramework</Name>
