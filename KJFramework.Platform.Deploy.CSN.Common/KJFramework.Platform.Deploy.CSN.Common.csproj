@@ -71,6 +71,10 @@
       <Project>{12309506-18a3-48bf-8a55-e950a87a905e}</Project>
       <Name>KJFramework.IO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KJFramework.Platform.Deploy.Metadata\KJFramework.Platform.Deploy.Metadata.csproj">
       <Project>{6C3A90BD-9A96-446B-86C2-079D728F65C7}</Project>
       <Name>KJFramework.Platform.Deploy.Metadata</Name>

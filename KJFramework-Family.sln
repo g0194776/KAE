@@ -115,9 +115,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Data.ObjectDB",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Data.ObjectDB.UnitTest", "KJFramework.Data.ObjectDB.UnitTest\KJFramework.Data.ObjectDB.UnitTest.csproj", "{1AC9C2A3-7C3D-486B-B585-51E51C17EC2E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Messages", "KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj", "{ACA46F02-5B48-4520-8CB2-3CA01F19B498}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Messages.UnitTest", "KJFramework.Message\KJFramework.Messages.UnitTest\KJFramework.Messages.UnitTest.csproj", "{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 42
+		SccNumberOfProjects = 44
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs34
 		SccLocalPath0 = .
@@ -285,6 +289,14 @@ Global
 		SccProjectTopLevelParentUniqueName41 = KJFramework-Family.sln
 		SccProjectName41 = KJFramework.Data.ObjectDB.UnitTest
 		SccLocalPath41 = KJFramework.Data.ObjectDB.UnitTest
+		SccProjectUniqueName42 = KJFramework.Message\\KJFramework.Messages\\KJFramework.Messages.csproj
+		SccProjectTopLevelParentUniqueName42 = KJFramework-Family.sln
+		SccProjectName42 = KJFramework.Message/KJFramework.Messages
+		SccLocalPath42 = KJFramework.Message\\KJFramework.Messages
+		SccProjectUniqueName43 = KJFramework.Message\\KJFramework.Messages.UnitTest\\KJFramework.Messages.UnitTest.csproj
+		SccProjectTopLevelParentUniqueName43 = KJFramework-Family.sln
+		SccProjectName43 = KJFramework.Message/KJFramework.Messages.UnitTest
+		SccLocalPath43 = KJFramework.Message\\KJFramework.Messages.UnitTest
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KJFramework.vsmdi
@@ -708,6 +720,26 @@ Global
 		{1AC9C2A3-7C3D-486B-B585-51E51C17EC2E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1AC9C2A3-7C3D-486B-B585-51E51C17EC2E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1AC9C2A3-7C3D-486B-B585-51E51C17EC2E}.Release|x86.ActiveCfg = Release|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498}.Release|x86.ActiveCfg = Release|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -751,6 +783,8 @@ Global
 		{176B6638-05E0-4D84-B6B7-86EA35B054F2} = {25FE450A-EF83-48B6-8A2E-294C1A97410D}
 		{18C5E97E-0BC3-4168-9BAC-2B8E8F503912} = {25FE450A-EF83-48B6-8A2E-294C1A97410D}
 		{97978956-55F1-41F4-BD90-75AF372C339C} = {9B82C04B-D84A-4BA1-8412-B8924F639BBD}
+		{ACA46F02-5B48-4520-8CB2-3CA01F19B498} = {9B82C04B-D84A-4BA1-8412-B8924F639BBD}
+		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D} = {9B82C04B-D84A-4BA1-8412-B8924F639BBD}
 		{7647A48C-0A33-4210-9EB5-6D5E485ECC81} = {BF86659C-D45A-4B08-83C7-A04E354737A5}
 		{3A2D1580-FF48-4C65-98E7-C7F7AAA64C58} = {DABF1239-3C69-49DD-80FA-5B5448F59E49}
 		{5844CBA9-FCCB-4D7A-ACEE-9C33AA11C996} = {3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}

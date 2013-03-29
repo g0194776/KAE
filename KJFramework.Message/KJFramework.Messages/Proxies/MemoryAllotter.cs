@@ -24,7 +24,7 @@ namespace KJFramework.Messages.Proxies
 
         #region Members
 
-        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (MemoryAllotter));
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(MemoryAllotter));
         private readonly Stack<IMemorySegment> _segments = new Stack<IMemorySegment>();
         private object _lockObj = new object();
         private bool _initialized;

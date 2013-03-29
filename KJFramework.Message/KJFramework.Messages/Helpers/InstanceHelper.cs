@@ -114,7 +114,6 @@ namespace KJFramework.Messages.Helpers
             {
                 Type elementType = analyze.Property.PropertyType.GetElementType();
                 VT vt = FixedTypeManager.IsVT(elementType);
-                intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(elementType);
                 //VT type.
                 if (vt != null)
                 {

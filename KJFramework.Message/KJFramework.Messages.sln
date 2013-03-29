@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Messages", "KJFramework.Messages\KJFramework.Messages.csproj", "{ACA46F02-5B48-4520-8CB2-3CA01F19B498}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{97978956-55F1-41F4-BD90-75AF372C339C}"
@@ -15,6 +15,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs34
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = KJFramework.Messages\\KJFramework.Messages.csproj
+		SccProjectName1 = KJFramework.Messages
+		SccLocalPath1 = KJFramework.Messages
+		SccProjectUniqueName2 = Test\\Test.csproj
+		SccProjectName2 = Test
+		SccLocalPath2 = Test
+		SccProjectUniqueName3 = KJFramework.Messages.UnitTest\\KJFramework.Messages.UnitTest.csproj
+		SccProjectName3 = KJFramework.Messages.UnitTest
+		SccLocalPath3 = KJFramework.Messages.UnitTest
+	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KJFramework.Messages.vsmdi
 	EndGlobalSection

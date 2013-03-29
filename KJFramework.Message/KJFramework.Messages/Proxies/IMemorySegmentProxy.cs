@@ -181,8 +181,8 @@ namespace KJFramework.Messages.Proxies
         MemoryPosition GetPosition();
         /// <summary>
         ///     获取内部的缓冲区内存
-        ///     <para>* 使用此方法后总是会强制回收内部资源</para>
         /// </summary>
+        ///     <para>* 使用此方法后总是会强制回收内部资源</para>
         /// <returns>返回缓冲区内存</returns>
         byte[] GetBytes();
     }

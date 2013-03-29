@@ -34,7 +34,7 @@ namespace KJFramework.Messages.Types
 
         #region Members
 
-        private readonly BitArray _arr;
+        private BitArray _arr;
 
         #endregion
 

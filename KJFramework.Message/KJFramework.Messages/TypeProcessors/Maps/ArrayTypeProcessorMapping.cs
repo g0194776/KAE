@@ -1,7 +1,7 @@
-using KJFramework.Messages.Attributes;
-using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
+using KJFramework.Messages.Attributes;
+using KJFramework.Tracing;
 
 namespace KJFramework.Messages.TypeProcessors.Maps
 {
@@ -56,6 +56,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
             Regist(new UInt32ArrayIntellectTypeProcessor());
             Regist(new UInt64ArrayIntellectTypeProcessor());
             Regist(new StringArrayIntellectTypeProcessor());
+            Regist(new IPEndPointArrayIntellectTypeProcessor());
         }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
             }
             catch (System.Exception ex)
             {
-                _tracing.Error(ex, null);
+                _tracing.Error(ex, null); 
                 return null;
             }
         }

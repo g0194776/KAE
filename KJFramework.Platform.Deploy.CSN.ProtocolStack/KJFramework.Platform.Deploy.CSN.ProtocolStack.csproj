@@ -61,6 +61,10 @@
       <Project>{12309506-18a3-48bf-8a55-e950a87a905e}</Project>
       <Name>KJFramework.IO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
       <Project>{658c4853-7022-4c2f-bb82-7261dbdae55d}</Project>
       <Name>KJFramework.Net.Transaction</Name>

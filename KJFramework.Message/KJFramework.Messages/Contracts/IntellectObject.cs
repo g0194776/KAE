@@ -1,11 +1,11 @@
-using KJFramework.Messages.Analysers;
-using KJFramework.Messages.Engine;
-using KJFramework.Messages.Exceptions;
-using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using KJFramework.Messages.Analysers;
+using KJFramework.Messages.Engine;
+using KJFramework.Messages.Exceptions;
+using KJFramework.Tracing;
 
 namespace KJFramework.Messages.Contracts
 {
@@ -208,6 +208,47 @@ namespace KJFramework.Messages.Contracts
                                             innerBuilder.Append(element.ToString("x02")).Append(", ");
                                         s.AppendLine(string.Format("{0}{1}", nxtSpace, innerBuilder));
                                     }
+                                    s.Append(spc).AppendLine("}");
+                                };
+
+                                #endregion
+                            }
+                            else if (elementType == typeof(byte))
+                            {
+                                #region Set handler of Byte array
+
+                                analyseResult.StringConverter = delegate(Type t, StringBuilder s, PropertyInfo p, Object i, string spc, bool isAl)
+                                {
+                                    if (i == null)
+                                    {
+                                        s.AppendLine(string.Format("{0}{1}: NULL", spc, p.Name));
+                                        return;
+                                    }
+                                    byte[] array = (byte[])i;
+                                    string nxtSpace = spc + "  ";
+                                    s.AppendLine(string.Format("{0}{1}: ", spc, p.Name)).Append(spc).AppendLine("{");
+                                    int round = array.Length/8 + (array.Length%8>0 ? 1 : 0);
+                                    int currentOffset, remainningLen;
+                                    for (int j = 0; j < round; j++)
+                                    {
+                                        currentOffset = j*8;
+                                        remainningLen = ((array.Length - currentOffset) >= 8 ? 8 : (array.Length - currentOffset));
+                                        StringBuilder rawByteBuilder = new StringBuilder();
+                                        rawByteBuilder.Append(nextSpace);
+                                        for (int k = 0; k < remainningLen; k++)
+                                        {
+                                            rawByteBuilder.AppendFormat("0x{0}", array[currentOffset + k].ToString("X2"));
+                                            if (k != remainningLen - 1) rawByteBuilder.Append(", ");
+                                        }
+                                        rawByteBuilder.Append(new string(' ', (remainningLen == 8 ? 5 : (8 - remainningLen) * 4 + (((8 - remainningLen) - 1)*2) + 7)));
+                                        for (int k = 0; k < remainningLen; k++)
+                                        {
+                                            if ((char)array[currentOffset + k] > 126 || (char)array[currentOffset + k] < 32) rawByteBuilder.Append('.');
+                                            else rawByteBuilder.Append((char)array[currentOffset + k]);
+                                        }
+                                        s.AppendLine(string.Format("{0}{1}", nxtSpace, rawByteBuilder));
+                                    }
+                                    //s.AppendLine(string.Format("{0}", nxtSpace));
                                     s.Append(spc).AppendLine("}");
                                 };
 

@@ -15,10 +15,22 @@ namespace KJFramework.Messages.Proxies
     /// </summary>
     internal sealed unsafe class MemorySegmentProxy : IMemorySegmentProxy
     {
+        #region Constructor
+
+        /// <summary>
+        ///     内存片段代理器
+        /// </summary>
+        public MemorySegmentProxy()
+        {
+            _segments = new List<IMemorySegment>();
+        }
+
+        #endregion
+
         #region Members
 
         private int _currentIndex;
-        private IList<IMemorySegment> _segments = new List<IMemorySegment>();
+        private IList<IMemorySegment> _segments;
         /// <summary>
         ///     获取当前代理器内部所包含的内存片段个数
         /// </summary>
@@ -347,7 +359,7 @@ namespace KJFramework.Messages.Proxies
         public void WriteString(string value)
         {
             byte[] data = Encoding.UTF8.GetBytes(value);
-            WriteMemory(data, 0U, (uint) data.Length);
+            WriteMemory(data, 0U, (uint)data.Length);
         }
 
         /// <summary>
@@ -749,8 +761,8 @@ namespace KJFramework.Messages.Proxies
         {
             if (_segments.Count == 0) return null;
             int totalSize = _segments.Count == 1
-                                ? (int) _segments[0].Offset
-                                : (int) _segments.Sum(segment => MemoryAllotter.SegmentSize - segment.RemainingSize);
+                                ? (int)_segments[0].Offset
+                                : (int)_segments.Sum(segment => MemoryAllotter.SegmentSize - segment.RemainingSize);
             uint offset = 0;
             byte[] data = new byte[totalSize];
             for (int i = 0; i < _segments.Count; i++)
@@ -758,7 +770,7 @@ namespace KJFramework.Messages.Proxies
                 IMemorySegment segment = _segments[i];
                 if (i != _segments.Count - 1)
                 {
-                    Marshal.Copy(new IntPtr(segment.GetPointer()), data, (int) offset, (int) MemoryAllotter.SegmentSize);
+                    Marshal.Copy(new IntPtr(segment.GetPointer()), data, (int)offset, (int)MemoryAllotter.SegmentSize);
                     offset += MemoryAllotter.SegmentSize;
                 }
                 else Marshal.Copy(new IntPtr(segment.GetPointer()), data, (int)offset, (int)segment.Offset);

@@ -1,7 +1,7 @@
-using KJFramework.Messages.Attributes;
-using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
+using KJFramework.Messages.Attributes;
+using KJFramework.Tracing;
 
 namespace KJFramework.Messages.TypeProcessors.Maps
 {

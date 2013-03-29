@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using KJFramework.Core.Native;
 using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Attributes;
@@ -28,19 +27,6 @@ namespace KJFramework.Messages.TypeProcessors
         #endregion
 
         #region Overrides of IntellectTypeProcessor
-
-        /// <summary>
-        ///     从第三方客户数据转换为元数据
-        /// </summary>
-        /// <param name="memory">需要填充的字节数组</param>
-        /// <param name="offset">需要填充数组的起始偏移量</param>
-        /// <param name="attribute">当前字段标注的属性</param>
-        /// <param name="value">第三方客户数据</param>
-        [Obsolete("Cannot use this method, because current type doesn't supported.", true)]
-        public override void Process(byte[] memory, int offset, IntellectPropertyAttribute attribute, object value)
-        {
-            throw new NotSupportedException("Cannot use this method, because current type doesn't supported.");
-        }
 
         /// <summary>
         ///     从第三方客户数据转换为元数据
@@ -81,56 +67,20 @@ namespace KJFramework.Messages.TypeProcessors
 
         /// <summary>
         ///     从第三方客户数据转换为元数据
+        ///     <para>* 此方法将会被轻量级的DataHelper所使用，并且写入的数据将不会拥有编号(Id)</para>
         /// </summary>
-        /// <param name="attribute">当前字段标注的属性</param>
-        /// <param name="value">第三方客户数据</param>
-        /// <returns>返回转换后的元数据</returns>
-        /// <exception cref="Exception">转换失败</exception>
-        public override byte[] Process(IntellectPropertyAttribute attribute, object value)
+        /// <param name="proxy">内存片段代理器</param>
+        /// <param name="target">目标对象实例</param>
+        /// <param name="isArrayElement">当前写入的值是否为数组元素标示</param>
+        /// <param name="isNullable">是否为可空字段标示</param>
+        public unsafe override void Process(IMemorySegmentProxy proxy, object target, bool isArrayElement = false, bool isNullable = false)
         {
-            if (value == null && attribute.IsRequire) throw new ArgumentNullException("value");
-            long[] lArray = (long[])value;
-            int length = lArray == null ? 0 : lArray.Length;
-            byte[] memory = new byte[length*Size.Int64 + 1 + 4 + 4];
-            memory[0] = (byte)attribute.Id;
-            BitConvertHelper.GetBytes(memory.Length - 5, memory, 1);
-            BitConvertHelper.GetBytes(length, memory, 5);
-            if (length == 0) return memory;
-            if (lArray.Length >= 10)
-            {
-                #region Method #1
-
-                unsafe
-                {
-                    fixed (byte* pData = &memory[9])
-                        Marshal.Copy(lArray, 0, (IntPtr)pData, lArray.Length);
-                }
-
-                #endregion
-            }
-            else
-            {
-                #region Method #2
-
-                unsafe
-                {
-                    fixed (long* pLong = lArray)
-                    {
-                        long* lTemp = pLong;
-                        fixed (byte* pByte = &memory[9])
-                        {
-                            long* pSerial = (long*)pByte;
-                            for (int i = 0; i < lArray.Length; i++)
-                                *(pSerial++) = *(lTemp++);
-                        }
-                    }
-                }
-
-                #endregion
-            }
-            return memory;
+            long[] array = (long[])target;
+            if (array == null || array.Length == 0) return;
+            if (array.Length > 10) fixed (long* pByte = array) proxy.WriteMemory(pByte, (uint)array.Length * Size.Int64);
+            else for (int i = 0; i < array.Length; i++) proxy.WriteInt64(array[i]);
         }
-
+        
         /// <summary>
         ///     从元数据转换为第三方客户数据
         /// </summary>
@@ -138,39 +88,17 @@ namespace KJFramework.Messages.TypeProcessors
         /// <param name="data">元数据</param>
         /// <returns>返回转换后的第三方客户数据</returns>
         /// <exception cref="Exception">转换失败</exception>
-        [Obsolete("Cannot use this method, because current type doesn't supported.", true)]
-        public override object Process(IntellectPropertyAttribute attribute, byte[] data)
+        public unsafe override object Process(IntellectPropertyAttribute attribute, byte[] data)
         {
-            throw new NotSupportedException("Cannot use this method, because current type doesn't supported.");
-        }
-
-        /// <summary>
-        ///     从元数据转换为第三方客户数据
-        /// </summary>
-        /// <param name="attribute">当前字段标注的属性</param>
-        /// <param name="data">元数据</param>
-        /// <param name="offset">元数据所在的偏移量</param>
-        /// <param name="length">元数据长度</param>
-        /// <returns>返回转换后的第三方客户数据</returns>
-        /// <exception cref="Exception">转换失败</exception>
-        public override object Process(IntellectPropertyAttribute attribute, byte[] data, int offset, int length = 0)
-        {
-            long[] ret;
-            if (length == 4) return new long[0];
-            unsafe
+            long[] array = new long[data.Length/Size.Int64];
+            fixed (byte* pByte = data)
             {
-                fixed (byte* pByte = &data[offset])
-                {
-                    int arrLength = *(int*)pByte;
-                    long* pTemp = (long*)(pByte + 4);
-                    ret = new long[arrLength];
-                    for (int i = 0; i < arrLength; i++)
-                        ret[i] = *(pTemp++);
-                }
+                long* pData = (long*)pByte;
+                for (int i = 0; i < array.Length; i++) array[i] = *pData++;
             }
-            return ret;
+            return array;
         }
-
+        
         /// <summary>
         ///     从元数据转换为第三方客户数据
         /// </summary>

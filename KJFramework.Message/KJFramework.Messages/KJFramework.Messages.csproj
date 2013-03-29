@@ -146,6 +146,7 @@
     <Compile Include="TypeProcessors\UInt32ArrayIntellectTypeProcessor.cs" />
     <Compile Include="TypeProcessors\UInt64ArrayIntellectTypeProcessor.cs" />
     <Compile Include="TypeProcessors\StringArrayIntellectTypeProcessor.cs" />
+    <Compile Include="TypeProcessors\IPEndPointArrayIntellectTypeProcessor.cs" />
     <Compile Include="Types\BitFlag.cs" />
   </ItemGroup>
   <ItemGroup>

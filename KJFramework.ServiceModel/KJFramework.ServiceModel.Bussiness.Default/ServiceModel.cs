@@ -1,15 +1,14 @@
-using System.Threading;
 using KJFramework.Cache;
 using KJFramework.Cache.Containers;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.TypeProcessors.Maps;
 using KJFramework.Net.ProtocolStacks;
+using KJFramework.Net.Transaction.Processors;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
 using KJFramework.ServiceModel.Bussiness.Default.Objects;
 using KJFramework.ServiceModel.Configurations;
 using KJFramework.ServiceModel.Core.Objects;
 using KJFramework.ServiceModel.Identity;
-using KJFramework.ServiceModel.Processors;
 
 namespace KJFramework.ServiceModel.Bussiness.Default
 {
@@ -40,8 +39,8 @@ namespace KJFramework.ServiceModel.Bussiness.Default
             if (_initialize) return;
             FixedTypeManager.Add(typeof(MessageIdentity), 3);
             FixedTypeManager.Add(typeof(TransactionIdentity), 18);
-            IntellectTypeProcessorMapping.Instance.Regist(new MessageIdentityIntellectTypeProcessor());
-            IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityIntellectTypeProcessor());
+            IntellectTypeProcessorMapping.Instance.Regist(new MessageIdentityProcessor());
+            IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityProcessor());
             _initialize = true;
         }
 

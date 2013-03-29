@@ -31,19 +31,6 @@ namespace KJFramework.Messages.TypeProcessors
         /// <summary>
         ///     从第三方客户数据转换为元数据
         /// </summary>
-        /// <param name="memory">需要填充的字节数组</param>
-        /// <param name="offset">需要填充数组的起始偏移量</param>
-        /// <param name="attribute">当前字段标注的属性</param>
-        /// <param name="value">第三方客户数据</param>
-        [Obsolete("Cannot use this method, because current type doesn't supported.", true)]
-        public override void Process(byte[] memory, int offset, IntellectPropertyAttribute attribute, object value)
-        {
-            throw new NotSupportedException("Cannot use this method, because current type doesn't supported.");
-        }
-
-        /// <summary>
-        ///     从第三方客户数据转换为元数据
-        /// </summary>
         /// <param name="proxy">内存片段代理器</param>
         /// <param name="attribute">字段属性</param>
         /// <param name="analyseResult">分析结果</param>
@@ -81,39 +68,20 @@ namespace KJFramework.Messages.TypeProcessors
 
         /// <summary>
         ///     从第三方客户数据转换为元数据
+        ///     <para>* 此方法将会被轻量级的DataHelper所使用，并且写入的数据将不会拥有编号(Id)</para>
         /// </summary>
-        /// <param name="attribute">当前字段标注的属性</param>
-        /// <param name="value">第三方客户数据</param>
-        /// <returns>返回转换后的元数据</returns>
-        /// <exception cref="Exception">转换失败</exception>
-        public override byte[] Process(IntellectPropertyAttribute attribute, object value)
+        /// <param name="proxy">内存片段代理器</param>
+        /// <param name="target">目标对象实例</param>
+        /// <param name="isArrayElement">当前写入的值是否为数组元素标示</param>
+        /// <param name="isNullable">是否为可空字段标示</param>
+        public unsafe override void Process(IMemorySegmentProxy proxy, object target, bool isArrayElement = false, bool isNullable = false)
         {
-            byte[] memory;
-            if (value == null && attribute.IsRequire) throw new ArgumentNullException("value");
-            sbyte[] arr = (sbyte[])value;
-            //id(1) + total length(4) + rank(4)
-            memory = new byte[9 + Size.SByte*arr.Length];
-            memory[0] = (byte)attribute.Id;
-            BitConvertHelper.GetBytes(memory.Length - 5, memory, 1);
-            BitConvertHelper.GetBytes(arr.Length, memory, 5);
-            if (arr.Length == 0) return memory;
-            int offset = 9;
-            unsafe
-            {
-                fixed (sbyte* pInt = arr)
-                {
-                    fixed (byte* pData = &memory[offset])
-                    {
-                        sbyte* pTemp = pInt;
-                        sbyte* pArray = (sbyte*)pData;
-                        for (int i = 0; i < arr.Length; i++)
-                            *(pArray++) = *(pTemp++);
-                    }
-                }
-            }
-            return memory;
+            sbyte[] array = (sbyte[])target;
+            if (array == null || array.Length == 0) return;
+            if (array.Length > 10) fixed (sbyte* pByte = array) proxy.WriteMemory(pByte, (uint)array.Length * Size.SByte);
+            else for (int i = 0; i < array.Length; i++) proxy.WriteSByte(array[i]);
         }
-
+        
         /// <summary>
         ///     从元数据转换为第三方客户数据
         /// </summary>
@@ -126,34 +94,7 @@ namespace KJFramework.Messages.TypeProcessors
         {
             throw new NotSupportedException("Cannot use this method, because current type doesn't supported.");
         }
-
-        /// <summary>
-        ///     从元数据转换为第三方客户数据
-        /// </summary>
-        /// <param name="attribute">当前字段标注的属性</param>
-        /// <param name="data">元数据</param>
-        /// <param name="offset">元数据所在的偏移量</param>
-        /// <param name="length">元数据长度</param>
-        /// <returns>返回转换后的第三方客户数据</returns>
-        /// <exception cref="Exception">转换失败</exception>
-        public override object Process(IntellectPropertyAttribute attribute, byte[] data, int offset, int length = 0)
-        {
-            sbyte[] ret;
-            if (length == 4) return new sbyte[0];
-            unsafe
-            {
-                fixed (byte* pByte = &data[offset])
-                {
-                    int arrLength = *(int*)pByte;
-                    sbyte* pTemp = (sbyte*)(pByte + 4);
-                    ret = new sbyte[arrLength];
-                    for (int i = 0; i < arrLength; i++)
-                        ret[i] = *(pTemp++);
-                }
-            }
-            return ret;
-        }
-
+        
         /// <summary>
         ///     从元数据转换为第三方客户数据
         /// </summary>
@@ -182,7 +123,6 @@ namespace KJFramework.Messages.TypeProcessors
                         {
                             Native.Win32API.memcpy(new IntPtr((byte*)point), new IntPtr(pByte + 4), (uint)(Size.SByte * arrLength));
                         }
-
                     }
                     else
                     {

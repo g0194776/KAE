@@ -57,10 +57,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitFlagTest.cs" />
+    <Compile Include="DataHelperUnitTest.cs" />
     <Compile Include="IntellectObjectEngineUnitTest.cs" />
-    <Compile Include="IPEndPointIntellectTypeProcessorTest.cs" />
     <Compile Include="MemorySegmentProxyTest.cs" />
+    <Compile Include="ObjectDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{ACA46F02-5B48-4520-8CB2-3CA01F19B498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

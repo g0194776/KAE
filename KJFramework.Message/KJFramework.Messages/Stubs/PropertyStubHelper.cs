@@ -23,7 +23,7 @@ namespace KJFramework.Messages.Stubs
             if (targetType == null) throw new ArgumentNullException("targetType");
             if (outputType == null) throw new ArgumentNullException("outputType");
             if (method == null) throw new ArgumentNullException("method");
-            string funcTypeStr = string.Format("System.Func`2[[{0}],[{1}]]", targetType.AssemblyQualifiedName, outputType.AssemblyQualifiedName);
+            string funcTypeStr = string.Format("System.Func`2[[{0}], [{1}]]", targetType.AssemblyQualifiedName, outputType.AssemblyQualifiedName);
             Type funcType = Type.GetType(funcTypeStr);
             MethodInfo getTypeMethod = typeof(Type).GetMethod("GetType", new[] { typeof(string), typeof(bool) });
             MethodInfo invokeMethod = funcType.GetMethod("Invoke");

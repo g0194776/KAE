@@ -1,11 +1,12 @@
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
+using KJFramework.Messages.Exceptions;
 using KJFramework.Messages.Objects;
+using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors;
 using KJFramework.Messages.TypeProcessors.Maps;
+using System;
+using System.Collections.Concurrent;
 
 namespace KJFramework.Messages.Helpers
 {
@@ -16,7 +17,7 @@ namespace KJFramework.Messages.Helpers
     {
         #region Members
 
-        private static readonly ConcurrentDictionary<string, Func<object, byte[]>> _serializers = new ConcurrentDictionary<string, Func<object, byte[]>>();
+        private static readonly ConcurrentDictionary<string, Action<IMemorySegmentProxy, object>> _serializers = new ConcurrentDictionary<string, Action<IMemorySegmentProxy, object>>();
         private static readonly ConcurrentDictionary<string, Func<byte[], object>> _deserializers = new ConcurrentDictionary<string, Func<byte[], object>>(); 
 
         #endregion
@@ -26,17 +27,67 @@ namespace KJFramework.Messages.Helpers
         /// <summary>
         ///     将指定类型的实例序列化为二进制数据
         /// </summary>
+        /// <param name="instance">实例对象</param>
+        /// <returns>返回序列化后的二进制数据, 如果instance为null, 则返回null</returns>
+        public static byte[] ToBytes(object instance)
+        {
+            return ToBytes(instance.GetType(), instance);
+        }
+        
+        /// <summary>
+        ///     将指定类型的实例序列化为二进制数据
+        /// </summary>
+        /// <param name="instance">实例对象</param>
+        /// <returns>返回序列化后的二进制数据, 如果instance为null, 则返回null</returns>
+        public static byte[] ToBytes<T>(object instance)
+        {
+            return ToBytes(typeof (T), instance);
+        }
+        
+        /// <summary>
+        ///     将指定类型的实例序列化为二进制数据
+        /// </summary>
         /// <param name="type">类型</param>
         /// <param name="instance">实例对象</param>
-        /// <returns>返回序列化后的二进制数据</returns>
+        /// <returns>返回序列化后的二进制数据, 如果instance为null, 则返回null</returns>
         /// <exception cref="ArgumentNullException">type 参数不能为空</exception>
+        /// <exception cref="NotSupportedException">不被支持的类型</exception>
         public static byte[] ToBytes(Type type, object instance)
         {
             if (type == null) throw new ArgumentNullException("type");
             if (instance == null) return null;
+            MemoryAllotter.Instance.Initialize();
+            IMemorySegmentProxy proxy = null;
+            try
+            {
+                proxy = MemorySegmentProxyFactory.Create();
+                ToBytes(type, instance, proxy);
+                return proxy.GetBytes();
+            }
+            catch
+            {
+                if (proxy != null) proxy.Dispose();
+                throw;
+            }
+        }
+
+        /// <summary>
+        ///     将指定类型的实例序列化为二进制数据
+        /// </summary>
+        /// <param name="type">类型</param>
+        /// <param name="instance">实例对象</param>
+        /// <param name="proxy">内存段代理器</param>
+        /// <returns>返回序列化后的二进制数据, 如果instance为null, 则返回null</returns>
+        /// <exception cref="NotSupportedException">不被支持的类型</exception>
+        private static void ToBytes(Type type, object instance, IMemorySegmentProxy proxy)
+        {
             Type innerType;
-            Func<object, byte[]> cache;
-            if (_serializers.TryGetValue(type.FullName, out cache)) return cache(instance);
+            Action<IMemorySegmentProxy, object> cache;
+            if (_serializers.TryGetValue(type.FullName, out cache))
+            {
+                cache(proxy, instance);
+                return;
+            }
             IIntellectTypeProcessor intellectTypeProcessor;
 
             #region 普通类型判断
@@ -46,7 +97,7 @@ namespace KJFramework.Messages.Helpers
             {
                 //添加热缓存
                 IIntellectTypeProcessor processor = intellectTypeProcessor;
-                _serializers.TryAdd(type.FullName, (cache = parameter => { return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); }));
+                _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) => processor.Process(innerProxy, innerObj)));
             }
 
             #endregion
@@ -59,9 +110,9 @@ namespace KJFramework.Messages.Helpers
                 //获取枚举类型
                 Type enumType = Enum.GetUnderlyingType(type);
                 intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(enumType);
-                if (intellectTypeProcessor == null) throw new System.Exception("Cannot support this enum type! #type: " + type);
+                if (intellectTypeProcessor == null) throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
                 IIntellectTypeProcessor processor = intellectTypeProcessor;
-                _serializers.TryAdd(type.FullName, (cache = parameter => { return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); }));
+                _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) => processor.Process(innerProxy, innerObj)));
             }
 
             #endregion
@@ -71,9 +122,9 @@ namespace KJFramework.Messages.Helpers
             else if ((innerType = Nullable.GetUnderlyingType(type)) != null)
             {
                 intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(innerType);
-                if (intellectTypeProcessor == null) throw new System.Exception("Cannot find compatible processor, #type: " + type);
+                if (intellectTypeProcessor == null) throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, innerType));
                 IIntellectTypeProcessor processor = intellectTypeProcessor;
-                _serializers.TryAdd(type.FullName, (cache = parameter => { return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); }));
+                _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) => processor.Process(innerProxy, innerObj)));
             }
 
             #endregion
@@ -81,9 +132,7 @@ namespace KJFramework.Messages.Helpers
             #region 智能对象类型判断
 
             else if (type.IsSubclassOf(typeof(IntellectObject)))
-            {
-                _serializers.TryAdd(type.FullName, (cache = parameter => { return IntellectObjectEngine.ToBytes((IIntellectObject)parameter); }));
-            }
+                _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) => { IntellectObjectEngine.ToBytes((IIntellectObject)innerObj, innerProxy); }));
 
             #endregion
 
@@ -92,112 +141,53 @@ namespace KJFramework.Messages.Helpers
             else if (type.IsArray)
             {
                 if (!type.HasElementType)
-                    throw new System.Exception("Cannot support this array type! #type: " + type);
+                    throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
                 Type elementType = type.GetElementType();
                 VT vt = FixedTypeManager.IsVT(elementType);
-                if (vt != null)
-                {
-                    #region Deal VT type array specal.
-
-                    intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(elementType);
-                    if (intellectTypeProcessor == null) throw new System.Exception("Cannot support this array element type! #type: " + elementType);
-                    //Add hot cache.
-                    IIntellectTypeProcessor processor = intellectTypeProcessor;
-                    _serializers.TryAdd(type.FullName, cache = parameter =>
-                    {
-                        Array array = (Array)parameter;
-                        //id(1) + total length(4) + rank(4)
-                        byte[] memory = new byte[9 + array.Length * vt.Size];
-                        //be carefully, flag 0(array length) cannot equals really array length(Equal array.length - current property id - 4 bytes).
-                        BitConvertHelper.GetBytes(memory.Length - 5, memory, 1);
-                        BitConvertHelper.GetBytes(array.Length, memory, 5);
-                        int innerVtOffset = 9;
-                        for (int i = 0; i < array.Length; i++)
-                        {
-                            object element = array.GetValue(i);
-                            processor.Process(memory, innerVtOffset, IntellectTypeProcessorMapping.DefaultAttribute, element);
-                            innerVtOffset += vt.Size;
-                        }
-                        return memory;
-                    });
-
-                    #endregion
-                }
+                IIntellectTypeProcessor arrayProcessor = ArrayTypeProcessorMapping.Instance.GetProcessor(type);
+                if (arrayProcessor != null)
+                    _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) => arrayProcessor.Process(innerProxy, innerObj)));
+                else if (vt != null)
+                    throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
                 else if (elementType.IsSubclassOf(typeof(IntellectObject)))
                 {
-                    _serializers.TryAdd(type.FullName, cache = parameter =>
-                    {
-                        Array array = (Array)parameter;
-                        IList<byte[]> elementDatas = new List<byte[]>(array.Length);
-                        int getLength = 0;
-                        for (int i = 0; i < array.Length; i++)
-                        {
-                            IntellectObject element = (IntellectObject)array.GetValue(i);
-                            byte[] elementData = IntellectObjectHelper.SetLength(IntellectObjectEngine.ToBytes(element));
-                            elementDatas.Add(elementData);
-                            getLength += elementData.Length;
-                        }
-                        #region Concat data.
-
-                        byte[] memory = new byte[getLength + 9];
-                        BitConvertHelper.GetBytes(getLength + 4, memory, 1);
-                        BitConvertHelper.GetBytes(array.Length, memory, 5);
-                        int innerOffset = 9;
-                        foreach (byte[] bytes in elementDatas)
-                        {
-                            Buffer.BlockCopy(bytes, 0, memory, innerOffset, bytes.Length);
-                            innerOffset += bytes.Length;
-                        }
-                        return memory;
-
-                        #endregion
-                    });
-                }
-                else
-                {
-                    intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(elementType);
-                    if (intellectTypeProcessor == null) throw new System.Exception("Cannot support this array element type processor! #type: " + elementType);
                     //Add hot cache.
-                    IIntellectTypeProcessor processor = intellectTypeProcessor;
-                    _serializers.TryAdd(type.FullName, cache = parameter =>
+                    _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) =>
                     {
-                        Array array = (Array)parameter;
-                        IList<byte[]> elementDatas = new List<byte[]>(array.Length);
-                        int getLength = 0;
+                        IIntellectObject[] array = (IIntellectObject[]) innerObj;
+                        if (array == null || array.Length == 0) return;
+                        //write array length.
+                        innerProxy.WriteUInt32((uint)array.Length);
                         for (int i = 0; i < array.Length; i++)
                         {
-                            object element = array.GetValue(i);
-                            byte[] elementData = IntellectObjectHelper.SetLength(processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, element));
-                            elementDatas.Add(elementData);
-                            getLength += elementData.Length;
+                            if (array[i] == null) innerProxy.WriteUInt16(0);
+                            else
+                            {
+                                MemoryPosition innerStartObjPosition = innerProxy.GetPosition();
+                                innerProxy.Skip(Size.UInt16);
+                                IntellectObjectEngine.ToBytes(array[i], innerProxy);
+                                MemoryPosition innerEndObjPosition = innerProxy.GetPosition();
+                                innerProxy.WriteBackUInt16(innerStartObjPosition, (ushort)(MemoryPosition.CalcLength(innerProxy.SegmentCount, innerStartObjPosition, innerEndObjPosition) - 2));
+                            }
                         }
-                        #region Concat data.
-
-                        byte[] memory = new byte[getLength + 9];
-                        BitConvertHelper.GetBytes(getLength + 4, memory, 1);
-                        BitConvertHelper.GetBytes(array.Length, memory, 5);
-                        int innerOffset = 9;
-                        foreach (byte[] bytes in elementDatas)
-                        {
-                            Buffer.BlockCopy(bytes, 0, memory, innerOffset, bytes.Length);
-                            innerOffset += bytes.Length;
-                        }
-                        return memory;
-
-                        #endregion
-                    });
+                    }));
                 }
+                else throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
             }
 
             #endregion
 
-            #region Error
+            cache(proxy, instance);
+        }
 
-            else throw new System.Exception("Cannot process this data type! #type: " + type);
-
-            #endregion
-
-            return cache(instance);
+        /// <summary>
+        ///     将二进制数据反序列化成指定类型对象
+        /// </summary>
+        /// <param name="data">二进制数据</param>
+        /// <returns>返回反序列化后的对象, 如果data为null, 则返回null</returns>
+        public static T GetObject<T>(byte[] data)
+        {
+            return (T)GetObject(typeof (T), data);
         }
 
         /// <summary>
@@ -205,7 +195,7 @@ namespace KJFramework.Messages.Helpers
         /// </summary>
         /// <param name="type">类型</param>
         /// <param name="data">二进制数据</param>
-        /// <returns>返回反序列化后的对象</returns>
+        /// <returns>返回反序列化后的对象, 如果data为null, 则返回null</returns>
         /// <exception cref="ArgumentNullException">type 参数不能为空</exception>
         public static object GetObject(Type type, byte[] data)
         {
@@ -235,7 +225,7 @@ namespace KJFramework.Messages.Helpers
             {
                 Type enumType = Enum.GetUnderlyingType(type);
                 intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(enumType);
-                if (intellectTypeProcessor == null) throw new System.Exception("Cannot support this enum type! #type: " + type);
+                if (intellectTypeProcessor == null) throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
                 IIntellectTypeProcessor processor = intellectTypeProcessor;
                 _deserializers.TryAdd(type.FullName, cache = parameter => { return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); });
             }
@@ -247,7 +237,7 @@ namespace KJFramework.Messages.Helpers
             else if ((innerType = Nullable.GetUnderlyingType(type)) != null)
             {
                 intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(innerType);
-                if (intellectTypeProcessor == null) throw new System.Exception("Cannot find compatible processor, #type: " + type);
+                if (intellectTypeProcessor == null) throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
                 IIntellectTypeProcessor processor = intellectTypeProcessor;
                 _deserializers.TryAdd(type.FullName, cache = parameter => { return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); });
             }
@@ -258,9 +248,7 @@ namespace KJFramework.Messages.Helpers
 
             //智能对象的判断
             else if (type.IsSubclassOf(typeof(IntellectObject)))
-            {
-                _deserializers.TryAdd(type.FullName, cache = parameter => { return IntellectObjectEngine.GetObject<Object>(type, parameter); });
-            }
+                _deserializers.TryAdd(type.FullName, cache = parameter => { return IntellectObjectEngine.GetObject<object>(type, parameter); });
 
             #endregion
 
@@ -269,118 +257,37 @@ namespace KJFramework.Messages.Helpers
             else if (type.IsArray)
             {
                 Type elementType = type.GetElementType();
-                VT vt = FixedTypeManager.IsVT(elementType);
-                intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(elementType);
+                IIntellectTypeProcessor arrayProcessor = ArrayTypeProcessorMapping.Instance.GetProcessor(type);
                 //VT type.
-                if (vt != null)
-                {
-                    #region VT type array processor.
-
-                    if (intellectTypeProcessor == null) throw new System.Exception("Cannot found any processor to process current VT type. #type: " + elementType);
-                    IIntellectTypeProcessor safeProcessor = intellectTypeProcessor;
-                    _deserializers.TryAdd(type.FullName, cache = parameter =>
-                    {
-                        Array array;
-                        int innerOffset = 5;
-                        int chunkSize = parameter.Length;
-                        int arrLen = BitConverter.ToInt32(parameter, innerOffset);
-                        if (arrLen == 0) return Array.CreateInstance(elementType, 0);
-                        innerOffset += 4;
-                        array = Array.CreateInstance(elementType, arrLen);
-                        int arrIndex = 0;
-                        do
-                        {
-                            if ((parameter.Length - innerOffset) < vt.Size)
-                                throw new System.Exception("Illegal remaining binary data length!");
-                            //use unmanagement method by default.
-                            array.SetValue(safeProcessor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter, innerOffset, vt.Size), arrIndex);
-                            innerOffset += vt.Size;
-                            arrIndex++;
-                        } while (innerOffset < parameter.Length && innerOffset < chunkSize);
-                        return array;
-                    });
-
-                    #endregion
-                }
+                if (arrayProcessor != null)
+                    _deserializers.TryAdd(type.FullName, cache = parameter => { return arrayProcessor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); });
                 else if (elementType.IsSubclassOf(typeof(IntellectObject)))
                 {
                     #region IntellectObject type array processor.
 
                     _deserializers.TryAdd(type.FullName, cache = parameter =>
                     {
-                        Array array;
-                        int innerOffset = 5;
-                        int chunkSize = parameter.Length;
-                        int arrLen = BitConverter.ToInt32(parameter, innerOffset);
-                        if (arrLen == 0) return Array.CreateInstance(elementType, 0);
-                        innerOffset += 4;
-                        array = Array.CreateInstance(elementType, arrLen);
-                        int arrIndex = 0;
-                        short size;
-                        do
+                        object[] array = (object[])Activator.CreateInstance(type, BitConverter.ToInt32(parameter, 0));
+                        int innerOffset = 4;
+                        ushort size;
+                        for (int i = 0; i < array.Length; i++)
                         {
-                            size = BitConverter.ToInt16(parameter, innerOffset);
+                            size = BitConverter.ToUInt16(parameter, innerOffset);
                             innerOffset += 2;
-                            if ((parameter.Length - innerOffset) < size)
-                                throw new System.Exception("Illegal remaining binary data length!");
-                            //use unmanagement method by default.
-                            if (size == 0) array.SetValue(null, arrIndex);
-                            else array.SetValue(IntellectObjectEngine.GetObject<IntellectObject>(elementType, parameter, innerOffset, size), arrIndex);
+                            if (size == 0) array[i] = null;
+                            else array[i] = IntellectObjectEngine.GetObject<IntellectObject>(elementType, parameter, innerOffset, size);
                             innerOffset += size;
-                            arrIndex++;
-                        } while (innerOffset < parameter.Length && innerOffset < chunkSize);
+                        }
                         return array;
                     });
 
                     #endregion
                 }
-                else
-                {
-                    #region Any types if it can get the processor.
-
-                    intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(elementType);
-                    if (intellectTypeProcessor == null) throw new System.Exception("Cannot support this array element type processor! #type: " + elementType);
-                    //Add hot cache.
-                    IIntellectTypeProcessor safeProcessor = intellectTypeProcessor;
-
-                    _deserializers.TryAdd(type.FullName, cache = parameter =>
-                    {
-                        Array array;
-                        int innerOffset = 5;
-                        int chunkSize = parameter.Length;
-                        int arrLen = BitConverter.ToInt32(parameter, innerOffset);
-                        if (arrLen == 0) return Array.CreateInstance(elementType, 0);
-                        innerOffset += 4;
-                        array = Array.CreateInstance(elementType, arrLen);
-                        int arrIndex = 0;
-                        short size;
-                        do
-                        {
-                            size = BitConverter.ToInt16(parameter, innerOffset);
-                            innerOffset += 2;
-                            if ((parameter.Length - innerOffset) < size)
-                                throw new System.Exception("Illegal remaining binary data length!");
-                            //use unmanagement method by default.
-                            if (size == 0) array.SetValue(null, arrIndex);
-                            else array.SetValue(safeProcessor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter, innerOffset, size), arrIndex);
-                            innerOffset += size;
-                            arrIndex++;
-                        } while (innerOffset < parameter.Length && innerOffset < chunkSize);
-                        return array;
-                    });
-
-                    #endregion
-                }
+                else throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
             }
 
             #endregion
-
-            #region Error
-
-            else throw new System.Exception("Cannot support this data type: " + type);
-
-            #endregion
-
+            
             return cache(data);
         }
 

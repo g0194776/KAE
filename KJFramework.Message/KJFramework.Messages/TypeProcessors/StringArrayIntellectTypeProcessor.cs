@@ -30,19 +30,6 @@ namespace KJFramework.Messages.TypeProcessors
         /// <summary>
         ///     从第三方客户数据转换为元数据
         /// </summary>
-        /// <param name="memory">需要填充的字节数组</param>
-        /// <param name="offset">需要填充数组的起始偏移量</param>
-        /// <param name="attribute">当前字段标注的属性</param>
-        /// <param name="value">第三方客户数据</param>
-        [Obsolete("Cannot use this method, because current type doesn't supported.", true)]
-        public override void Process(byte[] memory, int offset, IntellectPropertyAttribute attribute, object value)
-        {
-            throw new NotSupportedException("Cannot use this method, because current type doesn't supported.");
-        }
-
-        /// <summary>
-        ///     从第三方客户数据转换为元数据
-        /// </summary>
         /// <param name="proxy">内存片段代理器</param>
         /// <param name="attribute">字段属性</param>
         /// <param name="analyseResult">分析结果</param>
@@ -83,15 +70,28 @@ namespace KJFramework.Messages.TypeProcessors
 
         /// <summary>
         ///     从第三方客户数据转换为元数据
+        ///     <para>* 此方法将会被轻量级的DataHelper所使用，并且写入的数据将不会拥有编号(Id)</para>
         /// </summary>
-        /// <param name="attribute">当前字段标注的属性</param>
-        /// <param name="value">第三方客户数据</param>
-        /// <returns>返回转换后的元数据</returns>
-        /// <exception cref="Exception">转换失败</exception>
-        [Obsolete("Cannot use this method, because current type doesn't supported.", true)]
-        public override byte[] Process(IntellectPropertyAttribute attribute, object value)
+        /// <param name="proxy">内存片段代理器</param>
+        /// <param name="target">目标对象实例</param>
+        /// <param name="isArrayElement">当前写入的值是否为数组元素标示</param>
+        /// <param name="isNullable">是否为可空字段标示</param>
+        public override void Process(IMemorySegmentProxy proxy, object target, bool isArrayElement = false, bool isNullable = false)
         {
-            throw new NotSupportedException("Cannot use this method, because current type doesn't supported.");
+            string[] array = (string[])target;
+            if (array == null || array.Length == 0) return;
+            proxy.WriteUInt32((uint) array.Length);
+            for (int i = 0; i < array.Length; i++)
+            {
+                string elementValue = array[i];
+                if (string.IsNullOrEmpty(elementValue)) proxy.WriteUInt16(0);
+                else
+                {
+                    byte[] elementData = Encoding.UTF8.GetBytes(elementValue);
+                    proxy.WriteUInt16((ushort)elementData.Length);
+                    proxy.WriteMemory(elementData, 0U, (uint)elementData.Length);
+                }
+            }
         }
 
         /// <summary>
@@ -101,25 +101,20 @@ namespace KJFramework.Messages.TypeProcessors
         /// <param name="data">元数据</param>
         /// <returns>返回转换后的第三方客户数据</returns>
         /// <exception cref="Exception">转换失败</exception>
-        [Obsolete("Cannot use this method, because current type doesn't supported.", true)]
         public override object Process(IntellectPropertyAttribute attribute, byte[] data)
         {
-            throw new NotSupportedException("Cannot use this method, because current type doesn't supported.");
-        }
-
-        /// <summary>
-        ///     从元数据转换为第三方客户数据
-        /// </summary>
-        /// <param name="attribute">当前字段标注的属性</param>
-        /// <param name="data">元数据</param>
-        /// <param name="offset">元数据所在的偏移量</param>
-        /// <param name="length">元数据长度</param>
-        /// <returns>返回转换后的第三方客户数据</returns>
-        /// <exception cref="Exception">转换失败</exception>
-        [Obsolete("Cannot use this method, because current type doesn't supported.", true)]
-        public override object Process(IntellectPropertyAttribute attribute, byte[] data, int offset, int length = 0)
-        {
-            throw new NotSupportedException("Cannot use this method, because current type doesn't supported.");
+            int offset = 4;
+            ushort len;
+            string[] array = new string[BitConverter.ToInt32(data, 0)];
+            for (int i = 0; i < array.Length; i++)
+            {
+                len = BitConverter.ToUInt16(data, offset);
+                offset += 2;
+                if (len == 0) continue;
+                array[i] = Encoding.UTF8.GetString(data, offset, len);
+                offset += len;
+            }
+            return array;
         }
 
         /// <summary>
@@ -164,7 +159,7 @@ namespace KJFramework.Messages.TypeProcessors
                         {
                             int charCount = Encoding.UTF8.GetCharCount(old, size);
                             //allcate memory at thread stack.
-                            if(charCount <= MemoryAllotter.CharSizeCanAllcateAtStack)
+                            if (charCount <= MemoryAllotter.CharSizeCanAllcateAtStack)
                             {
                                 char* newObj = stackalloc char[charCount];
                                 int len = Encoding.UTF8.GetChars(old, size, newObj, charCount);

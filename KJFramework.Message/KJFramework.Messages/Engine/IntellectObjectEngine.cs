@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Contracts;
@@ -8,8 +10,6 @@ using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors;
 using KJFramework.Messages.TypeProcessors.Maps;
 using KJFramework.Tracing;
-using System;
-using System.Collections.Generic;
 
 namespace KJFramework.Messages.Engine
 {
@@ -82,7 +82,7 @@ namespace KJFramework.Messages.Engine
         /// </summary>
         /// <param name="obj">智能对象</param>
         /// <param name="proxy">内存段代理器</param>
-        private static void ToBytes(IIntellectObject obj, IMemorySegmentProxy proxy)
+        internal static void ToBytes(IIntellectObject obj, IMemorySegmentProxy proxy)
         {
             //获取智能对象中的智能属性，并按照Id来排序
             ToBytesAnalyseResult[] properties = Analyser.ToBytesAnalyser.Analyse(obj);

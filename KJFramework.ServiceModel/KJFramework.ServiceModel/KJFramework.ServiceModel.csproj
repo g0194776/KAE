@@ -106,8 +106,6 @@
     <Compile Include="Metadata\IBinaryArgContext.cs" />
     <Compile Include="Objects\AsyncCallResult.cs" />
     <Compile Include="Objects\IAsyncCallResult.cs" />
-    <Compile Include="Processors\MessageIdentityIntellectTypeProcessor.cs" />
-    <Compile Include="Processors\TransactionIdentityIntellectTypeProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxy\IClientProxy.cs" />
     <Compile Include="Statistics\TcpHostTransportChannelStatistic.cs" />
@@ -149,6 +147,10 @@
     <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
       <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
       <Name>KJFramework.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
       <Project>{33FE11D3-2810-4432-B64C-B16935BB47CD}</Project>
