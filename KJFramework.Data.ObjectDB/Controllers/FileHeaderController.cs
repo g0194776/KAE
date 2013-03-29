@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.IO.MemoryMappedFiles;
-using System.Security.Cryptography;
-using System.Text;
 using KJFramework.Data.ObjectDB.Helpers;
 using KJFramework.Data.ObjectDB.Structures;
 
@@ -19,19 +16,12 @@ namespace KJFramework.Data.ObjectDB.Controllers
         /// <summary>
         ///     文件头管理器
         /// </summary>
-        /// <param name="filename">本地数据库文件全路径</param>
-        public FileHeaderController(string filename)
+        /// <param name="indexTable">索引表</param>
+        /// <param name="mappedFile">内存映射文件句柄</param>
+        public FileHeaderController(IIndexTable indexTable, MemoryMappedFile mappedFile)
         {
-            if (!File.Exists(filename))
-            {
-                _indexTable = DBFileHelper.CreateNew(filename);
-                _mappFile = MemoryMappedFile.CreateFromFile(filename);
-            }
-            else
-            {
-                _mappFile = MemoryMappedFile.CreateFromFile(filename);
-                _indexTable = DBFileHelper.ReadIndexTable(_mappFile);
-            }
+            _indexTable = indexTable;
+            _mappedFile = mappedFile;
         }
 
         #endregion
@@ -39,8 +29,8 @@ namespace KJFramework.Data.ObjectDB.Controllers
         #region Members
 
         private readonly IIndexTable _indexTable;
+        private readonly MemoryMappedFile _mappedFile;
         private readonly MemoryMappedFile _mappFile;
-        private static readonly MD5 _md5Provider = new MD5CryptoServiceProvider();
 
         #endregion
 
@@ -52,16 +42,30 @@ namespace KJFramework.Data.ObjectDB.Controllers
         /// <param name="fullname">要添加的类型全名称</param>
         /// <returns>返回类型令牌</returns>
         /// <exception cref="System.ArgumentNullException">参数不能为空</exception>
-        public unsafe TypeToken AddToken(string fullname)
+        public TypeToken AddToken(string fullname)
         {
             if (string.IsNullOrEmpty(fullname)) throw new ArgumentNullException("fullname");
-            byte[] hashData = _md5Provider.ComputeHash(Encoding.UTF8.GetBytes(fullname));
-            ulong tokenId;
             TypeToken? token;
-            fixed (byte* pByte = hashData) tokenId = *(ulong*)(pByte + 8);
+            ulong tokenId = UtilityHelper.CalcTokenId(fullname);
             if ((token = _indexTable.GetToken(tokenId)) != null) return (TypeToken)token;
             TypeToken newToken = new TypeToken();
             newToken.Id = tokenId;
+            newToken.IsTemporaryStore = false;
+            _indexTable.AddToken(newToken);
+            return newToken;
+        }
+
+        /// <summary>
+        ///     添加一个类型令牌
+        /// </summary>
+        /// <param name="id">要添加的类型编号</param>
+        /// <returns>返回类型令牌</returns>
+        public TypeToken AddToken(ulong id)
+        {
+            TypeToken? token;
+            if ((token = _indexTable.GetToken(id)) != null) return (TypeToken)token;
+            TypeToken newToken = new TypeToken();
+            newToken.Id = id;
             newToken.IsTemporaryStore = false;
             _indexTable.AddToken(newToken);
             return newToken;
@@ -75,6 +79,25 @@ namespace KJFramework.Data.ObjectDB.Controllers
         public TypeToken? GetToken(ulong id)
         {
             return _indexTable.GetToken(id);
+        }
+
+        /// <summary>
+        ///     获取或者添加一个类型令牌
+        ///     <para>* 如果指定的类型全名未被加入到当前索引表中，则此方法会自动添加这个类型令牌</para>
+        /// </summary>
+        /// <param name="fullname">要添加的类型全名称</param>
+        /// <returns>返回类型令牌</returns>
+        /// <exception cref="System.ArgumentNullException">参数不能为空</exception>
+        public TypeToken GetOrAddToken(string fullname)
+        {
+            if (string.IsNullOrEmpty(fullname)) throw new ArgumentNullException("fullname");
+            ulong tokenId = UtilityHelper.CalcTokenId(fullname);
+            TypeToken? token;
+            TypeToken actualToken;
+            if ((token = GetToken(tokenId)) == null)
+                actualToken = AddToken(tokenId);
+            else actualToken = (TypeToken) token;
+            return actualToken;
         }
 
         /// <summary>

@@ -44,10 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\IFileController.cs" />
     <Compile Include="Controllers\IPageController.cs" />
     <Compile Include="Enums\StoreModes.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\DBFileHelper.cs" />
+    <Compile Include="Helpers\UtilityHelper.cs" />
     <Compile Include="IObjectDatabase.cs" />
     <Compile Include="LocalObjectDatabase.cs" />
     <Compile Include="Controllers\IFileHeaderController.cs" />
@@ -60,7 +63,6 @@
     <Compile Include="Structures\IDataPage.cs" />
     <Compile Include="Structures\IDataRange.cs" />
     <Compile Include="Structures\IDataSegment.cs" />
-    <Compile Include="Structures\IFileController.cs" />
     <Compile Include="Structures\IFileFlag.cs" />
     <Compile Include="Structures\IIndexTable.cs" />
     <Compile Include="Structures\IndexTable.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Structures\ISegmentHead.cs" />
     <Compile Include="Structures\ITypeToken.cs" />
     <Compile Include="Structures\PositionData.cs" />
+    <Compile Include="Structures\StorePosition.cs" />
     <Compile Include="Structures\StorePositionData.cs" />
     <Compile Include="Structures\TypeToken.cs" />
   </ItemGroup>

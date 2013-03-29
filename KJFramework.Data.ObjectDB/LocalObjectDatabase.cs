@@ -1,5 +1,6 @@
 using System;
 using KJFramework.Data.ObjectDB.Controllers;
+using KJFramework.Data.ObjectDB.Helpers;
 using KJFramework.Data.ObjectDB.Structures;
 
 namespace KJFramework.Data.ObjectDB
@@ -11,9 +12,7 @@ namespace KJFramework.Data.ObjectDB
     {
         #region Members
 
-        private readonly string _filename;
-        private readonly IIndexTable _indexTable;
-        private readonly IFileHeaderController _fileHeaderController;
+        private readonly IFileController _fileController;
 
         #endregion
 
@@ -27,8 +26,26 @@ namespace KJFramework.Data.ObjectDB
         public LocalObjectDatabase(string filename)
         {
             if (string.IsNullOrEmpty(filename)) throw new ArgumentNullException("filename");
-            _filename = filename;
-            _fileHeaderController = new FileHeaderController(filename);
+            _fileController = new FileController(filename);
+        }
+
+        #endregion
+
+        #region Implementation of IObjectDatabase
+
+        /// <summary>
+        ///     存储一个对象
+        /// </summary>
+        /// <param name="obj">需要被存储的对象</param>
+        /// <exception cref="ArgumentNullException">参数不能为空</exception>
+        public void Store(object obj)
+        {
+            if (obj == null) throw new ArgumentNullException("obj");
+            ulong tokenId = UtilityHelper.CalcTokenId(obj.GetType().FullName);
+            StorePosition position;
+            if (!_fileController.EnsureSize(tokenId, 1024U, out position))
+                throw new System.Exception("容量不足");
+            _fileController.Store(tokenId, position, new byte[] { });
         }
 
         #endregion
