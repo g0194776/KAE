@@ -682,6 +682,16 @@ namespace KJFramework.Messages.UnitTest
         public IPEndPoint[] Ieps { get; set; }
     }
 
+    public class Test67 : IntellectObject
+    {
+        [IntellectProperty(0)]
+        public int ProtocolId { get; set; }
+        [IntellectProperty(1)]
+        public int ServiceId { get; set; }
+        [IntellectProperty(2)]
+        public Test1[] Objs { get; set; }
+    }
+
     public class CMode : IntellectObject
     {
         [IntellectProperty(0)]

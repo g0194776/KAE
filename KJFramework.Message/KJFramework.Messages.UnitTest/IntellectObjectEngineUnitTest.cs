@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
+using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Proxies;
@@ -3076,6 +3077,18 @@ namespace KJFramework.Messages.UnitTest
             TestObjectByteArray testObject = new TestObjectByteArray();
             testObject.Array = Encoding.Default.GetBytes("拥有222dfs~~~d象，打印描sdfsdfsdffsdf拥有字节数组集合的智能对象，打印描述信息的测试方法sdfewj90382-sjf lisf ssdf325yhrtgt htyj uy");
             Console.WriteLine(testObject);
+        }
+
+        [TestMethod]
+        [Description("用于测试内部字段为智能对象数组形式的时候，依旧可以反序列化")]
+        public void MultiIntellectObjectPickupTest()
+        {
+            Test67 test67 = new Test67 { ProtocolId = 1, ServiceId = 2, Objs = new[] { new Test1 { ProtocolId = 3, ServicelId = 4 }, new Test1 { ProtocolId = 3, ServicelId = 4 } } };
+            test67.Bind();
+            Assert.IsTrue(test67.IsBind);
+
+            Test67 newObj = (Test67)IntellectObjectEngine.GetObject<Test67>(test67.Body);
+            Assert.IsNotNull(newObj);
         }
 
         public static void PrintBytes(byte[] data)

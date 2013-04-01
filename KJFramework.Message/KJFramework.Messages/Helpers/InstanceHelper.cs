@@ -143,11 +143,11 @@ namespace KJFramework.Messages.Helpers
                         int arrLen = BitConverter.ToInt32(parameter, innerOffset);
                         if (arrLen == 0)
                         {
-                            innerAnalyseResult.SetValue(innerInstance, new IntellectObject[0]);
+                            innerAnalyseResult.SetValue(innerInstance, Activator.CreateInstance(analyze.Property.PropertyType, 0));
                             return;
                         }
                         innerOffset += 4;
-                        IntellectObject[] array = new IntellectObject[arrLen];
+                        IntellectObject[] array = (IntellectObject[])Activator.CreateInstance(analyze.Property.PropertyType, arrLen);
                         int arrIndex = 0;
                         short size;
                         do
