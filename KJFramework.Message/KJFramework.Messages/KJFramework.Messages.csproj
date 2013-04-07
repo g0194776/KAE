@@ -86,6 +86,7 @@
     <Compile Include="Helpers\DynamicHelper.cs" />
     <Compile Include="Helpers\FixedTypeManager.cs" />
     <Compile Include="Helpers\InstanceHelper.cs" />
+    <Compile Include="Helpers\IntellectObjectArrayHelper.cs" />
     <Compile Include="Helpers\Size.cs" />
     <Compile Include="Proxies\IMemorySegment.cs" />
     <Compile Include="Proxies\IMemorySegmentProxy.cs" />

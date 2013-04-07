@@ -141,13 +141,14 @@ namespace KJFramework.Messages.Helpers
                         int innerOffset = position;
                         int chunkSize = position + len;
                         int arrLen = BitConverter.ToInt32(parameter, innerOffset);
+                        Func<int, IntellectObject[]> func = IntellectObjectArrayHelper.GetFunc<IntellectObject>(analyze.Property.PropertyType);
                         if (arrLen == 0)
                         {
-                            innerAnalyseResult.SetValue(innerInstance, Activator.CreateInstance(analyze.Property.PropertyType, 0));
+                            innerAnalyseResult.SetValue(innerInstance, func(0));
                             return;
                         }
                         innerOffset += 4;
-                        IntellectObject[] array = (IntellectObject[])Activator.CreateInstance(analyze.Property.PropertyType, arrLen);
+                        IntellectObject[] array = func(arrLen);
                         int arrIndex = 0;
                         short size;
                         do

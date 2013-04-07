@@ -267,7 +267,10 @@ namespace KJFramework.Messages.Helpers
 
                     _deserializers.TryAdd(type.FullName, cache = parameter =>
                     {
-                        object[] array = (object[])Activator.CreateInstance(type, BitConverter.ToInt32(parameter, 0));
+                        Func<int, IntellectObject[]> func = IntellectObjectArrayHelper.GetFunc<IntellectObject>(type);
+                        int arrLen = BitConverter.ToInt32(parameter, 0);
+                        if (arrLen == 0) return func(0);
+                        IntellectObject[] array = func(arrLen);
                         int innerOffset = 4;
                         ushort size;
                         for (int i = 0; i < array.Length; i++)
