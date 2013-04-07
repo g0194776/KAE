@@ -109,6 +109,31 @@
             }
         }
 
+        /// <summary>
+        ///     获取当前类型的数据在文件中的最后一次存储位置
+        /// </summary>
+        /// <returns>返回位置信息</returns>
+        public PositionData GetLastPosition()
+        {
+            int offset = 1, count = Count;
+            PositionData* position = null;
+            fixed (byte* pByte = _data)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (position == null) position = (PositionData*)(pByte + offset);
+                    else
+                    {
+                        PositionData* nextPosition = (PositionData*)(pByte + offset);
+                        if (nextPosition->FileId >= position->FileId && nextPosition->StartPageId > position->StartPageId)
+                            position = nextPosition;
+                    }
+                    offset += sizeof(PositionData);
+                }
+                return *position;
+            }
+        }
+
         #endregion
     }
 }

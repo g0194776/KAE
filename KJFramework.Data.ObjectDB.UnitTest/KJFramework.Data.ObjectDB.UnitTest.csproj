@@ -49,9 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileHeaderControllerUnitTest.cs" />
-    <Compile Include="Obj1.cs" />
-    <Compile Include="ObjectDatabasesUnitTest.cs" />
+    <Compile Include="OutterUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

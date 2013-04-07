@@ -30,6 +30,14 @@ namespace KJFramework.Data.ObjectDB.Controllers
         TypeToken? GetToken(ulong id);
         /// <summary>
         ///     获取或者添加一个类型令牌
+        ///     <para>* 如果指定的id未被加入到当前索引表中，则此方法会自动添加这个类型令牌</para>
+        /// </summary>
+        /// <param name="tokenId">编号</param>
+        /// <returns>返回类型令牌</returns>
+        /// <exception cref="System.ArgumentNullException">参数不能为空</exception>
+        TypeToken GetOrAddToken(ulong tokenId);
+        /// <summary>
+        ///     获取或者添加一个类型令牌
         ///     <para>* 如果指定的类型全名未被加入到当前索引表中，则此方法会自动添加这个类型令牌</para>
         /// </summary>
         /// <param name="fullname">要添加的类型全名称</param>

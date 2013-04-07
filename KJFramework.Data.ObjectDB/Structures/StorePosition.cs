@@ -5,6 +5,21 @@
     /// </summary>
     internal struct StorePosition
     {
-         
+        /// <summary>
+        ///     文件编号
+        /// </summary>
+        public ushort FileId;
+        /// <summary>
+        ///     页面编号
+        /// </summary>
+        public uint PageId;
+        /// <summary>
+        ///     数据段编号
+        /// </summary>
+        public ushort SegmentId;
+        /// <summary>
+        ///     其实数据写入偏移
+        /// </summary>
+        public uint StartOffset;
     }
 }

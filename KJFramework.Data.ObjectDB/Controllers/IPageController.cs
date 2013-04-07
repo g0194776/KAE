@@ -18,5 +18,12 @@ namespace KJFramework.Data.ObjectDB.Controllers
         /// <param name="pageId">页面编号</param>
         /// <returns>如果存在指定条件的页面，则返回，反之返回null.</returns>
         IPage GetPageById(uint pageId);
+        /// <summary>
+        ///     存储二进制数据到指定位置
+        /// </summary>
+        /// <param name="tokenId">令牌编号</param>
+        /// <param name="position">位置信息</param>
+        /// <param name="data">要保存的数据</param>
+        bool Store(ulong tokenId, StorePosition position, byte[] data);
     }
 }

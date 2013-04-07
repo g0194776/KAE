@@ -47,16 +47,22 @@
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\IFileController.cs" />
     <Compile Include="Controllers\IPageController.cs" />
+    <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Enums\StoreModes.cs" />
+    <Compile Include="Exceptions\HookProcessException.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\DBFileHelper.cs" />
     <Compile Include="Helpers\UtilityHelper.cs" />
+    <Compile Include="Hooks\DataProcessHookManager.cs" />
+    <Compile Include="Hooks\IDataProcessHook.cs" />
+    <Compile Include="Serializers\IObjectSerializer.cs" />
     <Compile Include="IObjectDatabase.cs" />
     <Compile Include="LocalObjectDatabase.cs" />
     <Compile Include="Controllers\IFileHeaderController.cs" />
     <Compile Include="Controllers\FileHeaderController.cs" />
     <Compile Include="ObjectDatabases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structures\DataSegment.cs" />
     <Compile Include="Structures\FileFlag.cs" />
     <Compile Include="Structures\IAuthorization.cs" />
     <Compile Include="Structures\IDataHead.cs" />
@@ -69,14 +75,13 @@
     <Compile Include="Structures\IPage.cs" />
     <Compile Include="Structures\ISegmentHead.cs" />
     <Compile Include="Structures\ITypeToken.cs" />
+    <Compile Include="Structures\Page.cs" />
     <Compile Include="Structures\PositionData.cs" />
     <Compile Include="Structures\StorePosition.cs" />
     <Compile Include="Structures\StorePositionData.cs" />
     <Compile Include="Structures\TypeToken.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
       <Project>{d5a0178c-16f7-453e-a301-d1d61910d2af}</Project>

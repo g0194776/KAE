@@ -45,7 +45,7 @@ namespace KJFramework.Data.ObjectDB
             StorePosition position;
             if (!_fileController.EnsureSize(tokenId, 1024U, out position))
                 throw new System.Exception("ÈÝÁ¿²»×ã");
-            _fileController.Store(tokenId, position, new byte[] { });
+            _fileController.Store(obj.GetType(), tokenId, position, new byte[] { });
         }
 
         #endregion

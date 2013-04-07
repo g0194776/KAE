@@ -1,4 +1,6 @@
-﻿using KJFramework.Data.ObjectDB.Structures;
+﻿using System;
+using KJFramework.Data.ObjectDB.Exceptions;
+using KJFramework.Data.ObjectDB.Structures;
 
 namespace KJFramework.Data.ObjectDB.Controllers
 {
@@ -22,9 +24,12 @@ namespace KJFramework.Data.ObjectDB.Controllers
         /// <summary>
         ///     存储一个对象数据
         /// </summary>
+        /// <param name="type">要保存的数据原对象类型</param>
         /// <param name="tokenId">类型编号</param>
         /// <param name="position">存储的位置信息</param>
         /// <param name="data">要存储的数据</param>
-        void Store(ulong tokenId, StorePosition position, byte[] data);
+        /// <exception cref="ArgumentNullException">参数不能为空</exception>
+        /// <exception cref="HookProcessException">数据钩子处理失败</exception>
+        void Store(Type type, ulong tokenId, StorePosition position, byte[] data);
     }
 }
