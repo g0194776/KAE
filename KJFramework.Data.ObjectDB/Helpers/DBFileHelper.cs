@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using KJFramework.Data.ObjectDB.Controllers;
 using KJFramework.Data.ObjectDB.Structures;
 
 namespace KJFramework.Data.ObjectDB.Helpers
@@ -13,14 +14,12 @@ namespace KJFramework.Data.ObjectDB.Helpers
     {
         #region Methods
 
-        public static IndexTable CreateNew(string filename)
+        public static IndexTable CreateNew(FileStream stream)
         {
             IndexTable indexTable = new IndexTable();
-            using (FileStream stream = new FileStream(filename, FileMode.CreateNew))
-            {
-                byte[] data = GetDataWithFileHead(indexTable);
-                stream.Write(data, 0, data.Length);
-            }
+            byte[] data = GetDataWithFileHead(indexTable);
+            stream.Write(data, 0, data.Length);
+            stream.Flush(true);
             return indexTable;
         }
 
@@ -51,8 +50,9 @@ namespace KJFramework.Data.ObjectDB.Helpers
             return data;
         }
 
-        internal unsafe static IIndexTable ReadIndexTable(MemoryMappedFile mappedFile)
+        internal unsafe static IIndexTable ReadIndexTable(IFileMemoryAllocator allocator)
         {
+            using (MemoryMappedFile mappedFile = allocator.NewMappedFile())
             using (MemoryMappedViewAccessor accessor = mappedFile.CreateViewAccessor(0, Global.HeaderBoundary))
             {
                 byte[] data = new byte[Global.HeaderBoundary];
@@ -82,8 +82,9 @@ namespace KJFramework.Data.ObjectDB.Helpers
             }
         }
 
-        internal static void StoreIndexTable(MemoryMappedFile mappedFile, IIndexTable indexTable)
+        internal static void StoreIndexTable(IFileMemoryAllocator allocator, IIndexTable indexTable)
         {
+            using (MemoryMappedFile mappedFile = allocator.NewMappedFile())
             using (MemoryMappedViewStream stream = mappedFile.CreateViewStream(0, Global.HeaderBoundary))
             {
                 byte[] data = GetDataWithFileHead(indexTable);

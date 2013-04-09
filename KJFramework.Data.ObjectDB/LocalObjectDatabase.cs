@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using KJFramework.Data.ObjectDB.Controllers;
 using KJFramework.Data.ObjectDB.Helpers;
 using KJFramework.Data.ObjectDB.Structures;
@@ -45,7 +46,18 @@ namespace KJFramework.Data.ObjectDB
             StorePosition position;
             if (!_fileController.EnsureSize(tokenId, 1024U, out position))
                 throw new System.Exception("容量不足");
-            _fileController.Store(obj.GetType(), tokenId, position, new byte[] { });
+            _fileController.Store(obj, tokenId, position);
+        }
+
+        /// <summary>
+        ///     获取保存在数据库中所有指定类型的对象集合
+        /// </summary>
+        /// <typeparam name="T">指定对象类型</typeparam>
+        /// <returns>返回相关对象集合, 如果无法查找到有效对象则返回null.</returns>
+        public IList<T> Get<T>() where T : new()
+        {
+            ulong tokenId = UtilityHelper.CalcTokenId(typeof(T).FullName);
+            return _fileController.Get<T>(tokenId);
         }
 
         #endregion

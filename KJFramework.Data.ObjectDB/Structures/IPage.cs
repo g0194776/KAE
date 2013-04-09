@@ -1,4 +1,6 @@
-﻿namespace KJFramework.Data.ObjectDB.Structures
+﻿using System.Collections.Generic;
+
+namespace KJFramework.Data.ObjectDB.Structures
 {
     /// <summary>
     ///     页面接口
@@ -28,5 +30,15 @@
         /// <param name="position">存储位置</param>
         /// <returns>返回存储结果</returns>
         bool Store(byte[] data, StorePosition position);
+        /// <summary>
+        ///     获取内部所有的已保存数据
+        /// </summary>
+        /// <returns>返回内部所有已保存数据，如果没有任何保存的数据则返回null.</returns>
+        IList<byte[]> GetAllData();
+        /// <summary>
+        ///     计算页面剩余容量
+        /// </summary>
+        /// <returns>返回内部剩余容量</returns>
+        uint CalcRemaining();
     }
 }

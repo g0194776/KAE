@@ -5,7 +5,7 @@ namespace KJFramework.Data.ObjectDB
     /// <summary>
     ///      全局变量
     /// </summary>
-    internal static class Global
+    internal unsafe static class Global
     {
         #region Members
 
@@ -21,7 +21,7 @@ namespace KJFramework.Data.ObjectDB
         ///     服务器设备的单页面大小
         ///     <para>* 单位: byte</para>
         /// </summary>
-        public const uint ServerPageSize = 32 * 1024;
+        public static readonly uint ServerPageSize = 32 * 1024 + (uint)sizeof(PageHead);
         /// <summary>
         ///     文件头边界长度
         /// </summary>
@@ -32,14 +32,18 @@ namespace KJFramework.Data.ObjectDB
         /// </summary>
         public const byte MaxDataStoreVolume = 10;
         /// <summary>
-        ///     每个数据片段的大校
+        ///     每个数据片段的大小
         ///     <para>* 单位: byte</para>
         /// </summary>
-        public const uint SegmentSize = ServerPageSize/SegmentsPerPage;
+        public static readonly uint SegmentSize = ServerPageSize / SegmentsPerPage;
         /// <summary>
         ///     服务器设备页面数量
         /// </summary>
         public const uint ServerPageCount = 65535;
+        /// <summary>
+        ///     服务器设备单存储文件最大长度
+        /// </summary>
+        public const ulong MaxServerFileSize = 4294967296;
         /// <summary>
         ///     获取文件头
         /// </summary>

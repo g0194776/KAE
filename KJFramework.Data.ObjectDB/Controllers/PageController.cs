@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
-using System.IO.MemoryMappedFiles;
 using KJFramework.Data.ObjectDB.Structures;
+using KJFramework.Tracing;
 
 namespace KJFramework.Data.ObjectDB.Controllers
 {
@@ -15,13 +16,13 @@ namespace KJFramework.Data.ObjectDB.Controllers
         ///     页面控制器
         /// </summary>
         /// <param name="fileId">所属的文件编号</param>
+        /// <param name="fileMemoryAllocator">文件内存申请器</param>
         /// <param name="indexTable">索引表</param>
-        /// <param name="mappFile">内存映射文件句柄</param>
-        public PageController(ushort fileId, IIndexTable indexTable, MemoryMappedFile mappFile)
+        public PageController(ushort fileId, IFileMemoryAllocator fileMemoryAllocator, IIndexTable indexTable)
         {
             _fileId = fileId;
             _indexTable = indexTable;
-            _mappFile = mappFile;
+            _allocator = fileMemoryAllocator;
             Initialize();
         }
 
@@ -32,8 +33,9 @@ namespace KJFramework.Data.ObjectDB.Controllers
         private readonly object _lockObj = new object();
         private readonly ushort _fileId;
         private readonly IIndexTable _indexTable;
-        private readonly MemoryMappedFile _mappFile;
         private readonly IDictionary<uint, IPage> _pages = new Dictionary<uint, IPage>();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (PageController));
+        private IFileMemoryAllocator _allocator;
         
         #endregion
 
@@ -47,7 +49,8 @@ namespace KJFramework.Data.ObjectDB.Controllers
         {
             lock (_lockObj)
             {
-                IPage page = new Page(_fileId, ++_indexTable.UsedPageCounts, _mappFile, true);
+                _allocator.Alloc(Global.ServerPageSize);
+                IPage page = new Page(_allocator, _fileId, ++_indexTable.UsedPageCounts, true);
                 _pages.Add(page.Id, page);
                 return page;
             }
@@ -58,13 +61,27 @@ namespace KJFramework.Data.ObjectDB.Controllers
         /// </summary>
         /// <param name="pageId">页面编号</param>
         /// <returns>如果存在指定条件的页面，则返回，反之返回null.</returns>
+        /// <exception cref="InvalidOperationException">非法的页面编号</exception>
         public IPage GetPageById(uint pageId)
         {
+            IPage page;
+            System.Exception exception = null;
             lock (_lockObj)
             {
-                IPage page;
-                return _pages.TryGetValue(pageId, out page) ? page : null;
+                if (_pages.TryGetValue(pageId, out page)) return page;
+                try
+                {
+                    page = new Page(_allocator, _fileId, pageId, false);
+                    _pages.Add(pageId, page);
+                }
+                catch (System.Exception ex)
+                {
+                    _tracing.Error(ex, null);
+                    exception = ex;
+                }
             }
+            if (exception != null) throw exception;
+            return page;
         }
 
         /// <summary>
@@ -90,6 +107,11 @@ namespace KJFramework.Data.ObjectDB.Controllers
         {
             if (_indexTable.UsedPageCounts == 0U) return;
         }
+
+        #endregion
+
+        #region Methods
+
 
         #endregion
     }

@@ -16,12 +16,12 @@ namespace KJFramework.Data.ObjectDB.Controllers
         /// <summary>
         ///     文件头管理器
         /// </summary>
+        /// <param name="allocator">文件内存申请器</param>
         /// <param name="indexTable">索引表</param>
-        /// <param name="mappedFile">内存映射文件句柄</param>
-        public FileHeaderController(IIndexTable indexTable, MemoryMappedFile mappedFile)
+        public FileHeaderController(IFileMemoryAllocator allocator, IIndexTable indexTable)
         {
+            _allocator = allocator;
             _indexTable = indexTable;
-            _mappedFile = mappedFile;
         }
 
         #endregion
@@ -29,8 +29,8 @@ namespace KJFramework.Data.ObjectDB.Controllers
         #region Members
 
         private readonly IIndexTable _indexTable;
-        private readonly MemoryMappedFile _mappedFile;
         private readonly MemoryMappedFile _mappFile;
+        private readonly IFileMemoryAllocator _allocator;
 
         #endregion
 
@@ -130,7 +130,7 @@ namespace KJFramework.Data.ObjectDB.Controllers
         /// </summary>
         public void Commit()
         {
-            DBFileHelper.StoreIndexTable(_mappFile, _indexTable);
+            DBFileHelper.StoreIndexTable(_allocator, _indexTable);
         }
 
         #endregion

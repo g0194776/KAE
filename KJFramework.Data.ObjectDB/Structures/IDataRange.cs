@@ -6,12 +6,17 @@
     internal interface IDataRange
     {
         /// <summary>
-        ///     获取数据头
+        ///     获取内部包含的真实数据
         /// </summary>
-        IDataHead Head { get; }
+        /// <returns>返回内部包含的真实数据</returns>
+        byte[] GetData();
         /// <summary>
-        ///     获取数据的开始位置
+        ///     获取内部数据的真实长度
         /// </summary>
-        uint StartPosition { get; }
+        uint Length { get; }
+        /// <summary>
+        ///     保存当前内部数据
+        /// </summary>
+        void Save();
     }
 }

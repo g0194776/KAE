@@ -45,7 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\FileMemoryAllocator.cs" />
     <Compile Include="Controllers\IFileController.cs" />
+    <Compile Include="Controllers\IFileMemoryAllocator.cs" />
     <Compile Include="Controllers\IPageController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Enums\StoreModes.cs" />
@@ -62,10 +64,11 @@
     <Compile Include="Controllers\FileHeaderController.cs" />
     <Compile Include="ObjectDatabases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structures\DataRange.cs" />
+    <Compile Include="Structures\DataRangeHead.cs" />
     <Compile Include="Structures\DataSegment.cs" />
     <Compile Include="Structures\FileFlag.cs" />
     <Compile Include="Structures\IAuthorization.cs" />
-    <Compile Include="Structures\IDataHead.cs" />
     <Compile Include="Structures\IDataPage.cs" />
     <Compile Include="Structures\IDataRange.cs" />
     <Compile Include="Structures\IDataSegment.cs" />
@@ -73,10 +76,11 @@
     <Compile Include="Structures\IIndexTable.cs" />
     <Compile Include="Structures\IndexTable.cs" />
     <Compile Include="Structures\IPage.cs" />
-    <Compile Include="Structures\ISegmentHead.cs" />
     <Compile Include="Structures\ITypeToken.cs" />
     <Compile Include="Structures\Page.cs" />
+    <Compile Include="Structures\PageHead.cs" />
     <Compile Include="Structures\PositionData.cs" />
+    <Compile Include="Structures\SegmentHead.cs" />
     <Compile Include="Structures\StorePosition.cs" />
     <Compile Include="Structures\StorePositionData.cs" />
     <Compile Include="Structures\TypeToken.cs" />

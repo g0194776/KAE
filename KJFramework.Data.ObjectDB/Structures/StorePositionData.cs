@@ -1,4 +1,6 @@
-﻿namespace KJFramework.Data.ObjectDB.Structures
+﻿using System.Collections.Generic;
+
+namespace KJFramework.Data.ObjectDB.Structures
 {
     /// <summary>
     ///     根节点类型存储位移的数据块
@@ -34,18 +36,20 @@
         /// </summary>
         /// <param name="fileId">文件编号</param>
         /// <returns>如果能找到，则返回位置信息，否则返回null</returns>
-        public PositionData? GetPositionDataByFileId(byte fileId)
+        public IList<PositionData> GetPositionDataByFileId(byte fileId)
         {
             int offset = 1, count = Count;
+            if (count == 0) return null;
+            IList<PositionData> positions = new List<PositionData>();
             fixed (byte* pByte = _data)
             {
                 for (int i = 0; i < count; i++)
                 {
                     PositionData* data = (PositionData*)(pByte + offset);
-                    if (data->FileId == fileId) return *data;
+                    if (data->FileId == fileId) positions.Add(*data);
                     offset += sizeof(PositionData);
                 }
-                return null;
+                return positions;
             }
         }
 

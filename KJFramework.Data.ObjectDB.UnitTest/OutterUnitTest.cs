@@ -15,13 +15,15 @@ namespace KJFramework.Data.ObjectDB.UnitTest
         [TestMethod]
         public void CreateTest()
         {
-            string file = string.Format("E:\\{0}.db4o", DateTime.Now.ToString("yyyyMMdd-hhmmss"));
-            Console.WriteLine("Test file path: " + file);
-            if (File.Exists(file)) File.Delete(file);
-            LocalObjectDatabase database = new LocalObjectDatabase("E:\\123");
-            Assert.IsNotNull(database);
-            if (File.Exists(file)) File.Delete(file);
+            //string file = string.Format("E:\\{0}.db4o", DateTime.Now.ToString("yyyyMMdd-hhmmss"));
+            //Console.WriteLine("Test file path: " + file);
+            //if (File.Exists(file)) File.Delete(file);
+            //LocalObjectDatabase database = new LocalObjectDatabase("E:\\123");
+            //Assert.IsNotNull(database);
+            //if (File.Exists(file)) File.Delete(file);
         }
+
+
 
         #endregion
     }
