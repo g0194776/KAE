@@ -59,6 +59,7 @@ namespace KJFramework.Messages.TypeProcessors.Maps
             Regist(new BitFlagIntellectTypeProcessor());
             Regist(new IPEndPointIntellectTypeProcessor());
             Regist(new TimeSpanIntellectTypeProcessor());
+            Regist(new BlobIntellectTypeProcessor());
         }
 
         /// <summary>

@@ -692,6 +692,16 @@ namespace KJFramework.Messages.UnitTest
         public Test1[] Objs { get; set; }
     }
 
+    public class Test68 : IntellectObject
+    {
+        [IntellectProperty(0)]
+        public int ProtocolId { get; set; }
+        [IntellectProperty(1)]
+        public int ServiceId { get; set; }
+        [IntellectProperty(2)]
+        public Blob Blob { get; set; }
+    }
+
     public class CMode : IntellectObject
     {
         [IntellectProperty(0)]

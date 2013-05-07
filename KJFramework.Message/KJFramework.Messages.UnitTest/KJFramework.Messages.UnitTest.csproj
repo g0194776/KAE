@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitFlagTest.cs" />
+    <Compile Include="BlobTest.cs" />
     <Compile Include="DataHelperUnitTest.cs" />
     <Compile Include="IntellectObjectEngineUnitTest.cs" />
     <Compile Include="MemorySegmentProxyTest.cs" />

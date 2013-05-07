@@ -5,6 +5,7 @@ using System.Text;
 using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.Exceptions;
+using KJFramework.Messages.Types;
 using KJFramework.Tracing;
 
 namespace KJFramework.Messages.Contracts
@@ -145,6 +146,31 @@ namespace KJFramework.Messages.Contracts
                                     else s.AppendLine(string.Format("{0}{1}: NULL", spc, p.Name));
                                 }
                                 else s.AppendLine(intellect.ToString(spc, false, p));
+                            };
+                            analyseResult.StringConverter(propertyType, stringBuilder, analyseResult.Property, intellectObject, nextSpace, false);
+
+                            #endregion
+                        }
+                        else if (propertyType == typeof(Blob))
+                        {
+                            #region Process Blob object.
+
+                            Blob intellectObject = (Blob)analyseResult.GetValue(this);
+                            analyseResult.StringConverter = delegate(Type t, StringBuilder s, PropertyInfo p, Object i, string spc, bool isAl)
+                            {
+                                Blob blob = (Blob)i;
+                                if (blob == null)
+                                {
+                                    if (isAl) s.Append(spc).AppendLine("NULL");
+                                    else s.AppendLine(string.Format("{0}{1}: NULL", spc, p.Name));
+                                }
+                                else
+                                {
+                                    s.AppendLine(string.Format("{0}{1}:", spc, p.Name));
+                                    s.AppendLine(string.Format("{0}{1}", spc, '{'));
+                                    s.AppendLine(blob.ToString(spc + "  "));
+                                    s.AppendLine(string.Format("{0}{1}", spc, '}'));
+                                }
                             };
                             analyseResult.StringConverter(propertyType, stringBuilder, analyseResult.Property, intellectObject, nextSpace, false);
 

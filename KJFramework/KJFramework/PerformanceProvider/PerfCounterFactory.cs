@@ -150,7 +150,7 @@ namespace KJFramework.PerformanceProvider
         private static void DoCreateCategory(PerfCategoryAttribute category, ICollection<PerfCounterAttribute> counters)
         {
             CounterCreationDataCollection collection = new CounterCreationDataCollection();
-
+                
             CounterCreationData data = null;
             foreach (PerfCounterAttribute counter in counters)
             {

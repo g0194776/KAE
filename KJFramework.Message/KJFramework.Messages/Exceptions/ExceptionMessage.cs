@@ -14,5 +14,6 @@
         public const string EX_NO_MEANING_VALUE = "#Id: {0}\r\n#Property: {1}\r\n#Type: {2}\r\nthere is no meaning for set AllowDefaultNull = true with a NON value type or NULLABLE type property!";
         public const string EX_VT_FIND_NOT_PROCESSOR = "#Id: {0}\r\n#Property: {1}\r\n#Type: {2}\r\nVT didn't find processor!";
         public const string EX_METHOD_ACCESS = "#Detect class permission failed! Pls make sure current class {0} has *PUBLIC* declare permission";
+        public const string EX_UNEXPRECTED_VALUE = "#Id: {0}\r\n#Property: {1}.\r\nThere was a unexpected NULL value occurred in Blob Type.";
     }
 }

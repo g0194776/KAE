@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
+using KJFramework.Messages.Enums;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.Types;
@@ -3091,14 +3093,111 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsNotNull(newObj);
         }
 
+        [TestMethod]
+        [Description("拥有Blob的智能对象序列化测试方法")]
+        public void BlobBindTest()
+        {
+            #region Prepare data from internet.
+
+            WebRequest request = HttpWebRequest.Create("http://www.163.com");
+            request.Method = "GET";
+            Stream responseStream = request.GetResponse().GetResponseStream();
+            byte[] data;
+            using (StreamReader reader = new StreamReader(responseStream))
+                data = Encoding.UTF8.GetBytes(reader.ReadToEnd());
+            responseStream.Close();
+
+            #endregion
+            Test68 test68 = new Test68 { ProtocolId = 1, ServiceId = 2, Blob = new Blob(CompressionTypes.GZip, data) };
+            test68.Bind();
+            Assert.IsTrue(test68.IsBind);
+            Assert.IsNotNull(test68.Body);
+            Console.WriteLine(test68);
+            Console.WriteLine();
+            PrintBytes(test68.Body);
+        }
+
+        [TestMethod]
+        [Description("拥有空值Blob的智能对象序列化测试方法")]
+        public void BlobNullValueBindTest()
+        {
+            Test68 test68 = new Test68 { ProtocolId = 1, ServiceId = 2 };
+            test68.Bind();
+            Assert.IsTrue(test68.IsBind);
+            Assert.IsNotNull(test68.Body);
+            Assert.IsTrue(test68.Body.Length == 14);
+            Console.WriteLine(test68);
+            Console.WriteLine();
+            PrintBytes(test68.Body);
+        }
+
+        [TestMethod]
+        [Description("拥有Blob的智能对象反序列化测试方法")]
+        public void BlobPickupTest()
+        {
+            #region Prepare data from internet.
+
+            WebRequest request = HttpWebRequest.Create("http://www.163.com");
+            request.Method = "GET";
+            Stream responseStream = request.GetResponse().GetResponseStream();
+            byte[] data;
+            using (StreamReader reader = new StreamReader(responseStream))
+                data = Encoding.UTF8.GetBytes(reader.ReadToEnd());
+            responseStream.Close();
+
+            #endregion
+            Test68 test68 = new Test68 { ProtocolId = 1, ServiceId = 2, Blob = new Blob(CompressionTypes.BZip2, data) };
+            test68.Bind();
+            Assert.IsTrue(test68.IsBind);
+            Assert.IsNotNull(test68.Body);
+            Console.WriteLine(test68);
+            Console.WriteLine();
+
+            Test68 newObj = IntellectObjectEngine.GetObject<Test68>(test68.Body);
+            Assert.IsNotNull(newObj);
+            Assert.IsTrue(newObj.ProtocolId == 1);
+            Assert.IsTrue(newObj.ServiceId == 2);
+            Assert.IsNotNull(newObj.Blob);
+            Assert.IsTrue(newObj.Blob.CompressionType == CompressionTypes.BZip2);
+            byte[] newData = newObj.Blob.Decompress();
+            Assert.IsNotNull(newData);
+            Assert.IsTrue(newData.Length == data.Length);
+            for (int i = 0; i < newData.Length; i++)
+                Assert.IsTrue(newData[i] == data[i]);
+            Console.WriteLine(newObj);
+            Console.WriteLine();
+        }
+
+
         public static void PrintBytes(byte[] data)
         {
-            for (int i = 0; i < data.Length; i++)
+            byte[] array = data;
+            string spc = string.Empty;
+            string nextSpace = spc + "  ";
+            string nxtSpace = spc + "  ";
+            int round = array.Length / 8 + (array.Length % 8 > 0 ? 1 : 0);
+            int currentOffset, remainningLen;
+            StringBuilder s = new StringBuilder();
+            for (int j = 0; j < round; j++)
             {
-                if (i % 4 == 0) Console.Write("    ");
-                Console.Write(data[i] + " ");
+                currentOffset = j * 8;
+                remainningLen = ((array.Length - currentOffset) >= 8 ? 8 : (array.Length - currentOffset));
+                StringBuilder rawByteBuilder = new StringBuilder();
+                rawByteBuilder.Append(nextSpace);
+                for (int k = 0; k < remainningLen; k++)
+                {
+                    rawByteBuilder.AppendFormat("0x{0}", array[currentOffset + k].ToString("X2"));
+                    if (k != remainningLen - 1) rawByteBuilder.Append(", ");
+                }
+                rawByteBuilder.Append(new string(' ', (remainningLen == 8 ? 5 : (8 - remainningLen) * 4 + (((8 - remainningLen) - 1) * 2) + 7)));
+                for (int k = 0; k < remainningLen; k++)
+                {
+                    if ((char)array[currentOffset + k] > 126 || (char)array[currentOffset + k] < 32) rawByteBuilder.Append('.');
+                    else rawByteBuilder.Append((char)array[currentOffset + k]);
+                }
+                s.AppendLine(string.Format("{0}{1}", nxtSpace, rawByteBuilder));
             }
-            Console.WriteLine();
+            Console.WriteLine(s.ToString());
         }
     }
 }

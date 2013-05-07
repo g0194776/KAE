@@ -47,7 +47,7 @@ namespace KJFramework.Data.ObjectDB
         /// <summary>
         ///     获取文件头
         /// </summary>
-        public static readonly byte[] FileHeadFlag = new byte[] {0xFF, 0XFF, 0XFF, 0XFF};
+        public static readonly byte[] FileHeadFlag = new[] {(byte) 'd', (byte) 'b', (byte) '4', (byte) 'o'};
 
         #endregion
     }

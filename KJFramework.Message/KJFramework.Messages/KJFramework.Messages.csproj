@@ -41,6 +41,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\Depend Files\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="KJFramework">
       <HintPath>..\Depend Files\KJFramework.dll</HintPath>
     </Reference>
@@ -76,9 +79,11 @@
     <Compile Include="Contracts\IntellectObject.cs" />
     <Compile Include="Contracts\IUnknownParameter.cs" />
     <Compile Include="Contracts\UnknownParameter.cs" />
+    <Compile Include="Enums\CompressionTypes.cs" />
     <Compile Include="Exceptions\DefineNoMeaningException.cs" />
     <Compile Include="Exceptions\ExceptionMessage.cs" />
     <Compile Include="Exceptions\PropertyNullValueException.cs" />
+    <Compile Include="Exceptions\UnexpectedValueException.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Engine\IntellectObjectEngine.cs" />
     <Compile Include="Helpers\BitConvertHelper.cs" />
@@ -99,6 +104,7 @@
     <Compile Include="Stubs\IPropertyStub.cs" />
     <Compile Include="Stubs\PropertySetStubHelper.cs" />
     <Compile Include="Stubs\PropertyStubHelper.cs" />
+    <Compile Include="TypeProcessors\BlobIntellectTypeProcessor.cs" />
     <Compile Include="TypeProcessors\BooleanArrayIntellectTypeProcessor.cs" />
     <Compile Include="TypeProcessors\DoubleArrayIntellectTypeProcessor.cs" />
     <Compile Include="TypeProcessors\FloatArrayIntellectTypeProcessor.cs" />
@@ -149,6 +155,7 @@
     <Compile Include="TypeProcessors\StringArrayIntellectTypeProcessor.cs" />
     <Compile Include="TypeProcessors\IPEndPointArrayIntellectTypeProcessor.cs" />
     <Compile Include="Types\BitFlag.cs" />
+    <Compile Include="Types\Blob.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadMe.txt" />

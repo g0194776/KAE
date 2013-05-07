@@ -55,6 +55,7 @@ namespace KJFramework.Messages.Engine
         /// <param name="obj">智能对象</param>
         /// <returns>返回二进制元数据</returns>
         /// <exception cref="PropertyNullValueException">字段相关的Attribute.IsRequire = true, 并且该字段的值为null</exception>
+        /// <exception cref="UnexpectedValueException">不期待的结果异常，通常因为对Blob类型的取值 = null</exception>
         /// <exception cref="NotSupportedException">系统不支持的序列化类型</exception>
         /// <exception cref="DefineNoMeaningException">无意义的智能字段Attribute值</exception>
         /// <exception cref="MethodAccessException">类型权限定义错误</exception>
