@@ -28,7 +28,7 @@ namespace KJFramework.Platform.Deploy.CSN.ProtocolStack
         ///     获取或设置数据库表集合
         /// </summary>
         [IntellectProperty(11, IsRequire = false)]
-        public DataTable[] Tables { get; set; }
+        public DataTable Tables { get; set; }
         /// <summary>
         ///     获取或设置最后错误信息
         /// </summary>

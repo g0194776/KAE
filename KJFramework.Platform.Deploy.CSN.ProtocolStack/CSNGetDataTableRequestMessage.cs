@@ -30,7 +30,6 @@ namespace KJFramework.Platform.Deploy.CSN.ProtocolStack
         public string DatabaseName { get; set; }
         /// <summary>
         ///     获取或设置数据表名称
-        ///     <para>* 此字段支持多表同时查询，字段值按照分号分隔。</para>
         /// </summary>
         [IntellectProperty(12, IsRequire = true)]
         public string TableName { get; set; }

@@ -26,19 +26,14 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector.Processors
                 CSNGetDataTableResponseMessage rspMsg = new CSNGetDataTableResponseMessage();
                 #region Get data table request message [DB data]
 
-                string[] tables = msg.TableName.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-                rspMsg.Tables = new DataTable[tables.Length];
-                for (int i = 0; i < tables.Length; i++)
+                try
                 {
-                    try
-                    {
-                        rspMsg.Tables[i] = Global.DBCacheFactory.Create(msg.DatabaseName, tables[i]).Item;
-                    }
-                    catch (System.Exception ex)
-                    {
-                        _tracing.Error(ex, null);
-                        rspMsg.LastError = ex.Message;
-                    }
+                    rspMsg.Tables = Global.DBCacheFactory.Create(msg.DatabaseName, msg.TableName).Item;
+                }
+                catch (System.Exception ex)
+                {
+                    _tracing.Error(ex, null);
+                    rspMsg.LastError = ex.Message;
                 }
 
                 #endregion
