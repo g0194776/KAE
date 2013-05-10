@@ -29,7 +29,12 @@ namespace KJFramework.Net.Transaction.Pools
             {
                 string fullKey = string.Format("{0}#{1}", roleId.ToString(), key);
                 IServerConnectionAgent agent = GetChannel(fullKey);
-                if (agent != null) return agent;
+                if (agent != null)
+                {
+                    if (agent.GetChannel().IsConnected) return agent;
+                    //remove this disconnected channel and recreate it.
+                    Remove(fullKey);
+                }
                 _rwLocker.EnterWriteLock();
                 try
                 {
