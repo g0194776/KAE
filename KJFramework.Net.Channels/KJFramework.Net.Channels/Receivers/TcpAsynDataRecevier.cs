@@ -89,6 +89,7 @@ namespace KJFramework.Net.Channels.Receivers
             {
                 //giveback current rented BuffSocketStub.
                 ChannelConst.BuffAsyncStubPool.Giveback(stub);
+                ChannelCounter.Instance.RateOfFixedBufferStubGiveback.Increment();
                 Stop();
             }
         }
