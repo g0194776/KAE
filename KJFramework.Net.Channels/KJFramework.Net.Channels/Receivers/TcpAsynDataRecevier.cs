@@ -85,7 +85,12 @@ namespace KJFramework.Net.Channels.Receivers
                 catch (System.Exception ex) { _tracing.Error(ex, null); }
                 finally { StartReceive(); }
             }
-            else Stop();
+            else
+            {
+                //giveback current rented BuffSocketStub.
+                ChannelConst.BuffAsyncStubPool.Giveback(stub);
+                Stop();
+            }
         }
 
         /// <summary>
