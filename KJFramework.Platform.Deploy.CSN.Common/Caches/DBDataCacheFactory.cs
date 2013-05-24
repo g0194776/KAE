@@ -138,6 +138,38 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Caches
             }
         }
 
+        public string Create(string key)
+        {
+            Database database = GetDatabase("CSNDB");
+            if (database == null)
+            {
+                _tracing.Error(new System.Exception("Can not create a new data cache, because the dest database obj is null."), null);
+                return null;
+            }
+            DbReader dataReader = null;
+            try
+            {
+                List<CmdParameter> list = new List<CmdParameter>();
+                CmdParameter cmdParamter = new CmdParameter("p_ConfigKey", key);
+                list.Add(cmdParamter);
+                dataReader = database.ExecuteReader("USP_GetPartialConfig", list.ToArray());
+                string config = null;
+                while (dataReader.Read())
+                    config = dataReader["ConfigValue"].ToString();
+                return config;
+            }
+            catch (System.Exception ex)
+            {
+                _tracing.Error(ex, null);
+                return null;
+            }
+            finally
+            {
+                if (dataReader != null)
+                    dataReader.Close();
+            }
+        }
+
         #endregion
 
         #region Methods

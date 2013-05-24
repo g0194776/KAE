@@ -51,6 +51,8 @@
     <Compile Include="CSNProtocolStack.cs" />
     <Compile Include="Enums\ConfigTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CSNGetPartialConfigRequestMessage.cs" />
+    <Compile Include="CSNGetPartialConfigResponseMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">

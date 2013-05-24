@@ -73,7 +73,8 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             Console.WriteLine("Initializing scheduler......");
             _requestScheduler = new RequestScheduler()
             .Regist(new Protocols { ProtocolId = 0, ServiceId = 2, DetailsId = 0 }, new CSNGetDataTableRequestMessageProcessor())
-            .Regist(new Protocols { ProtocolId = 0, ServiceId = 3, DetailsId = 0 }, new CSNGetKeyValueItemRequestMessageProcessor());
+            .Regist(new Protocols { ProtocolId = 0, ServiceId = 3, DetailsId = 0 }, new CSNGetKeyValueItemRequestMessageProcessor())
+            .Regist(new Protocols { ProtocolId = 0, ServiceId = 4, DetailsId = 0 }, new CSNGetPartialConfigProcessor());
             Console.WriteLine("Initializing database(s)......");
             InitializeDatabases();
             Console.WriteLine("CSN task scheduler started!");

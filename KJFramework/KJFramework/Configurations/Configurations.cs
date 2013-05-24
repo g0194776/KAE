@@ -1,16 +1,24 @@
 using System;
-using KJFramework.Attribute;
 using KJFramework.Configurations.Loaders;
-using KJFramework.Helpers;
 
 namespace KJFramework.Configurations
 {
     /// <summary>
     ///     配置节管理器，提供了相关的基本操作
     /// </summary>
-    public class Configurations
+    public static class Configurations
     {
-        #region 方法
+        #region Members
+
+        /// <summary>
+        ///     远程配置加载器
+        ///     <para>* 如果此字段值为空，则会使用本地配置文件加载器</para>
+        /// </summary>
+        public static IConfigurationLoader RemoteConfigLoader { get; set; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///     获取自定义配置节
@@ -20,10 +28,9 @@ namespace KJFramework.Configurations
         /// <param name="action">赋值自定义配置节的动作</param>
         public static void GetConfiguration<T>(Action<T> action) where T : class, new()
         {
-            using (LocalConfigurationLoader loader = new LocalConfigurationLoader())
-            {
-                loader.Load(action);
-            }
+            if (RemoteConfigLoader == null)
+                using (LocalConfigurationLoader loader = new LocalConfigurationLoader()) loader.Load(action);
+            else RemoteConfigLoader.Load(action);
         }
 
         #endregion

@@ -55,6 +55,7 @@
     <Compile Include="Objects\DataPart.cs" />
     <Compile Include="Processors\CSNGetDataTableRequestMessageProcessor.cs" />
     <Compile Include="Processors\CSNGetKeyValueItemRequestMessageProcessor.cs" />
+    <Compile Include="Processors\CSNGetPartialConfigProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubscribeObjs\DBSubscribeObject.cs" />
     <Compile Include="SubscribeObjs\IDBSubscribeObject.cs" />
