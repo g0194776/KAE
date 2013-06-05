@@ -199,18 +199,31 @@ namespace KJFramework.Net.Transaction.ProtocolStack
             Assembly assembly = GetType().Assembly;
             foreach (Type type in assembly.GetTypes())
             {
-                if(type.IsSubclassOf(typeof(BaseMessage)))
+                if(type.IsSubclassOf(typeof(BaseMessage)) && !type.IsAbstract)
                 {
                     //create instance for msg, need default ctor.
                     BaseMessage baseMsg = (BaseMessage) Activator.CreateInstance(type);
                     //add current message to protocol stack.
-                    _messages.Add(
+                    try
+                    {
+                        _messages.Add(
                         new Protocols
-                            {
-                                ProtocolId = baseMsg.MessageIdentity.ProtocolId,
-                                ServiceId = baseMsg.MessageIdentity.ServiceId,
-                                DetailsId = baseMsg.MessageIdentity.DetailsId
-                            }, type);
+                        {
+                            ProtocolId = baseMsg.MessageIdentity.ProtocolId,
+                            ServiceId = baseMsg.MessageIdentity.ServiceId,
+                            DetailsId = baseMsg.MessageIdentity.DetailsId
+                        }, type);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        _tracing.Error(ex, null);
+                        throw new System.Exception(
+                            string.Format("#Currently message identity has been existed. Message Type: {0} #P: {1}, #S: {2}, #D: {3}.",
+                                          baseMsg.GetType().Name, 
+                                          baseMsg.MessageIdentity.ProtocolId, 
+                                          baseMsg.MessageIdentity.ServiceId,
+                                          baseMsg.MessageIdentity.DetailsId));
+                    }
                 }
             }
             return this;
