@@ -26,6 +26,10 @@ namespace KJFramework.Tracing
         private const int Capacity = 10000;
         private static ITracingProvider _provider;
         private static Queue<TraceItem> _items = new Queue<TraceItem>(Capacity);
+        /// <summary>
+        ///     获取或设置全局日志通知器
+        /// </summary>
+        public static ITracingNotificationHandler NotificationHandler { get; set; }
 
         #endregion
 

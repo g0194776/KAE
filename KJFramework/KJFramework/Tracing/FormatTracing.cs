@@ -38,8 +38,8 @@ namespace KJFramework.Tracing
                             error = ex;
                         message = string.Concat("tracing formatting error: [", args.Length, "] ", format ?? string.Empty);
                     }
-
                     TracingManager.AddTraceItem(new TraceItem(_logger, level, error, message));
+                    if (TracingManager.NotificationHandler != null) TracingManager.NotificationHandler.Handle(level, error, message, _logger);
                 }
             }
             catch
