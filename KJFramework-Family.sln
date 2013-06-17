@@ -119,9 +119,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Messages", "KJF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Messages.UnitTest", "KJFramework.Message\KJFramework.Messages.UnitTest\KJFramework.Messages.UnitTest.csproj", "{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Platform.Deploy.CSN.NetworkLayer", "KJFramework.Platform.Deploy.CSN.NetworkLayer\KJFramework.Platform.Deploy.CSN.NetworkLayer.csproj", "{1C6E6F93-515A-4C9B-A577-046D2BC8F486}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 44
+		SccNumberOfProjects = 45
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs34
 		SccLocalPath0 = .
@@ -297,6 +299,10 @@ Global
 		SccProjectTopLevelParentUniqueName43 = KJFramework-Family.sln
 		SccProjectName43 = KJFramework.Message/KJFramework.Messages.UnitTest
 		SccLocalPath43 = KJFramework.Message\\KJFramework.Messages.UnitTest
+		SccProjectUniqueName44 = KJFramework.Platform.Deploy.CSN.NetworkLayer\\KJFramework.Platform.Deploy.CSN.NetworkLayer.csproj
+		SccProjectTopLevelParentUniqueName44 = KJFramework-Family.sln
+		SccProjectName44 = KJFramework.Platform.Deploy.CSN.NetworkLayer
+		SccLocalPath44 = KJFramework.Platform.Deploy.CSN.NetworkLayer
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KJFramework.vsmdi
@@ -740,6 +746,16 @@ Global
 		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4FBF2FFB-A763-4D3F-BBE9-ED7C4619696D}.Release|x86.ActiveCfg = Release|Any CPU
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -792,6 +808,7 @@ Global
 		{A1380A80-DC86-46AE-89C6-31FE11E16FB6} = {3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}
 		{D7BA6901-69E9-47BA-B52D-2D7D08420246} = {3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}
 		{6C3A90BD-9A96-446B-86C2-079D728F65C7} = {3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}
+		{1C6E6F93-515A-4C9B-A577-046D2BC8F486} = {3A2D1580-FF48-4C65-98E7-C7F7AAA64C58}
 		{14FFF597-5294-4DD4-8373-923B270D7D37} = {3FB0D85E-310E-499C-ADE8-06A591C25531}
 		{1AC9C2A3-7C3D-486B-B585-51E51C17EC2E} = {3FB0D85E-310E-499C-ADE8-06A591C25531}
 	EndGlobalSection
