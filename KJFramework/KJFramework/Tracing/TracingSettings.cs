@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading;
-using KJFramework.Tracing.Configuration;
 
 namespace KJFramework.Tracing
 {
@@ -26,17 +26,17 @@ namespace KJFramework.Tracing
 
         public static TracingLevel Level
         {
-            get { return (TracingLevel)Enum.Parse(typeof(TracingLevel), TracingDescriptionConfigSection.Current.Details.Level); }
+            get { return (TracingLevel)Enum.Parse(typeof(TracingLevel), ConfigurationManager.AppSettings["Tracing-Level"]); }
         }
 
         public static string Provider
         {
-            get { return TracingDescriptionConfigSection.Current.Details.Provider; }
+            get { return ConfigurationManager.AppSettings["Tracing-Provider"]; }
         }
 
         public static string Datasource
         {
-            get { return TracingDescriptionConfigSection.Current.Details.Datasource; }
+            get { return ConfigurationManager.AppSettings["Tracing-Datasource"]; }
         }
     }
 }

@@ -204,8 +204,6 @@
     </Compile>
     <Compile Include="Engin\Worker\IWorker.cs" />
     <Compile Include="Engin\Worker\Worker.cs" />
-    <Compile Include="Tracing\Configuration\TracingDescriptionConfigSection.cs" />
-    <Compile Include="Tracing\Configuration\TracingItemConfigration.cs" />
     <Compile Include="Tracing\DbTracingProvider.cs" />
     <Compile Include="Tracing\FileTracingProvider.cs" />
     <Compile Include="Tracing\FormatTracing.cs" />

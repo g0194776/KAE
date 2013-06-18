@@ -5,7 +5,6 @@ using KJFramework.Dynamic.Configurations;
 using KJFramework.Net.Channels.Configurations;
 using KJFramework.Net.Configurations;
 using KJFramework.Tracing;
-using KJFramework.Tracing.Configuration;
 using LoadRunner;
 
 namespace KJFramework.Test.LoadRunner
@@ -112,15 +111,6 @@ namespace KJFramework.Test.LoadRunner
         /// </summary>
         protected virtual void FillConfiguration()
         {
-            TracingDescriptionConfigSection.Current = new TracingDescriptionConfigSection
-            {
-                Details = new TracingItemConfigration
-                {
-                    Datasource = string.Format("C:\\LoadRunner-UnitTest-Test-Bussiness-{0}\\",DateTime.Now.Ticks),
-                    Level = "0",
-                    Provider = "file"
-                }
-            };
             SystemConfigurationSection.Current = new SystemConfigurationSection
                 {
                     ConfigurationSettingsItem =new ConfigurationSettingsItem

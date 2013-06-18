@@ -24,6 +24,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\KJFramework.Platform.Deploy.CSN.NetworkLayer.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,7 +45,58 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSNBuffSocketStub.cs" />
+    <Compile Include="CSNBusinessMessageTransaction.cs" />
+    <Compile Include="CSNChannelConst.cs" />
+    <Compile Include="CSNChannelCounter.cs" />
+    <Compile Include="CSNGlobal.cs" />
+    <Compile Include="CSNGlobalMemory.cs" />
+    <Compile Include="CSNMessageTransactionManager.cs" />
+    <Compile Include="CSNMessageTransportChannel.cs" />
+    <Compile Include="CSNNoBuffSocketStub.cs" />
+    <Compile Include="CSNSegmentDataParser.cs" />
+    <Compile Include="CSNSegmentNode.cs" />
+    <Compile Include="CSNSegmentReceiveEventArgs.cs" />
+    <Compile Include="CSNTcpAsynDataRecevier.cs" />
+    <Compile Include="CSNTcpTransportChannel.cs" />
+    <Compile Include="CSNTransportChannel.cs" />
+    <Compile Include="ICSNRawTransportChannel.cs" />
+    <Compile Include="ICSNSegmentDataParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
+      <Project>{d5a0178c-16f7-453e-a301-d1d61910d2af}</Project>
+      <Name>KJFramework.Basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
+      <Project>{6f85c222-1cd2-44d4-8d06-22f557d4cf04}</Project>
+      <Name>KJFramework.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
+      <Project>{12309506-18a3-48bf-8a55-e950a87a905e}</Project>
+      <Name>KJFramework.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
+      <Project>{33fe11d3-2810-4432-b64c-b16935bb47cd}</Project>
+      <Name>KJFramework.Net.Channels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
+      <Project>{658c4853-7022-4c2f-bb82-7261dbdae55d}</Project>
+      <Name>KJFramework.Net.Transaction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
+      <Project>{35fd171e-de60-4e34-9a35-e33c3ba8c02f}</Project>
+      <Name>KJFramework.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
