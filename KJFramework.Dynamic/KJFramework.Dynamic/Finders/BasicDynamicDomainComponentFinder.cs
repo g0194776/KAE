@@ -34,7 +34,7 @@ namespace KJFramework.Dynamic.Finders
             }
             List<DomainComponentEntryInfo> result = new List<DomainComponentEntryInfo>();
             String[] files = Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories);
-            if (files != null && files.Length > 0)
+            if (files.Length > 0)
             {
                 foreach (string file in files)
                 {
@@ -57,18 +57,12 @@ namespace KJFramework.Dynamic.Finders
                                     result.Add(info);
                                 }
                             }
-                            catch (System.Exception ex)
-                            {
-                                _tracing.Error(ex, null);
-                                continue;
-                            }
+                            catch (ReflectionTypeLoadException) { }
+                            catch (System.Exception ex) { _tracing.Error(ex, null); }
                         }
                     }
-                    catch (System.Exception ex)
-                    {
-                        _tracing.Error(ex, null);
-                        continue;
-                    }
+                    catch (ReflectionTypeLoadException) { }
+                    catch (System.Exception ex) { _tracing.Error(ex, null); }
                 }
                 return result;
             }

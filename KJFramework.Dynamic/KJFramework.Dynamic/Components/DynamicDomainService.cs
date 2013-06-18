@@ -31,11 +31,11 @@ namespace KJFramework.Dynamic.Components
         /// </summary>
         public DynamicDomainService()
             : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), 
-            new ServiceDescriptionInfo { 
-                Name = ServiceDescriptionConfigSection.Current.Details.Name, 
-                ServiceName = ServiceDescriptionConfigSection.Current.Details.ServiceName, 
-                Description = ServiceDescriptionConfigSection.Current.Details.Description, 
-                Version = ServiceDescriptionConfigSection.Current.Details.Version })
+            new ServiceDescriptionInfo {
+                Name = ConfigurationManager.AppSettings["Name"],
+                ServiceName = ConfigurationManager.AppSettings["ServiceName"],
+                Description = ConfigurationManager.AppSettings["Description"],
+                Version = ConfigurationManager.AppSettings["Version"] })
         {
         }
 
