@@ -1,3 +1,4 @@
+using System.Configuration;
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Configurations;
 using KJFramework.Dynamic.Extends;
@@ -69,10 +70,10 @@ namespace KJFramework.Dynamic.Components
                 //try to parse the xml configuration file.
                 _infomation = new ServiceDescriptionInfo
                 {
-                    Name = ServiceDescriptionConfigSection.Current.Details.Name,
-                    Description = ServiceDescriptionConfigSection.Current.Details.Description,
-                    ServiceName = ServiceDescriptionConfigSection.Current.Details.ServiceName,
-                    Version = ServiceDescriptionConfigSection.Current.Details.Version
+                    Name = ConfigurationManager.AppSettings["Name"],
+                    Description = ConfigurationManager.AppSettings["Description"],
+                    ServiceName = ConfigurationManager.AppSettings["ServiceName"],
+                    Version = ConfigurationManager.AppSettings["Version"]
                 };
             }
             else _infomation = description;
