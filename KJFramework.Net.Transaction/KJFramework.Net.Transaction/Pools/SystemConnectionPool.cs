@@ -35,24 +35,14 @@ namespace KJFramework.Net.Transaction.Pools
                     //remove this disconnected channel and recreate it.
                     Remove(fullKey);
                 }
-                _rwLocker.EnterWriteLock();
-                try
-                {
-                    //create new channel by connection str.
-                    int splitOffset = key.LastIndexOf(':');
-                    string ip = key.Substring(0, splitOffset);
-                    int port = int.Parse(key.Substring(splitOffset + 1, key.Length - (splitOffset + 1)));
-                    IPEndPoint iep = new IPEndPoint(IPAddress.Parse(ip), port);
-                    agent = ConnectionAgent.Create(iep, protocolStack, transactionManager);
-                    if (agent == null) return null;
-                    return Add(fullKey, agent) ? agent : null;
-                }
-                catch (System.Exception ex)
-                {
-                    _tracing.Error(ex, null);
-                    return null;
-                }
-                finally { _rwLocker.ExitWriteLock(); }
+                //create new channel by connection str.
+                int splitOffset = key.LastIndexOf(':');
+                string ip = key.Substring(0, splitOffset);
+                int port = int.Parse(key.Substring(splitOffset + 1, key.Length - (splitOffset + 1)));
+                IPEndPoint iep = new IPEndPoint(IPAddress.Parse(ip), port);
+                agent = ConnectionAgent.Create(iep, protocolStack, transactionManager);
+                if (agent == null) return null;
+                return Add(fullKey, agent) ? agent : null;
             }
             catch (System.Exception ex)
             {

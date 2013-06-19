@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Threading;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Tracing;
 
@@ -13,7 +12,6 @@ namespace KJFramework.Net.Transaction.Pools
     {
         #region Members
 
-        protected readonly ReaderWriterLockSlim _rwLocker = new ReaderWriterLockSlim();
         protected static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ConnectionPool<T>));
         protected readonly ConcurrentDictionary<T, IServerConnectionAgent> _connections = new ConcurrentDictionary<T, IServerConnectionAgent>();
 
@@ -30,15 +28,23 @@ namespace KJFramework.Net.Transaction.Pools
         public virtual bool Add(T key, IServerConnectionAgent channel)
         {
             if (channel == null) return false;
-            if (_connections.TryAdd(key, channel))
+            try
             {
-                //add key to Tag property.
-                channel.Tag = key;
-                //hold disconnected event.
-                channel.Disconnected += AgentDisconnected;
-                return true;
+                if (_connections.TryAdd(key, channel))
+                {
+                    //add key to Tag property.
+                    channel.Tag = key;
+                    //hold disconnected event.
+                    channel.Disconnected += AgentDisconnected;
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (System.Exception ex)
+            {
+                _tracing.Error(ex, null);
+                return false;
+            }
         }
 
         /// <summary>
@@ -48,7 +54,6 @@ namespace KJFramework.Net.Transaction.Pools
         /// <returns>返回一个消息通信信道</returns>
         public virtual IServerConnectionAgent GetChannel(T key)
         {
-            _rwLocker.EnterReadLock();
             try
             {
                 IServerConnectionAgent channel;
@@ -59,7 +64,6 @@ namespace KJFramework.Net.Transaction.Pools
                 _tracing.Error(ex, null);
                 return null;
             }
-            finally { _rwLocker.ExitReadLock(); }
         }
 
         /// <summary>
