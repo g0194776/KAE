@@ -212,10 +212,7 @@ namespace KJFramework.Net.Channels
                         _socket.Shutdown(SocketShutdown.Both);
                         _socket.Close();
                     }
-                    catch(System.Exception ex)
-                    {
-                        _tracing.Error(ex, null);
-                    }
+                    catch { }
                 }
                 _socket = null;
             }
@@ -234,11 +231,10 @@ namespace KJFramework.Net.Channels
                 _channelKey = _socket.GetHashCode();
                 InitializeReceiver();
             }
-            catch (System.Exception ex)
+            catch
             {
                 _connected = false;
                 _communicationState = CommunicationStates.Closed;
-                _tracing.Error(ex, null);
             }
         }
 
