@@ -61,7 +61,7 @@ namespace KJFramework.Net.Transaction.Pools
         {
             if (base.Add(key, channel))
             {
-                CommonCounter.Instance.TotalOfServiceChannel.Increment();
+                if (CommonCounter.Instance != null) CommonCounter.Instance.TotalOfServiceChannel.Increment();
                 return true;
             }
             return false;
@@ -76,7 +76,7 @@ namespace KJFramework.Net.Transaction.Pools
         {
             if (base.Remove(key))
             {
-                CommonCounter.Instance.TotalOfServiceChannel.Decrement();
+                if (CommonCounter.Instance != null) CommonCounter.Instance.TotalOfServiceChannel.Decrement();
                 return true;
             }
             return false;
