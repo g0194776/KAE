@@ -12,7 +12,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         /// <summary>
         ///     内存片段容器
         /// </summary>
-        public static readonly IMemoryChunkCacheContainer SegmentContainer = new MemoryChunkCacheContainer(5120, 524288000);
+        public static readonly IMemoryChunkCacheContainer SegmentContainer = new MemoryChunkCacheContainer(5120, 5120000);
 
         private static bool _initialized;
 
