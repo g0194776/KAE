@@ -54,6 +54,20 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(flag);
         }
 
+        [TestMethod]
+        public void GetDataTest()
+        {
+            BitFlag flag = new BitFlag();
+            flag[0] = true;
+            flag[2] = true;
+            byte value = flag.GetData();
+            Assert.IsTrue(value == 0x05);
+            Console.WriteLine(flag);
+
+            flag = new BitFlag(0x05);
+            Console.WriteLine(flag);
+        }
+
         public static byte ConvertToByte(BitFlag bits)
         {
             byte result = 0;

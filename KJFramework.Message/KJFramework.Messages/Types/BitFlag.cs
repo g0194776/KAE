@@ -61,6 +61,21 @@ namespace KJFramework.Messages.Types
         }
 
         /// <summary>
+        ///     获取内部所包含的数据
+        /// </summary>
+        /// <returns>返回内部所包含的数据</returns>
+        public byte GetData()
+        {
+            byte result = 0;
+            for (byte i = 0; i < 8; i++)
+            {
+                if (_arr[i])
+                    result |= (byte)(1 << i);
+            }
+            return result;
+        }
+
+        /// <summary>
         ///     返回内部可呈现的内容结构
         /// </summary>
         /// <returns>返回内部可呈现的内容结构</returns>
