@@ -38,6 +38,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Depend Files\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,6 +60,9 @@
     <Compile Include="CommunicationObject.cs" />
     <Compile Include="Configurations\ChannelModelSettingConfigSection.cs" />
     <Compile Include="Configurations\SettingConfiguration.cs" />
+    <Compile Include="Disconvery\DiscoveryInputPin.cs" />
+    <Compile Include="Disconvery\DiscoveryOnputPin.cs" />
+    <Compile Include="Disconvery\Protocols\CommonBoradcastProtocol.cs" />
     <Compile Include="Events\SegmentReceiveEventArgs.cs" />
     <Compile Include="ChannelCounter.cs" />
     <Compile Include="GlobalMemory.cs" />
