@@ -49,6 +49,7 @@ namespace KJFramework.Net.Channels.Receivers
         /// </summary>
         private void StartReceive()
         {
+            if (!_state) return;
             try
             {
                 IFixedCacheStub<BuffSocketStub> stub = ChannelConst.BuffAsyncStubPool.Rent();
@@ -202,8 +203,8 @@ namespace KJFramework.Net.Channels.Receivers
                     return;
                 }
                 _key = _socket.GetHashCode();
-                StartReceive();
                 _state = true;
+                StartReceive();
             }
         }
 

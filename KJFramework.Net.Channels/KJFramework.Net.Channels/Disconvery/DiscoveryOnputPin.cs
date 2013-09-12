@@ -18,11 +18,21 @@ namespace KJFramework.Net.Channels.Disconvery
         ///   探索模式的输出节点
         /// </summary>
         /// <param name="port">目标UDP端口</param>
+        /// <exception cref="ArgumentException">参数错误</exception>
         public DiscoveryOnputPin(int port)
+            : this(new IPEndPoint(IPAddress.Broadcast, port))
         {
-            if (port > IPEndPoint.MaxPort || port < IPEndPoint.MinPort) throw new ArgumentException("#Incorrect input UDP port.");
-            _port = port;
-            _broadcastIep = new IPEndPoint(IPAddress.Broadcast, _port);
+        }
+
+        /// <summary>
+        ///   探索模式的输出节点
+        /// </summary>
+        /// <param name="iep">目标远程终结点地址</param>
+        /// <exception cref="ArgumentNullException">参数不能为空</exception>
+        public DiscoveryOnputPin(IPEndPoint iep)
+        {
+            if (iep == null) throw new ArgumentNullException("iep");
+            _broadcastIep = iep;
             Initialize();
         }
 
@@ -31,7 +41,6 @@ namespace KJFramework.Net.Channels.Disconvery
         #region Members
 
         private Socket _socket;
-        private readonly int _port;
         private readonly IPEndPoint _broadcastIep;
 
         #endregion
