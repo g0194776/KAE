@@ -1,9 +1,15 @@
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Threading;
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Components;
 using KJFramework.IO.Helper;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.TypeProcessors.Maps;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Disconvery;
+using KJFramework.Net.Channels.Disconvery.Protocols;
 using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Agent;
@@ -51,6 +57,9 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
         private IRequestScheduler _requestScheduler;
         private MessageTransactionManager _transactionManager;
         private IProtocolStack<BaseMessage> _protocolStack;
+        private DiscoveryOnputPin _outputPin;
+        private CommonBoradcastProtocol _sendObj;
+        private Thread _thread;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ConnectorComponent));
 
         #endregion
@@ -78,6 +87,8 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             Console.WriteLine("Initializing database(s)......");
             InitializeDatabases();
             Console.WriteLine("CSN task scheduler started!");
+            CSNBoradcastStart();
+            Console.WriteLine("CSN is started sucessfully!");
         }
 
         protected override void InnerStop()
@@ -125,6 +136,39 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
                     _tracing.Error(ex, null);
                     ConsoleHelper.PrintLine(ex.Message, ConsoleColor.DarkRed);
                 }
+            }
+        }
+
+        /// <summary>
+        ///     CSN启动后获取及发送广播包
+        /// </summary>
+        private void CSNBoradcastStart()
+        {
+            string broadcastAddress = ConfigurationManager.AppSettings["BroadcastAddress"];
+            string environment = ConfigurationManager.AppSettings["Environment"];
+            string localAddress = ConfigurationManager.AppSettings["LocalAddress"];
+            if (string.IsNullOrEmpty(broadcastAddress) || string.IsNullOrEmpty(environment) || string.IsNullOrEmpty(localAddress))
+                throw new System.Exception("Cannot find any BroadcastAddress or Environment or LocalAddress in CSN config file");
+            int offset = broadcastAddress.LastIndexOf(':');
+            string iep = broadcastAddress.Substring(0, offset);
+            int port = int.Parse(broadcastAddress.Substring(offset + 1, broadcastAddress.Length - (offset + 1)));
+            _outputPin = new DiscoveryOnputPin(new IPEndPoint(IPAddress.Parse(iep), port));
+            _sendObj = new CommonBoradcastProtocol { Key = "CSN", Environment = environment, Value = localAddress };
+            //启动循环发送广播包的线程
+            _thread = new Thread(SendProc) { Name = "Thread::SendCSNInfo", IsBackground = true };
+            _thread.Start();
+        }
+
+        /// <summary>
+        ///     CSN启动后每隔5S发送CSN广播包的线程
+        /// </summary>
+        private void SendProc()
+        {
+            while (true)
+            {
+                //send interval: 5s.
+                _outputPin.Send(_sendObj);
+                Thread.Sleep(5000);
             }
         }
 

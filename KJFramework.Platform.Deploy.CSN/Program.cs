@@ -1,5 +1,6 @@
 ﻿using System;
 using KJFramework.Dynamic.Components;
+using KJFramework.Dynamic.Structs;
 
 namespace KJFramework.Platform.Deploy.CSN
 {
@@ -7,8 +8,14 @@ namespace KJFramework.Platform.Deploy.CSN
     {
         static void Main(string[] args)
         {
-            DynamicDomainService dynamicServiceCenter = new DynamicDomainService();
-            dynamicServiceCenter.Start();
+            DynamicDomainService service = new DynamicDomainService(new ServiceDescriptionInfo
+            {
+                Description = "CSN服务",
+                Name = "CSNe",
+                ServiceName = "CSN",
+                Version = "0.0.0.1"
+            });
+            service.Start();
             Console.ReadLine();
         }
     }
