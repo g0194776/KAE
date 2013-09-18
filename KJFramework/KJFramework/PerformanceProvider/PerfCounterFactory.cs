@@ -7,6 +7,9 @@ using System.Web;
 
 namespace KJFramework.PerformanceProvider
 {
+    /// <summary>
+    ///   性能计数器工厂
+    /// </summary>
     public static class PerfCounterFactory
     {
         #region Members
@@ -19,8 +22,8 @@ namespace KJFramework.PerformanceProvider
 
         static PerfCounterFactory()
         {
-            AppDomain.CurrentDomain.DomainUnload += delegate(object sender, System.EventArgs e) 
-            {
+            AppDomain.CurrentDomain.DomainUnload += delegate
+                {
                 PerfCounter[] counters;
                 lock (_syncRoot)
                 {
@@ -29,7 +32,10 @@ namespace KJFramework.PerformanceProvider
                     _counters.Clear();
                 }
                 foreach (PerfCounter counter in counters)
+                {
+                    counter.RemoveInstance();
                     counter.Close();
+                }
                 PerformanceCounter.CloseSharedResources();
             };
         }
@@ -91,10 +97,7 @@ namespace KJFramework.PerformanceProvider
             foreach (KeyValuePair<FieldInfo, PerfCounterAttribute> counter in counters)
             {
                 PerfCounter pc = new PerfCounter(category.Name, instance, counter.Value);
-                lock (_syncRoot)
-                {
-                    _counters.Add(pc);
-                }
+                lock (_syncRoot) _counters.Add(pc);
                 counter.Key.SetValue(result, pc);
                 pc.Reset();
             }
@@ -103,55 +106,20 @@ namespace KJFramework.PerformanceProvider
 
         private static void EnsureCategoryExist(PerfCategoryAttribute category, ICollection<PerfCounterAttribute> counters)
         {
-            bool exists = false;
             try
             {
-                exists = PerformanceCounterCategory.Exists(category.Name);
+                if(!PerformanceCounterCategory.Exists(category.Name))
+                    DoCreateCategory(category, counters);
             }
             catch { }
-
-            if (!exists)
-            {
-                TryCreateCategory(category, counters);
-                return;
-            }
-
-            foreach (PerfCounterAttribute counterAttr in counters)
-            {
-                exists = false;
-                try
-                {
-                    exists = PerformanceCounterCategory.CounterExists(counterAttr.Name, category.Name);
-                }
-                catch { }
-                if (!exists)
-                {
-                    TryCreateCategory(category, counters);
-                    break;
-                }
-                PerformanceCounterCategory.Delete(category.Name);
-            }
-        }
-
-        private static void TryCreateCategory(PerfCategoryAttribute category, ICollection<PerfCounterAttribute> counters)
-        {
-            try
-            {
-                DoCreateCategory(category, counters);
-            }
-            catch (InvalidOperationException ex)
-            {
-                Debug.WriteLine(ex);
-                PerformanceCounterCategory.Delete(category.Name);
-                DoCreateCategory(category, counters);
-            }
+            
         }
 
         private static void DoCreateCategory(PerfCategoryAttribute category, ICollection<PerfCounterAttribute> counters)
         {
             CounterCreationDataCollection collection = new CounterCreationDataCollection();
                 
-            CounterCreationData data = null;
+            CounterCreationData data;
             foreach (PerfCounterAttribute counter in counters)
             {
                 data = new CounterCreationData();

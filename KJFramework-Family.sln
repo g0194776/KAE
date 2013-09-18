@@ -123,9 +123,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Platform.Deploy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Net.Channels.UnitTest", "KJFramework.Net.Channels.UnitTest\KJFramework.Net.Channels.UnitTest.csproj", "{1FA97074-83CF-4DB3-915E-01CAFDE7D80E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.UnitTest", "KJFramework.UnitTest\KJFramework.UnitTest.csproj", "{993AAD7B-9C13-44F1-8771-05D3294FF247}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 46
+		SccNumberOfProjects = 47
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs34
 		SccLocalPath0 = .
@@ -309,6 +311,10 @@ Global
 		SccProjectTopLevelParentUniqueName45 = KJFramework-Family.sln
 		SccProjectName45 = KJFramework.Net.Channels.UnitTest
 		SccLocalPath45 = KJFramework.Net.Channels.UnitTest
+		SccProjectUniqueName46 = KJFramework.UnitTest\\KJFramework.UnitTest.csproj
+		SccProjectTopLevelParentUniqueName46 = KJFramework-Family.sln
+		SccProjectName46 = KJFramework.UnitTest
+		SccLocalPath46 = KJFramework.UnitTest
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KJFramework.vsmdi
@@ -772,6 +778,16 @@ Global
 		{1FA97074-83CF-4DB3-915E-01CAFDE7D80E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1FA97074-83CF-4DB3-915E-01CAFDE7D80E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1FA97074-83CF-4DB3-915E-01CAFDE7D80E}.Release|x86.ActiveCfg = Release|Any CPU
+		{993AAD7B-9C13-44F1-8771-05D3294FF247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{993AAD7B-9C13-44F1-8771-05D3294FF247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{993AAD7B-9C13-44F1-8771-05D3294FF247}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{993AAD7B-9C13-44F1-8771-05D3294FF247}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{993AAD7B-9C13-44F1-8771-05D3294FF247}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{993AAD7B-9C13-44F1-8771-05D3294FF247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{993AAD7B-9C13-44F1-8771-05D3294FF247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{993AAD7B-9C13-44F1-8771-05D3294FF247}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{993AAD7B-9C13-44F1-8771-05D3294FF247}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{993AAD7B-9C13-44F1-8771-05D3294FF247}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -780,6 +796,7 @@ Global
 		{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1} = {0E1852AB-677F-43BC-9EBC-DF3400754CBA}
 		{D5A0178C-16F7-453E-A301-D1D61910D2AF} = {0E1852AB-677F-43BC-9EBC-DF3400754CBA}
 		{12309506-18A3-48BF-8A55-E950A87A905E} = {0E1852AB-677F-43BC-9EBC-DF3400754CBA}
+		{993AAD7B-9C13-44F1-8771-05D3294FF247} = {0E1852AB-677F-43BC-9EBC-DF3400754CBA}
 		{24C883EF-4260-4923-BD83-B92D84E70A39} = {735BB0E9-6780-4F73-BC74-A80427B5D6E1}
 		{25FE450A-EF83-48B6-8A2E-294C1A97410D} = {735BB0E9-6780-4F73-BC74-A80427B5D6E1}
 		{9B82C04B-D84A-4BA1-8412-B8924F639BBD} = {735BB0E9-6780-4F73-BC74-A80427B5D6E1}

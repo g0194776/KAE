@@ -2,6 +2,7 @@ using System.Diagnostics;
 
 namespace KJFramework.PerformanceProvider
 {
+    [DebuggerDisplay("Instance: {_counter.InstanceName}, Name: {_counter.CounterName}")]
     public class PerfCounter
     {
         private PerformanceCounter _counter;
@@ -96,6 +97,15 @@ namespace KJFramework.PerformanceProvider
                 if (_base != null)
                     _base.InstanceName = value; 
             }
+        }
+
+        /// <summary>
+        ///   移除当前进程内部性能计数器对于系统性能计数器实例的引用
+        /// </summary>
+        public void RemoveInstance()
+        {
+            if (_counter != null) _counter.RemoveInstance();
+            if (_base != null) _base.RemoveInstance();
         }
     }
 }

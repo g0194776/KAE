@@ -140,7 +140,6 @@
     <Compile Include="PerformanceProvider\PerfCounter.cs" />
     <Compile Include="PerformanceProvider\PerfCounterAttribute.cs" />
     <Compile Include="PerformanceProvider\PerfCounterFactory.cs" />
-    <Compile Include="PerformanceProvider\PerformanceCounters.cs" />
     <Compile Include="Reflection\IMsilInstruction.cs" />
     <Compile Include="Reflection\MsilInstruction.cs" />
     <Compile Include="Reflection\MsilParser.cs" />
