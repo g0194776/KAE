@@ -70,6 +70,7 @@ namespace KJFramework.Net.Channels.Disconvery
         {
             Stop();
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             _socket.Bind(new IPEndPoint(IPAddress.Any, _port));
             SocketAsyncEventArgs args = new SocketAsyncEventArgs();
             args.Completed += EventCompleted;

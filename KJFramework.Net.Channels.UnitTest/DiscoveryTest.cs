@@ -40,6 +40,14 @@ namespace KJFramework.Net.Channels.UnitTest
             Console.WriteLine(JsonConvert.SerializeObject(recvObj));
         }
 
+        [TestMethod]
+        public void ReuseAddressTest()
+        {
+            InputPinInitializeTest();
+            //twice.
+            InputPinInitializeTest();
+        }
+
         #endregion
 
     }
