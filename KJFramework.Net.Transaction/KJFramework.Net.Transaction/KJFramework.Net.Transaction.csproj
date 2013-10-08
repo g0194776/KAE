@@ -59,6 +59,7 @@
     <Compile Include="Configurations\SettingConfiguration.cs" />
     <Compile Include="Contexts\BusinessTransactionContext.cs" />
     <Compile Include="Enums\QueueSequence.cs" />
+    <Compile Include="FailMessageTransaction.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
     <Compile Include="Objects\ProcessorObject.cs" />

@@ -125,6 +125,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Net.Channels.Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.UnitTest", "KJFramework.UnitTest\KJFramework.UnitTest.csproj", "{993AAD7B-9C13-44F1-8771-05D3294FF247}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References DB Scripts", "References DB Scripts", "{C366CF00-7910-406F-B0D1-484CE8E9F9B2}"
+	ProjectSection(SolutionItems) = preProject
+		DBScripts\csndb.sql = DBScripts\csndb.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 47
