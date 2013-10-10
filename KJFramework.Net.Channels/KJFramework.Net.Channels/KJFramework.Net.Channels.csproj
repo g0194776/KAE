@@ -66,6 +66,7 @@
     <Compile Include="Events\SegmentReceiveEventArgs.cs" />
     <Compile Include="ChannelCounter.cs" />
     <Compile Include="GlobalMemory.cs" />
+    <Compile Include="Health\AliveCheckTcpConnection.cs" />
     <Compile Include="Objects\SegmentNode.cs" />
     <Compile Include="Parsers\ISegmentDataParser.cs" />
     <Compile Include="Parsers\SegmentDataParser.cs" />
