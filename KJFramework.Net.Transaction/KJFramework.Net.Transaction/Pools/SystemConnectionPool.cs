@@ -23,11 +23,11 @@ namespace KJFramework.Net.Transaction.Pools
         /// <param name="protocolStack">连接所承载的协议栈</param>
         /// <param name="transactionManager">事务管理器</param>
         /// <returns>如果返回null, 则表示当前无法连接到目标远程终结点地址</returns>
-        public IServerConnectionAgent GetChannel(string key, ushort roleId, IProtocolStack<BaseMessage> protocolStack, MessageTransactionManager transactionManager)
+        public IServerConnectionAgent GetChannel(string key, string roleId, IProtocolStack<BaseMessage> protocolStack, MessageTransactionManager transactionManager)
         {
             try
             {
-                string fullKey = string.Format("{0}#{1}", roleId.ToString(), key);
+                string fullKey = string.Format("{0}#{1}", roleId, key);
                 IServerConnectionAgent agent = GetChannel(fullKey);
                 if (agent != null)
                 {

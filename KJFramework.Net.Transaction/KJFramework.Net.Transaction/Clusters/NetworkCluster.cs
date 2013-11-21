@@ -22,7 +22,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <summary>
         ///     按照普通HASH方式的网络群集负载器
         /// </summary>
-        private HashNetworkCluster(MessageTransactionManager transactionManager, SystemConnectionPool connectionPool, Dictionary<ushort, ServiceCoreConfig[]> addresses, Dictionary<ushort, int> maxRanges)
+        private HashNetworkCluster(MessageTransactionManager transactionManager, SystemConnectionPool connectionPool, Dictionary<string, ServiceCoreConfig[]> addresses, Dictionary<string, int> maxRanges)
         {
             _transactionManager = transactionManager;
             _connectionPool = connectionPool;
@@ -34,10 +34,10 @@ namespace KJFramework.Net.Transaction.Clusters
 
         #region Members
 
-        private readonly Dictionary<ushort, int> _maxRanges;
+        private readonly Dictionary<string, int> _maxRanges;
         private readonly SystemConnectionPool _connectionPool;
         private readonly MessageTransactionManager _transactionManager;
-        private readonly Dictionary<ushort, ServiceCoreConfig[]> _addresses;
+        private readonly Dictionary<string, ServiceCoreConfig[]> _addresses;
         private static readonly MD5 _md5 = new MD5CryptoServiceProvider();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(HashNetworkCluster));
 
@@ -53,7 +53,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="errMsg">错误信息</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public IServerConnectionAgent GetChannel(ushort roleId, IProtocolStack<BaseMessage> protocolStack, out string errMsg)
+        public IServerConnectionAgent GetChannel(string roleId, IProtocolStack<BaseMessage> protocolStack, out string errMsg)
         {
             ServiceCoreConfig[] configs;
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");
@@ -77,7 +77,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="errMsg">错误信息</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public IServerConnectionAgent GetChannelBySpecificCondition(ushort roleId, IProtocolStack<BaseMessage> protocolStack, int balanceFlag, out string errMsg)
+        public IServerConnectionAgent GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, int balanceFlag, out string errMsg)
         {
             ServiceCoreConfig[] configs;
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");
@@ -101,7 +101,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="errMsg">错误信息</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public IServerConnectionAgent GetChannelBySpecificCondition(ushort roleId, IProtocolStack<BaseMessage> protocolStack, long balanceFlag, out string errMsg)
+        public IServerConnectionAgent GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, long balanceFlag, out string errMsg)
         {
             ServiceCoreConfig[] configs;
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");
@@ -125,7 +125,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="errMsg">错误信息</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public IServerConnectionAgent GetChannelBySpecificCondition(ushort roleId, IProtocolStack<BaseMessage> protocolStack, string balanceFlag, out string errMsg)
+        public IServerConnectionAgent GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, string balanceFlag, out string errMsg)
         {
             ServiceCoreConfig[] configs;
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");
@@ -153,7 +153,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="errMsg">错误信息</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public IServerConnectionAgent GetChannelBySpecificCondition(ushort roleId, IProtocolStack<BaseMessage> protocolStack, Guid balanceFlag, out string errMsg)
+        public IServerConnectionAgent GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, Guid balanceFlag, out string errMsg)
         {
             ServiceCoreConfig[] configs;
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");
@@ -187,7 +187,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="maxRanges">范围集</param>
         /// <returns>返回一个新的网络集群负载器</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public static HashNetworkCluster Create(MessageTransactionManager transactionManager, SystemConnectionPool connectionPool, Dictionary<ushort, ServiceCoreConfig[]> addresses, Dictionary<ushort, int> maxRanges)
+        public static HashNetworkCluster Create(MessageTransactionManager transactionManager, SystemConnectionPool connectionPool, Dictionary<string, ServiceCoreConfig[]> addresses, Dictionary<string, int> maxRanges)
         {
             if (transactionManager == null) throw new ArgumentNullException("transactionManager");
             if (connectionPool == null) throw new ArgumentNullException("connectionPool");
