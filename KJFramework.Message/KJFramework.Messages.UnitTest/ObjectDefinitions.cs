@@ -12,6 +12,12 @@ namespace KJFramework.Messages.UnitTest
         Yellow = 0x000002
     }
 
+    public class OneFieldMessage : IntellectObject
+    {
+        [IntellectProperty(0, IsRequire = true)]
+        public int X { get; set; }
+    }
+
     public class TestObjectByteArray : IntellectObject
     {
         [IntellectProperty(0)]

@@ -1,6 +1,6 @@
 using KJFramework.EventArgs;
-using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.Tracing;
 using System;
 
@@ -11,7 +11,6 @@ namespace KJFramework.Net.Transaction
     /// </summary>
     /// <typeparam name="T">消息父类类型</typeparam>
     public abstract class MessageTransaction<T> : Transaction, IMessageTransaction<T>
-        where T : IntellectObject
     {
         #region Constructor
 
@@ -19,17 +18,24 @@ namespace KJFramework.Net.Transaction
         ///     消息事务，用于承载网络消息处理的专用事务
         ///     <para>* 只有非正常状态才使用此构造</para>
         /// </summary>
-        public MessageTransaction()
-        { }
+        protected MessageTransaction()
+        {
+            CreateTime = DateTime.Now;
+            RequestTime = DateTime.MaxValue;
+            ResponseTime = DateTime.MaxValue;
+        }
 
         /// <summary>
         ///     消息事务，用于承载网络消息处理的专用事务
         ///     <para>* 使用此构造，将会设置当前的事务永远不超时</para>
         /// </summary>
         /// <param name="channel">消息通讯信道</param>
-        public MessageTransaction(IMessageTransportChannel<T> channel)
+        protected MessageTransaction(IMessageTransportChannel<T> channel)
         {
             _channel = channel;
+            CreateTime = DateTime.Now;
+            RequestTime = DateTime.MaxValue;
+            ResponseTime = DateTime.MaxValue;
         }
 
         /// <summary>
@@ -37,10 +43,13 @@ namespace KJFramework.Net.Transaction
         /// </summary>
         /// <param name="lease">生命周期租约</param>
         /// <param name="channel">消息通讯信道</param>
-        public MessageTransaction(ILease lease, IMessageTransportChannel<T> channel)
+        protected MessageTransaction(ILease lease, IMessageTransportChannel<T> channel)
             : base(lease)
         {
             _channel = channel;
+            CreateTime = DateTime.Now;
+            RequestTime = DateTime.MaxValue;
+            ResponseTime = DateTime.MaxValue;
         }
 
         #endregion
@@ -48,6 +57,22 @@ namespace KJFramework.Net.Transaction
         #region Members
 
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(MessageTransaction<T>));
+        /// <summary>
+        ///     获取或设置当前事务的唯一标示
+        /// </summary>
+        public TransactionIdentity Identity { get; set; }
+        /// <summary>
+        ///     获取事务的创建时间
+        /// </summary>
+        public DateTime CreateTime { get; protected set; }
+        /// <summary>
+        ///     获取成功操作后的请求时间
+        /// </summary>
+        public DateTime RequestTime { get; protected set; }
+        /// <summary>
+        ///     获取成功操作后的应答时间
+        /// </summary>
+        public DateTime ResponseTime { get; protected set; }
 
         #endregion
 

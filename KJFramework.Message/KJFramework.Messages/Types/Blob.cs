@@ -95,7 +95,13 @@ namespace KJFramework.Messages.Types
         /// <returns>返回压缩后的字节数据</returns>
         public byte[] Compress()
         {
-            if (_isCompleteConstructed) return _compressedData;
+            if (_isCompleteConstructed)
+            {
+                if(_index == 1) return _compressedData;
+                byte[] data = new byte[_count];
+                Buffer.BlockCopy(_compressedData, _index, data, 0, _count);
+                return data;
+            }
             Stream compressionStream;
             try
             {

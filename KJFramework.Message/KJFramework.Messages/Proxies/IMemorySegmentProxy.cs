@@ -147,6 +147,19 @@ namespace KJFramework.Messages.Proxies
         /// <param name="value">回写值</param>
         void WriteBackUInt16(MemoryPosition position, ushort value);
         /// <summary>
+        ///     向指定内存段的指定偏移处回写一个uint32数值
+        /// </summary>
+        /// <param name="position">回写位置</param>
+        /// <param name="value">回写值</param>
+        void WriteBackUInt32(MemoryPosition position, uint value);
+        /// <summary>
+        ///     向指定内存段的指定偏移处回写一个void*
+        /// </summary>
+        /// <param name="position">回写位置</param>
+        /// <param name="value">回写值</param>
+        /// <param name="length">回写长度</param>
+        void WriteBackMemory(MemoryPosition position, void* value, uint length);
+        /// <summary>
         ///     写入一个指定类型的值
         /// </summary>
         /// <param name="value">指定类型的值</param>

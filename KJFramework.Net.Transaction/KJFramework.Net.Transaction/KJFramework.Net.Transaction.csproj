@@ -62,6 +62,8 @@
     <Compile Include="FailMessageTransaction.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
+    <Compile Include="Managers\MetadataTransactionManager.cs" />
+    <Compile Include="MetadataMessageTransaction.cs" />
     <Compile Include="Objects\ProcessorObject.cs" />
     <Compile Include="Objects\ServiceCoreConfig.cs" />
     <Compile Include="Schedulers\IRequestScheduler.cs" />
@@ -88,6 +90,8 @@
     <Compile Include="Transaction.cs" />
     <Compile Include="TransactionManager.cs" />
     <Compile Include="BusinessMessageTransaction.cs" />
+    <Compile Include="ValueStored\MessageIdentityValueStored.cs" />
+    <Compile Include="ValueStored\TransactionIdentityValueStored.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />

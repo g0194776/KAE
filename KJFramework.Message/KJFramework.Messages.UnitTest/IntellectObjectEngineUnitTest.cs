@@ -3159,6 +3159,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.ServiceId == 2);
             Assert.IsNotNull(newObj.Blob);
             Assert.IsTrue(newObj.Blob.CompressionType == CompressionTypes.BZip2);
+            Console.WriteLine(newObj);
             byte[] newData = newObj.Blob.Decompress();
             Assert.IsNotNull(newData);
             Assert.IsTrue(newData.Length == data.Length);
@@ -3166,6 +3167,16 @@ namespace KJFramework.Messages.UnitTest
                 Assert.IsTrue(newData[i] == data[i]);
             Console.WriteLine(newObj);
             Console.WriteLine();
+        }
+
+        [TestMethod]
+        [Description("拥有OneField的智能对象反序列化测试方法")]
+        public void OneFieldPickupTest()
+        {
+            OneFieldMessage msg = new OneFieldMessage { X = 10 };
+            msg.Bind();
+            OneFieldMessage ok = IntellectObjectEngine.GetObject<OneFieldMessage>(msg.Body);
+            Assert.IsNotNull(ok);
         }
 
 

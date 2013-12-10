@@ -41,8 +41,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\Depend Files\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Depend Files\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="KJFramework">
       <HintPath>..\Depend Files\KJFramework.dll</HintPath>
@@ -73,16 +74,20 @@
     <Compile Include="Analysers\GetObjectIntellectTypeAnalyser.cs" />
     <Compile Include="Attributes\IIntellectProperty.cs" />
     <Compile Include="Attributes\IntellectPropertyAttribute.cs" />
+    <Compile Include="Configuration\MetadataObjectSetting.cs" />
     <Compile Include="Consts.cs" />
     <Compile Include="Contracts\ICompatibleObject.cs" />
     <Compile Include="Contracts\IIntellectObject.cs" />
     <Compile Include="Contracts\IntellectObject.cs" />
     <Compile Include="Contracts\IUnknownParameter.cs" />
+    <Compile Include="Contracts\MetadataContainer.cs" />
     <Compile Include="Contracts\UnknownParameter.cs" />
+    <Compile Include="Engine\MetadataObjectEngine.cs" />
     <Compile Include="Enums\CompressionTypes.cs" />
     <Compile Include="Exceptions\DefineNoMeaningException.cs" />
     <Compile Include="Exceptions\ExceptionMessage.cs" />
     <Compile Include="Exceptions\PropertyNullValueException.cs" />
+    <Compile Include="Exceptions\SpecificKeyNotExistsException.cs" />
     <Compile Include="Exceptions\UnexpectedValueException.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Engine\IntellectObjectEngine.cs" />
@@ -100,6 +105,7 @@
     <Compile Include="Proxies\MemorySegment.cs" />
     <Compile Include="Proxies\MemorySegmentProxy.cs" />
     <Compile Include="Proxies\MemorySegmentProxyFactory.cs" />
+    <Compile Include="Structs\MarkRange.cs" />
     <Compile Include="Stubs\IPropertySetStub.cs" />
     <Compile Include="Stubs\IPropertyStub.cs" />
     <Compile Include="Stubs\PropertySetStubHelper.cs" />
@@ -156,8 +162,87 @@
     <Compile Include="TypeProcessors\IPEndPointArrayIntellectTypeProcessor.cs" />
     <Compile Include="Types\BitFlag.cs" />
     <Compile Include="Types\Blob.cs" />
+    <Compile Include="Enums\PropertyTypes.cs" />
+    <Compile Include="Types\ResourceBlock.cs" />
+    <Compile Include="ValueStored\BitFlagValueStored.cs" />
+    <Compile Include="ValueStored\BlobValueStored.cs" />
+    <Compile Include="ValueStored\BooleanArrayValueStored.cs" />
+    <Compile Include="ValueStored\DataProcessor\ByteArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\DateTimeArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\DecimalArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\DoubleArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\FloatArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\GuidArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\Int16ArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\Int32ArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\Int64ArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\IntellectObjectArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\IntellectObjectDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\IntPtrArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\IPEndPointArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\Mapping\ExtensionTypeMapping.cs" />
+    <Compile Include="ValueStored\DataProcessor\Mapping\SystemTypeMapping.cs" />
+    <Compile Include="ValueStored\DataProcessor\ProcessorDictionary.cs" />
+    <Compile Include="ValueStored\DataProcessor\ResourceBlockArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\SByteArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\StringArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\TimeSpanArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\UInt16ArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\UInt32ArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\UInt64ArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DateTimeArrayValueStored.cs" />
+    <Compile Include="ValueStored\DecimalArrayValueStored.cs" />
+    <Compile Include="ValueStored\DoubleArrayValueStored.cs" />
+    <Compile Include="ValueStored\FloatArrayValueStored.cs" />
+    <Compile Include="ValueStored\GuidArrayValueStored.cs" />
+    <Compile Include="ValueStored\Helper\IntellectObjectHelper.cs" />
+    <Compile Include="ValueStored\Int16ArrayValueStored.cs" />
+    <Compile Include="ValueStored\Int64ArrayValueStored.cs" />
+    <Compile Include="ValueStored\IntellectObjectValueStored.cs" />
+    <Compile Include="ValueStored\IntPtrArrayValueStored.cs" />
+    <Compile Include="ValueStored\IPEndPointArrayValueStored.cs" />
+    <Compile Include="ValueStored\NullValueStored.cs" />
+    <Compile Include="ValueStored\ResourceBlockArrayStored.cs" />
+    <Compile Include="ValueStored\SByteArrayValueStored.cs" />
+    <Compile Include="ValueStored\BooleanValueStored.cs" />
+    <Compile Include="ValueStored\ByteArrayValueStored.cs" />
+    <Compile Include="ValueStored\ByteValueStored.cs" />
+    <Compile Include="ValueStored\CharArrayValueStored.cs" />
+    <Compile Include="ValueStored\CharValueStored.cs" />
+    <Compile Include="ValueStored\DataProcessor\BooleanArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\CharArrayDataProcessor.cs" />
+    <Compile Include="ValueStored\DataProcessor\Mapping\DataProcessorMapping.cs" />
+    <Compile Include="ValueStored\DataProcessor\IDataProcessor.cs" />
+    <Compile Include="ValueStored\DateTimeValueStored.cs" />
+    <Compile Include="ValueStored\DecimalValueStored.cs" />
+    <Compile Include="ValueStored\DoubleValueStored.cs" />
+    <Compile Include="ValueStored\FloatValueStored.cs" />
+    <Compile Include="ValueStored\GuidValueStored.cs" />
+    <Compile Include="ValueStored\Int16ValueStored.cs" />
+    <Compile Include="ValueStored\Int32ArrayValueStored.cs" />
+    <Compile Include="ValueStored\Int32ValueStored.cs" />
+    <Compile Include="ValueStored\Int64ValueStored.cs" />
+    <Compile Include="ValueStored\IntellectObjectArrayValueStored.cs" />
+    <Compile Include="ValueStored\IntPtrValueStored.cs" />
+    <Compile Include="ValueStored\IPEndPointValueStored.cs" />
+    <Compile Include="ValueStored\SByteValueStored.cs" />
+    <Compile Include="ValueStored\StringArrayValueStored.cs" />
+    <Compile Include="ValueStored\TimeSpanArrayValueStored.cs" />
+    <Compile Include="ValueStored\TimeSpanValueStored.cs" />
+    <Compile Include="ValueStored\UInt16ArrayValueStored.cs" />
+    <Compile Include="ValueStored\UInt16ValueStored.cs" />
+    <Compile Include="ValueStored\UInt32ArrayValueStored.cs" />
+    <Compile Include="ValueStored\UInt32ValueStored.cs" />
+    <Compile Include="ValueStored\BaseValueStored.cs" />
+    <Compile Include="ValueStored\StoredHelper\PropertyValueStored.cs" />
+    <Compile Include="ValueStored\StoredHelper\ValueStoredHelper.cs" />
+    <Compile Include="ValueStored\StringValueStored.cs" />
+    <Compile Include="ValueStored\UInt64ArrayValueStored.cs" />
+    <Compile Include="ValueStored\UInt64ValueStored.cs" />
+    <Compile Include="ValueStored\ResourceBlockStored.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documents\Metadata-Structure.html" />
     <Content Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

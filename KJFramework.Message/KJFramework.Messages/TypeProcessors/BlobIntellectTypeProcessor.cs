@@ -95,7 +95,9 @@ namespace KJFramework.Messages.TypeProcessors
         public override void Process(object instance, GetObjectAnalyseResult result, byte[] data, int offset, int length = 0)
         {
             if (length == 0 || data == null || data.Length == 0) return;
-            result.SetValue(instance, new Blob(data, offset, length));
+            byte[] realData = new byte[length];
+            Buffer.BlockCopy(data, offset, realData, 0, length);
+            result.SetValue(instance, new Blob(realData));
         }
 
         #endregion

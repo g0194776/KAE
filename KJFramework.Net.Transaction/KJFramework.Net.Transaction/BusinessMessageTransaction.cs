@@ -1,6 +1,5 @@
 ﻿using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction.Contexts;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
@@ -20,9 +19,6 @@ namespace KJFramework.Net.Transaction
         /// </summary>
         public BusinessMessageTransaction()
         {
-            CreateTime = DateTime.Now;
-            RequestTime = DateTime.MaxValue;
-            ResponseTime = DateTime.MaxValue;
         }
 
         /// <summary>
@@ -32,9 +28,6 @@ namespace KJFramework.Net.Transaction
         public BusinessMessageTransaction(IMessageTransportChannel<BaseMessage> channel)
             : base(channel)
         {
-            CreateTime = DateTime.Now;
-            RequestTime = DateTime.MaxValue;
-            ResponseTime = DateTime.MaxValue;
         }
 
         /// <summary>
@@ -45,9 +38,6 @@ namespace KJFramework.Net.Transaction
         public BusinessMessageTransaction(ILease lease, IMessageTransportChannel<BaseMessage> channel)
             : base(lease, channel)
         {
-            CreateTime = DateTime.Now;
-            RequestTime = DateTime.MaxValue;
-            ResponseTime = DateTime.MaxValue;
         }
 
         #endregion
@@ -60,25 +50,9 @@ namespace KJFramework.Net.Transaction
         /// </summary>
         public MessageTransactionManager TransactionManager { get; set; }
         /// <summary>
-        ///     获取或设置当前事务的唯一标示
-        /// </summary>
-        public TransactionIdentity Identity { get; set; }
-        /// <summary>
         ///     获取或设置相关上下文
         /// </summary>
         public BusinessTransactionContext Context { get; set; }
-        /// <summary>
-        ///     获取事务的创建时间
-        /// </summary>
-        public DateTime CreateTime { get; private set; }
-        /// <summary>
-        ///     获取成功操作后的请求时间
-        /// </summary>
-        public DateTime RequestTime { get; protected set; }
-        /// <summary>
-        ///     获取成功操作后的应答时间
-        /// </summary>
-        public DateTime ResponseTime { get; protected set; }
         /// <summary>
         ///     获取或设置请求消息
         /// </summary>
