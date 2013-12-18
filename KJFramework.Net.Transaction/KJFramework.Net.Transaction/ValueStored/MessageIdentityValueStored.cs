@@ -111,6 +111,13 @@ namespace KJFramework.Net.Transaction.ValueStored
             return new MessageIdentityValueStored();
         }
 
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             return string.Format("(P: {0}, S: {1}, D: {2}, T: {3})", _value.ProtocolId, _value.ServiceId,

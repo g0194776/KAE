@@ -66,6 +66,7 @@
     <Compile Include="MetadataMessageTransaction.cs" />
     <Compile Include="Objects\ProcessorObject.cs" />
     <Compile Include="Objects\ServiceCoreConfig.cs" />
+    <Compile Include="ProtocolStack\MetadataProtocolStack.cs" />
     <Compile Include="Schedulers\IRequestScheduler.cs" />
     <Compile Include="Managers\MessageTransactionManager.cs" />
     <Compile Include="Messages\BaseMessage.cs" />

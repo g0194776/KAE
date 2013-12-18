@@ -106,7 +106,7 @@ namespace KJFramework.Net.Transaction
         {
             if (message == null) return;
             Identity.IsRequest = true;
-            message.SetAttribute(0x00, new TransactionIdentityValueStored(Identity));
+            message.SetAttribute(0x01, new TransactionIdentityValueStored(Identity));
             _request = message;
             if (!_channel.IsConnected)
             {
@@ -158,9 +158,9 @@ namespace KJFramework.Net.Transaction
         {
             _response = message;
             if (message == null || Identity.IsOneway) return;
-            if (!message.IsAttibuteExsits(0x01)) throw new ArgumentException("#Current RSP message had not contains any Message-Identity infomation.");
-            MessageIdentity mIdentity = message.GetAttributeAsType<MessageIdentity>(0x01);
-            TransactionIdentityValueStored valueStored = (TransactionIdentityValueStored) _request.GetAttribute(0x00);
+            if (!message.IsAttibuteExsits(0x00)) throw new ArgumentException("#Current RSP message dose not contain any Message-Identity infomation.");
+            MessageIdentity mIdentity = message.GetAttributeAsType<MessageIdentity>(0x00);
+            TransactionIdentityValueStored valueStored = (TransactionIdentityValueStored) _request.GetAttribute(0x01);
             TransactionIdentity tIdentity;
             if (valueStored != null)
             {
@@ -169,7 +169,7 @@ namespace KJFramework.Net.Transaction
                 message.SetAttribute(0x00, new TransactionIdentityValueStored(tIdentity));
             }
             //the same tid for client.
-            if (Request != null && mIdentity != null) mIdentity.Tid = Request.GetAttributeAsType<MessageIdentity>(0x01).Tid;
+            if (Request != null && mIdentity != null) mIdentity.Tid = Request.GetAttributeAsType<MessageIdentity>(0x00).Tid;
             if (!_channel.IsConnected)
             {
                 _tracing.Warn("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint);
