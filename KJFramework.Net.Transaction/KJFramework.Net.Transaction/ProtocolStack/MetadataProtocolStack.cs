@@ -1,8 +1,10 @@
 ﻿using KJFramework.IO.Helper;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
+using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Objects;
+using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
@@ -88,6 +90,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         public override List<MetadataContainer> Parse(byte[] data, int offset, int count)
         {
             int totalLength;
+            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             List<MetadataContainer> messages = new List<MetadataContainer>();
             try
             {
