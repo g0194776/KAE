@@ -89,8 +89,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         /// </returns>
         public override List<MetadataContainer> Parse(byte[] data, int offset, int count)
         {
-            int totalLength;
-            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
+            int totalLength;          
             List<MetadataContainer> messages = new List<MetadataContainer>();
             try
             {

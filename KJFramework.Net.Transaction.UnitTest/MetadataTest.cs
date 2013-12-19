@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using KJFramework.Messages.Contracts;
+using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
@@ -13,9 +14,17 @@ namespace KJFramework.Net.Transaction.UnitTest
     {
         #region Methods
 
+
+        [TestInitialize]
+        public void Setup()
+        {
+            ExtensionTypeMapping.Regist(typeof (MessageIdentityValueStored));
+        }
+
         [TestMethod]
         public void MetaOneMessageToBytes()
         {
+            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             MetadataProtocolStack protocolStack = new MetadataTest();
             MessageIdentity messageIdentity1 = new MessageIdentity
             {
@@ -48,6 +57,7 @@ namespace KJFramework.Net.Transaction.UnitTest
         [TestMethod]
         public void MetaOneMessageBetweenTwoNullSegmentToBytes()
         {
+            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             MetadataProtocolStack protocolStack = new MetadataTest();
             MessageIdentity messageIdentity1 = new MessageIdentity
             {
@@ -80,6 +90,7 @@ namespace KJFramework.Net.Transaction.UnitTest
         [TestMethod]
         public void MetaOneMessageAfterNullSegmentToBytes()
         {
+            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             MetadataProtocolStack protocolStack = new MetadataTest();
             MessageIdentity messageIdentity1 = new MessageIdentity
             {
@@ -124,6 +135,7 @@ namespace KJFramework.Net.Transaction.UnitTest
         [TestMethod]
         public void MetaManyMessageToBytes()
         {
+            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             MetadataProtocolStack protocolStack = new MetadataTest();
             MessageIdentity messageIdentity1 = new MessageIdentity
             {
