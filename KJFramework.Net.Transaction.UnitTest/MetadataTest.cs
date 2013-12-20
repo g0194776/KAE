@@ -24,7 +24,6 @@ namespace KJFramework.Net.Transaction.UnitTest
         [TestMethod]
         public void MetaOneMessageToBytes()
         {
-            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             MetadataProtocolStack protocolStack = new MetadataTest();
             MessageIdentity messageIdentity1 = new MessageIdentity
             {
@@ -57,7 +56,6 @@ namespace KJFramework.Net.Transaction.UnitTest
         [TestMethod]
         public void MetaOneMessageBetweenTwoNullSegmentToBytes()
         {
-            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             MetadataProtocolStack protocolStack = new MetadataTest();
             MessageIdentity messageIdentity1 = new MessageIdentity
             {
@@ -90,7 +88,6 @@ namespace KJFramework.Net.Transaction.UnitTest
         [TestMethod]
         public void MetaOneMessageAfterNullSegmentToBytes()
         {
-            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             MetadataProtocolStack protocolStack = new MetadataTest();
             MessageIdentity messageIdentity1 = new MessageIdentity
             {
@@ -135,7 +132,6 @@ namespace KJFramework.Net.Transaction.UnitTest
         [TestMethod]
         public void MetaManyMessageToBytes()
         {
-            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             MetadataProtocolStack protocolStack = new MetadataTest();
             MessageIdentity messageIdentity1 = new MessageIdentity
             {
