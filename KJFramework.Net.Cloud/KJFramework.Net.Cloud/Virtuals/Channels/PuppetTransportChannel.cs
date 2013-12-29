@@ -62,7 +62,7 @@ namespace KJFramework.Net.Cloud.Virtuals.Channels
         /// <summary>
         /// 获取本地终结点地址
         /// </summary>
-        public override IPEndPoint LocalEndPoint
+        public override EndPoint LocalEndPoint
         {
             get { return _localEndPoint; }
         }
@@ -70,7 +70,7 @@ namespace KJFramework.Net.Cloud.Virtuals.Channels
         /// <summary>
         /// 获取远程终结点地址
         /// </summary>
-        public override IPEndPoint RemoteEndPoint
+        public override EndPoint RemoteEndPoint
         {
             get { return _remoteEndPoint; }
         }

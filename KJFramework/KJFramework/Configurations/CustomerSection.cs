@@ -35,10 +35,17 @@ namespace KJFramework.Configurations
             {
                 if (_current == null)
                 {
-                    Configurations.GetConfiguration(delegate(T section)
+                    try
                     {
-                        _current = section;
-                    });
+                        Configurations.GetConfiguration(delegate(T section)
+                        {
+                            _current = section;
+                        });
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
                 return _current;
             }

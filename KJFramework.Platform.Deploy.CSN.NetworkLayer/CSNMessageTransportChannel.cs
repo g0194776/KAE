@@ -83,8 +83,8 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         private ICSNRawTransportChannel _rawChannel;
         private readonly IProtocolStack<T> _protocolStack;
         private IMultiPacketManager<T> _multiPacketManager;
-        private IPEndPoint _localIep;
-        private IPEndPoint _remoteIep;
+        private EndPoint _localIep;
+        private EndPoint _remoteIep;
         private ICSNSegmentDataParser<T> _parser;
 
         #endregion
@@ -265,7 +265,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         /// <summary>
         ///     获取本地终结点地址
         /// </summary>
-        public IPEndPoint LocalEndPoint
+        public EndPoint LocalEndPoint
         {
             get { return _localIep; }
         }
@@ -273,7 +273,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         /// <summary>
         ///     获取远程终结点地址
         /// </summary>
-        public IPEndPoint RemoteEndPoint
+        public EndPoint RemoteEndPoint
         {
             get { return _remoteIep; }
         }

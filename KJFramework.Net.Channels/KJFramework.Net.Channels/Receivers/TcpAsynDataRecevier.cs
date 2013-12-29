@@ -52,7 +52,7 @@ namespace KJFramework.Net.Channels.Receivers
             if (!_state) return;
             try
             {
-                IFixedCacheStub<BuffSocketStub> stub = ChannelConst.BuffAsyncStubPool.Rent();
+                IFixedCacheStub<SocketBuffStub> stub = ChannelConst.BuffAsyncStubPool.Rent();
                 if (stub == null) throw new System.Exception("#Cannot rent an async recv io-stub for socket recv async action.");
                 ChannelCounter.Instance.RateOfRentFixedBufferStub.Increment();
                 SocketAsyncEventArgs e = stub.Cache.Target;
@@ -77,7 +77,7 @@ namespace KJFramework.Net.Channels.Receivers
         ///     处理接收的数据
         /// </summary>
         /// <param name="stub">带缓冲区的固定缓存存根</param>
-        internal void ProcessReceive(IFixedCacheStub<BuffSocketStub> stub)
+        internal void ProcessReceive(IFixedCacheStub<SocketBuffStub> stub)
         {
             if (stub.Cache.Target.BytesTransferred > 0 && stub.Cache.Target.SocketError == SocketError.Success)
             {
@@ -100,9 +100,9 @@ namespace KJFramework.Net.Channels.Receivers
         /// </summary>
         /// <param name="stub">带缓冲区的固定缓存存根</param>
         /// <param name="bytesTransferred">接收到的数据长度</param>
-        private void ProcessData(IFixedCacheStub<BuffSocketStub> stub, int bytesTransferred)
+        private void ProcessData(IFixedCacheStub<SocketBuffStub> stub, int bytesTransferred)
         {
-            ReceivedDataHandler(new SegmentReceiveEventArgs(stub, bytesTransferred));
+            ReceivedDataHandler(new SocketSegmentReceiveEventArgs(stub, bytesTransferred));
         }
 
         #endregion

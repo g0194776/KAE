@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading;
 using KJFramework.Cache.Cores;
 
@@ -40,6 +41,7 @@ namespace KJFramework.Cache.Containers
 
         #region Members
 
+        private PerformanceCounter _counter = null;
         private ConcurrentStack<ICacheStub<T>> _caches;
         private long _remainingCount;
 
@@ -67,6 +69,7 @@ namespace KJFramework.Cache.Containers
             if (!_caches.IsEmpty && _caches.TryPop(out cache))
             {
                 Interlocked.Decrement(ref _remainingCount);
+                if (_counter != null) _counter.Decrement();
                 return (IFixedCacheStub<T>)cache;
             }
             return null;
@@ -84,6 +87,29 @@ namespace KJFramework.Cache.Containers
             cache.Tag = null;
             _caches.Push((ICacheStub<T>)cache);
             Interlocked.Increment(ref _remainingCount);
+            if (_counter != null) _counter.Increment();
+        }
+
+        /// <summary>
+        ///    构造内部性能计数器
+        /// </summary>
+        /// <param name="name">性能计数器名称</param>
+        public void BuildPerformanceCounter(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return;
+        }
+
+        #endregion
+
+        #region Helpful Intenral Methods.
+
+        /// <summary>
+        ///    获取内部容器所包含的真实元素个数
+        /// </summary>
+        /// <returns>内部容器所包含的真实元素个数</returns>
+        internal int GetCount()
+        {
+            return _caches.Count;
         }
 
         #endregion

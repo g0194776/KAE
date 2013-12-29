@@ -1,12 +1,13 @@
-using KJFramework.EventArgs;
+using KJFramework.Cache.Cores;
+using KJFramework.Net.Channels.Caches;
 using KJFramework.Net.Channels.Enums;
+using KJFramework.Net.Channels.Events;
 using KJFramework.Net.Channels.Transactions;
 using KJFramework.Net.Channels.Uri;
 using KJFramework.Tracing;
 using System;
 using System.IO.Pipes;
 using System.Net;
-using System.Threading;
 
 namespace KJFramework.Net.Channels
 {
@@ -15,10 +16,10 @@ namespace KJFramework.Net.Channels
     /// </summary>
     public class PipeTransportChannel : TransportChannel, IReconnectionTransportChannel
     {
-        #region 成员
+        #region Members.
 
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PipeTransportChannel));
-        protected PipeStream _stream;
+
         /// <summary>
         ///    获取内部流对象
         /// </summary>
@@ -30,17 +31,17 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取本地终结点地址
         /// </summary>
-        public override IPEndPoint LocalEndPoint
+        public override EndPoint LocalEndPoint
         {
-            get { throw new NotSupportedException(); }
+            get { return new DnsEndPoint("http://www.126.com", 0); }
         }
 
         /// <summary>
         ///     获取发出请求的客户端 IP 地址和端口号
         /// </summary>
-        public override IPEndPoint RemoteEndPoint
+        public override EndPoint RemoteEndPoint
         {
-            get { throw new NotSupportedException(); }
+            get { return new DnsEndPoint("http://www.126.com", 0); }
         }
 
         /// <summary>
@@ -48,52 +49,46 @@ namespace KJFramework.Net.Channels
         /// </summary>
         public override bool IsConnected
         {
-            get { return (_connected = _client.IsConnected); }
+            get { return (_connected = _stream != null && _stream.IsConnected); }
         }
 
-        private readonly Action<byte[]> _callback;
-        protected NamedPipeClientStream _client;
-        protected Thread _thread;
-        protected ServerPipeStreamTransaction _servTransaction;
-        protected ClientPipeStreamTransaction _clientTransaction;
+        protected PipeStream _stream;
+        protected PipeStreamTransaction _streamAgent;
+        private readonly Action<IFixedCacheStub<BuffStub>, int> _callback;
 
         #endregion
 
-        #region 构造函数
+        #region Constructor.
 
         /// <summary>
         ///    基于IPC通道的传输通道，提供了相关的基本操作。
+        ///     <para>* 此构造函数用于初始化一个需要连接到远程的命名管道对象</para>
         /// </summary>
         /// <param name="logicalUri">通道地址</param>
         /// <exception cref="ArgumentNullException">参数错误</exception>
-        public PipeTransportChannel(Uri.Uri logicalUri)
+        public PipeTransportChannel(PipeUri logicalUri)
         {
-            if (logicalUri == null)
-            {
-                throw new ArgumentNullException("logicalUri");
-            }
+            if (logicalUri == null) throw new ArgumentNullException("logicalUri");
             _logicalAddress = logicalUri;
             _callback = DefaultCallback;
+            _supportSegment = true;
         }
 
         /// <summary>
         ///    基于IPC通道的传输通道，提供了相关的基本操作。
+        ///     <para>* 此构造函数用于初始化一个已经连接的命名管道数据流</para>
         /// </summary>
         /// <param name="stream" type="System.IO.Pipes.PipeStream">PIPE流</param>
         /// <exception cref="ArgumentNullException">参数错误</exception>
         public PipeTransportChannel(PipeStream stream)
         {
-            if (stream == null)
-            {
-                throw new ArgumentNullException("stream");
-            }
+            if (stream == null) throw new ArgumentNullException("stream");
             _stream = stream;
+            _supportSegment = true;
             _callback = DefaultCallback;
             _connected = stream.IsConnected;
-            if (_stream is NamedPipeServerStream)
-            {
-                InitializeServerTransaction();
-            }
+            _streamAgent = new PipeStreamTransaction(_stream, stream.IsAsync, _callback);
+            _streamAgent.Disconnected += TransactionDisconnected;
         }
 
         #endregion
@@ -113,7 +108,7 @@ namespace KJFramework.Net.Channels
         /// </summary>
         protected override void InnerOpen()
         {
-            Connect();
+            if(!_connected) Connect();
         }
 
         /// <summary>
@@ -129,32 +124,37 @@ namespace KJFramework.Net.Channels
         #region Overrides of TransportChannel
 
         /// <summary>
-        ///     连接
+        ///     连接到远程命名管道
+        ///     <para>* 此方法将会使用双向数据流的方式连接远程命名管道</para>
         /// </summary>
         public override void Connect()
         {
+            Connect(PipeDirection.InOut);
+        }
+
+        /// <summary>
+        ///     连接到远程命名管道
+        /// </summary>
+        /// <param name="direction">数据流方向</param>
+        /// <param name="milliseconds">超时时间</param>
+        /// <exception cref="ArgumentException">无效的超时时间</exception>
+        /// <exception cref="InvalidOperationException">无法再次调用一个已经初始化后的Channel的Connect方法</exception>
+        public virtual void Connect(PipeDirection direction, int milliseconds = 1000)
+        {
             try
             {
-                if (_logicalAddress == null)
-                {
-                    throw new System.Exception("未提供远程终端地址。");
-                }
-                if (_client == null)
-                {
-                    PipeUri uri = new PipeUri(_logicalAddress.ToString());
-                    _client = new NamedPipeClientStream(uri.MachineName, uri.PipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
-                }
+                if (milliseconds == 0)throw new ArgumentException("#You cannot specified ZERO to timeout value.");
+                if (_logicalAddress == null) throw new System.Exception("#You didn't offer any address which currently went to connect.");
+                if (_stream != null && _stream.IsConnected) throw new InvalidOperationException("#You cannot did this operation again, because of current channel had been done with the conenction since it created.");
+                PipeUri uri = new PipeUri(_logicalAddress.ToString());
+                NamedPipeClientStream stream = new NamedPipeClientStream(uri.MachineName, uri.PipeName, direction, PipeOptions.Asynchronous);
                 _communicationState = CommunicationStates.Opening;
-                _client.Connect(100);
-                _stream = _client;
-                _connected = _client.IsConnected;
-                if (!_connected)
-                {
-                    _communicationState = CommunicationStates.Closed;
-                    return;
-                }
+                stream.Connect(milliseconds);
+                _stream = stream;
+                _connected = _stream.IsConnected;
+                _streamAgent = new PipeStreamTransaction(_stream, stream.IsAsync, _callback);
+                _streamAgent.Disconnected += TransactionDisconnected;
                 _communicationState = CommunicationStates.Opened;
-                InitializeClientTransaction();
                 ConnectedHandler(null);
             }
             catch (System.Exception ex)
@@ -172,37 +172,13 @@ namespace KJFramework.Net.Channels
             try
             {
                 _communicationState = CommunicationStates.Closing;
-                if (_servTransaction != null)
+                if (_streamAgent != null)
                 {
-                    _servTransaction.Dispose();
-                    _servTransaction = null;
-                }
-                if (_clientTransaction != null)
-                {
-                    _clientTransaction.Dispose();
-                    _clientTransaction = null;
-                }
-                if (_stream != null)
-                {
-                    try
-                    {
-                        if (_stream is NamedPipeServerStream)
-                        {
-                            (_stream as NamedPipeServerStream).Disconnect();
-                        }
-                        _stream.Close();
-                    }
-                    catch (System.Exception ex)
-                    {
-                        _tracing.Error(ex, null);
-                    }
-                    _stream = null;
+                    _streamAgent.EndWork();
+                    _streamAgent = null;
                 }
             }
-            catch (System.Exception ex)
-            {
-                _tracing.Error(ex, null);
-            }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
             finally
             {
                 _communicationState = CommunicationStates.Closed;
@@ -214,18 +190,10 @@ namespace KJFramework.Net.Channels
         ///     重新尝试建立连接
         /// </summary>
         /// <returns>返回尝试后的状态</returns>
+        [Obsolete("#You cannot did this operation on current type of Transport Channel.", true)]
         public bool Reconnect()
         {
-            try
-            {
-                Connect();
-                return _connected;
-            }
-            catch (System.Exception ex)
-            {
-                _tracing.Error(ex, null);
-                return false;
-            }
+            throw new NotImplementedException("#You cannot did this operation on current type of Transport Channel.");
         }
 
         /// <summary>
@@ -244,38 +212,39 @@ namespace KJFramework.Net.Channels
                     return -1;
                 }
                 //判断流状态
-                if (_stream != null && _stream.CanWrite)
+                if (_stream == null || !_stream.IsConnected)
                 {
-                    _stream.BeginWrite(data, 0, data.Length, SendCallback, null);
-                    return data.Length;
+                    InnerClose();
+                    return -2;
                 }
-                return -1;
+                if (!_stream.CanWrite)
+                {
+                    _tracing.Warn("#You were trying to write some binary data into a read-only Named Pipe channel.", null);
+                    return -3;
+                }
+                _stream.BeginWrite(data, 0, data.Length, SendCallback, null);
+                return data.Length;
             }
             catch (System.Exception ex)
             {
                 _tracing.Error(ex, null);
-                return -1;
+                InnerClose();
+                return -2;
             }
         }
 
         #endregion
 
-        #region 事件
+        #region Events.
 
         //事物断开事件
         void TransactionDisconnected(object sender, System.EventArgs e)
         {
-            if (_servTransaction != null)
+            if (_streamAgent != null)
             {
-                _servTransaction.Disconnected -= TransactionDisconnected;
-                _servTransaction = null;
+                _streamAgent.Disconnected -= TransactionDisconnected;
+                _streamAgent = null;
             }
-            if (_clientTransaction != null)
-            {
-                _clientTransaction.Disconnected -= TransactionDisconnected;
-                _clientTransaction = null;
-            }
-            _stream = null;
             _connected = false;
             _communicationState = CommunicationStates.Closed;
             DisconnectedHandler(null);
@@ -283,33 +252,12 @@ namespace KJFramework.Net.Channels
 
         #endregion
 
-        #region 方法
+        #region Members.
 
-        /// <summary>
-        ///     初始化事物
-        /// </summary>
-        protected void InitializeServerTransaction()
+        //callback function.
+        protected virtual void DefaultCallback(IFixedCacheStub<BuffStub> stub, int bytesTransferred)
         {
-            _servTransaction = new ServerPipeStreamTransaction((NamedPipeServerStream)_stream, true, _callback);
-            _servTransaction.Disconnected += TransactionDisconnected;
-        }
-
-        /// <summary>
-        ///     初始化事物
-        /// </summary>
-        protected virtual void InitializeClientTransaction()
-        {
-            _clientTransaction = new ClientPipeStreamTransaction((NamedPipeClientStream)_stream, true, _callback);
-            _clientTransaction.Disconnected += TransactionDisconnected;
-        }
-
-        /// <summary>
-        ///     默认的消息回调函数
-        /// </summary>
-        /// <param name="data" type="byte[]">接收到的数据</param>
-        protected void DefaultCallback(byte[] data)
-        {
-            ReceivedDataHandler(new LightSingleArgEventArgs<byte[]>(data));
+            ReceivedDataSegmentHandler(new NamedPipeSegmentReceiveEventArgs(stub, bytesTransferred));
         }
 
         //send async callback.
@@ -320,7 +268,11 @@ namespace KJFramework.Net.Channels
                 _stream.EndWrite(result);
                 _stream.Flush();
             }
-            catch (System.Exception ex) { _tracing.Error(ex, null); }
+            catch (System.Exception ex)
+            {
+                _tracing.Error(ex, null);
+                InnerClose();
+            }
         }
 
         #endregion

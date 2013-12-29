@@ -1,10 +1,8 @@
 ﻿using KJFramework.IO.Helper;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
-using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Objects;
-using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
@@ -14,7 +12,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
     /// <summary>
     ///     服务器端消息协议栈抽象父类
     /// </summary>
-    public abstract class MetadataProtocolStack : ProtocolStack<MetadataContainer>
+    public class MetadataProtocolStack : ProtocolStack<MetadataContainer>
     {
         #region Constructor
 
@@ -22,8 +20,9 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         ///     服务器端消息协议栈抽象父类
         ///     <para>* 此构造将会自动初始化当前协议栈</para>
         /// </summary>
-        protected MetadataProtocolStack()
+        public MetadataProtocolStack()
         {
+            Initialize();
         }
 
         #endregion
@@ -35,6 +34,15 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         #endregion
 
         #region Overrides of ProtocolStack<MetadataContainer>
+
+        /// <summary>
+        ///    初始化
+        /// </summary>
+        /// <returns>返回初始化的结果</returns>
+        public override bool Initialize()
+        {
+            return true;
+        }
 
         /// <summary>
         /// 解析元数据
@@ -93,7 +101,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
             List<MetadataContainer> messages = new List<MetadataContainer>();
             try
             {
-                while (offset < data.Length)
+                while (count > 0)
                 {
                     totalLength = BitConverter.ToInt32(data, offset);
                     if (totalLength > data.Length)
@@ -101,22 +109,20 @@ namespace KJFramework.Net.Transaction.ProtocolStack
                         _tracing.Error("#Parse message failed, illegal total length. #length: " + totalLength);
                         return messages;
                     }
-                    byte[] messageData = totalLength == data.Length
-                                             ? data
-                                             : ByteArrayHelper.GetReallyData(data, offset, totalLength);
                     int markRangeCount = BitConverter.ToUInt16(data, offset + 4);
-                    int markRangeLength = markRangeCount * 5;
-                    int protocolId = messageData[markRangeLength + 6];
-                    int serviceId = messageData[markRangeLength + 7];
-                    int detailsId = messageData[markRangeLength + 8];
-                    offset += messageData.Length;
+                    int markRangeLength = markRangeCount*5 + offset;
+                    int protocolId = data[markRangeLength + 6];
+                    int serviceId = data[markRangeLength + 7];
+                    int detailsId = data[markRangeLength + 8];
                     MetadataContainer message;
                     try
                     {
-                        message = MetadataObjectEngine.GetObject(messageData, 0, (uint)messageData.Length);
+                        message = MetadataObjectEngine.GetObject(data, (uint) offset, (uint) totalLength);
                         if (message == null)
                         {
-                            _tracing.Error("#Parse message failed, parse result = null. #protocol id={0}, service id={1}, detalis id={2}: ", protocolId, serviceId, detailsId);
+                            _tracing.Error(
+                                "#Parse message failed, parse result = null. #protocol id={0}, service id={1}, detalis id={2}: ",
+                                protocolId, serviceId, detailsId);
                             return messages;
                         }
                     }
@@ -124,6 +130,11 @@ namespace KJFramework.Net.Transaction.ProtocolStack
                     {
                         _tracing.Error(ex, "#Parse message failed.");
                         continue;
+                    }
+                    finally
+                    {
+                        offset += totalLength;
+                        count -= totalLength;
                     }
                     messages.Add(message);
                     if (data.Length - offset < 4) break;

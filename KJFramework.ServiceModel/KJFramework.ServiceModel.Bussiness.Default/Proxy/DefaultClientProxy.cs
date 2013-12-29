@@ -1,4 +1,5 @@
-﻿using KJFramework.Cache.Containers;
+﻿using System.Net;
+using KJFramework.Cache.Containers;
 using KJFramework.Cache.Cores;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
@@ -76,7 +77,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Proxy
             _msgChannel = new MessageTransportChannel<Message>((IRawTransportChannel)transportChannel, ServiceModel.ProtocolStack);
             _msgChannel.ReceivedMessage += ReceivedMessage;
             _msgChannel.Disconnected += Disconnected;
-            _contractAction.LocalEndPoint = _msgChannel.LocalEndPoint;
+            _contractAction.LocalEndPoint = (IPEndPoint) _msgChannel.LocalEndPoint;
             if (ServiceModel.FixedRequestMessage == null)
                 ServiceModel.FixedRequestMessage = ServiceModel.Tenant.Rent<RequestServiceMessage>("Fixed:RequestServiceMessage", ServiceModelSettingConfigSection.Current.NetworkLayer.RequestServiceMessagePoolCount);
             if (ServiceModel.FixedRequestWaitObject == null)

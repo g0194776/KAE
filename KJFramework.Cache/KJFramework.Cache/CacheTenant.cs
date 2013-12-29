@@ -67,22 +67,15 @@ namespace KJFramework.Cache
         /// <returns>返回缓存容器</returns>
         public IFixedCacheContainer<T> Rent<T>(string category, int capacity) where T : IClearable, new()
         {
-            if (string.IsNullOrEmpty(category))
-            {
-                throw new ArgumentNullException("category");
-            }
-            if (capacity <= 0)
-            {
-                throw new ArgumentException("Illelgal capacity!");
-            }
+            if (string.IsNullOrEmpty(category)) throw new ArgumentNullException("category");
+            if (capacity <= 0) throw new ArgumentException("Illelgal capacity!");
             lock (_lockObj)
             {
+                object obj;
                 //already has this container.
-                if (_containers.ContainsKey(category))
-                {
-                    return null;
-                }
+                if (_containers.TryGetValue(category, out obj)) return (IFixedCacheContainer<T>)obj;
                 IFixedCacheContainer<T> container = new FixedCacheContainer<T>(capacity);
+                container.BuildPerformanceCounter(category);
                 _containers.Add(category, container);
                 return container;
             }

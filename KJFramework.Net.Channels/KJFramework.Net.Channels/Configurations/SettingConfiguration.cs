@@ -19,6 +19,12 @@ namespace KJFramework.Net.Channels.Configurations
         [CustomerField("BuffStubPoolSize")]
         public int BuffStubPoolSize;
         /// <summary>
+        ///   底层提供给命名管道使用的缓冲区缓存个数
+        ///     <para>* 此类型缓存将会持有内存缓冲区</para>
+        /// </summary>
+        [CustomerField("NamedPipeBuffStubPoolSize")]
+        public int NamedPipeBuffStubPoolSize;
+        /// <summary>
         ///    底层SocketAsyncEventArgs缓存个数
         /// </summary>
         [CustomerField("NoBuffStubPoolSize")]

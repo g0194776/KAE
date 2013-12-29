@@ -6,22 +6,22 @@ using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace KJFramework.Net.Transaction.UnitTest
 {
-    [TestClass]
     public class MetadataTest : MetadataProtocolStack
     {
         #region Methods
 
-
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             ExtensionTypeMapping.Regist(typeof (MessageIdentityValueStored));
         }
 
-        [TestMethod]
+        [Test]
         public void MetaOneMessageToBytes()
         {
             MetadataProtocolStack protocolStack = new MetadataTest();
@@ -53,7 +53,7 @@ namespace KJFramework.Net.Transaction.UnitTest
             Console.WriteLine(list[0].GetAttribute(0x00).GetValue<MessageIdentity>());
         }
 
-        [TestMethod]
+        [Test]
         public void MetaOneMessageBetweenTwoNullSegmentToBytes()
         {
             MetadataProtocolStack protocolStack = new MetadataTest();
@@ -85,7 +85,7 @@ namespace KJFramework.Net.Transaction.UnitTest
             Console.WriteLine(list[0].GetAttribute(0x00).GetValue<MessageIdentity>());
         }
 
-        [TestMethod]
+        [Test]
         public void MetaOneMessageAfterNullSegmentToBytes()
         {
             MetadataProtocolStack protocolStack = new MetadataTest();
@@ -129,7 +129,7 @@ namespace KJFramework.Net.Transaction.UnitTest
             Console.WriteLine(list[0].GetAttribute(0x00).GetValue<MessageIdentity>());
         }
 
-        [TestMethod]
+        [Test]
         public void MetaManyMessageToBytes()
         {
             MetadataProtocolStack protocolStack = new MetadataTest();
@@ -197,7 +197,7 @@ namespace KJFramework.Net.Transaction.UnitTest
 
         public override bool Initialize()
         {
-            throw new NotImplementedException();
+            return true;
         }
 
       #endregion

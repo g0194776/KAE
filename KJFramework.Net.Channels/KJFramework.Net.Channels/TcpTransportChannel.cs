@@ -32,17 +32,17 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取本地终结点地址
         /// </summary>
-        public override IPEndPoint LocalEndPoint
+        public override EndPoint LocalEndPoint
         {
-            get { return (IPEndPoint) _socket.LocalEndPoint; }
+            get { return _socket.LocalEndPoint; }
         }
 
         /// <summary>
         ///     获取远程终结点地址
         /// </summary>
-        public override IPEndPoint RemoteEndPoint
+        public override EndPoint RemoteEndPoint
         {
-            get { return (IPEndPoint) _socket.RemoteEndPoint; }
+            get { return _socket.RemoteEndPoint; }
         }
 
         /// <summary>

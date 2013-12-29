@@ -13,11 +13,11 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取本地终结点地址
         /// </summary>
-        IPEndPoint LocalEndPoint { get; }
+        EndPoint LocalEndPoint { get; }
         /// <summary>
         ///     获取远程终结点地址
         /// </summary>
-        IPEndPoint RemoteEndPoint { get; }
+        EndPoint RemoteEndPoint { get; }
         /// <summary>
         ///   获取或设置缓冲区
         /// </summary>

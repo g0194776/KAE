@@ -1,13 +1,12 @@
 ﻿using System;
 using System.IO;
-using KJFramework.Statistics;
 
 namespace KJFramework.Net.Channels.Transactions
 {
     /// <summary>
     ///     流事物元接口，提供了相关的基本操作。
     /// </summary>
-    internal interface IStreamTransaction<TStream> : IDisposable, IStatisticable<IStatistic>
+    internal interface IStreamTransaction<TStream>
         where TStream : Stream
     {
         /// <summary>
@@ -23,10 +22,9 @@ namespace KJFramework.Net.Channels.Transactions
         /// </summary>
         TStream Stream { get; }
         /// <summary>
-        ///     注册回调
+        ///    结束当前事物的工作
         /// </summary>
-        /// <param name="action">回调</param>
-        StreamTransaction<TStream> RegistCallback(Action<byte[]> action);
+        void EndWork();
         /// <summary>
         ///     停止工作事件
         /// </summary>

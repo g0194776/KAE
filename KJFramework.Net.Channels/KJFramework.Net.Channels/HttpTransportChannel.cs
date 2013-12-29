@@ -249,7 +249,7 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取本地终结点地址
         /// </summary>
-        public override IPEndPoint LocalEndPoint
+        public override EndPoint LocalEndPoint
         {
             get { throw new NotSupportedException(); }
         }
@@ -257,7 +257,7 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取发出请求的客户端 IP 地址和端口号
         /// </summary>
-        public override IPEndPoint RemoteEndPoint
+        public override EndPoint RemoteEndPoint
         {
             get { throw new NotSupportedException(); }
         }

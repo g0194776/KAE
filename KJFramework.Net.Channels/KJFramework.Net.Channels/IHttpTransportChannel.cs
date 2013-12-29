@@ -27,10 +27,6 @@ namespace KJFramework.Net.Channels
         /// </summary>
         string RawUrl { get; }
         /// <summary>
-        ///     获取发出请求的客户端 IP 地址和端口号
-        /// </summary>
-        IPEndPoint RemoteEndPoint { get; }
-        /// <summary>
         ///     获取客户端请求的 Uri 对象
         /// </summary>
         System.Uri Url { get; }

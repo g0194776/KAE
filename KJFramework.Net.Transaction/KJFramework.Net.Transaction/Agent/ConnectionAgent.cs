@@ -69,7 +69,7 @@ namespace KJFramework.Net.Transaction.Agent
                 {
                     identity = new TransactionIdentity {
                         IsRequest = true, 
-                        EndPoint = _channel.RemoteEndPoint, 
+                        EndPoint = (IPEndPoint) _channel.RemoteEndPoint, 
                         MessageId = message.MessageIdentity.Tid};
                 }
                 else identity = message.TransactionIdentity;
@@ -143,7 +143,7 @@ namespace KJFramework.Net.Transaction.Agent
         /// <exception cref="ArgumentNullException">参数错误</exception>
         public BusinessMessageTransaction CreateTransaction()
         {
-            return _transactionManager.Create(IdentityHelper.Create(_channel.LocalEndPoint), _channel);
+            return _transactionManager.Create(IdentityHelper.Create((IPEndPoint) _channel.LocalEndPoint), _channel);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace KJFramework.Net.Transaction.Agent
         /// <exception cref="ArgumentNullException">参数错误</exception>
         public BusinessMessageTransaction CreateOnewayTransaction()
         {
-            return _transactionManager.Create(IdentityHelper.CreateOneway(_channel.LocalEndPoint), _channel);
+            return _transactionManager.Create(IdentityHelper.CreateOneway((IPEndPoint) _channel.LocalEndPoint), _channel);
         }
 
         /// <summary>

@@ -2,13 +2,15 @@ using System;
 using System.Text;
 using KJFramework.Cache.Cores;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace KJFramework.Cache.UnitTest
 {
     [TestClass]
     public class UnmanagedCacheSlotTest
     {
-        [TestMethod]
+        [Test]
         public void NewTest()
         {
             IUnmanagedCacheSlot slot = UnmanagedCacheSlot.New(1024);
@@ -17,7 +19,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsFalse(slot.GetLease().IsDead);
         }
 
-        [TestMethod]
+        [Test]
         public void NewWithTimeoutTest()
         {
             IUnmanagedCacheSlot slot = UnmanagedCacheSlot.New(1024, DateTime.Now.AddMinutes(5));
@@ -26,7 +28,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsFalse(slot.GetLease().IsDead);
         }
 
-        [TestMethod]
+        [Test]
         public void GetValueWithInitializeDataTest()
         {
             IUnmanagedCacheSlot slot = UnmanagedCacheSlot.New(1024);
@@ -37,7 +39,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(data.Length == 1024);
         }
 
-        [TestMethod]
+        [Test]
         public void GetValueTest()
         {
             IUnmanagedCacheSlot slot = UnmanagedCacheSlot.New(1024);
@@ -51,7 +53,7 @@ namespace KJFramework.Cache.UnitTest
         }
 
 
-        [TestMethod]
+        [Test]
         public void SetValueTest()
         {
             IUnmanagedCacheSlot slot = UnmanagedCacheSlot.New(1024);
@@ -61,7 +63,7 @@ namespace KJFramework.Cache.UnitTest
             slot.SetValue(Encoding.Default.GetBytes("i love you forever."));
         }
 
-        [TestMethod]
+        [Test]
         public void DiscardTest()
         {
             IUnmanagedCacheSlot slot = UnmanagedCacheSlot.New(1024);
@@ -72,7 +74,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(slot.GetLease().IsDead);
         }
 
-        [TestMethod]
+        [Test]
         public void GetHandleTest()
         {
             IUnmanagedCacheSlot slot = UnmanagedCacheSlot.New(1024);
@@ -84,7 +86,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(slot.Handle == IntPtr.Zero);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateSlotByHandleTest()
         {
             IUnmanagedCacheSlot slot = UnmanagedCacheSlot.New(1024);

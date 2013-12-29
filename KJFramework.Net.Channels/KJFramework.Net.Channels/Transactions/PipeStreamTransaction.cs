@@ -1,4 +1,5 @@
-﻿using KJFramework.IO.Helper;
+﻿using KJFramework.Cache.Cores;
+using KJFramework.Net.Channels.Caches;
 using KJFramework.Tracing;
 using System;
 using System.IO;
@@ -9,17 +10,16 @@ namespace KJFramework.Net.Channels.Transactions
     /// <summary>
     ///     Pipe流事物抽象父类，提供了相关的基本操作
     /// </summary>
-    public abstract class PipeStreamTransaction<TStream> : StreamTransaction<TStream>
-        where TStream : PipeStream
+    public class PipeStreamTransaction : StreamTransaction<PipeStream>
     {
-        #region 构造函数
+        #region Constructor
 
         /// <summary>
         ///     流事物抽象父类，提供了相关的基本操作。
         /// </summary>
         /// <param name="stream">流</param>
         /// <param name="callback">回调函数</param>
-        public PipeStreamTransaction(TStream stream, Action<byte[]> callback)
+        public PipeStreamTransaction(PipeStream stream, Action<IFixedCacheStub<BuffStub>, int> callback)
             : base(stream)
         {
             _callback = callback;
@@ -31,7 +31,7 @@ namespace KJFramework.Net.Channels.Transactions
         /// <param name="stream">流</param>
         /// <param name="canAsync">异步标示</param>
         /// <param name="callback">回调函数</param>
-        public PipeStreamTransaction(TStream stream, bool canAsync, Action<byte[]> callback)
+        public PipeStreamTransaction(PipeStream stream, bool canAsync, Action<IFixedCacheStub<BuffStub>, int> callback)
             : base(stream, canAsync)
         {
             _callback = callback;
@@ -41,25 +41,26 @@ namespace KJFramework.Net.Channels.Transactions
 
         #region Members
 
-        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PipeStreamTransaction<TStream>));
+        protected Action<IFixedCacheStub<BuffStub>, int> _callback;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PipeStreamTransaction));
 
         #endregion
 
-        #region 父类方法
+        #region Methods
 
         /// <summary>
         ///     内部执行
         /// </summary>
         protected override void InnerProc()
         {
-            if (!_stream.CanRead || !_stream.IsConnected)
+            if (!_stream.CanRead || !_stream.IsConnected) InnerEndWork();
+            else
             {
-                _enable = false;
-                InnerEndWork();
-                return;
+                IFixedCacheStub<BuffStub> stub = ChannelConst.NamedPipeBuffPool.Rent();
+                if (stub == null) throw new System.Exception("#Cannot rent an async recv io-stub for Named Pipe recv async action.");
+                ChannelCounter.Instance.RateOfRentNamedPipeBufferStub.Increment();
+                _stream.BeginRead(stub.Cache.Segment.Segment.Array, stub.Cache.Segment.Segment.Offset, stub.Cache.Segment.Segment.Count, AsyncCallback, stub);
             }
-            byte[] buffer = new byte[ChannelConst.RecvBufferSize];
-            _stream.BeginRead(buffer, 0, buffer.Length, AsyncCallback, buffer);
         }
 
         /// <summary>
@@ -74,11 +75,26 @@ namespace KJFramework.Net.Channels.Transactions
         ///     停止工作
         ///     <para>* 此方法在事物异常或者结束工作的时候将会被调用。</para>
         /// </summary>
-        protected abstract override void InnerEndWork();
+        protected override void InnerEndWork()
+        {
+            InnerEndWork(null);
+        }
 
-        #endregion
-
-        #region Methods
+        /// <summary>
+        ///    内部停止工作方法
+        /// </summary>
+        /// <param name="stub">缓冲区缓存存根</param>
+        protected void InnerEndWork(IFixedCacheStub<BuffStub> stub)
+        {
+            if (_stream != null && _stream.IsConnected)
+            {
+                if (_stream is NamedPipeServerStream) ((NamedPipeServerStream)_stream).Disconnect();
+                else _stream.Close();
+            }
+            if (stub != null) ChannelConst.NamedPipeBuffPool.Giveback(stub);
+            _enable = false;
+            DisconnectedHandler(null);
+        }
 
         //async callback proc.
         private void AsyncCallback(IAsyncResult result)
@@ -87,50 +103,26 @@ namespace KJFramework.Net.Channels.Transactions
             {
                 int length = _stream.EndRead(result);
                 //current pipe channel has been closed.
-                if (length == 0)
+                if (length == 0) InnerEndWork((IFixedCacheStub<BuffStub>)result.AsyncState);
+                else
                 {
-                    _enable = false;
-                    InnerEndWork();
-                    return;
+                    IFixedCacheStub<BuffStub> stub = (IFixedCacheStub<BuffStub>)result.AsyncState;
+                    _callback(stub, length);
                 }
-                byte[] data = (byte[])result.AsyncState;
-                _callback(ByteArrayHelper.GetNextData(data, 0, length));
             }
             //cannot read datas from this channel any more!
-            catch(IOException ex)
+            catch (IOException ex)
             {
                 _tracing.Error(ex, null);
-                _enable = false;
-                InnerEndWork();
+                InnerEndWork((IFixedCacheStub<BuffStub>) result.AsyncState);
                 return;
             }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
+            try { InnerProc(); }
             catch (System.Exception ex)
             {
                 _tracing.Error(ex, null);
-                //continue async read.
-                if (_stream.CanRead && _stream.IsConnected)
-                {
-                    byte[] buffer = new byte[ChannelConst.RecvBufferSize];
-                    _stream.BeginRead(buffer, 0, buffer.Length, AsyncCallback, buffer);
-                }
-                else
-                {
-                    _enable = false;
-                    InnerEndWork();
-                }
-            }
-            finally
-            {
-                if (_stream.IsConnected && _stream.CanRead)
-                {
-                    byte[] buffer = new byte[ChannelConst.RecvBufferSize];
-                    _stream.BeginRead(buffer, 0, buffer.Length, AsyncCallback, buffer);
-                }
-                else
-                {
-                    _enable = false;
-                    InnerEndWork();
-                }
+                InnerEndWork();
             }
         }
 
