@@ -2,7 +2,7 @@ using KJFramework.Cache;
 using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Types;
-using KJFramework.ServiceModel.Identity;
+using KJFramework.Net.Transaction.Identities;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Messages
 {

@@ -1,9 +1,8 @@
 using System;
 using System.Net;
 using System.Threading;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Core.EventArgs;
-using KJFramework.ServiceModel.Core.Managers;
-using KJFramework.ServiceModel.Identity;
 
 namespace KJFramework.ServiceModel.Core.Contracts
 {
@@ -42,7 +41,7 @@ namespace KJFramework.ServiceModel.Core.Contracts
         {
             return new TransactionIdentity
                        {
-                           Iep = LocalEndPoint,
+                           EndPoint = LocalEndPoint,
                            IsOneway = isOneway,
                            IsRequest = true,
                            MessageId = Interlocked.Increment(ref _msgId)

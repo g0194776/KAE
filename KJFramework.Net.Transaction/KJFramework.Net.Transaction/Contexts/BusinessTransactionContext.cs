@@ -1,4 +1,5 @@
 ﻿using KJFramework.Net.Transaction.Agent;
+using KJFramework.Net.Transaction.Messages;
 
 namespace KJFramework.Net.Transaction.Contexts
 {
@@ -12,7 +13,7 @@ namespace KJFramework.Net.Transaction.Contexts
         /// <summary>
         ///     获取或设置连接方的连接代理器
         /// </summary>
-        public IServerConnectionAgent ClientAgent { get; set; }
+        public IServerConnectionAgent<BaseMessage> ClientAgent { get; set; }
         /// <summary>
         ///     获取或设置客户端事务
         /// </summary>

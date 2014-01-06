@@ -166,10 +166,8 @@ namespace KJFramework.Net.Transaction
             {
                 tIdentity = valueStored.GetValue<TransactionIdentity>();
                 tIdentity.IsRequest = false;
-                message.SetAttribute(0x00, new TransactionIdentityValueStored(tIdentity));
+                message.SetAttribute(0x01, new TransactionIdentityValueStored(tIdentity));
             }
-            //the same tid for client.
-            if (Request != null && mIdentity != null) mIdentity.Tid = Request.GetAttributeAsType<MessageIdentity>(0x00).Tid;
             if (!_channel.IsConnected)
             {
                 _tracing.Warn("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint);

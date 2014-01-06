@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using KJFramework.Messages.Helpers;
-using KJFramework.ServiceModel.Comparers;
-using KJFramework.ServiceModel.Identity;
+using KJFramework.Net.Transaction.Comparers;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Metadata;
 
 namespace KJFramework.ServiceModel.Core.Managers

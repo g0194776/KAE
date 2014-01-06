@@ -75,10 +75,11 @@ namespace KJFramework.Messages.Types
         /// <param name="id">设置属性对应的id</param>
         /// <param name="baseValueStored">设置属性的value</param>
         /// <exception cref="ArgumentNullException">baseValueStored不能为空</exception>
-        public virtual void SetAttribute(byte id, BaseValueStored baseValueStored)
+        public virtual ResourceBlock SetAttribute(byte id, BaseValueStored baseValueStored)
         {
             if (baseValueStored == null) throw new ArgumentNullException("baseValueStored");
             _valueStoreds[id] = baseValueStored;
+            return this;
         }
 
         internal virtual Dictionary<byte, BaseValueStored> GetMetaDataDictionary()

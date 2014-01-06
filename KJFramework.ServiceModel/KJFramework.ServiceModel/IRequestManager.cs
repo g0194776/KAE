@@ -1,4 +1,4 @@
-﻿using KJFramework.ServiceModel.Identity;
+﻿using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Metadata;
 
 namespace KJFramework.ServiceModel

@@ -37,7 +37,6 @@ namespace KJFramework.Net.Transaction.Processors
             proxy.WriteByte(identity.ProtocolId);
             proxy.WriteByte(identity.ServiceId);
             proxy.WriteByte(identity.DetailsId);
-            proxy.WriteInt16(identity.Tid);
         }
 
         /// <summary>
@@ -54,7 +53,6 @@ namespace KJFramework.Net.Transaction.Processors
             proxy.WriteByte(identity.ProtocolId);
             proxy.WriteByte(identity.ServiceId);
             proxy.WriteByte(identity.DetailsId);
-            proxy.WriteInt16(identity.Tid);
         }
 
         /// <summary>
@@ -70,15 +68,7 @@ namespace KJFramework.Net.Transaction.Processors
         {
             unsafe
             {
-                fixed (byte* pData = data)
-                {
-                    MessageIdentity identity = new MessageIdentity();
-                    identity.ProtocolId = *pData;
-                    identity.ServiceId = *(pData + 1);
-                    identity.DetailsId = *(pData + 2);
-                    identity.Tid = *(short*)(pData + 3);
-                    return identity;
-                }
+                fixed (byte* pData = data) return *(MessageIdentity*)pData;
             }
         }
 
@@ -94,15 +84,8 @@ namespace KJFramework.Net.Transaction.Processors
         {
             unsafe
             {
-                fixed (byte* pData = &data[offset])
-                {
-                    MessageIdentity identity = new MessageIdentity();
-                    identity.ProtocolId = *pData;
-                    identity.ServiceId = *(pData + 1);
-                    identity.DetailsId = *(pData + 2);
-                    identity.Tid = *(short*)(pData + 3);
-                    result.SetValue(instance, identity);
-                }
+                fixed (byte* pData = &data[offset]) 
+                    result.SetValue(instance, *(MessageIdentity*)pData);
             }
         }
 

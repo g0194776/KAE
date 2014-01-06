@@ -8,12 +8,13 @@ namespace KJFramework.Net.Transaction.Pools
     ///     连接池
     /// </summary>
     /// <typeparam name="T">标示一个连接</typeparam>
-    public class ConnectionPool<T>
+    /// <typeparam name="TMessage">消息类型</typeparam>
+    public class ConnectionPool<T, TMessage>
     {
         #region Members
 
-        protected static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ConnectionPool<T>));
-        protected readonly ConcurrentDictionary<T, IServerConnectionAgent> _connections = new ConcurrentDictionary<T, IServerConnectionAgent>();
+        protected static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ConnectionPool<T, TMessage>));
+        protected readonly ConcurrentDictionary<T, IServerConnectionAgent<TMessage>> _connections = new ConcurrentDictionary<T, IServerConnectionAgent<TMessage>>();
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace KJFramework.Net.Transaction.Pools
         /// <param name="key">连接标示</param>
         /// <param name="channel">消息通信信道</param>
         /// <returns>返回添加后的状态</returns>
-        public virtual bool Add(T key, IServerConnectionAgent channel)
+        public virtual bool Add(T key, IServerConnectionAgent<TMessage> channel)
         {
             if (channel == null) return false;
             try
@@ -52,11 +53,11 @@ namespace KJFramework.Net.Transaction.Pools
         /// </summary>
         /// <param name="key">连接标示</param>
         /// <returns>返回一个消息通信信道</returns>
-        public virtual IServerConnectionAgent GetChannel(T key)
+        public virtual IServerConnectionAgent<TMessage> GetChannel(T key)
         {
             try
             {
-                IServerConnectionAgent channel;
+                IServerConnectionAgent<TMessage> channel;
                 return _connections.TryGetValue(key, out channel) ? channel : null;
             }
             catch (System.Exception ex)
@@ -73,7 +74,7 @@ namespace KJFramework.Net.Transaction.Pools
         /// <returns>返回移除后的状态</returns>
         public virtual bool Remove(T key)
         {
-            IServerConnectionAgent channel;
+            IServerConnectionAgent<TMessage> channel;
             return _connections.TryRemove(key, out channel);
         }
 

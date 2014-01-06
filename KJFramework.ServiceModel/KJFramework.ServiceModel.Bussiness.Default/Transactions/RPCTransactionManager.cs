@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction;
+using KJFramework.Net.Transaction.Comparers;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Bussiness.Default.Helpers;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
-using KJFramework.ServiceModel.Comparers;
-using KJFramework.ServiceModel.Identity;
 using KJFramework.Tracing;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
@@ -15,7 +14,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
     /// <summary>
     ///     RPC事务管理器
     /// </summary>
-    internal class RPCTransactionManager : TransactionManager<TransactionIdentity, RPCTransaction>
+    internal class RPCTransactionManager : TransactionManager<RPCTransaction>
     {
         #region Constructor
 
@@ -53,7 +52,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
         /// <param name="identity">事务唯一标识 </param>
         /// <param name="channel">通信信道</param>
         /// <returns>返回创建后的新事务</returns>
-        public RPCTransaction CreateTransaction(TransactionIdentity identity, IMessageTransportChannel<Message> channel)
+        public RPCTransaction CreateTransaction(BasicIdentity identity, IMessageTransportChannel<Message> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
             if (identity == null) throw new ArgumentNullException("identity");
@@ -90,13 +89,13 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
         protected override void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (_transactions.Count == 0) return;
-            IList<TransactionIdentity> expireValues = new List<TransactionIdentity>();
+            IList<BasicIdentity> expireValues = new List<BasicIdentity>();
             //check dead flag for transaction.
-            foreach (KeyValuePair<TransactionIdentity, RPCTransaction> pair in _transactions)
+            foreach (KeyValuePair<BasicIdentity, RPCTransaction> pair in _transactions)
                 if (pair.Value.GetLease().IsDead) expireValues.Add(pair.Key);
             if (expireValues.Count == 0) return;
             //remove expired transactions.
-            foreach (TransactionIdentity expireValue in expireValues)
+            foreach (BasicIdentity expireValue in expireValues)
             {
                 RPCTransaction transaction;
                 if (_transactions.TryRemove(expireValue, out transaction))

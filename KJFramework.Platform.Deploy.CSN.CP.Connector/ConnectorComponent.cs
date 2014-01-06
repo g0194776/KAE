@@ -1,6 +1,4 @@
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Threading;
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Components;
@@ -13,6 +11,7 @@ using KJFramework.Net.Channels.Disconvery.Protocols;
 using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Agent;
+using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
@@ -54,7 +53,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
 
         #region Members
 
-        private IRequestScheduler _requestScheduler;
+        private IRequestScheduler<BaseMessage> _requestScheduler;
         private MessageTransactionManager _transactionManager;
         private IProtocolStack<BaseMessage> _protocolStack;
         private DiscoveryOnputPin _outputPin;
@@ -78,9 +77,9 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             Console.WriteLine("Initializing CSN protocol stack......");
             _protocolStack = new CSNProtocolStack();
             Global.ProtocolStack = (CSNProtocolStack) _protocolStack;
-            _transactionManager = new MessageTransactionManager();
+            _transactionManager = new MessageTransactionManager(new TransactionIdentityComparer());
             Console.WriteLine("Initializing scheduler......");
-            _requestScheduler = new RequestScheduler()
+            _requestScheduler = new BaseMessageRequestScheduler()
             .Regist(new Protocols { ProtocolId = 0, ServiceId = 2, DetailsId = 0 }, new CSNGetDataTableRequestMessageProcessor())
             .Regist(new Protocols { ProtocolId = 0, ServiceId = 3, DetailsId = 0 }, new CSNGetKeyValueItemRequestMessageProcessor())
             .Regist(new Protocols { ProtocolId = 0, ServiceId = 4, DetailsId = 0 }, new CSNGetPartialConfigProcessor());
@@ -101,7 +100,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
         protected override void InnerOnLoading()
         {
             Console.WriteLine("Component : #ConnectorComponent loading......!");
-            GlobalMemory.Initialize();
+            ChannelConst.Initialize();
             FixedTypeManager.Add(typeof(MessageIdentity), 5);
             FixedTypeManager.Add(typeof(TransactionIdentity), 18);
             IntellectTypeProcessorMapping.Instance.Regist(new MessageIdentityProcessor());
@@ -175,7 +174,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
         void ChannelCreated(object sender, EventArgs.LightSingleArgEventArgs<ITransportChannel> e)
         {
             IMessageTransportChannel<BaseMessage> msgChannel = new MessageTransportChannel<BaseMessage>((IRawTransportChannel)e.Target, _protocolStack);
-            IServerConnectionAgent agent = new ConnectionAgent(msgChannel, _transactionManager);
+            IServerConnectionAgent<BaseMessage> agent = new IntellectObjectConnectionAgent(msgChannel, _transactionManager);
             _requestScheduler.Regist(agent);
         }
 

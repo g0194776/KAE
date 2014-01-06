@@ -2,15 +2,15 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using KJFramework.EventArgs;
+using KJFramework.Net.Transaction.Identities;
 
 namespace KJFramework.Net.Transaction
 {
     /// <summary>
     ///     事务管理器，提供了相关的基本操作
     /// </summary>
-    /// <typeparam name="K">事务唯一键值</typeparam>
     /// <typeparam name="V">事务类型</typeparam>
-    public class TransactionManager<K, V> : ITransactionManager<K, V> 
+    public class TransactionManager<V> : ITransactionManager<V> 
         where V : ITransaction
     {
         #region Constructor
@@ -22,26 +22,12 @@ namespace KJFramework.Net.Transaction
         ///     事务检查时间间隔
         ///     <para>* 默认时间: 30s</para>
         /// </param>
-        public TransactionManager(int interval = 30000)
-            : this(interval, null)
-        {
-        }
-
-        /// <summary>
-        ///     事务管理器，提供了相关的基本操作
-        /// </summary>
-        /// <param name="interval">
-        ///     事务检查时间间隔
-        ///     <para>* 默认时间: 30s</para>
-        /// </param>
-        /// <param name="comparer">Key比较器</param>
-        public TransactionManager(int interval, IEqualityComparer<K> comparer)
+        /// <param name="comparer">比较器</param>
+        public TransactionManager(int interval, IEqualityComparer<BasicIdentity> comparer)
         {
             if (interval <= 0) throw new ArgumentException("Illegal check time interval!");
             _interval = interval;
-            _transactions = comparer == null
-                                ? new ConcurrentDictionary<K, V>()
-                                : new ConcurrentDictionary<K, V>(comparer); 
+            _transactions = comparer == null ? new ConcurrentDictionary<BasicIdentity, V>() : new ConcurrentDictionary<BasicIdentity, V>(comparer); 
             _timer = new System.Timers.Timer { Interval = _interval };
             _timer.Elapsed += TimerElapsed;
             _timer.Start();
@@ -52,7 +38,7 @@ namespace KJFramework.Net.Transaction
         #region Members
 
         protected readonly System.Timers.Timer _timer;
-        protected readonly ConcurrentDictionary<K, V> _transactions;
+        protected readonly ConcurrentDictionary<BasicIdentity, V> _transactions;
 
         #endregion
 
@@ -80,7 +66,7 @@ namespace KJFramework.Net.Transaction
         /// <param name="transaction">事务</param>
         /// <exception cref="ArgumentNullException">参数错误</exception>
         /// <returns>返回添加操作的状态</returns>
-        public virtual bool Add(K key, V transaction)
+        public virtual bool Add(BasicIdentity key, V transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             return GetTransaction(key) != null ? false : _transactions.TryAdd(key, transaction);
@@ -91,7 +77,7 @@ namespace KJFramework.Net.Transaction
         /// </summary>
         /// <param name="key">事务唯一键值</param>
         /// <returns>事务</returns>
-        public virtual V GetTransaction(K key)
+        public virtual V GetTransaction(BasicIdentity key)
         {
             V transaction;
             return _transactions.TryGetValue(key, out transaction) ? transaction : default(V);
@@ -101,7 +87,7 @@ namespace KJFramework.Net.Transaction
         ///     移除一个不需要管理的事务
         /// </summary>
         /// <param name="key">事务唯一键值</param>
-        public virtual void Remove(K key)
+        public virtual void Remove(BasicIdentity key)
         {
             V transaction;
             _transactions.TryRemove(key, out transaction);
@@ -116,7 +102,7 @@ namespace KJFramework.Net.Transaction
         ///     返回续约后的时间
         ///     <para>* 如果返回值 = MIN(DateTime), 则表示续约失败</para>
         /// </returns>
-        public virtual DateTime Renew(K key, TimeSpan timeSpan)
+        public virtual DateTime Renew(BasicIdentity key, TimeSpan timeSpan)
         {
             V transaction = GetTransaction(key);
             if (transaction == null) return DateTime.MinValue;
@@ -128,7 +114,7 @@ namespace KJFramework.Net.Transaction
         /// </summary>
         /// <param name="key">事务唯一键值</param>
         /// <returns>返回获取到的事务</returns>
-        public virtual V GetRemove(K key)
+        public virtual V GetRemove(BasicIdentity key)
         {
             V transaction;
             return _transactions.TryRemove(key, out transaction) ? transaction : default(V);
@@ -152,13 +138,13 @@ namespace KJFramework.Net.Transaction
         protected virtual void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (_transactions.Count == 0) return;
-            IList<K> expireValues = new List<K>();
+            IList<BasicIdentity> expireValues = new List<BasicIdentity>();
             //check dead flag for transaction.
-            foreach (KeyValuePair<K, V> pair in _transactions)
+            foreach (KeyValuePair<BasicIdentity, V> pair in _transactions)
                 if (pair.Value.GetLease().IsDead) expireValues.Add(pair.Key);
             if (expireValues.Count == 0) return;
             //remove expired transactions.
-            foreach (K expireValue in expireValues)
+            foreach (BasicIdentity expireValue in expireValues)
             {
                 V transaction;
                 if (_transactions.TryRemove(expireValue, out transaction))

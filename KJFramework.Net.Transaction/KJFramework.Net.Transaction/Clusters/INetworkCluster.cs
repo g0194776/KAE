@@ -8,7 +8,7 @@ namespace KJFramework.Net.Transaction.Clusters
     /// <summary>
     ///     网络群集负载器接口
     /// </summary>
-    public interface INetworkCluster
+    public interface INetworkCluster<TMessage>
     {
         /// <summary>
         ///     根据当前负载器规则获取一个通信信道
@@ -18,7 +18,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="errMsg">错误信息</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        IServerConnectionAgent GetChannel(string roleId, IProtocolStack<BaseMessage> protocolStack, out string errMsg);
+        IServerConnectionAgent<TMessage> GetChannel(string roleId, IProtocolStack<BaseMessage> protocolStack, out string errMsg);
         /// <summary>
         ///     根据当前负载器规则获取一个通信信道
         /// </summary>
@@ -28,7 +28,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="errMsg">错误信息</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        IServerConnectionAgent GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, int balanceFlag, out string errMsg);
+        IServerConnectionAgent<TMessage> GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, int balanceFlag, out string errMsg);
         /// <summary>
         ///     根据当前负载器规则获取一个通信信道
         /// </summary>
@@ -38,7 +38,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="errMsg">错误信息</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        IServerConnectionAgent GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, long balanceFlag, out string errMsg);
+        IServerConnectionAgent<TMessage> GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, long balanceFlag, out string errMsg);
         /// <summary>
         ///     根据当前负载器规则获取一个通信信道
         /// </summary>
@@ -48,7 +48,7 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="errMsg">错误信息</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        IServerConnectionAgent GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, string balanceFlag, out string errMsg);
+        IServerConnectionAgent<TMessage> GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, string balanceFlag, out string errMsg);
         /// <summary>
         ///     根据当前负载器规则获取一个通信信道
         /// </summary>
@@ -58,6 +58,6 @@ namespace KJFramework.Net.Transaction.Clusters
         /// <param name="errMsg">错误信息</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        IServerConnectionAgent GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, Guid balanceFlag, out string errMsg);
+        IServerConnectionAgent<TMessage> GetChannelBySpecificCondition(string roleId, IProtocolStack<BaseMessage> protocolStack, Guid balanceFlag, out string errMsg);
     }
 }

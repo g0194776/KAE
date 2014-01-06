@@ -1,7 +1,6 @@
 ﻿using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
-using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Identities;
 using KJFramework.Tracing;
 using System;
@@ -12,7 +11,7 @@ namespace KJFramework.Net.Transaction.Managers
     /// <summary>
     ///     消息事务管理器，提供了相关的基本操作
     /// </summary>
-    public class MetadataTransactionManager : TransactionManager<TransactionIdentity, MetadataMessageTransaction>
+    public class MetadataTransactionManager : TransactionManager<MetadataMessageTransaction>
     {
         #region Constructor
 
@@ -20,8 +19,9 @@ namespace KJFramework.Net.Transaction.Managers
         ///     消息事务管理器，提供了相关的基本操作
         ///     * 默认时间：从配置文件中读取.
         /// </summary>
-        public MetadataTransactionManager()
-            : base(Global.TransactionCheckInterval, new TransactionIdentityComparer())
+        /// <param name="comparer">比较器</param>
+        public MetadataTransactionManager(IEqualityComparer<BasicIdentity> comparer)
+            : this(comparer, Global.TransactionCheckInterval)
         {
         }
 
@@ -30,8 +30,9 @@ namespace KJFramework.Net.Transaction.Managers
         ///     * 默认时间：30s.
         /// </summary>
         /// <param name="interval">事务检查时间间隔</param>
-        public MetadataTransactionManager(int interval = 30000)
-            : base(interval, new TransactionIdentityComparer())
+        /// <param name="comparer">比较器</param>
+        public MetadataTransactionManager(IEqualityComparer<BasicIdentity> comparer, int interval = 30000)
+            : base(interval, comparer)
         {
         }
 
@@ -39,7 +40,7 @@ namespace KJFramework.Net.Transaction.Managers
 
         #region Members
 
-        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (MessageTransactionManager));
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(MetadataTransactionManager));
 
         #endregion
 
@@ -52,10 +53,10 @@ namespace KJFramework.Net.Transaction.Managers
         /// <param name="channel">消息通信信道</param>
         /// <returns>返回一个新的消息事务</returns>
         /// <exception cref="ArgumentNullException">通信信道不能为空</exception>
-        public MetadataMessageTransaction Create(TransactionIdentity identity, IMessageTransportChannel<MetadataContainer> channel)
+        public MetadataMessageTransaction Create(BasicIdentity identity, IMessageTransportChannel<MetadataContainer> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
-            MetadataMessageTransaction transaction = new MetadataMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = identity };
+            MetadataMessageTransaction transaction = new MetadataMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = (TransactionIdentity)identity };
             return Add(identity, transaction) ? transaction : null;
         }
 
@@ -64,7 +65,7 @@ namespace KJFramework.Net.Transaction.Managers
         /// </summary>
         /// <param name="identity">事务唯一标示</param>
         /// <param name="response">响应消息</param>
-        public void Active(TransactionIdentity identity, MetadataContainer response)
+        public void Active(BasicIdentity identity, MetadataContainer response)
         {
             MetadataMessageTransaction transaction;
             if (!_transactions.TryRemove(identity, out transaction)) return;
@@ -80,7 +81,7 @@ namespace KJFramework.Net.Transaction.Managers
         /// <returns>
         ///     返回添加操作的状态
         /// </returns>
-        public override bool Add(TransactionIdentity key, MetadataMessageTransaction transaction)
+        public override bool Add(BasicIdentity key, MetadataMessageTransaction transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             MetadataMessageTransaction temp;
@@ -109,13 +110,13 @@ namespace KJFramework.Net.Transaction.Managers
         protected override void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (_transactions.Count == 0) return;
-            IList<TransactionIdentity> expireValues = new List<TransactionIdentity>();
+            IList<BasicIdentity> expireValues = new List<BasicIdentity>();
             //check dead flag for transaction.
-            foreach (KeyValuePair<TransactionIdentity, MetadataMessageTransaction> pair in _transactions)
+            foreach (KeyValuePair<BasicIdentity, MetadataMessageTransaction> pair in _transactions)
                 if (pair.Value.GetLease().IsDead) expireValues.Add(pair.Key);
             if (expireValues.Count == 0) return;
             //remove expired transactions.
-            foreach (TransactionIdentity expireValue in expireValues)
+            foreach (BasicIdentity expireValue in expireValues)
             {
                 MetadataMessageTransaction transaction;
                 if (_transactions.TryRemove(expireValue, out transaction))

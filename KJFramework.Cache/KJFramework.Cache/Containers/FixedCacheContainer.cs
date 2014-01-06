@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using KJFramework.Cache.Cores;
+using KJFramework.PerformanceProvider;
+using KJFramework.Tracing;
 
 namespace KJFramework.Cache.Containers
 {
@@ -41,9 +43,11 @@ namespace KJFramework.Cache.Containers
 
         #region Members
 
-        private PerformanceCounter _counter = null;
-        private ConcurrentStack<ICacheStub<T>> _caches;
         private long _remainingCount;
+        private PerfCounter _counter = null;
+        private ConcurrentStack<ICacheStub<T>> _caches;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (FixedCacheContainer<T>));
+        private static readonly string _perfCounterCategory = "#FIX-Cache Container. - " + Process.GetCurrentProcess().ProcessName;
 
         #endregion
 
@@ -97,6 +101,22 @@ namespace KJFramework.Cache.Containers
         public void BuildPerformanceCounter(string name)
         {
             if (string.IsNullOrEmpty(name)) return;
+            try
+            {
+                #region Ensure Performance Counter category exist.
+
+                CounterCreationDataCollection dataCollection = new CounterCreationDataCollection();
+                if (PerformanceCounterCategory.Exists(_perfCounterCategory)) PerformanceCounterCategory.Delete(_perfCounterCategory);
+                CounterCreationData data = new CounterCreationData(name, "This was automic created by KJFramework. It'll be used for the infomation collections.", PerformanceCounterType.NumberOfItems64);
+                //add default performance counter for each processor.
+                dataCollection.Add(data);
+                PerformanceCounterCategory.Create(_perfCounterCategory, string.Format("#This was automic created by KJFramework: {0}, Pls *DO NOT* remove it by manual.", Process.GetCurrentProcess().ProcessName), PerformanceCounterCategoryType.MultiInstance, dataCollection);
+
+                #endregion
+                _counter = new PerfCounter(_perfCounterCategory, Process.GetCurrentProcess().ProcessName, new PerfCounterAttribute(name, PerformanceCounterType.NumberOfItems64));
+                _counter.IncrementBy(_capacity);
+            }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
         }
 
         #endregion

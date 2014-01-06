@@ -30,7 +30,7 @@ namespace KJFramework.Data.Synchronization
             IntellectTypeProcessorMapping.Instance.Regist(new MessageIdentityProcessor());
             IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityProcessor());
             SyncCounter.Instance.Initialize();
-            GlobalMemory.Initialize();
+            ChannelConst.Initialize();
             _initialized = true;
         }
 

@@ -155,8 +155,7 @@ namespace KJFramework.Test.LoadRunner
                             BuffStubPoolSize = 10000,
                             NoBuffStubPoolSize = 10000,
                             MaxMessageDataLength = 19456,
-                            SegmentSize = 5120,
-                            SegmentBuffer = 1024000
+                            SegmentSize = 5120
                         }
                 };
             ServiceDescriptionConfigSection.Current = new ServiceDescriptionConfigSection

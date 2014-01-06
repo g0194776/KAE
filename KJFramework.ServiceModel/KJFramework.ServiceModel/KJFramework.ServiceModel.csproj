@@ -73,7 +73,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparers\TransactionIdentityComparer.cs" />
     <Compile Include="Configurations\EncoderItem.cs" />
     <Compile Include="Configurations\ServiceModelConfigSection.cs" />
     <Compile Include="Configurations\ServiceModelSettingConfigSection.cs" />
@@ -98,11 +97,8 @@
     <Compile Include="Exceptions\NonresponseException.cs" />
     <Compile Include="Exceptions\GeneralException.cs" />
     <Compile Include="Exceptions\RequestTimeoutException.cs" />
-    <Compile Include="Identity\MessageIdentity.cs" />
-    <Compile Include="Identity\TransactionIdentity.cs" />
     <Compile Include="IRequestManager.cs" />
     <Compile Include="Keys\KeyGenerator.cs" />
-    <Compile Include="Comparers\MessageIdentityComparer.cs" />
     <Compile Include="Metadata\IBinaryArgContext.cs" />
     <Compile Include="Objects\AsyncCallResult.cs" />
     <Compile Include="Objects\IAsyncCallResult.cs" />
@@ -155,6 +151,10 @@
     <ProjectReference Include="..\..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
       <Project>{33FE11D3-2810-4432-B64C-B16935BB47CD}</Project>
       <Name>KJFramework.Net.Channels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
+      <Project>{658c4853-7022-4c2f-bb82-7261dbdae55d}</Project>
+      <Name>KJFramework.Net.Transaction</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
       <Project>{35FD171E-DE60-4E34-9A35-E33C3BA8C02F}</Project>

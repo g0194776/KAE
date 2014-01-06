@@ -39,10 +39,5 @@ namespace KJFramework.Net.Channels.Configurations
         /// </summary>
         [CustomerField("SegmentSize")]
         public int SegmentSize;
-        /// <summary>
-        ///    获取或设置内存片段的缓冲区总长度
-        /// </summary>
-        [CustomerField("SegmentBuffer")]
-        public int SegmentBuffer;
     }
 }

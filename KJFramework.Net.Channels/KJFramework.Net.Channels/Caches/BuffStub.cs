@@ -15,7 +15,7 @@ namespace KJFramework.Net.Channels.Caches
         /// </summary>
         public BuffStub()
         {
-            _segment = GlobalMemory.SegmentContainer.Rent();
+            _segment = ChannelConst.SegmentContainer.Rent();
             if (_segment == null) throw new System.Exception("[BuffSocketStub-Prealloc] #There has no enough MemorySegment can be used.");
             ChannelCounter.Instance.RateOfRentMemSegment.Increment();
         }

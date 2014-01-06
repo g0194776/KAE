@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Net;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Core.EventArgs;
-using KJFramework.ServiceModel.Core.Managers;
-using KJFramework.ServiceModel.Identity;
 
 namespace KJFramework.ServiceModel.Core.Contracts
 {

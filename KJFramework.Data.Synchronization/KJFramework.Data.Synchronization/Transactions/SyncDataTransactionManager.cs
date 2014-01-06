@@ -1,3 +1,4 @@
+using System.Net;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Helpers;
@@ -47,7 +48,7 @@ namespace KJFramework.Data.Synchronization.Transactions
         public SyncDataTransaction Create(IMessageTransportChannel<BaseMessage> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
-            SyncDataTransaction tran = new SyncDataTransaction(channel) { Identity = IdentityHelper.Create(channel.LocalEndPoint) };
+            SyncDataTransaction tran = new SyncDataTransaction(channel) { Identity = IdentityHelper.Create((IPEndPoint) channel.LocalEndPoint) };
             return _trans.TryAdd(tran.Identity, tran) ? tran : null;
         }
 

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using KJFramework.Messages.Analysers;
+﻿using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors;
@@ -38,13 +37,13 @@ namespace KJFramework.Net.Transaction.Processors
         /// <param name="isNullable">是否为可空字段标示</param>
         public override void Process(IMemorySegmentProxy proxy, IntellectPropertyAttribute attribute, ToBytesAnalyseResult analyseResult, object target, bool isArrayElement = false, bool isNullable = false)
         {
-            TransactionIdentity identity = analyseResult.GetValue<TransactionIdentity>(target);
+            BasicIdentity identity = analyseResult.GetValue<BasicIdentity>(target);
             if (identity == null) return;
             proxy.WriteByte((byte)attribute.Id);
             proxy.WriteByte((byte)(identity.IsRequest ? 1 : 0));
             proxy.WriteByte((byte)(identity.IsOneway ? 1 : 0));
-            proxy.WriteIPEndPoint(identity.EndPoint);
             proxy.WriteInt32(identity.MessageId);
+            identity.Serialize(proxy);
         }
 
         /// <summary>
@@ -57,12 +56,12 @@ namespace KJFramework.Net.Transaction.Processors
         /// <param name="isNullable">是否为可空字段标示</param>
         public override void Process(IMemorySegmentProxy proxy, object target, bool isArrayElement = false, bool isNullable = false)
         {
-            TransactionIdentity identity = (TransactionIdentity) target;
+            BasicIdentity identity = (BasicIdentity)target;
             if (identity == null) return;
             proxy.WriteByte((byte)(identity.IsRequest ? 1 : 0));
             proxy.WriteByte((byte)(identity.IsOneway ? 1 : 0));
-            proxy.WriteIPEndPoint(identity.EndPoint);
             proxy.WriteInt32(identity.MessageId);
+            identity.Serialize(proxy);
         }
 
         /// <summary>
@@ -76,15 +75,15 @@ namespace KJFramework.Net.Transaction.Processors
         /// <exception cref="N:KJFramework.Exception">转换失败</exception>
         public override object Process(IntellectPropertyAttribute attribute, byte[] data)
         {
-            TransactionIdentity identity = new TransactionIdentity();
+            BasicIdentity identity = new TransactionIdentity();
             unsafe
             {
                 fixed (byte* pData = data)
                 {
                     identity.IsRequest = *pData == 1;
                     identity.IsOneway = *(pData + 1) == 1;
-                    identity.EndPoint = new IPEndPoint(new IPAddress(*(long*)(pData + 2)), *(int*)(pData + 10));
-                    identity.MessageId = *(int*)(pData + 14);
+                    identity.MessageId = *(int*)(pData + 2);
+                    identity.Deserialize(data, 6, 12);
                 }
             }
             return identity;
@@ -100,15 +99,15 @@ namespace KJFramework.Net.Transaction.Processors
         /// <param name="length">元数据长度</param>
         public override void Process(object instance, GetObjectAnalyseResult result, byte[] data, int offset, int length = 0)
         {
-            TransactionIdentity identity = new TransactionIdentity();
+            BasicIdentity identity = new TransactionIdentity();
             unsafe
             {
                 fixed (byte* pData = &data[offset])
                 {
                     identity.IsRequest = *pData == 1;
                     identity.IsOneway = *(pData + 1) == 1;
-                    identity.EndPoint = new IPEndPoint(new IPAddress(*(long*)(pData + 2)), *(int*)(pData + 10));
-                    identity.MessageId = *(int*)(pData + 14);
+                    identity.MessageId = *(int*)(pData + 2);
+                    identity.Deserialize(data, offset + 6, 12);
                 }
             }
             result.SetValue(instance, identity);
