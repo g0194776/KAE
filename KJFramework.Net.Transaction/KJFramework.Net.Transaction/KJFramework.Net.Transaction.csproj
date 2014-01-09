@@ -52,6 +52,7 @@
     <Compile Include="Agent\IServerConnectionAgent.cs" />
     <Compile Include="Clusters\INetworkCluster.cs" />
     <Compile Include="Clusters\NetworkCluster.cs" />
+    <Compile Include="Clusters\MetaDataNetworkCluster.cs" />
     <Compile Include="CommonCounter.cs" />
     <Compile Include="Comparers\ProtocolsComparer.cs" />
     <Compile Include="Comparers\ServiceCoreComparer.cs" />
