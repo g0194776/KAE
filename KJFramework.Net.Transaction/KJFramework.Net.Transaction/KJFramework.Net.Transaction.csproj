@@ -67,11 +67,14 @@
     <Compile Include="Identities\BasicIdentity.cs" />
     <Compile Include="Managers\MetadataTransactionManager.cs" />
     <Compile Include="MetadataMessageTransaction.cs" />
+    <Compile Include="Objects\NewProcessorObject.cs" />
     <Compile Include="Objects\ProcessorObject.cs" />
     <Compile Include="Objects\ServiceCoreConfig.cs" />
     <Compile Include="Pools\IntellectObjectSystemConnectionPool.cs" />
     <Compile Include="Pools\MetadataSystemConnectionPool.cs" />
+    <Compile Include="Processors\IMessageTransactionProcessor.cs" />
     <Compile Include="ProtocolStack\MetadataProtocolStack.cs" />
+    <Compile Include="Schedulers\INewRequestScheduler.cs" />
     <Compile Include="Schedulers\IRequestScheduler.cs" />
     <Compile Include="Managers\MessageTransactionManager.cs" />
     <Compile Include="Messages\BaseMessage.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolStack\BusinessProtocolStack.cs" />
     <Compile Include="Schedulers\BaseMessageRequestScheduler.cs" />
+    <Compile Include="Schedulers\MetadataMessageRequestScheduler.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="TransactionManager.cs" />
     <Compile Include="BusinessMessageTransaction.cs" />
