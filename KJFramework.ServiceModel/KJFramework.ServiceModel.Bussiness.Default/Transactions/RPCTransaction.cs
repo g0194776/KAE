@@ -19,7 +19,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
         /// <summary>
         ///     远程调用事务
         /// </summary>
-        public RPCTransaction(BasicIdentity identity, IMessageTransportChannel<Message> channel)
+        public RPCTransaction(TransactionIdentity identity, IMessageTransportChannel<Message> channel)
         {
             if (identity == null) throw new ArgumentNullException("identity");
             if (channel == null) throw new ArgumentNullException("channel");
@@ -39,7 +39,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
         /// <summary>
         ///     获取事务唯一标示
         /// </summary>
-        public BasicIdentity Identity { get; private set; }
+        public TransactionIdentity Identity { get; private set; }
         /// <summary>
         ///     获取请求消息
         /// </summary>

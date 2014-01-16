@@ -52,7 +52,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
         /// <param name="identity">事务唯一标识 </param>
         /// <param name="channel">通信信道</param>
         /// <returns>返回创建后的新事务</returns>
-        public RPCTransaction CreateTransaction(BasicIdentity identity, IMessageTransportChannel<Message> channel)
+        public RPCTransaction CreateTransaction(TransactionIdentity identity, IMessageTransportChannel<Message> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
             if (identity == null) throw new ArgumentNullException("identity");
@@ -89,13 +89,13 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
         protected override void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (_transactions.Count == 0) return;
-            IList<BasicIdentity> expireValues = new List<BasicIdentity>();
+            IList<TransactionIdentity> expireValues = new List<TransactionIdentity>();
             //check dead flag for transaction.
-            foreach (KeyValuePair<BasicIdentity, RPCTransaction> pair in _transactions)
+            foreach (KeyValuePair<TransactionIdentity, RPCTransaction> pair in _transactions)
                 if (pair.Value.GetLease().IsDead) expireValues.Add(pair.Key);
             if (expireValues.Count == 0) return;
             //remove expired transactions.
-            foreach (BasicIdentity expireValue in expireValues)
+            foreach (TransactionIdentity expireValue in expireValues)
             {
                 RPCTransaction transaction;
                 if (_transactions.TryRemove(expireValue, out transaction))

@@ -54,9 +54,9 @@ namespace KJFramework.Net.Transaction.ValueStored
             {
                 TransactionIdentity identity = messageIdentityValueStored.GetValue<TransactionIdentity>();
                 proxy.WriteByte((byte)(identity.IsRequest ? 1 : 0));
-                proxy.WriteByte((byte)(identity.IsOneway ? 1 : 0));
-                proxy.WriteInt32(identity.MessageId);
+                proxy.WriteByte((byte)(identity.IsOneway ? 1 : 0)); 
                 proxy.WriteIPEndPoint(identity.EndPoint);
+                proxy.WriteInt32(identity.MessageId);
             };
             _toDataDelegate = delegate(ResourceBlock metadataObject, byte id, byte[] byteData, int offsetStart, uint offsetLength)
             {
@@ -66,9 +66,9 @@ namespace KJFramework.Net.Transaction.ValueStored
                     fixed (byte* pData = &byteData[offsetStart])
                     {
                         identity.IsRequest = *pData == 1;
-                        identity.IsOneway = *(pData + 1) == 1;
-                        identity.MessageId = *(int*)(pData + 2);
-                        identity.EndPoint = new IPEndPoint(new IPAddress(*(long*)(pData + 6)), *(int*)(pData + 14));
+                        identity.IsOneway = *(pData + 1) == 1; 
+                        identity.EndPoint = new IPEndPoint(new IPAddress(*(long*)(pData + 2)), *(int*)(pData + 10));
+                        identity.MessageId = *(int*)(pData + 14);
                     }
                 }
                 metadataObject.SetAttribute(id, new TransactionIdentityValueStored(identity));

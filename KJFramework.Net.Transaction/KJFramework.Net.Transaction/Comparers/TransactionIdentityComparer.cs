@@ -3,7 +3,7 @@ using KJFramework.Net.Transaction.Identities;
 
 namespace KJFramework.Net.Transaction.Comparers
 {
-    public class TransactionIdentityComparer : EqualityComparer<BasicIdentity>
+    public class TransactionIdentityComparer : EqualityComparer<TransactionIdentity>
     {
         #region Overrides of EqualityComparer<TransactionIdentity>
 
@@ -14,14 +14,12 @@ namespace KJFramework.Net.Transaction.Comparers
         /// true if the specified objects are equal; otherwise, false.
         /// </returns>
         /// <param name="x">The first object to compare.</param><param name="y">The second object to compare.</param>
-        public override bool Equals(BasicIdentity x, BasicIdentity y)
+        public override bool Equals(TransactionIdentity x, TransactionIdentity y)
         {
-            TransactionIdentity left = (TransactionIdentity) x; 
-            TransactionIdentity right = (TransactionIdentity) y; 
-            if (left.IsOneway != right.IsOneway) return false;
-            if (left.MessageId != right.MessageId) return false;
-            if (left.EndPoint.Port != right.EndPoint.Port) return false;
-            if (!left.EndPoint.Address.Equals(right.EndPoint.Address)) return false;
+            if (x.IsOneway != y.IsOneway) return false;
+            if (x.MessageId != y.MessageId) return false;
+            if (x.EndPoint.Port != y.EndPoint.Port) return false;
+            if (!x.EndPoint.Address.Equals(y.EndPoint.Address)) return false;
             return true;
         }
 
@@ -35,7 +33,7 @@ namespace KJFramework.Net.Transaction.Comparers
         /// <exception cref="T:System.ArgumentNullException">
         ///     The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.
         /// </exception>
-        public override int GetHashCode(BasicIdentity obj)
+        public override int GetHashCode(TransactionIdentity obj)
         {
             //return obj.GetHashCode();
             return obj.ToString().GetHashCode();

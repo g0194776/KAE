@@ -7,7 +7,7 @@ namespace KJFramework.Net.Transaction.Helpers
     /// <summary>
     ///     事务唯一标示帮助器
     /// </summary>
-    internal static class IdentityHelper
+    public static class IdentityHelper
     {
         #region Members
 

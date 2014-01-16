@@ -37,6 +37,7 @@ namespace KJFramework.Net.Transaction.Processors
             proxy.WriteByte(identity.ProtocolId);
             proxy.WriteByte(identity.ServiceId);
             proxy.WriteByte(identity.DetailsId);
+            proxy.WriteInt16(identity.Tid); 
         }
 
         /// <summary>
@@ -52,7 +53,8 @@ namespace KJFramework.Net.Transaction.Processors
             MessageIdentity identity = (MessageIdentity) target;
             proxy.WriteByte(identity.ProtocolId);
             proxy.WriteByte(identity.ServiceId);
-            proxy.WriteByte(identity.DetailsId);
+            proxy.WriteByte(identity.DetailsId); 
+            proxy.WriteInt16(identity.Tid);
         }
 
         /// <summary>

@@ -1,10 +1,10 @@
-﻿using KJFramework.EventArgs;
+﻿﻿using System;
+using System.Collections.Generic;
+using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
-using System;
-using System.Collections.Generic;
 
 namespace KJFramework.Net.Transaction.Managers
 {
@@ -20,7 +20,7 @@ namespace KJFramework.Net.Transaction.Managers
         ///     * 默认时间：从配置文件中读取.
         /// </summary>
         /// <param name="comparer">比较器</param>
-        public MessageTransactionManager(IEqualityComparer<BasicIdentity> comparer)
+        public MessageTransactionManager(IEqualityComparer<TransactionIdentity> comparer)
             : this(comparer, Global.TransactionCheckInterval)
         {
         }
@@ -31,7 +31,7 @@ namespace KJFramework.Net.Transaction.Managers
         /// </summary>
         /// <param name="interval">事务检查时间间隔</param>
         /// <param name="comparer">比较器</param>
-        public MessageTransactionManager(IEqualityComparer<BasicIdentity> comparer, int interval = 30000)
+        public MessageTransactionManager(IEqualityComparer<TransactionIdentity> comparer, int interval = 30000)
             : base(interval, comparer)
         {
         }
@@ -53,7 +53,7 @@ namespace KJFramework.Net.Transaction.Managers
         /// <param name="channel">消息通信信道</param>
         /// <returns>返回一个新的消息事务</returns>
         /// <exception cref="ArgumentNullException">通信信道不能为空</exception>
-        public BusinessMessageTransaction Create(BasicIdentity identity, IMessageTransportChannel<BaseMessage> channel)
+        public BusinessMessageTransaction Create(TransactionIdentity identity, IMessageTransportChannel<BaseMessage> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
             BusinessMessageTransaction transaction = new BusinessMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = (TransactionIdentity)identity };
@@ -65,7 +65,7 @@ namespace KJFramework.Net.Transaction.Managers
         /// </summary>
         /// <param name="identity">事务唯一标示</param>
         /// <param name="response">响应消息</param>
-        public void Active(BasicIdentity identity, BaseMessage response)
+        public void Active(TransactionIdentity identity, BaseMessage response)
         {
             BusinessMessageTransaction transaction;
             if (!_transactions.TryRemove(identity, out transaction)) return;
@@ -81,7 +81,7 @@ namespace KJFramework.Net.Transaction.Managers
         /// <returns>
         ///     返回添加操作的状态
         /// </returns>
-        public override bool Add(BasicIdentity key, BusinessMessageTransaction transaction)
+        public override bool Add(TransactionIdentity key, BusinessMessageTransaction transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             BusinessMessageTransaction temp;
@@ -110,13 +110,13 @@ namespace KJFramework.Net.Transaction.Managers
         protected override void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (_transactions.Count == 0) return;
-            IList<BasicIdentity> expireValues = new List<BasicIdentity>();
+            IList<TransactionIdentity> expireValues = new List<TransactionIdentity>();
             //check dead flag for transaction.
-            foreach (KeyValuePair<BasicIdentity, BusinessMessageTransaction> pair in _transactions)
+            foreach (KeyValuePair<TransactionIdentity, BusinessMessageTransaction> pair in _transactions)
                 if (pair.Value.GetLease().IsDead) expireValues.Add(pair.Key);
             if (expireValues.Count == 0) return;
             //remove expired transactions.
-            foreach (BasicIdentity expireValue in expireValues)
+            foreach (TransactionIdentity expireValue in expireValues)
             {
                 BusinessMessageTransaction transaction;
                 if (_transactions.TryRemove(expireValue, out transaction))

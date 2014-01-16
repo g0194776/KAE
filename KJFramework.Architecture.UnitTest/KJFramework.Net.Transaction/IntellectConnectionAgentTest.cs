@@ -24,7 +24,7 @@ namespace KJFramework.Net.Transaction.UnitTest
         [SetUp]
         public void Initialize()
         {
-            FixedTypeManager.Add(typeof(MessageIdentity), 3);
+            FixedTypeManager.Add(typeof(MessageIdentity), 5);
             FixedTypeManager.Add(typeof(TransactionIdentity), 18);
             IntellectTypeProcessorMapping.Instance.Regist(new MessageIdentityProcessor());
             IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityProcessor());

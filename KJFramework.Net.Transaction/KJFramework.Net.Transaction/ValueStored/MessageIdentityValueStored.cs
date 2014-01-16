@@ -53,7 +53,8 @@ namespace KJFramework.Net.Transaction.ValueStored
             {
                 proxy.WriteByte(messageIdentityValueStored.GetValue<MessageIdentity>().ProtocolId);
                 proxy.WriteByte(messageIdentityValueStored.GetValue<MessageIdentity>().ServiceId);
-                proxy.WriteByte(messageIdentityValueStored.GetValue<MessageIdentity>().DetailsId);
+                proxy.WriteByte(messageIdentityValueStored.GetValue<MessageIdentity>().DetailsId); 
+                proxy.WriteInt16(messageIdentityValueStored.GetValue<MessageIdentity>().Tid);
             };
             _toDataDelegate = delegate(ResourceBlock metadataObject, byte id, byte[] byteData, int offsetStart, uint offsetLength)
             {
@@ -61,7 +62,8 @@ namespace KJFramework.Net.Transaction.ValueStored
                 {
                     ProtocolId = byteData[offsetStart++],
                     ServiceId = byteData[offsetStart++],
-                    DetailsId = byteData[offsetStart++]
+                    DetailsId = byteData[offsetStart++],
+                    Tid = BitConverter.ToInt16(byteData, offsetStart)
                 };
                 metadataObject.SetAttribute(id, new MessageIdentityValueStored(messageIdentity));
             };
@@ -118,7 +120,9 @@ namespace KJFramework.Net.Transaction.ValueStored
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            return string.Format("(P: {0}, S: {1}, D: {2})", _value.ProtocolId, _value.ServiceId, _value.DetailsId);
+            return string.Format("(P: {0}, S: {1}, D: {2}, T: {3})", _value.ProtocolId, _value.ServiceId,
+                        _value.DetailsId, _value.Tid);
+
         }
 
         #endregion

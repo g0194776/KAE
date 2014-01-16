@@ -64,7 +64,6 @@
     <Compile Include="FailMessageTransaction.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
-    <Compile Include="Identities\BasicIdentity.cs" />
     <Compile Include="Managers\MetadataTransactionManager.cs" />
     <Compile Include="MetadataMessageTransaction.cs" />
     <Compile Include="Objects\NewProcessorObject.cs" />
