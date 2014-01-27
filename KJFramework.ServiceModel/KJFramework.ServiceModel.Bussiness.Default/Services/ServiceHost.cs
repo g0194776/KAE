@@ -36,7 +36,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Services
             if (binding == null) throw new ArgumentNullException("binding");
             if (service == null) throw new ArgumentNullException("service");
             NetHelper.Initialize();
-            GlobalMemory.Initialize();
+            ChannelConst.Initialize();
             ServiceModel.Initialize();
             _serviceHandle = new ServiceHandle(service, binding);
             _serviceHandle.Opened += ServiceHandleOpened;

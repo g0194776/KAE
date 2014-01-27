@@ -31,20 +31,11 @@ namespace KJFramework.Net.Channels.Transactions
         /// <param name="canAsync">异步标示</param>
         protected StreamTransaction(TStream stream, bool canAsync)
         {
-            if (stream == null)
-            {
-                throw new System.Exception("无法初始化流事物，因为给定了非法的流。");
-            }
+            if (stream == null) throw new System.Exception("无法初始化流事物，因为给定了非法的流。");
             _stream = stream;
             _canAsync = canAsync;
-            if (_canAsync)
-            {
-                ProcAsync();
-            }
-            else
-            {
-                Proc();
-            }
+            if (_canAsync) ProcAsync();
+            else Proc();
         }
 
         #endregion
@@ -56,7 +47,6 @@ namespace KJFramework.Net.Channels.Transactions
         protected TStream _stream;
         protected Dictionary<StatisticTypes, IStatistic> _statistics = new Dictionary<StatisticTypes,IStatistic>();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (StreamTransaction<TStream>));
-        protected Action<byte[]> _callback;
 
         #endregion
 
@@ -81,7 +71,7 @@ namespace KJFramework.Net.Channels.Transactions
         /// <summary>
         ///     停止工作
         /// </summary>
-        private void EndWork()
+        public virtual void EndWork()
         {
             try
             {
@@ -154,41 +144,13 @@ namespace KJFramework.Net.Channels.Transactions
         }
 
         /// <summary>
-        ///     注册回调
-        /// </summary>
-        /// <param name="action">回调</param>
-        public StreamTransaction<TStream> RegistCallback(Action<byte[]> action)
-        {
-            _callback = action;
-            return this;
-        }
-
-        public event EventHandler Disconnected;
-        /// <summary>
         ///     断开事件
         /// </summary>
-        /// <param name="e"></param>
+        public event EventHandler Disconnected;
         protected void DisconnectedHandler(System.EventArgs e)
         {
             EventHandler handler = Disconnected;
             if (handler != null) handler(this, e);
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
-
-        public Dictionary<StatisticTypes, IStatistic> Statistics
-        {
-            get
-            {
-                return _statistics;
-            }
-            set
-            {
-                _statistics = value;
-            }
         }
 
         #endregion

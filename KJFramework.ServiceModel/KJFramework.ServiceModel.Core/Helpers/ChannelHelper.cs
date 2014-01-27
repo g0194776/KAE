@@ -58,7 +58,7 @@ namespace KJFramework.ServiceModel.Core.Helpers
             {
                 //IPC
                 case BindingTypes.Ipc:
-                    PipeTransportChannel transportChannel = new PipeTransportChannel(uri);
+                    PipeTransportChannel transportChannel = new PipeTransportChannel((PipeUri) uri);
                     return transportChannel;
                 //TCP
                 case BindingTypes.Tcp:

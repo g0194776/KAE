@@ -4,15 +4,16 @@ using KJFramework.Net.Channels.Disconvery;
 using KJFramework.Net.Channels.Disconvery.Protocols;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using NUnit.Framework;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace KJFramework.Net.Channels.UnitTest
 {
-    [TestClass]
     public class DiscoveryTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void InputPinInitializeTest()
         {
             DiscoveryInputPin inputPin = new DiscoveryInputPin(55505);
@@ -20,7 +21,7 @@ namespace KJFramework.Net.Channels.UnitTest
             Assert.IsTrue(inputPin.Enable);
         }
 
-        [TestMethod]
+        [Test]
         public void BoradcastTest()
         {
             CommonBoradcastProtocol recvObj = null;
@@ -40,7 +41,7 @@ namespace KJFramework.Net.Channels.UnitTest
             Console.WriteLine(JsonConvert.SerializeObject(recvObj));
         }
 
-        [TestMethod]
+        [Test]
         public void ReuseAddressTest()
         {
             InputPinInitializeTest();

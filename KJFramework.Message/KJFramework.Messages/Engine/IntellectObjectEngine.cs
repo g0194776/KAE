@@ -83,11 +83,12 @@ namespace KJFramework.Messages.Engine
         /// </summary>
         /// <param name="obj">智能对象</param>
         /// <param name="proxy">内存段代理器</param>
-        internal static void ToBytes(IIntellectObject obj, IMemorySegmentProxy proxy)
+        /// <returns>返回当前已经被序列化对象的总体长度</returns>
+        internal static int ToBytes(IIntellectObject obj, IMemorySegmentProxy proxy)
         {
             //获取智能对象中的智能属性，并按照Id来排序
             ToBytesAnalyseResult[] properties = Analyser.ToBytesAnalyser.Analyse(obj);
-            if (properties.Length == 0) return;
+            if (properties.Length == 0) return -1;
             MemoryPosition wrapperStartPosition = proxy.GetPosition();
             proxy.Skip(4U);
             IIntellectTypeProcessor intellectTypeProcessor;
@@ -279,7 +280,9 @@ namespace KJFramework.Messages.Engine
                 throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE, property.Attribute.Id, property.Property.Name, property.Property.PropertyType));
             }
             MemoryPosition wrapperEndPosition = proxy.GetPosition();
-            proxy.WriteBackInt32(wrapperStartPosition,MemoryPosition.CalcLength(proxy.SegmentCount, wrapperStartPosition, wrapperEndPosition));
+            int length = MemoryPosition.CalcLength(proxy.SegmentCount, wrapperStartPosition, wrapperEndPosition);
+            proxy.WriteBackInt32(wrapperStartPosition, length);
+            return length;
         }
 
         /// <summary>

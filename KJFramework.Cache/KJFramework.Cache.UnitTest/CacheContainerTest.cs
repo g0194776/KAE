@@ -4,13 +4,15 @@ using System.Threading;
 using KJFramework.Cache.Containers;
 using KJFramework.Cache.Cores;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace KJFramework.Cache.UnitTest
 {
     [TestClass]
     public class CacheContainerTest
     {
-        [TestMethod]
+        [Test]
         public void AddTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");
@@ -20,7 +22,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsFalse(readonlyCacheStub.Lease.IsDead);
         }
 
-        [TestMethod]
+        [Test]
         public void AddForTimeSpanTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");
@@ -31,7 +33,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(readonlyCacheStub.Lease.CanTimeout);
         }
 
-        [TestMethod]
+        [Test]
         public void AddForDateTimeTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");
@@ -42,7 +44,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(readonlyCacheStub.Lease.CanTimeout);
         }
 
-        [TestMethod]
+        [Test]
         public void RemoveTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");
@@ -53,7 +55,7 @@ namespace KJFramework.Cache.UnitTest
             cacheContainer.Remove("index1");
         }
 
-        [TestMethod]
+        [Test]
         public void GetTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");
@@ -65,7 +67,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNotNull(cacheStub);
         }
 
-        [TestMethod]
+        [Test]
         public void GetWithTimeoutTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");
@@ -81,7 +83,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNull(cacheStub);
         }
 
-        [TestMethod]
+        [Test]
         public void IsExistsTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");
@@ -93,7 +95,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(cacheContainer.IsExists("index1"));
         }
 
-        [TestMethod]
+        [Test]
         public void IsExistsWithTimeoutTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");
@@ -108,7 +110,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsFalse(cacheContainer.IsExists("index1"));
         }
 
-        [TestMethod]
+        [Test]
         public void DiscardTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");
@@ -121,7 +123,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(readonlyCacheStub.Lease.IsDead);
         }
 
-        [TestMethod]
+        [Test]
         public void DiscardWithTimeoutTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");
@@ -147,7 +149,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNotNull(exception);
         }
 
-        [TestMethod]
+        [Test]
         public void RenewTest()
         {
             CacheContainer<string, string> cacheContainer = new CacheContainer<string, string>("CATEGORY-1");

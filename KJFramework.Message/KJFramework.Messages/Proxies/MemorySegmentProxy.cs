@@ -612,6 +612,74 @@ namespace KJFramework.Messages.Proxies
         }
 
         /// <summary>
+        ///     向指定内存段的指定偏移处回写一个uint32数值
+        /// </summary>
+        /// <param name="position">回写位置</param>
+        /// <param name="value">回写值</param>
+        public void WriteBackUInt32(MemoryPosition position, uint value)
+        {
+            //well-done, needn't cross memory segments.
+            uint remainingSize = (MemoryAllotter.SegmentSize - position.SegmentOffset);
+            if (remainingSize >= Size.UInt32)
+                *(uint*)(_segments[position.SegmentIndex].GetPointer() + position.SegmentOffset) = value;
+            else
+            {
+                uint trueRemainingSize = Size.UInt32;
+                byte* data = (byte*)&value;
+                if (remainingSize != 0U)
+                {
+                    Native.Win32API.memcpy(new IntPtr(_segments[position.SegmentIndex].GetPointer() + position.SegmentOffset), new IntPtr(data), remainingSize);
+                    trueRemainingSize -= remainingSize;
+                }
+                //write at head.
+                Native.Win32API.memcpy(new IntPtr(_segments[position.SegmentIndex + 1].GetPointer()), new IntPtr(data + remainingSize), trueRemainingSize);
+            }
+        }
+
+        /// <summary>
+        ///     向指定内存段的指定偏移处回写一个void*
+        /// </summary>
+        /// <param name="position">回写位置</param>
+        /// <param name="value">回写值</param>
+        /// <param name="length">回写长度</param>
+        public void WriteBackMemory(MemoryPosition position, void* value, uint length)
+        {
+            //well-done, needn't cross memory segments.
+            if (MemoryAllotter.SegmentSize - position.SegmentOffset == 0)
+            {
+                position.SegmentIndex++;
+                position.SegmentOffset = 0;
+            }             
+            IMemorySegment segment = GetSegment(position.SegmentIndex);
+            int startSegmentIndex = position.SegmentIndex;
+            uint remainingSize = (MemoryAllotter.SegmentSize - position.SegmentOffset);
+            if (remainingSize >= length)
+                Native.Win32API.memcpy(new IntPtr(_segments[position.SegmentIndex].GetPointer() + position.SegmentOffset), new IntPtr(value), length);
+            else
+            {
+                uint trueRemainingSize = length;
+                uint continueSize = 0U;
+                do
+                {
+                    Native.Win32API.memcpy(
+                        new IntPtr(segment.GetPointer() +
+                                   (position.SegmentIndex - startSegmentIndex == 0 ? position.SegmentOffset : 0)),
+                        new IntPtr((byte*)value + continueSize),
+                        (remainingSize < trueRemainingSize
+                             ? remainingSize
+                             : (trueRemainingSize < MemoryAllotter.SegmentSize
+                                    ? trueRemainingSize
+                                    : MemoryAllotter.SegmentSize)));
+                    if (trueRemainingSize <= remainingSize) trueRemainingSize = 0U;
+                    else trueRemainingSize -= remainingSize;
+                    segment = GetSegment(++position.SegmentIndex);
+                    continueSize += remainingSize;
+                    remainingSize = MemoryAllotter.SegmentSize;
+                } while (trueRemainingSize > 0U);
+            }
+        }
+
+        /// <summary>
         ///     写入一个指定类型的值
         /// </summary>
         /// <param name="value">指定类型的值</param>
@@ -768,12 +836,10 @@ namespace KJFramework.Messages.Proxies
             for (int i = 0; i < _segments.Count; i++)
             {
                 IMemorySegment segment = _segments[i];
-                if (i != _segments.Count - 1)
-                {
-                    Marshal.Copy(new IntPtr(segment.GetPointer()), data, (int)offset, (int)MemoryAllotter.SegmentSize);
-                    offset += MemoryAllotter.SegmentSize;
-                }
-                else Marshal.Copy(new IntPtr(segment.GetPointer()), data, (int)offset, (int)segment.Offset);
+                //un-usage segment.
+                if (segment.Offset == 0) continue;
+                Marshal.Copy(new IntPtr(segment.GetPointer()), data, (int)offset, (int)segment.Offset);
+                offset += segment.Offset;
                 //always recover used resource.
                 MemoryAllotter.Instance.Giveback(segment);
             }

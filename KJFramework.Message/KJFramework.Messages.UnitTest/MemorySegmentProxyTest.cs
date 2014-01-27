@@ -128,7 +128,7 @@ namespace KJFramework.Messages.UnitTest
              *  x - write back bytes.
              *  y - string bytes
              *  □ - un-use byte.
-             *                                                                                          ↓ write back position  
+             *                                                       ↓ write back position  
              *      1: yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyx
              *      2: xxxyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
              *      3: yyyy□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□

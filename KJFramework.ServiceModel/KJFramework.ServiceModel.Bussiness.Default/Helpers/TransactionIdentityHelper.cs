@@ -1,7 +1,8 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
-using KJFramework.ServiceModel.Identity;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Helpers
 {
@@ -26,7 +27,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Helpers
         {
             return new TransactionIdentity
                        {
-                           Iep = channel.LocalEndPoint,
+                           EndPoint = (IPEndPoint) channel.LocalEndPoint,
                            IsOneway = isOneway,
                            IsRequest = isRequest,
                            MessageId = Interlocked.Increment(ref _msgId)

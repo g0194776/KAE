@@ -1,13 +1,15 @@
 ﻿using KJFramework.Cache.Containers;
 using KJFramework.Cache.Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace KJFramework.Cache.UnitTest
 {
     [TestClass]
     public class MemoryChunkCacheContainerTest
     {
-        [TestMethod]
+        [Test]
         public void InitializeTest()
         {
             //initialize 1 mbytes.
@@ -16,7 +18,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(container.MemoryChunkSize == 1024 * 10);
         }
 
-        [TestMethod]
+        [Test]
         public void InitializeTest1()
         {
             //initialize 1 mbytes.
@@ -25,7 +27,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(container.MemoryChunkSize == 1024 * 10 + 5);
         }
 
-        [TestMethod]
+        [Test]
         public void InitializeTest2()
         {
             //initialize 1 mbytes.
@@ -34,7 +36,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(container.MemoryChunkSize == 85000);
         }
 
-        [TestMethod]
+        [Test]
         public void RentTest()
         {
             //initialize 1 mbytes.
@@ -45,7 +47,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNull(container.Rent());
         }
 
-        [TestMethod]
+        [Test]
         public void GivebackTest()
         {
             //initialize 1 mbytes.
@@ -61,7 +63,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNotNull(container.Rent());
         }
 
-        [TestMethod]
+        [Test]
         public void UsedOffsetTest()
         {
             //initialize 1 mbytes.

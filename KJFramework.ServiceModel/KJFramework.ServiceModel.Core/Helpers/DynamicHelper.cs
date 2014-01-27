@@ -3,12 +3,12 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using KJFramework.Helpers;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Core.Attributes;
 using KJFramework.ServiceModel.Core.Contracts;
 using KJFramework.ServiceModel.Core.EventArgs;
 using KJFramework.ServiceModel.Core.Managers;
 using KJFramework.ServiceModel.Core.Objects;
-using KJFramework.ServiceModel.Identity;
 
 namespace KJFramework.ServiceModel.Core.Helpers
 {

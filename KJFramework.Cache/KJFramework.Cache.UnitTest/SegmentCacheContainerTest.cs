@@ -2,13 +2,15 @@ using System;
 using KJFramework.Cache.Containers;
 using KJFramework.Cache.Cores.Segments;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace KJFramework.Cache.UnitTest
 {
     [TestClass]
     public class SegmentCacheContainerTest
     {
-        [TestMethod]
+        [Test]
         public void ConstructorTest()
         {
             ISegmentCachePolicy policy = new SegmentCachePolicy(
@@ -19,7 +21,7 @@ namespace KJFramework.Cache.UnitTest
             SegmentCacheContainer<int> cacheContainer = new SegmentCacheContainer<int>(85000, policy);
         }
 
-        [TestMethod]
+        [Test]
         public void AddTest()
         {
             ISegmentCachePolicy policy = new SegmentCachePolicy(
@@ -36,7 +38,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void GetTest()
         {
             ISegmentCachePolicy policy = new SegmentCachePolicy(
@@ -56,7 +58,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(temp.Length == data.Length);
         }
 
-        [TestMethod]
+        [Test]
         public void RemoveTest()
         {
             ISegmentCachePolicy policy = new SegmentCachePolicy(
@@ -76,7 +78,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNull(temp);
         }
 
-        [TestMethod]
+        [Test]
         public void IsExistsTest()
         {
             ISegmentCachePolicy policy = new SegmentCachePolicy(

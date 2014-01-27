@@ -3,6 +3,8 @@ using System.Diagnostics;
 using KJFramework.Cache.Containers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KJFramework.Cache.Cores;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace KJFramework.Cache.UnitTest
 {
@@ -13,28 +15,6 @@ namespace KJFramework.Cache.UnitTest
     [TestClass()]
     public class FixedCacheContainerTest
     {
-        #region Members
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #endregion
-
         #region Additional test attributes
         // 
         //You can use the following additional attributes as you write your tests:
@@ -65,7 +45,7 @@ namespace KJFramework.Cache.UnitTest
         //
         #endregion
         
-        [TestMethod()]
+        [Test]
         public void GivebackTest()
         {
             IFixedCacheContainer<TestClass> container = new FixedCacheContainer<TestClass>(100);
@@ -74,7 +54,7 @@ namespace KJFramework.Cache.UnitTest
             container.Giveback(readonlyCacheStub);
         }
 
-        [TestMethod()]
+        [Test]
         public void ExceptionTest()
         {
             System.Exception exception = null;
@@ -90,7 +70,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNotNull(exception);
         }
 
-        [TestMethod()]
+        [Test]
         public void RemainingTest()
         {
             Random random = new Random();
@@ -116,7 +96,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNotNull(exception);
         }
 
-        [TestMethod()]
+        [Test]
         public void RentToNullTest()
         {
             Random random = new Random();
@@ -132,7 +112,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNull(fixedCacheStub);
         }
         
-        [TestMethod()]
+        [Test]
         public void RentTest()
         {
             IFixedCacheContainer<TestClass> container = new FixedCacheContainer<TestClass>(100);
@@ -140,7 +120,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNotNull(readonlyCacheStub);
         }
 
-        [TestMethod()]
+        [Test]
         public void PerformanceTestForRentAndGiveBack()
         {
             Random random = new Random();

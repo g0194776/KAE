@@ -39,6 +39,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Depend Files\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiscoveryTest.cs" />
+    <Compile Include="PipeChannelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,13 +60,25 @@
       <Project>{d5a0178c-16f7-453e-a301-d1d61910d2af}</Project>
       <Name>KJFramework.Basic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
+      <Project>{6F85C222-1CD2-44D4-8D06-22F557D4CF04}</Project>
+      <Name>KJFramework.Cache</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
       <Project>{12309506-18a3-48bf-8a55-e950a87a905e}</Project>
       <Name>KJFramework.IO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
       <Project>{33fe11d3-2810-4432-b64c-b16935bb47cd}</Project>
       <Name>KJFramework.Net.Channels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
+      <Project>{658c4853-7022-4c2f-bb82-7261dbdae55d}</Project>
+      <Name>KJFramework.Net.Transaction</Name>
     </ProjectReference>
     <ProjectReference Include="..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
       <Project>{35fd171e-de60-4e34-9a35-e33c3ba8c02f}</Project>
@@ -75,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

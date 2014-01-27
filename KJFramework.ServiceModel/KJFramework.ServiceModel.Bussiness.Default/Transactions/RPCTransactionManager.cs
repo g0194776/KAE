@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction;
+using KJFramework.Net.Transaction.Comparers;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Bussiness.Default.Helpers;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
-using KJFramework.ServiceModel.Comparers;
-using KJFramework.ServiceModel.Identity;
 using KJFramework.Tracing;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
@@ -15,7 +14,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
     /// <summary>
     ///     RPC事务管理器
     /// </summary>
-    internal class RPCTransactionManager : TransactionManager<TransactionIdentity, RPCTransaction>
+    internal class RPCTransactionManager : TransactionManager<RPCTransaction>
     {
         #region Constructor
 

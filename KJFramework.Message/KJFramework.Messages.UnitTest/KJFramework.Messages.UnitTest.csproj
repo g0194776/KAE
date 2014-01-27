@@ -61,6 +61,7 @@
     <Compile Include="DataHelperUnitTest.cs" />
     <Compile Include="IntellectObjectEngineUnitTest.cs" />
     <Compile Include="MemorySegmentProxyTest.cs" />
+    <Compile Include="MetaDataTest.cs" />
     <Compile Include="ObjectDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

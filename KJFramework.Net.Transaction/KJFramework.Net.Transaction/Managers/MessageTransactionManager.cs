@@ -1,8 +1,7 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
-using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
@@ -12,7 +11,7 @@ namespace KJFramework.Net.Transaction.Managers
     /// <summary>
     ///     消息事务管理器，提供了相关的基本操作
     /// </summary>
-    public class MessageTransactionManager : TransactionManager<TransactionIdentity, BusinessMessageTransaction>
+    public class MessageTransactionManager : TransactionManager<BusinessMessageTransaction>
     {
         #region Constructor
 
@@ -20,8 +19,9 @@ namespace KJFramework.Net.Transaction.Managers
         ///     消息事务管理器，提供了相关的基本操作
         ///     * 默认时间：从配置文件中读取.
         /// </summary>
-        public MessageTransactionManager()
-            : base(Global.TransactionCheckInterval, new TransactionIdentityComparer())
+        /// <param name="comparer">比较器</param>
+        public MessageTransactionManager(IEqualityComparer<TransactionIdentity> comparer)
+            : this(comparer, Global.TransactionCheckInterval)
         {
         }
 
@@ -30,8 +30,9 @@ namespace KJFramework.Net.Transaction.Managers
         ///     * 默认时间：30s.
         /// </summary>
         /// <param name="interval">事务检查时间间隔</param>
-        public MessageTransactionManager(int interval = 30000)
-            : base(interval, new TransactionIdentityComparer())
+        /// <param name="comparer">比较器</param>
+        public MessageTransactionManager(IEqualityComparer<TransactionIdentity> comparer, int interval = 30000)
+            : base(interval, comparer)
         {
         }
 
@@ -55,7 +56,7 @@ namespace KJFramework.Net.Transaction.Managers
         public BusinessMessageTransaction Create(TransactionIdentity identity, IMessageTransportChannel<BaseMessage> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
-            BusinessMessageTransaction transaction = new BusinessMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = identity };
+            BusinessMessageTransaction transaction = new BusinessMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = (TransactionIdentity)identity };
             return Add(identity, transaction) ? transaction : null;
         }
 

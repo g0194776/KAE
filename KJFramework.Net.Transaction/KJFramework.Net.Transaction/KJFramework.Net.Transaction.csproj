@@ -46,11 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agent\ConnectionAgent.cs" />
+    <Compile Include="Agent\IntellectObjectConnectionAgent.cs" />
+    <Compile Include="Agent\MetadataConnectionAgent.cs" />
     <Compile Include="Agent\IConnectionAgent.cs" />
     <Compile Include="Agent\IServerConnectionAgent.cs" />
     <Compile Include="Clusters\INetworkCluster.cs" />
     <Compile Include="Clusters\NetworkCluster.cs" />
+    <Compile Include="Clusters\MetaDataNetworkCluster.cs" />
     <Compile Include="CommonCounter.cs" />
     <Compile Include="Comparers\ProtocolsComparer.cs" />
     <Compile Include="Comparers\ServiceCoreComparer.cs" />
@@ -62,8 +64,16 @@
     <Compile Include="FailMessageTransaction.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
+    <Compile Include="Managers\MetadataTransactionManager.cs" />
+    <Compile Include="MetadataMessageTransaction.cs" />
+    <Compile Include="Objects\NewProcessorObject.cs" />
     <Compile Include="Objects\ProcessorObject.cs" />
     <Compile Include="Objects\ServiceCoreConfig.cs" />
+    <Compile Include="Pools\IntellectObjectSystemConnectionPool.cs" />
+    <Compile Include="Pools\MetadataSystemConnectionPool.cs" />
+    <Compile Include="Processors\IMessageTransactionProcessor.cs" />
+    <Compile Include="ProtocolStack\MetadataProtocolStack.cs" />
+    <Compile Include="Schedulers\INewRequestScheduler.cs" />
     <Compile Include="Schedulers\IRequestScheduler.cs" />
     <Compile Include="Managers\MessageTransactionManager.cs" />
     <Compile Include="Messages\BaseMessage.cs" />
@@ -78,16 +88,18 @@
     <Compile Include="MessageTransaction.cs" />
     <Compile Include="Objects\Protocols.cs" />
     <Compile Include="Pools\ConnectionPool.cs" />
-    <Compile Include="Pools\SystemConnectionPool.cs" />
     <Compile Include="Processors\IMessageProcessor.cs" />
     <Compile Include="Processors\MessageIdentityProcessor.cs" />
     <Compile Include="Processors\TransactionIdentityProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolStack\BusinessProtocolStack.cs" />
-    <Compile Include="Schedulers\RequestScheduler.cs" />
+    <Compile Include="Schedulers\BaseMessageRequestScheduler.cs" />
+    <Compile Include="Schedulers\MetadataMessageRequestScheduler.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="TransactionManager.cs" />
     <Compile Include="BusinessMessageTransaction.cs" />
+    <Compile Include="ValueStored\MessageIdentityValueStored.cs" />
+    <Compile Include="ValueStored\TransactionIdentityValueStored.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />

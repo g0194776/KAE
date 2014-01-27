@@ -3,13 +3,15 @@ using System.Text;
 using KJFramework.Cache.Cores;
 using KJFramework.Cache.Indexers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace KJFramework.Cache.UnitTest
 {
     [TestClass]
     public class SegmentCacheStubTest
     {
-        [TestMethod]
+        [Test]
         public void ConstructorTest()
         {
             byte[] data = new byte[102400];
@@ -20,7 +22,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsFalse(stub.GetLease().IsDead);
         }
 
-        [TestMethod]
+        [Test]
         public void ConstructorWithTimeoutTest()
         {
             byte[] data = new byte[102400];
@@ -31,7 +33,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsFalse(stub.GetLease().IsDead);
         }
 
-        [TestMethod]
+        [Test]
         public void SetValueTest()
         {
             byte[] data = new byte[102400];
@@ -44,7 +46,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(stub.IsUsed);
         }
 
-        [TestMethod]
+        [Test]
         public void GetValueTest()
         {
             byte[] data = new byte[102400];
@@ -59,7 +61,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(bytes.Length == 1024);
         }
 
-        [TestMethod]
+        [Test]
         public void GetValueWithUsedTest()
         {
             byte[] data = new byte[102400];
@@ -75,7 +77,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(bytes.Length == 10);
         }
 
-        [TestMethod]
+        [Test]
         public void InitializeTest()
         {
             byte[] data = new byte[102400];

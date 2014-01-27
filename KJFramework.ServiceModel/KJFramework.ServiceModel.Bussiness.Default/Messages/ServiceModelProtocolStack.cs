@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using KJFramework.Messages.Engine;
 using KJFramework.Net.ProtocolStacks;
-using KJFramework.ServiceModel.Identity;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.Tracing;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Messages
@@ -69,7 +69,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Messages
                     fixed (byte* pData = &data[offset])
                     {
                         objsize = *(int*)pData;
-                        mIdentity = *(MessageIdentity*)(pData + 5);
+                        mIdentity = new MessageIdentity();
                     }
                     Type type;
                     if (!_messages.TryGetValue(mIdentity, out type))
@@ -116,7 +116,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Messages
                     fixed (byte* pData = &data[offset])
                     {
                         objsize = *(int*)pData;
-                        mIdentity = *(MessageIdentity*)(pData + 5);
+                        mIdentity = new MessageIdentity();
                     }
                     Type type;
                     if (!_messages.TryGetValue(mIdentity, out type))

@@ -1,0 +1,190 @@
+﻿using System;
+using System.Collections.Generic;
+using KJFramework.Messages.Contracts;
+using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
+using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Transaction.ProtocolStack;
+using KJFramework.Net.Transaction.ValueStored;
+using NUnit.Framework;
+
+namespace KJFramework.Net.Transaction.UnitTest
+{
+    public class MetadataTest : MetadataProtocolStack
+    {
+        #region Methods
+
+        [SetUp]
+        public void Setup()
+        {
+            ExtensionTypeMapping.Regist(typeof (MessageIdentityValueStored));
+        }
+
+        [Test]
+        public void MetaOneMessageToBytes()
+        {
+            MetadataProtocolStack protocolStack = new MetadataTest();
+            MessageIdentity messageIdentity1 = new MessageIdentity
+            {
+                DetailsId = 1,
+                ProtocolId = 2,
+                ServiceId = 3
+            };
+
+            MetadataContainer metadata1 = new MetadataContainer();
+            metadata1.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity1));
+            byte[] data1 = protocolStack.ConvertToBytes(metadata1);
+            Assert.IsNotNull(data1);
+            Assert.IsTrue(data1.Length == 14);
+            byte[] totalData = new byte[data1.Length];
+            System.Buffer.BlockCopy(data1, 0, totalData, 0, data1.Length);
+            Assert.IsNotNull(totalData);
+            Assert.IsTrue(totalData.Length == 14);
+
+            List<MetadataContainer> list = protocolStack.Parse(totalData);
+            Assert.IsNotNull(list);
+            Assert.IsTrue(list.Count == 1);
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().DetailsId == 1);
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().ProtocolId == 2);
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().ServiceId == 3);
+            Console.WriteLine(list[0].GetAttribute(0x00).GetValue<MessageIdentity>());
+        }
+
+        [Test]
+        public void MetaOneMessageBetweenTwoNullSegmentToBytes()
+        {
+            MetadataProtocolStack protocolStack = new MetadataTest();
+            MessageIdentity messageIdentity1 = new MessageIdentity
+            {
+                DetailsId = 1,
+                ProtocolId = 2,
+                ServiceId = 3
+            };
+
+            MetadataContainer metadata1 = new MetadataContainer();
+            metadata1.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity1));
+            byte[] data1 = protocolStack.ConvertToBytes(metadata1);
+            Assert.IsNotNull(data1);
+            Assert.IsTrue(data1.Length == 14);
+            byte[] totalData = new byte[data1.Length+21];
+            System.Buffer.BlockCopy(data1, 0, totalData, 10, data1.Length);
+            Assert.IsNotNull(totalData);
+            Assert.IsTrue(totalData.Length == 35);
+
+            List<MetadataContainer> list = protocolStack.Parse(totalData, 10, data1.Length);
+            Assert.IsNotNull(list);
+            Assert.IsTrue(list.Count == 1);
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().DetailsId == 1);
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().ProtocolId == 2);
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().ServiceId == 3);
+            Console.WriteLine(list[0].GetAttribute(0x00).GetValue<MessageIdentity>());
+        }
+
+        [Test]
+        public void MetaOneMessageAfterNullSegmentToBytes()
+        {
+            MetadataProtocolStack protocolStack = new MetadataTest();
+            MessageIdentity messageIdentity1 = new MessageIdentity
+            {
+                DetailsId = 1,
+                ProtocolId = 2,
+                ServiceId = 3
+            };
+            MessageIdentity messageIdentity2 = new MessageIdentity
+            {
+                DetailsId = 2,
+                ProtocolId = 3,
+                ServiceId = 4
+            };
+
+            MetadataContainer metadata1 = new MetadataContainer();
+            MetadataContainer metadata2 = new MetadataContainer();
+            metadata1.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity1));
+            byte[] data1 = protocolStack.ConvertToBytes(metadata1);
+            Assert.IsNotNull(data1);
+            Assert.IsTrue(data1.Length == 14);
+            byte[] data2 = protocolStack.ConvertToBytes(metadata2);
+            Assert.IsNotNull(data2);
+            Assert.IsTrue(data1.Length == 14);
+            byte[] totalData = new byte[data1.Length + 11 + data2.Length];
+            System.Buffer.BlockCopy(data1, 0, totalData, 10, data1.Length);
+            System.Buffer.BlockCopy(data2,0,totalData,data1.Length+10,data2.Length);
+            Assert.IsNotNull(totalData);
+            Assert.IsTrue(totalData.Length == 31);
+
+            List<MetadataContainer> list = protocolStack.Parse(totalData, 10, data1.Length);
+            Assert.IsNotNull(list);
+            Assert.IsTrue(list.Count == 1);
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().DetailsId == 1);
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().ProtocolId == 2);
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().ServiceId == 3);
+            Console.WriteLine(list[0].GetAttribute(0x00).GetValue<MessageIdentity>());
+        }
+
+        [Test]
+        public void MetaManyMessageToBytes()
+        {
+            MetadataProtocolStack protocolStack = new MetadataTest();
+            MessageIdentity messageIdentity1 = new MessageIdentity
+            {
+                DetailsId = 1,
+                ProtocolId = 2,
+                ServiceId = 3
+            };
+            MessageIdentity messageIdentity2 = new MessageIdentity
+            {
+                DetailsId = 2,
+                ProtocolId = 3,
+                ServiceId = 4
+            };
+            MessageIdentity messageIdentity3 = new MessageIdentity
+            {
+                DetailsId = 3,
+                ProtocolId = 4,
+                ServiceId = 5
+            };
+            MetadataContainer metadata1 = new MetadataContainer();
+            MetadataContainer metadata2 = new MetadataContainer();
+            MetadataContainer metadata3 = new MetadataContainer();
+            metadata1.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity1));
+            byte[] data1 = protocolStack.ConvertToBytes(metadata1);
+            Assert.IsNotNull(data1);
+            Assert.IsTrue(data1.Length == 14);
+            metadata2.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity2));
+            byte[] data2 = protocolStack.ConvertToBytes(metadata2);
+            Assert.IsNotNull(data2);
+            Assert.IsTrue(data1.Length == 14);
+            metadata3.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity3));
+            byte[] data3 = protocolStack.ConvertToBytes(metadata3);
+            Assert.IsNotNull(data3);
+            Assert.IsTrue(data1.Length == 14);
+            byte[] totalData = new byte[data1.Length+data2.Length+data3.Length];
+            System.Buffer.BlockCopy(data1,0,totalData,0,data1.Length);
+            System.Buffer.BlockCopy(data2, 0, totalData, data1.Length, data2.Length);
+            System.Buffer.BlockCopy(data3,0,totalData,data1.Length+data2.Length,data3.Length);
+            Assert.IsNotNull(totalData);
+            Assert.IsTrue(totalData.Length == 42);
+          
+            List<MetadataContainer> list = protocolStack.Parse(totalData);
+            Assert.IsNotNull(list);
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().DetailsId == 1 );
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().ProtocolId == 2 );
+            Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().ServiceId == 3 );
+            Assert.IsTrue(list[1].GetAttribute(0x00).GetValue<MessageIdentity>().DetailsId == 2);
+            Assert.IsTrue(list[1].GetAttribute(0x00).GetValue<MessageIdentity>().ProtocolId == 3);
+            Assert.IsTrue(list[1].GetAttribute(0x00).GetValue<MessageIdentity>().ServiceId == 4);
+            Assert.IsTrue(list[2].GetAttribute(0x00).GetValue<MessageIdentity>().DetailsId == 3);
+            Assert.IsTrue(list[2].GetAttribute(0x00).GetValue<MessageIdentity>().ProtocolId == 4);
+            Assert.IsTrue(list[2].GetAttribute(0x00).GetValue<MessageIdentity>().ServiceId == 5);
+            Console.WriteLine(list[0].GetAttribute(0x00).GetValue<MessageIdentity>());
+            Console.WriteLine(list[1].GetAttribute(0x00).GetValue<MessageIdentity>());
+            Console.WriteLine(list[2].GetAttribute(0x00).GetValue<MessageIdentity>());
+        }
+
+        public override bool Initialize()
+        {
+            return true;
+        }
+
+      #endregion
+    }
+}

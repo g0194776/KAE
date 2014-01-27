@@ -18,15 +18,15 @@ namespace KJFramework.Net.Transaction.Identities
         /// </summary>
         public bool IsOneway { get; set; }
         /// <summary>
+        ///     获取或设置消息编号
+        /// </summary>
+        public int MessageId { get; set; }        
+        /// <summary>
         ///     获取或设置远程终结点
         /// </summary>
         public IPEndPoint EndPoint { get; set; }
-        /// <summary>
-        ///     获取或设置消息编号
-        /// </summary>
-        public int MessageId { get; set; }
 
-        #region Methods 
+        #region Methods.
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.

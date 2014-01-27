@@ -3,12 +3,12 @@ using KJFramework.Cache.Containers;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.TypeProcessors.Maps;
 using KJFramework.Net.ProtocolStacks;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Processors;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
 using KJFramework.ServiceModel.Bussiness.Default.Objects;
 using KJFramework.ServiceModel.Configurations;
 using KJFramework.ServiceModel.Core.Objects;
-using KJFramework.ServiceModel.Identity;
 
 namespace KJFramework.ServiceModel.Bussiness.Default
 {

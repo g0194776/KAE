@@ -2,6 +2,8 @@ using System;
 using KJFramework.Cache.Containers;
 using KJFramework.Cache.Cores;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace KJFramework.Cache.UnitTest
 {
@@ -25,7 +27,7 @@ namespace KJFramework.Cache.UnitTest
     [TestClass]
     public class CacheTenantTest
     {
-        [TestMethod]
+        [Test]
         public void LocalRentTest1()
         {
             ICacheTenant tenant = new CacheTenant();
@@ -34,7 +36,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(cacheContainer.ExpireTime == DateTime.MaxValue);
         }
 
-        [TestMethod]
+        [Test]
         public void LocalRentTest2()
         {
             ICacheTenant tenant = new CacheTenant();
@@ -47,7 +49,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsTrue(fixedCacheStub.Cache.Name == null);
         }
 
-        [TestMethod]
+        [Test]
         public void GetTest()
         {
             ICacheTenant tenant = new CacheTenant();
@@ -58,7 +60,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNotNull(container);
         }
 
-        [TestMethod]
+        [Test]
         public void GetAndNullTest()
         {
             ICacheTenant tenant = new CacheTenant();
@@ -70,7 +72,7 @@ namespace KJFramework.Cache.UnitTest
             Assert.IsNull(container);
         }
 
-        [TestMethod]
+        [Test]
         public void DiscardTest()
         {
             ICacheTenant tenant = new CacheTenant();

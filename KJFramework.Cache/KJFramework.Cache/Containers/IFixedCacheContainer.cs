@@ -23,5 +23,10 @@ namespace KJFramework.Cache.Containers
         /// </summary>
         /// <param name="cache">缓存</param>
         void Giveback(IFixedCacheStub<T> cache);
+        /// <summary>
+        ///    构造内部性能计数器
+        /// </summary>
+        /// <param name="name">性能计数器名称</param>
+        void BuildPerformanceCounter(string name);
     }
 }

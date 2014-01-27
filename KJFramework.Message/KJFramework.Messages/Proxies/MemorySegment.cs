@@ -78,7 +78,8 @@ namespace KJFramework.Messages.Proxies
         /// <param name="length">需要跳过的字节长度</param>
         public void Skip(uint length)
         {
-            _currentOffset += length;
+            for (int i = 0; i < length; i++)
+                *(&_startData[_currentOffset++]) = 0x00;
         }
 
         /// <summary>

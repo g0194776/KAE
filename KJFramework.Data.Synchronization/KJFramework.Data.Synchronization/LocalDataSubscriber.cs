@@ -1,3 +1,4 @@
+using System.Net;
 using KJFramework.Data.Synchronization.Enums;
 using KJFramework.Data.Synchronization.Messages;
 using KJFramework.Data.Synchronization.Policies;
@@ -124,7 +125,7 @@ namespace KJFramework.Data.Synchronization
                 return false;
             }
             SyncDataRequestMessage msg = new SyncDataRequestMessage { Key = key, Value = value, Catalog = catalog };
-            SyncDataTransaction transaction = SyncDataTransactionManager.Instance.Create(IdentityHelper.Create(_channel.RemoteEndPoint, Policy.IsOneway), _channel);
+            SyncDataTransaction transaction = SyncDataTransactionManager.Instance.Create(IdentityHelper.Create((IPEndPoint) _channel.RemoteEndPoint, Policy.IsOneway), _channel);
             //there is only Timeout event can be used.
             transaction.Timeout += delegate
             {

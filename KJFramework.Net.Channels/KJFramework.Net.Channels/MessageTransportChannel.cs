@@ -84,8 +84,8 @@ namespace KJFramework.Net.Channels
         private IRawTransportChannel _rawChannel;
         private readonly IProtocolStack<T> _protocolStack;
         private IMultiPacketManager<T> _multiPacketManager;
-        private IPEndPoint _localIep;
-        private IPEndPoint _remoteIep;
+        private EndPoint _localIep;
+        private EndPoint _remoteIep;
         private ISegmentDataParser<T> _parser;
 
         #endregion
@@ -266,7 +266,7 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取本地终结点地址
         /// </summary>
-        public IPEndPoint LocalEndPoint
+        public EndPoint LocalEndPoint
         {
             get { return _localIep; }
         }
@@ -274,7 +274,7 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取远程终结点地址
         /// </summary>
-        public IPEndPoint RemoteEndPoint
+        public EndPoint RemoteEndPoint
         {
             get { return _remoteIep; }
         }

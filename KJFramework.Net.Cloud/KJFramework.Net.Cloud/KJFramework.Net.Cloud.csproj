@@ -122,7 +122,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\KJFramework.Dynamic\KJFramework.Dynamic\KJFramework.Dynamic.csproj">
       <Project>{47672612-8AA3-4729-A210-4F30E3FB39E4}</Project>
-      <Name>KJFramework.Dynamic</Name>
+      <Name>KJFramework.Dynamic %28Dynamic Component Layer\KJFramework.Dynamic%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
       <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>

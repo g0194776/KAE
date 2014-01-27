@@ -4,7 +4,7 @@
     ///     消息唯一标示，提供了相关的基本属性结构
     ///     <para>* 此标示仅用来与客户端通讯时使用</para>
     /// </summary>
-    public class MessageIdentity
+    public struct MessageIdentity
     {
         /// <summary>
         ///     获取或设置消息大分类编号
@@ -22,6 +22,7 @@
         ///     获取或设置当前消息事务唯一编号
         /// </summary>
         public short Tid { get; set; }
+
 
         #region Methods
 

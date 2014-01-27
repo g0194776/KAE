@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction;
-using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
@@ -13,7 +12,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
     /// <summary>
     ///     消息事务管理器，提供了相关的基本操作
     /// </summary>
-    public class CSNMessageTransactionManager : TransactionManager<TransactionIdentity, CSNBusinessMessageTransaction>
+    public class CSNMessageTransactionManager : TransactionManager<CSNBusinessMessageTransaction>
     {
         #region Constructor
 
@@ -21,8 +20,9 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         ///     消息事务管理器，提供了相关的基本操作
         ///     * 默认时间：从配置文件中读取.
         /// </summary>
-        public CSNMessageTransactionManager()
-            : base(CSNGlobal.TransactionCheckInterval, new TransactionIdentityComparer())
+        /// <param name="comparer">比较器</param>
+        public CSNMessageTransactionManager(IEqualityComparer<TransactionIdentity> comparer)
+            : this(comparer, CSNGlobal.TransactionCheckInterval)
         {
         }
 
@@ -31,8 +31,9 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         ///     * 默认时间：30s.
         /// </summary>
         /// <param name="interval">事务检查时间间隔</param>
-        public CSNMessageTransactionManager(int interval = 30000)
-            : base(interval, new TransactionIdentityComparer())
+        /// <param name="comparer">比较器</param>
+        public CSNMessageTransactionManager(IEqualityComparer<TransactionIdentity> comparer, int interval = 30000)
+            : base(interval, comparer)
         {
         }
 
@@ -56,7 +57,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         public CSNBusinessMessageTransaction Create(TransactionIdentity identity, IMessageTransportChannel<BaseMessage> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
-            CSNBusinessMessageTransaction transaction = new CSNBusinessMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = identity };
+            CSNBusinessMessageTransaction transaction = new CSNBusinessMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = (TransactionIdentity)identity };
             return Add(identity, transaction) ? transaction : null;
         }
 

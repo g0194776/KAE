@@ -1,12 +1,14 @@
-﻿using KJFramework.Cache.Containers;
+﻿using System.Net;
+using KJFramework.Cache.Containers;
 using KJFramework.Cache.Cores;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Transaction.Comparers;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
 using KJFramework.ServiceModel.Bussiness.Default.Metadata;
 using KJFramework.ServiceModel.Bussiness.Default.Objects;
 using KJFramework.ServiceModel.Bussiness.Default.Transactions;
-using KJFramework.ServiceModel.Comparers;
 using KJFramework.ServiceModel.Configurations;
 using KJFramework.ServiceModel.Core.Contracts;
 using KJFramework.ServiceModel.Core.EventArgs;
@@ -16,7 +18,6 @@ using KJFramework.ServiceModel.Core.Objects;
 using KJFramework.ServiceModel.Elements;
 using KJFramework.ServiceModel.Enums;
 using KJFramework.ServiceModel.Exceptions;
-using KJFramework.ServiceModel.Identity;
 using KJFramework.ServiceModel.Objects;
 using KJFramework.ServiceModel.Proxy;
 using KJFramework.Tracing;
@@ -71,12 +72,12 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Proxy
             //try to connect remote endpoint.
             transportChannel.Connect();
             if (!transportChannel.IsConnected) throw new System.Exception("Cannot connect to remote endpoint ! #endpoint: " + transportChannel.LogicalAddress);
-            GlobalMemory.Initialize();
+            ChannelConst.Initialize();
             ServiceModel.Initialize();
             _msgChannel = new MessageTransportChannel<Message>((IRawTransportChannel)transportChannel, ServiceModel.ProtocolStack);
             _msgChannel.ReceivedMessage += ReceivedMessage;
             _msgChannel.Disconnected += Disconnected;
-            _contractAction.LocalEndPoint = _msgChannel.LocalEndPoint;
+            _contractAction.LocalEndPoint = (IPEndPoint) _msgChannel.LocalEndPoint;
             if (ServiceModel.FixedRequestMessage == null)
                 ServiceModel.FixedRequestMessage = ServiceModel.Tenant.Rent<RequestServiceMessage>("Fixed:RequestServiceMessage", ServiceModelSettingConfigSection.Current.NetworkLayer.RequestServiceMessagePoolCount);
             if (ServiceModel.FixedRequestWaitObject == null)

@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels.Events;
 using KJFramework.Net.Channels.Objects;
 using KJFramework.Net.ProtocolStacks;
+using System;
+using System.Collections.Generic;
 
 namespace KJFramework.Net.Channels.Parsers
 {
@@ -66,14 +66,13 @@ namespace KJFramework.Net.Channels.Parsers
                 //direct parse.
                 if (nextNode.RemainingSize >= msgSize)
                 {
-                    List<T> list = _protocolStack.Parse(nextNode.Args.Stub.Cache.Segment.Segment.Array, nextNode.Args.Stub.Cache.Segment.UsedOffset, msgSize);
+                    List<T> list = _protocolStack.Parse(nextNode.Args.GetStub().Segment.Segment.Array, nextNode.Args.GetStub().Segment.UsedOffset, msgSize);
                     if (list != null) msgs.AddRange(list);
-                    nextNode.Args.Stub.Cache.Segment.UsedBytes += msgSize;
+                    nextNode.Args.GetStub().Segment.UsedBytes += msgSize;
                     ChannelCounter.Instance.RateOfDirectParse.Increment();
                     if (nextNode.RemainingSize > 0) continue;
                     //giveup current fixed stub.
-                    ChannelConst.BuffAsyncStubPool.Giveback(nextNode.Args.Stub);
-                    ChannelCounter.Instance.RateOfFixedBufferStubGiveback.Increment();
+                    nextNode.Args.Complete();
                     _head = nextNode = nextNode.Next;
                     if (_head != null) continue;
                     //Tail node must be null, if the head node has no value.
@@ -116,20 +115,19 @@ namespace KJFramework.Net.Channels.Parsers
                 while (childHead != null && dataRemainingCount > 0)
                 {
                     cloneLastRealNode = childHead;
-                    System.Buffer.BlockCopy(childHead.Args.Stub.Cache.Segment.Segment.Array,
-                                            childHead.Args.Stub.Cache.Segment.UsedOffset, data, dataOffset,
+                    System.Buffer.BlockCopy(childHead.Args.GetStub().Segment.Segment.Array,
+                                            childHead.Args.GetStub().Segment.UsedOffset, data, dataOffset,
                                             (usedBytes = (childHead.RemainingSize > dataRemainingCount
                                                               ? dataRemainingCount
                                                               : childHead.RemainingSize)));
                     dataOffset += usedBytes;
                     dataRemainingCount -= usedBytes;
-                    childHead.Args.Stub.Cache.Segment.UsedBytes += usedBytes;
-                    lastUserBytes = childHead.Args.Stub.Cache.Segment.UsedBytes;
+                    childHead.Args.GetStub().Segment.UsedBytes += usedBytes;
+                    lastUserBytes = childHead.Args.GetStub().Segment.UsedBytes;
                     if (childHead.RemainingSize <= 0)
                     {
                         //giveup current fixed stub.
-                        ChannelConst.BuffAsyncStubPool.Giveback(childHead.Args.Stub);
-                        ChannelCounter.Instance.RateOfFixedBufferStubGiveback.Increment();
+                        childHead.Args.Complete();
                         childHead = childHead.Next;
                     }
                 }
@@ -137,7 +135,7 @@ namespace KJFramework.Net.Channels.Parsers
                 else if (cloneLastRealNode.RemainingSize - lastUserBytes == 0 && lastRealNode.Next != null) _head = nextNode = lastRealNode.Next;
                 else
                 {
-                    lastRealNode.Args.Stub.Cache.Segment.UsedBytes = lastUserBytes;
+                    lastRealNode.Args.GetStub().Segment.UsedBytes = lastUserBytes;
                     _head = nextNode = lastRealNode;
                 }
                 //_head = nextNode = ((cloneLastRealNode.RemainingSize == 0 && lastRealNode.Next == null) ? null : lastRealNode);
@@ -173,12 +171,12 @@ namespace KJFramework.Net.Channels.Parsers
         {
             int headOffset = 0;
             SegmentNode nextNode;
-            if (node.RemainingSize >= 4) return BitConverter.ToInt32(node.Args.Stub.Cache.Segment.Segment.Array, node.Args.Stub.Cache.Segment.UsedOffset);
+            if (node.RemainingSize >= 4) return BitConverter.ToInt32(node.Args.GetStub().Segment.Segment.Array, node.Args.GetStub().Segment.UsedOffset);
             byte* head = stackalloc byte[4];
             nextNode = node;
             while (headOffset < 3)
             {
-                fixed (byte* pData = &nextNode.Args.Stub.Cache.Segment.Segment.Array[nextNode.Args.Stub.Cache.Segment.UsedOffset])
+                fixed (byte* pData = &nextNode.Args.GetStub().Segment.Segment.Array[nextNode.Args.GetStub().Segment.UsedOffset])
                 {
                     for (int i = 0; i < nextNode.RemainingSize && headOffset < 4; i++)
                         head[headOffset++] = *(pData + i);
@@ -204,8 +202,7 @@ namespace KJFramework.Net.Channels.Parsers
             while (_head != null)
             {
                 //giveup current fixed stub.
-                ChannelConst.BuffAsyncStubPool.Giveback(_head.Args.Stub);
-                ChannelCounter.Instance.RateOfFixedBufferStubGiveback.Increment();
+                _head.Args.Complete();
                 _head = _head.Next;
             }
             //release the end of segment ref.

@@ -129,8 +129,6 @@ namespace KJFramework.Data.Synchronization.Transactions
                 message.TransactionIdentity = Identity;
                 message.TransactionIdentity.IsRequest = false;
             }
-            //the same tid for client.
-            if (Request != null && message.MessageIdentity != null) message.MessageIdentity.Tid = Request.MessageIdentity.Tid;
             if (!_channel.IsConnected)
             {
                 _tracing.Warn(string.Format("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint));

@@ -2,9 +2,9 @@
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction;
+using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Bussiness.Default.Counters;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
-using KJFramework.ServiceModel.Identity;
 using KJFramework.Tracing;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
@@ -34,7 +34,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
 
         protected ITracing _tracing = TracingManager.GetTracing(typeof (RPCTransaction));
         private readonly IMessageTransportChannel<Message> _channel;
-        internal TransactionManager<TransactionIdentity, RPCTransaction> TransactionManager;
+        internal TransactionManager<RPCTransaction> TransactionManager;
 
         /// <summary>
         ///     获取事务唯一标示
@@ -73,7 +73,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
         public void SendRequest(Message reqMsg)
         {
             if (reqMsg == null) throw new ArgumentNullException("reqMsg");
-            reqMsg.TransactionIdentity = Identity;
+            reqMsg.TransactionIdentity = (TransactionIdentity)Identity;
             Request = reqMsg;
             if(!_channel.IsConnected)
             {
@@ -106,7 +106,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
         public void SendResponse(Message rspMsg)
         {
             if (rspMsg == null) throw new ArgumentNullException("rspMsg");
-            rspMsg.TransactionIdentity = Identity;
+            rspMsg.TransactionIdentity = (TransactionIdentity)Identity;
             Response = rspMsg;
             if (!_channel.IsConnected)
             {

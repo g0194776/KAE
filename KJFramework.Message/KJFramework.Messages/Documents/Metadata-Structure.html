@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body front="微软雅黑">
+
+    <p>
+        KJFramework.Message Binary Serialization Object Structure</p>
+    <p>
+        &lt;MetadataObject&gt;<br />
+        ------------------------------------------------------------------------------------------------------------------<br />
+        Total Length(4 bytes)| Mark-Range Length(2 bytes)| Mark-Range data(No fixed data length, 5*N) | Serialized Data</p>
+    <p>
+        &nbsp;</p>
+    <p>
+        &lt;MetadataObject.MarkSet&gt; (5 bytes total)<br />
+        ------------------------------------------------------------------------------------------------------------------<br />
+        Attribute Id(1 byte) | Type Id(1 byte) | Current Data Block Offset(3 byte)</p>
+    <p>
+        &nbsp;</p>
+    <p>
+        &lt;MetadataObject.ReferenceType Array&gt;<br />
+        ------------------------------------------------------------------------------------------------------------------<br />
+        Array Length(4 bytes) | Array Element Count(4 bytes) | Element Length(2 bytes) | Element Data ......</p>
+    <p>
+        &nbsp;</p>
+    <p>
+        &lt;MetadataObject.IntellectObject Array&gt;<br />
+        ------------------------------------------------------------------------------------------------------------------<br />
+        Array Length(4 bytes) | Array Element Count(4 bytes) | Element Length(2 bytes) | Element Data ......</p>
+    <p>
+        &nbsp;</p>
+    <p>
+        &lt;MetadataObject.ValueType Array&gt;<br />
+        ------------------------------------------------------------------------------------------------------------------<br />
+        Element Data ......</p>
+    <p>
+        &nbsp;</p>
+    <p>
+        &lt;MetadataObject.IPEndPoint Array&gt;<br />
+        ------------------------------------------------------------------------------------------------------------------<br />
+        Element Data ......</p>
+
+</body>
+</html>

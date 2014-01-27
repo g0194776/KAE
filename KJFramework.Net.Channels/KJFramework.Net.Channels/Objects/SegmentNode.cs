@@ -31,7 +31,7 @@ namespace KJFramework.Net.Channels.Objects
         /// <summary>
         ///     获取或设置剩余数据长度
         /// </summary>
-        public int RemainingSize { get { return Args.BytesTransferred - Args.Stub.Cache.Segment.UsedBytes; } }
+        public int RemainingSize { get { return Args.BytesTransferred - Args.GetStub().Segment.UsedBytes; } }
         /// <summary>
         ///     下一个节点
         /// </summary>

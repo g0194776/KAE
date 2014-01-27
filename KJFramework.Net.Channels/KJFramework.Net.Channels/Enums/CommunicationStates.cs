@@ -6,6 +6,10 @@ namespace KJFramework.Net.Channels.Enums
     public enum CommunicationStates
     {
         /// <summary>
+        ///    未知
+        /// </summary>
+        Unknown,
+        /// <summary>
         ///     已经被创建
         /// </summary>
         Created,
