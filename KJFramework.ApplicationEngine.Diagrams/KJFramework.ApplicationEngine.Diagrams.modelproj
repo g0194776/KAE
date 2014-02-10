@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{00000000-0000-0000-0000-000000000000}</ProjectGuid>
+    <ProjectGuid>{72138203-6edc-4e36-9f30-dd78d115dfe1}</ProjectGuid>
     <ArchitectureToolsVersion>2.0.0.0</ArchitectureToolsVersion>
     <Name>KJFramework.ApplicationEngine.Diagrams</Name>
     <RootNamespace>KJFramework.ApplicationEngine.Diagrams</RootNamespace>
@@ -22,7 +22,35 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\ArchitectureTools\Microsoft.VisualStudio.TeamArchitect.ModelingProject.targets" Condition="'$(VSToolsPath)' != ''" />
   <ItemGroup>
+    <Content Include="QueryRingFromRRCS.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="QueryRingFromRRCS.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>QueryRingFromRRCS.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="RRCSQueryAPP.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="RRCSQueryAPP.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>RRCSQueryAPP.sequencediagram</DependentUpon>
+    </Content>
     <Folder Include="ModelDefinition\" />
+    <Content Include="HostStartup.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="HostStartup.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>HostStartup.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="KAE.classdiagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="KAE.classdiagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>KAE.classdiagram</DependentUpon>
+    </Content>
     <Content Include="ModelDefinition\KJFramework.ApplicationEngine.Diagrams.uml">
       <SubType>Content</SubType>
     </Content>

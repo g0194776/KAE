@@ -56,6 +56,7 @@ namespace KJFramework.Net.Transaction
 
         #region Members
 
+        protected TimeSpan _transactionTimeout = Global.TransactionTimeout;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(MessageTransaction<T>));
         /// <summary>
         ///     获取或设置当前事务的唯一标示

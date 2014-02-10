@@ -132,8 +132,6 @@ namespace KJFramework.Net.Transaction
                 //calc REQ time.
                 RequestTime = DateTime.Now;
                 _tracing.Info("SendCount: {0}\r\nL: {1}\r\nR: {2}\r\n{3}", sendCount, _channel.LocalEndPoint, _channel.RemoteEndPoint, message.ToString());
-                //change transaction lease.
-                GetLease().Change(DateTime.Now.Add(Global.TransactionTimeout));
             }
             catch
             {

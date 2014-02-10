@@ -65,6 +65,7 @@
     <Compile Include="KJFramework.Net.Transaction\ProtocolStack\TestProtocolStack.cs" />
     <Compile Include="KJFramework.Net.Transaction\ProtocolStack\TestRequestMessage.cs" />
     <Compile Include="KJFramework.Net.Transaction\TransactionIdentityTest.cs" />
+    <Compile Include="KJFramework.Net.Transaction\TransactionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

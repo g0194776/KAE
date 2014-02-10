@@ -48,6 +48,8 @@ namespace KJFramework.Net.Transaction.Managers
 
         /// <summary>
         ///     创建一个新的消息事务，并将其加入到当前的事务列表中
+        ///     <para>* 事务超时时间被设置为KJFramework.Message节点的配置。</para>
+        ///     <para>* 默认为: 30S</para>
         /// </summary>
         /// <param name="identity">事务唯一标示</param>
         /// <param name="channel">消息通信信道</param>
@@ -56,7 +58,22 @@ namespace KJFramework.Net.Transaction.Managers
         public BusinessMessageTransaction Create(TransactionIdentity identity, IMessageTransportChannel<BaseMessage> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
-            BusinessMessageTransaction transaction = new BusinessMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = (TransactionIdentity)identity };
+            BusinessMessageTransaction transaction = new BusinessMessageTransaction(new Lease(DateTime.Now.Add(Global.TransactionTimeout)), channel) { TransactionManager = this, Identity = identity };
+            return Add(identity, transaction) ? transaction : null;
+        }
+
+        /// <summary>
+        ///     创建一个新的消息事务，并将其加入到当前的事务列表中
+        /// </summary>
+        /// <param name="identity">事务唯一标示</param>
+        /// <param name="channel">消息通信信道</param>
+        /// <param name="timeout">事务超时时间</param>
+        /// <returns>返回一个新的消息事务</returns>
+        /// <exception cref="ArgumentNullException">通信信道不能为空</exception>
+        public BusinessMessageTransaction Create(TransactionIdentity identity, IMessageTransportChannel<BaseMessage> channel, TimeSpan timeout)
+        {
+            if (channel == null) throw new ArgumentNullException("channel");
+            BusinessMessageTransaction transaction = new BusinessMessageTransaction(new Lease(DateTime.Now.Add(timeout)), channel) { TransactionManager = this, Identity = identity };
             return Add(identity, transaction) ? transaction : null;
         }
 
@@ -88,7 +105,7 @@ namespace KJFramework.Net.Transaction.Managers
             if ((temp = GetTransaction(key)) != null)
             {
                 _tracing.Error(
-                    "#Cannot add WXMessageTransaction to current T-Manager, because the target identity has been dup. \r\nDetails below:\r\nIdentity: {0}\r\nCreate Time: {1}\r\nRequest: {2}\r\nResponse: {3}",
+                    "#Cannot add MessageTransactionManager to current MessageTransactionManager, because the target identity has been dup. \r\nDetails below:\r\nIdentity: {0}\r\nCreate Time: {1}\r\nRequest: {2}\r\nResponse: {3}",
                     key, 
                     temp.CreateTime, 
                     (temp.Request == null ? "" : temp.Request.ToString()),
