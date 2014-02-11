@@ -81,10 +81,10 @@ namespace KJFramework.Net.Transaction.Schedulers
         /// <exception cref="ArgumentException">Attribute标签为空</exception>
         public INewRequestScheduler<MetadataContainer> Regist(IMessageTransactionProcessor<MetadataMessageTransaction, MetadataContainer> processor)
         {     
-            ProcessorMessageIdentityAttribute[] attribute = (ProcessorMessageIdentityAttribute[]) GetType().GetCustomAttributes(typeof(ProcessorMessageIdentityAttribute), true);
+            ProcessorMessageIdentityAttribute[] attribute = (ProcessorMessageIdentityAttribute[]) processor.GetType().GetCustomAttributes(typeof(ProcessorMessageIdentityAttribute), true);
             if (attribute.Length == 0) throw new ArgumentException("#Current attribute is not found");
             NewProcessorObject p;
-            Protocols protocol = new Protocols{ProtocolId = attribute[0].ProtocolId, ServiceId = attribute[0].ServiceId, DetailsId = attribute[0].DetailsId};
+            Protocols protocol = new Protocols{ProtocolId = attribute[0].ProtocolId, ServiceId = attribute[0].ServiceId, DetailsId = 0};
             if (_processors.TryGetValue(protocol, out p)) return this;
             p = new NewProcessorObject { Processor = processor };
             if (!_processors.TryAdd(protocol, p)) throw new System.Exception("Cannot add a message processor.");
