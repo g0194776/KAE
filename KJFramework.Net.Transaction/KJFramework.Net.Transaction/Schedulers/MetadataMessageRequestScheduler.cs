@@ -84,7 +84,7 @@ namespace KJFramework.Net.Transaction.Schedulers
             ProcessorMessageIdentityAttribute[] attribute = (ProcessorMessageIdentityAttribute[]) processor.GetType().GetCustomAttributes(typeof(ProcessorMessageIdentityAttribute), true);
             if (attribute.Length == 0) throw new ArgumentException("#Current attribute is not found");
             NewProcessorObject p;
-            Protocols protocol = new Protocols{ProtocolId = attribute[0].ProtocolId, ServiceId = attribute[0].ServiceId, DetailsId = 0};
+            Protocols protocol = new Protocols{ProtocolId = attribute[0].ProtocolId, ServiceId = attribute[0].ServiceId, DetailsId = attribute[0].DetailsId};
             if (_processors.TryGetValue(protocol, out p)) return this;
             p = new NewProcessorObject { Processor = processor };
             if (!_processors.TryAdd(protocol, p)) throw new System.Exception("Cannot add a message processor.");
