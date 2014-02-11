@@ -50,6 +50,7 @@
     <Compile Include="Agent\MetadataConnectionAgent.cs" />
     <Compile Include="Agent\IConnectionAgent.cs" />
     <Compile Include="Agent\IServerConnectionAgent.cs" />
+    <Compile Include="Attribute\ProcessorMessageIdentityAttribute.cs" />
     <Compile Include="Clusters\INetworkCluster.cs" />
     <Compile Include="Clusters\NetworkCluster.cs" />
     <Compile Include="Clusters\MetaDataNetworkCluster.cs" />

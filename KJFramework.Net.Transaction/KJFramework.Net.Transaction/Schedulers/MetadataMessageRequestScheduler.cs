@@ -3,6 +3,7 @@ using KJFramework.Helpers;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Exception;
 using KJFramework.Net.Transaction.Agent;
+using KJFramework.Net.Transaction.Attribute;
 using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.Processors;
@@ -66,6 +67,24 @@ namespace KJFramework.Net.Transaction.Schedulers
         {
             if (processor == null) throw new ArgumentNullException("processor");
             NewProcessorObject p;
+            if (_processors.TryGetValue(protocol, out p)) return this;
+            p = new NewProcessorObject { Processor = processor };
+            if (!_processors.TryAdd(protocol, p)) throw new System.Exception("Cannot add a message processor.");
+            return this;
+        }
+
+        /// <summary>
+        ///     注册一个消息处理器
+        /// </summary>
+        /// <param name="processor">处理器</param>
+        /// <exception cref="ArgumentNullException">参数不能为空</exception>
+        /// <exception cref="ArgumentException">Attribute标签为空</exception>
+        public INewRequestScheduler<MetadataContainer> Regist(IMessageTransactionProcessor<MetadataMessageTransaction, MetadataContainer> processor)
+        {     
+            ProcessorMessageIdentityAttribute[] attribute = (ProcessorMessageIdentityAttribute[]) GetType().GetCustomAttributes(typeof(ProcessorMessageIdentityAttribute), true);
+            if (attribute.Length == 0) throw new ArgumentException("#Current attribute is not found");
+            NewProcessorObject p;
+            Protocols protocol = new Protocols{ProtocolId = attribute[0].ProtocolId, ServiceId = attribute[0].ServiceId, DetailsId = attribute[0].DetailsId};
             if (_processors.TryGetValue(protocol, out p)) return this;
             p = new NewProcessorObject { Processor = processor };
             if (!_processors.TryAdd(protocol, p)) throw new System.Exception("Cannot add a message processor.");
