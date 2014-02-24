@@ -22,6 +22,13 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\ArchitectureTools\Microsoft.VisualStudio.TeamArchitect.ModelingProject.targets" Condition="'$(VSToolsPath)' != ''" />
   <ItemGroup>
+    <Content Include="DynamicUpdateApplication-A Version.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="DynamicUpdateApplication-A Version.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>DynamicUpdateApplication-A Version.sequencediagram</DependentUpon>
+    </Content>
     <Content Include="QueryRingFromRRCS.sequencediagram">
       <SubType>Content</SubType>
     </Content>
@@ -35,6 +42,13 @@
     <Content Include="RRCSQueryAPP.sequencediagram.layout">
       <SubType>Content</SubType>
       <DependentUpon>RRCSQueryAPP.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="DynamicUpdateApplication-B Version.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="DynamicUpdateApplication-B Version.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>DynamicUpdateApplication-B Version.sequencediagram</DependentUpon>
     </Content>
     <Folder Include="ModelDefinition\" />
     <Content Include="HostStartup.sequencediagram">
