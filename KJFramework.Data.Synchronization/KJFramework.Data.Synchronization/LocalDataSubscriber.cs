@@ -136,7 +136,7 @@ namespace KJFramework.Data.Synchronization
                 .SetAttribute(0x0A, new StringValueStored(catalog))
                 .SetAttribute(0x0B, new ByteArrayValueStored(key))
                 .SetAttribute(0x0C, new ByteArrayValueStored(value));
-            SyncDataTransaction transaction = SyncDataTransactionManager.Instance.Create(IdentityHelper.Create((IPEndPoint) _channel.RemoteEndPoint, Policy.IsOneway), _channel);
+            SyncDataTransaction transaction = SyncDataTransactionManager.Instance.Create(IdentityHelper.Create(_channel.RemoteEndPoint, Policy.IsOneway, _channel.ChannelType), _channel);
             //there is only Timeout event can be used.
             transaction.Timeout += delegate
             {

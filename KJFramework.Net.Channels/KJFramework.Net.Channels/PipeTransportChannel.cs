@@ -1,5 +1,6 @@
 using KJFramework.Cache.Cores;
 using KJFramework.Net.Channels.Caches;
+using KJFramework.Net.Channels.EndPoints;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.Events;
 using KJFramework.Net.Channels.Transactions;
@@ -18,6 +19,7 @@ namespace KJFramework.Net.Channels
     {
         #region Members.
 
+        private readonly NamedPipeEndPoint _endPoint;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PipeTransportChannel));
 
         /// <summary>
@@ -31,18 +33,12 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取本地终结点地址
         /// </summary>
-        public override EndPoint LocalEndPoint
-        {
-            get { return new DnsEndPoint("http://www.126.com", 0); }
-        }
+        public override EndPoint LocalEndPoint { get { return _endPoint; } }
 
         /// <summary>
         ///     获取发出请求的客户端 IP 地址和端口号
         /// </summary>
-        public override EndPoint RemoteEndPoint
-        {
-            get { return new DnsEndPoint("http://www.126.com", 0); }
-        }
+        public override EndPoint RemoteEndPoint { get { return _endPoint; } }
 
         /// <summary>
         ///     获取一个值，该值表示了当前通道是否处于连接状态
@@ -65,22 +61,28 @@ namespace KJFramework.Net.Channels
         ///     <para>* 此构造函数用于初始化一个需要连接到远程的命名管道对象</para>
         /// </summary>
         /// <param name="logicalUri">通道地址</param>
+        /// <param name="numInstance">
+        ///     当前命名管道实例数的index
+        ///     <para>* index从0开始算起</para>
+        /// </param>
         /// <exception cref="ArgumentNullException">参数错误</exception>
-        public PipeTransportChannel(PipeUri logicalUri)
+        public PipeTransportChannel(PipeUri logicalUri, byte numInstance = 0x00)
         {
             if (logicalUri == null) throw new ArgumentNullException("logicalUri");
             _logicalAddress = logicalUri;
             _callback = DefaultCallback;
             _supportSegment = true;
+            _endPoint = new NamedPipeEndPoint(logicalUri, numInstance);
         }
 
         /// <summary>
         ///    基于IPC通道的传输通道，提供了相关的基本操作。
         ///     <para>* 此构造函数用于初始化一个已经连接的命名管道数据流</para>
         /// </summary>
+        /// <param name="uri">宿主通道地址</param>
         /// <param name="stream" type="System.IO.Pipes.PipeStream">PIPE流</param>
         /// <exception cref="ArgumentNullException">参数错误</exception>
-        public PipeTransportChannel(PipeStream stream)
+        public PipeTransportChannel(PipeUri uri, PipeStream stream)
         {
             if (stream == null) throw new ArgumentNullException("stream");
             _stream = stream;
@@ -89,6 +91,7 @@ namespace KJFramework.Net.Channels
             _connected = stream.IsConnected;
             _streamAgent = new PipeStreamTransaction(_stream, stream.IsAsync, _callback);
             _streamAgent.Disconnected += TransactionDisconnected;
+            _endPoint = new NamedPipeEndPoint(uri, stream.GetHashCode());
         }
 
         #endregion

@@ -30,7 +30,7 @@ namespace KJFramework.Net.Channels.EndPoints
         /// </param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         /// <exception cref="UriFormatException">非法的终端地址格式</exception>
-        public NamedPipeEndPoint(string uri, byte numInstance)
+        public NamedPipeEndPoint(string uri, int numInstance)
             : this(new PipeUri(uri), numInstance)
         {
         }
@@ -54,7 +54,7 @@ namespace KJFramework.Net.Channels.EndPoints
         /// </param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         /// <exception cref="UriFormatException">非法的终端地址格式</exception>
-        public NamedPipeEndPoint(PipeUri uri, byte numInstance)
+        public NamedPipeEndPoint(PipeUri uri, int numInstance)
         {
             if (uri == null) throw new ArgumentNullException("uri");
             byte[] source = _md5.ComputeHash(Encoding.UTF8.GetBytes(string.Format("{0}#{1}", uri, numInstance)));

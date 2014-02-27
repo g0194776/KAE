@@ -6,11 +6,18 @@ using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.ValueStored;
+using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.Channels.Caches;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.HostChannels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
+using KJFramework.Net.Transaction;
+using KJFramework.Net.Transaction.Agent;
+using KJFramework.Net.Transaction.Comparers;
+using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.ProtocolStack;
+using KJFramework.Net.Transaction.ValueStored;
 using NUnit.Framework;
 
 namespace KJFramework.Net.Channels.UnitTest
@@ -18,6 +25,14 @@ namespace KJFramework.Net.Channels.UnitTest
     public class PipeChannelTest
     {
         #region Methods.
+
+        [SetUp]
+        public void Initialize()
+        {
+           ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
+           ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
+        }
+
 
         [Test]
         [Description("正常注册一个命名管道测试")]
@@ -272,6 +287,78 @@ namespace KJFramework.Net.Channels.UnitTest
             Thread.Sleep(2000);
             Console.WriteLine("Exactlly internal cache count: " + container.GetCount());
             Assert.IsTrue(capacity == container.GetCount());
+        }
+
+        [Test]
+        [Description("使用事务的方式去测试发送消息")]
+        public void SendMessageWithTransactionTest()
+        {
+            MetadataTransactionManager manager = new MetadataTransactionManager(new TCPTransactionIdentityComparer());
+            
+            ITransportChannel connectedChannel = null;
+            AutoResetEvent resetEvent = new AutoResetEvent(false);
+            AutoResetEvent msgEvent = new AutoResetEvent(false);
+            AutoResetEvent channelEvent = new AutoResetEvent(false);
+            PipeHostTransportChannel hostChannel = new PipeHostTransportChannel("pipe://./test7");
+            Assert.IsTrue(hostChannel.Regist());
+            Assert.IsTrue(hostChannel.TotalCount == 254);
+            hostChannel.ChannelCreated += delegate(object sender, LightSingleArgEventArgs<ITransportChannel> args)
+            {
+                connectedChannel = args.Target;
+                channelEvent.Set();
+            };
+            PipeTransportChannel transportChannel = new PipeTransportChannel(new PipeUri("pipe://./test7"));
+            Assert.IsTrue(transportChannel.CommunicationState == CommunicationStates.Unknown);
+            transportChannel.Connect();
+            if (!channelEvent.WaitOne(2000)) throw new System.Exception("#Cannot passed channel be connect test.");
+            Assert.IsNotNull(connectedChannel);
+            Assert.IsTrue(connectedChannel.IsConnected);
+
+
+            Assert.IsTrue(transportChannel.IsConnected);
+            Assert.IsTrue(transportChannel.CommunicationState == CommunicationStates.Opened);
+            Assert.IsTrue(hostChannel.AvailableCount == 253);
+            Assert.IsTrue(hostChannel.UsedCount == 1);
+            MetadataContainer msg = null;
+            IMessageTransportChannel<MetadataContainer> msgChannel = new MessageTransportChannel<MetadataContainer>((IRawTransportChannel)connectedChannel, new MetadataProtocolStack());
+            IMessageTransportChannel<MetadataContainer> msg2Channel = new MessageTransportChannel<MetadataContainer>(transportChannel, new MetadataProtocolStack());
+            MetadataConnectionAgent connecteeAgent = new MetadataConnectionAgent(msgChannel, manager);
+            connecteeAgent.NewTransaction += delegate(object sender, LightSingleArgEventArgs<IMessageTransaction<MetadataContainer>> args)
+            {
+                IMessageTransaction<MetadataContainer> messageTransaction = args.Target;
+                Console.WriteLine(@"Recv REQ:");
+                Console.WriteLine(messageTransaction.Request);
+                MetadataContainer rspMsg = new MetadataContainer();
+                rspMsg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 0x01, ServiceId = 0x00, DetailsId = 0x01 }));
+                rspMsg.SetAttribute(0x0A, new ByteValueStored(0x01));
+                messageTransaction.SendResponse(rspMsg);
+            };
+            MetadataConnectionAgent connectorAgent = new MetadataConnectionAgent(msg2Channel, manager);
+            
+            MetadataContainer sendMsg = new MetadataContainer();
+            sendMsg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity{ProtocolId = 0x01,ServiceId = 0x00, DetailsId = 0x00}));
+            sendMsg.SetAttribute(0x0A, new StringValueStored("Test-Name"));
+            sendMsg.SetAttribute(0x0B, new StringValueStored("Test-Value"));
+            MessageTransaction<MetadataContainer> connectorTransaction = connectorAgent.CreateTransaction();
+            connectorTransaction.Failed += delegate { msgEvent.Set(); };
+            connectorTransaction.Timeout += delegate { msgEvent.Set(); };
+            connectorTransaction.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<MetadataContainer> args)
+            {
+                msg = args.Target;
+                Assert.IsNotNull(msg);
+                msgEvent.Set();
+            };
+            connectorTransaction.SendRequest(sendMsg);
+            if (!msgEvent.WaitOne(2000)) throw new System.Exception("#Cannot passed message channel receive test.");
+            Assert.IsNotNull(msg);
+            Console.WriteLine(msg);
+            transportChannel.Disconnect();
+            Thread.Sleep(2000);
+            Assert.IsTrue(transportChannel.CommunicationState == CommunicationStates.Closed);
+            Assert.IsTrue(hostChannel.AvailableCount == 254);
+            Assert.IsTrue(hostChannel.UsedCount == 0);
+            Assert.IsTrue(!connectedChannel.IsConnected);
+            Assert.IsTrue(hostChannel.UnRegist());
         }
 
         #endregion

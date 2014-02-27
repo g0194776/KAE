@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using KJFramework.Net.Channels.EndPoints;
+using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.Identities;
 
 namespace KJFramework.Net.Transaction.Comparers
@@ -20,10 +22,17 @@ namespace KJFramework.Net.Transaction.Comparers
         /// <param name="x">The first object to compare.</param><param name="y">The second object to compare.</param>
         public override bool Equals(TransactionIdentity x, TransactionIdentity y)
         {
-            if (x.IsOneway != y.IsOneway) return false;
-            if (x.MessageId != y.MessageId) return false;
-            if (((IPEndPoint)x.EndPoint).Port != ((IPEndPoint)y.EndPoint).Port) return false;
-            if (!((IPEndPoint)x.EndPoint).Address.Equals(((IPEndPoint)y.EndPoint).Address)) return false;
+            if (x.IdentityType == TransactionIdentityTypes.TCP)
+            {
+                if (x.IsOneway != y.IsOneway) return false;
+                if (x.MessageId != y.MessageId) return false;
+                if (((IPEndPoint)x.EndPoint).Port != ((IPEndPoint)y.EndPoint).Port) return false;
+                if (!((IPEndPoint)x.EndPoint).Address.Equals(((IPEndPoint)y.EndPoint).Address)) return false;
+            }
+            else if (x.IdentityType == TransactionIdentityTypes.NamedPipe)
+            {
+                if (((NamedPipeEndPoint)x.EndPoint).GetPipeCodeId() != ((NamedPipeEndPoint)y.EndPoint).GetPipeCodeId()) return false;
+            }
             return true;
         }
 

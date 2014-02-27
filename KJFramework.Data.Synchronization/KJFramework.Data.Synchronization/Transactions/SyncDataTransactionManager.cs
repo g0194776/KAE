@@ -1,4 +1,3 @@
-using System.Net;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Identities;
@@ -8,7 +7,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-using KJFramework.Net.Transaction.Managers;
 
 namespace KJFramework.Data.Synchronization.Transactions
 {
@@ -49,7 +47,7 @@ namespace KJFramework.Data.Synchronization.Transactions
         public SyncDataTransaction Create(IMessageTransportChannel<MetadataContainer> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
-            SyncDataTransaction tran = new SyncDataTransaction(channel) { Identity = IdentityHelper.Create((IPEndPoint) channel.LocalEndPoint) };
+            SyncDataTransaction tran = new SyncDataTransaction(channel) { Identity = IdentityHelper.Create(channel.LocalEndPoint, channel.ChannelType) };
             return _trans.TryAdd(tran.Identity, tran) ? tran : null;
         }
 

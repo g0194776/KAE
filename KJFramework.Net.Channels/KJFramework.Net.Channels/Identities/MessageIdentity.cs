@@ -41,7 +41,7 @@ namespace KJFramework.Net.Channels.Identities
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            return string.Format("(P: {0}, S: {1}, D: {2}, T: {3})", ProtocolId, ServiceId, DetailsId, Tid);
+            return string.Format("(P: {0}, S: {1}, D: {2}, T: {3}) *{4} MESSAGE", ProtocolId, ServiceId, DetailsId, Tid, (DetailsId % 2 == 0 ? "REQ" : "RSP"));
         }
 
         #endregion

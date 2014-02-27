@@ -78,7 +78,7 @@ namespace KJFramework.Net.Channels.Identities
         /// <param name="length">长度</param>
         public static TransactionIdentity Deserialize(byte[] data, int offset, int length)
         {
-            TCPTransactionIdentity identity = new TCPTransactionIdentity();
+            NamedPipeTransactionIdentity identity = new NamedPipeTransactionIdentity();
             unsafe
             {
                 //ignores first byte of Identity-Type.

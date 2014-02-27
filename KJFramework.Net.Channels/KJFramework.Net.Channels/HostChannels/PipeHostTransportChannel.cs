@@ -49,6 +49,7 @@ namespace KJFramework.Net.Channels.HostChannels
             LogicalAddress = uri;
             _name = uri.PipeName;
             _instanceCount = instanceCount;
+            _uri = uri;
         }
 
         #endregion
@@ -56,6 +57,7 @@ namespace KJFramework.Net.Channels.HostChannels
         #region Members
 
         protected readonly string _name;
+        protected readonly PipeUri _uri;
         protected readonly int _instanceCount;
         private readonly object _lockAvaObj = new object();
         private readonly object _lockUsedObj = new object();
@@ -184,7 +186,7 @@ namespace KJFramework.Net.Channels.HostChannels
                 stream.EndWaitForConnection(result);
                 lock (_lockAvaObj) _avaStreams.Remove(stream);
                 lock (_lockUsedObj) _usedStreams.Add(stream);
-                PipeTransportChannel channel = new PipeTransportChannel(stream);
+                PipeTransportChannel channel = new PipeTransportChannel(_uri, stream);
                 channel.Disconnected += TransportChannelDisconnected;
                 //transfers current stream into different collection.
                 ChannelCreatedHandler(new LightSingleArgEventArgs<ITransportChannel>(channel));

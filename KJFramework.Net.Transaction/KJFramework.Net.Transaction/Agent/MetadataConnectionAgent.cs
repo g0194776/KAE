@@ -138,7 +138,7 @@ namespace KJFramework.Net.Transaction.Agent
         /// <exception cref="ArgumentNullException">参数错误</exception>
         public MessageTransaction<MetadataContainer> CreateTransaction()
         {
-            return _transactionManager.Create(IdentityHelper.Create((IPEndPoint) _channel.LocalEndPoint), _channel);
+            return _transactionManager.Create(IdentityHelper.Create(_channel.LocalEndPoint, _channel.ChannelType), _channel);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace KJFramework.Net.Transaction.Agent
         /// <exception cref="ArgumentNullException">参数错误</exception>
         public MessageTransaction<MetadataContainer> CreateOnewayTransaction()
         {
-            return _transactionManager.Create(IdentityHelper.CreateOneway((IPEndPoint) _channel.LocalEndPoint), _channel);
+            return _transactionManager.Create(IdentityHelper.CreateOneway(_channel.LocalEndPoint, _channel.ChannelType), _channel);
         }
 
         /// <summary>

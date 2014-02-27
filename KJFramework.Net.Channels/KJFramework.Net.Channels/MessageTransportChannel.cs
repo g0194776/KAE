@@ -50,6 +50,7 @@ namespace KJFramework.Net.Channels
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");
             if (rawChannel.SupportSegment && parser == null) throw new ArgumentNullException("parser");
             _rawChannel = rawChannel;
+            _channelType = _rawChannel.ChannelType;
             //initialize segment data parser, if current channel support segment data recv.
             if (_rawChannel.SupportSegment)
             {
@@ -88,6 +89,7 @@ namespace KJFramework.Net.Channels
         private EndPoint _localIep;
         private EndPoint _remoteIep;
         private ISegmentDataParser<T> _parser;
+        private readonly TransportChannelTypes _channelType;
 
         #endregion
 
@@ -269,7 +271,7 @@ namespace KJFramework.Net.Channels
         /// </summary>
         public TransportChannelTypes ChannelType
         {
-            get { return TransportChannelTypes.Message; }
+            get { return _channelType; }
         }
 
         /// <summary>
