@@ -1,9 +1,9 @@
+using KJFramework.Data.Synchronization.Enums;
+using KJFramework.Messages.Contracts;
+using KJFramework.Net.Channels;
 using System;
 using System.Collections.Concurrent;
 using System.Net;
-using KJFramework.Data.Synchronization.Enums;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Transaction.Messages;
 
 namespace KJFramework.Data.Synchronization
 {
@@ -14,7 +14,7 @@ namespace KJFramework.Data.Synchronization
     {
         #region Members
 
-        private static readonly ConcurrentDictionary<string, IMessageTransportChannel<BaseMessage>> _channels = new ConcurrentDictionary<string, IMessageTransportChannel<BaseMessage>>();
+        private static readonly ConcurrentDictionary<string, IMessageTransportChannel<MetadataContainer>> _channels = new ConcurrentDictionary<string, IMessageTransportChannel<MetadataContainer>>();
         private static readonly ConcurrentDictionary<string, PublisherResourceStub> _hosts = new ConcurrentDictionary<string, PublisherResourceStub>();
         /// <summary>
         ///     内部系统资源池
@@ -56,15 +56,15 @@ namespace KJFramework.Data.Synchronization
         /// <param name="res">网络资源</param>
         /// <returns>返回通信信道</returns>
         /// <exception cref="System.NullReferenceException">无效参数</exception>
-        public IMessageTransportChannel<BaseMessage> GetChannel(INetworkResource res)
+        public IMessageTransportChannel<MetadataContainer> GetChannel(INetworkResource res)
         {
             if (res == null) throw new ArgumentNullException("res");
             if (res.Mode != ResourceMode.Remote) throw new ArgumentException("Cannot support this mode at REMOTE resource. #mode: " + res.Mode);
-            IMessageTransportChannel<BaseMessage> channel;
+            IMessageTransportChannel<MetadataContainer> channel;
             if (_channels.TryGetValue(res.ToString(), out channel)) return channel;
             TcpTransportChannel tcpChannel = new TcpTransportChannel(res.GetResource<IPEndPoint>());
             tcpChannel.Connect();
-            if (tcpChannel.IsConnected) channel = new MessageTransportChannel<BaseMessage>(tcpChannel, Global.ProtocolStack);
+            if (tcpChannel.IsConnected) channel = new MessageTransportChannel<MetadataContainer>(tcpChannel, Global.ProtocolStack);
             return tcpChannel.IsConnected ? (_channels.TryAdd(res.ToString(), channel) ? channel : null) : null;
         }
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Bussiness.Default.Counters;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
 using KJFramework.Tracing;

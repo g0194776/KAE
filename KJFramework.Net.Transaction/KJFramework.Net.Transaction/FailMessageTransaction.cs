@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using KJFramework.Net.Channels;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
 
@@ -19,7 +19,7 @@ namespace KJFramework.Net.Transaction
         public FailMessageTransaction(string iep)
         {
             _iep = iep;
-            Identity = new TransactionIdentity {EndPoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1000)};
+            Identity = new ErrorTransactionIdentity { EndPoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1000) };
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace KJFramework.Net.Transaction
         public FailMessageTransaction(IMessageTransportChannel<BaseMessage> channel)
             : base(channel)
         {
-            Identity = new TransactionIdentity { EndPoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1000) };
+            Identity = new ErrorTransactionIdentity { EndPoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1000) };
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace KJFramework.Net.Transaction
         public FailMessageTransaction(ILease lease, IMessageTransportChannel<BaseMessage> channel)
             : base(lease, channel)
         {
-            Identity = new TransactionIdentity { EndPoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1000) };
+            Identity = new ErrorTransactionIdentity { EndPoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1000) };
         }
 
         #endregion

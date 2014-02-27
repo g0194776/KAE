@@ -13,7 +13,7 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取信道类型
         /// </summary>
-        HttpChannelTypes ChannelType { get; }
+        HttpChannelTypes HttpChannelType { get; }
         /// <summary>
         ///     获取包含在请求中的正文数据的长度
         /// </summary>

@@ -93,6 +93,10 @@
       <Project>{35fd171e-de60-4e34-9a35-e33c3ba8c02f}</Project>
       <Name>KJFramework.Net</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Platform.Deploy.CSN.Common\KJFramework.Platform.Deploy.CSN.Common.csproj">
+      <Project>{09c9cd08-db98-41a5-ae44-d581138c88d2}</Project>
+      <Name>KJFramework.Platform.Deploy.CSN.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KJFramework\KJFramework\KJFramework.csproj">
       <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>
       <Name>KJFramework</Name>

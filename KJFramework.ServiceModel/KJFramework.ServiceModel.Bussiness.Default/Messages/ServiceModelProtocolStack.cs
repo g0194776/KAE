@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using KJFramework.Messages.Engine;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.ProtocolStacks;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.Tracing;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Messages

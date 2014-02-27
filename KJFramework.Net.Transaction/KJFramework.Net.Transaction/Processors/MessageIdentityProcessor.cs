@@ -2,7 +2,7 @@
 using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Identities;
 
 namespace KJFramework.Net.Transaction.Processors
 {

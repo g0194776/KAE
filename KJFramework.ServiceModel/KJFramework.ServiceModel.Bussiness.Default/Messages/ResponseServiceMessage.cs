@@ -1,5 +1,5 @@
 using KJFramework.Messages.Attributes;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.ServiceModel.Bussiness.Default.Objects;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Messages

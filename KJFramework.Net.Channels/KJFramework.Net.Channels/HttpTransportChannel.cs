@@ -216,9 +216,17 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取信道类型
         /// </summary>
-        public HttpChannelTypes ChannelType
+        public HttpChannelTypes HttpChannelType
         {
             get { return _channelType; }
+        }
+
+        /// <summary>
+        ///   获取通信信道的类型
+        /// </summary>
+        public override TransportChannelTypes ChannelType
+        {
+            get { return TransportChannelTypes.HTTP; }
         }
 
         /// <summary>

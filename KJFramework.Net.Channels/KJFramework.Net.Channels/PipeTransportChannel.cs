@@ -124,6 +124,14 @@ namespace KJFramework.Net.Channels
         #region Overrides of TransportChannel
 
         /// <summary>
+        ///   获取通信信道的类型
+        /// </summary>
+        public override TransportChannelTypes ChannelType
+        {
+            get { return TransportChannelTypes.NamedPipe; }
+        }
+
+        /// <summary>
         ///     连接到远程命名管道
         ///     <para>* 此方法将会使用双向数据流的方式连接远程命名管道</para>
         /// </summary>

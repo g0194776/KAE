@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 using System.Threading;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.ServiceModel.Core.EventArgs;
 
 namespace KJFramework.ServiceModel.Core.Contracts
@@ -39,12 +39,12 @@ namespace KJFramework.ServiceModel.Core.Contracts
         /// </summary>
         public TransactionIdentity Create(bool isOneway)
         {
-            return new TransactionIdentity
+            return new TCPTransactionIdentity
                        {
                            EndPoint = LocalEndPoint,
                            IsOneway = isOneway,
                            IsRequest = true,
-                           MessageId = Interlocked.Increment(ref _msgId)
+                           MessageId = (uint) Interlocked.Increment(ref _msgId)
                        };
         }
 

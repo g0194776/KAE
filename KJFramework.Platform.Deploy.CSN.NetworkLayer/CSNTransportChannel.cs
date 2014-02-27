@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using KJFramework.EventArgs;
 using KJFramework.IO.Buffers;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Enums;
 
 namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 {
@@ -31,6 +32,14 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         protected bool _supportSegment;
         protected IByteArrayBuffer _buffer;
         protected LingerOption _lingerState;
+
+        /// <summary>
+        ///   获取通信信道的类型
+        /// </summary>
+        public TransportChannelTypes ChannelType
+        {
+            get { return TransportChannelTypes.TCP; }
+        }
 
         /// <summary>
         ///     获取本地终结点地址

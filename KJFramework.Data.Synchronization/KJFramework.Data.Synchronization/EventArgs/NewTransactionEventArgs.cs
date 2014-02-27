@@ -1,6 +1,6 @@
 ﻿using KJFramework.Data.Synchronization.Transactions;
+using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
-using KJFramework.Net.Transaction.Messages;
 
 namespace KJFramework.Data.Synchronization.EventArgs
 {
@@ -16,7 +16,7 @@ namespace KJFramework.Data.Synchronization.EventArgs
         /// </summary>
         /// <param name="transaction">事务</param>
         /// <param name="channel">内部通信信道</param>
-        public NewTransactionEventArgs(SyncDataTransaction transaction, IMessageTransportChannel<BaseMessage> channel)
+        public NewTransactionEventArgs(SyncDataTransaction transaction, IMessageTransportChannel<MetadataContainer> channel)
         {
             Transaction = transaction;
             Channel = channel;
@@ -33,7 +33,7 @@ namespace KJFramework.Data.Synchronization.EventArgs
         /// <summary>
         ///     获取或设置内部通信信道
         /// </summary>
-        public IMessageTransportChannel<BaseMessage> Channel { get; private set; }
+        public IMessageTransportChannel<MetadataContainer> Channel { get; private set; }
 
         #endregion
     }

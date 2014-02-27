@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using KJFramework.Helpers;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Agent;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.Processors;

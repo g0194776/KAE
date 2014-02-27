@@ -3,8 +3,8 @@ using KJFramework.Cache.Containers;
 using KJFramework.Cache.Cores;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Comparers;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
 using KJFramework.ServiceModel.Bussiness.Default.Metadata;
 using KJFramework.ServiceModel.Bussiness.Default.Objects;
@@ -82,7 +82,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Proxy
                 ServiceModel.FixedRequestMessage = ServiceModel.Tenant.Rent<RequestServiceMessage>("Fixed:RequestServiceMessage", ServiceModelSettingConfigSection.Current.NetworkLayer.RequestServiceMessagePoolCount);
             if (ServiceModel.FixedRequestWaitObject == null)
                 ServiceModel.FixedRequestWaitObject = ServiceModel.Tenant.Rent<RequestCenterWaitObject>("Fixed:RequestCenterWaitObject", ServiceModelSettingConfigSection.Current.NetworkLayer.RequestCenterWaitObjectPoolCount);
-            _delegators = ServiceModel.Tenant.Rent<TransactionIdentity, AsyncMethodCallback>("Cache:Callbacks, Id: " + Guid.NewGuid(), new TransactionIdentityComparer());
+            _delegators = ServiceModel.Tenant.Rent<TransactionIdentity, AsyncMethodCallback>("Cache:Callbacks, Id: " + Guid.NewGuid(), new TCPTransactionIdentityComparer());
             _delegators.CacheExpired += CacheExpired;
             _status = ProxyStatus.Opend;
         }
@@ -97,7 +97,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Proxy
         private readonly Uri _logicalAddress;
         private IMessageTransportChannel<Message> _msgChannel;
         private readonly ICacheContainer<TransactionIdentity, AsyncMethodCallback> _delegators;
-        private readonly ConcurrentDictionary<TransactionIdentity, RequestCenterWaitObject> _waitObjects = new ConcurrentDictionary<TransactionIdentity, RequestCenterWaitObject>(new TransactionIdentityComparer());
+        private readonly ConcurrentDictionary<TransactionIdentity, RequestCenterWaitObject> _waitObjects = new ConcurrentDictionary<TransactionIdentity, RequestCenterWaitObject>(new TCPTransactionIdentityComparer());
 
         #endregion
 

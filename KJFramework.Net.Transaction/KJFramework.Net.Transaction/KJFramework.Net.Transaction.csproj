@@ -56,7 +56,7 @@
     <Compile Include="CommonCounter.cs" />
     <Compile Include="Comparers\ProtocolsComparer.cs" />
     <Compile Include="Comparers\ServiceCoreComparer.cs" />
-    <Compile Include="Comparers\TransactionIdentityComparer.cs" />
+    <Compile Include="Comparers\TCPTransactionIdentityComparer.cs" />
     <Compile Include="Configurations\TransactionSettingConfigSection.cs" />
     <Compile Include="Configurations\SettingConfiguration.cs" />
     <Compile Include="Contexts\BusinessTransactionContext.cs" />
@@ -64,7 +64,6 @@
     <Compile Include="FailMessageTransaction.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
-    <Compile Include="Identities\NamedPipeTransactionIdentity.cs" />
     <Compile Include="Managers\MetadataTransactionManager.cs" />
     <Compile Include="MetadataMessageTransaction.cs" />
     <Compile Include="Objects\NewProcessorObject.cs" />
@@ -78,8 +77,6 @@
     <Compile Include="Schedulers\IRequestScheduler.cs" />
     <Compile Include="Managers\MessageTransactionManager.cs" />
     <Compile Include="Messages\BaseMessage.cs" />
-    <Compile Include="Identities\MessageIdentity.cs" />
-    <Compile Include="Identities\TransactionIdentity.cs" />
     <Compile Include="IExecutableTransaction.cs" />
     <Compile Include="ILease.cs" />
     <Compile Include="IMessageTransaction.cs" />

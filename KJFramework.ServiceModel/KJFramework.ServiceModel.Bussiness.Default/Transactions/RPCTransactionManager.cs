@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Comparers;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Bussiness.Default.Helpers;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
 using KJFramework.Tracing;
@@ -23,7 +23,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
         ///     * 默认时间：60s.
         /// </summary>
         public RPCTransactionManager()
-            : base(60000, new TransactionIdentityComparer())
+            : base(60000, new TCPTransactionIdentityComparer())
         {
 
         }

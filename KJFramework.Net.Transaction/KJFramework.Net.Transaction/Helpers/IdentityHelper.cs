@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Threading;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Identities;
 
 namespace KJFramework.Net.Transaction.Helpers
 {
@@ -24,7 +24,7 @@ namespace KJFramework.Net.Transaction.Helpers
         /// <returns>返回一个新的事务唯一标示</returns>
         public static TransactionIdentity Create(IPEndPoint iep)
         {
-            return Create(iep, Interlocked.Increment(ref _ids), false);
+            return Create(iep, (uint) Interlocked.Increment(ref _ids), false);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace KJFramework.Net.Transaction.Helpers
         /// <returns>返回一个新的事务唯一标示</returns>
         public static TransactionIdentity CreateOneway(IPEndPoint iep)
         {
-            return Create(iep, Interlocked.Increment(ref _ids), true);
+            return Create(iep, (uint) Interlocked.Increment(ref _ids), true);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace KJFramework.Net.Transaction.Helpers
         /// <returns>返回一个新的事务唯一标示</returns>
         public static TransactionIdentity Create(IPEndPoint iep, bool isOneway)
         {
-            return new TransactionIdentity { EndPoint = iep, MessageId = Interlocked.Increment(ref _ids), IsOneway = isOneway, IsRequest = true };
+            return new TCPTransactionIdentity { EndPoint = iep, MessageId = (uint)Interlocked.Increment(ref _ids), IsOneway = isOneway, IsRequest = true };
         }
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace KJFramework.Net.Transaction.Helpers
         /// <param name="messageId">消息编号</param>
         /// <param name="isOneway">单向请求标示</param>
         /// <returns>返回一个新的事务唯一标示</returns>
-        public static TransactionIdentity Create(IPEndPoint iep, int messageId, bool isOneway)
+        public static TransactionIdentity Create(IPEndPoint iep, uint messageId, bool isOneway)
         {
-            return new TransactionIdentity {EndPoint = iep, MessageId = messageId, IsOneway = isOneway, IsRequest = true};
+            return new TCPTransactionIdentity {EndPoint = iep, MessageId = messageId, IsOneway = isOneway, IsRequest = true};
         }
 
         #endregion

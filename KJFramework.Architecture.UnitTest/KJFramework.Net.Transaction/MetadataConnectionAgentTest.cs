@@ -8,9 +8,9 @@ using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.HostChannels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
@@ -32,8 +32,8 @@ namespace KJFramework.Net.Transaction.UnitTest
         [Test]
         public void ReceiveTransactionTest()
         {
-            MetadataTransactionManager manager1 = new MetadataTransactionManager(new TransactionIdentityComparer());
-            MetadataTransactionManager manager2 = new MetadataTransactionManager(new TransactionIdentityComparer());
+            MetadataTransactionManager manager1 = new MetadataTransactionManager(new TCPTransactionIdentityComparer());
+            MetadataTransactionManager manager2 = new MetadataTransactionManager(new TCPTransactionIdentityComparer());
             ITransportChannel connectedChannel = null;
             AutoResetEvent msgEvent = new AutoResetEvent(false);
             AutoResetEvent channelEvent = new AutoResetEvent(false);

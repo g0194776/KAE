@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using KJFramework.Messages.Helpers;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Comparers;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.ServiceModel.Metadata;
 
 namespace KJFramework.ServiceModel.Core.Managers
@@ -13,7 +13,7 @@ namespace KJFramework.ServiceModel.Core.Managers
     {
         #region Members
 
-        protected readonly ConcurrentDictionary<TransactionIdentity, IBinaryArgContext> _results = new ConcurrentDictionary<TransactionIdentity, IBinaryArgContext>(new TransactionIdentityComparer());
+        protected readonly ConcurrentDictionary<TransactionIdentity, IBinaryArgContext> _results = new ConcurrentDictionary<TransactionIdentity, IBinaryArgContext>(new TCPTransactionIdentityComparer());
 
         #endregion
 

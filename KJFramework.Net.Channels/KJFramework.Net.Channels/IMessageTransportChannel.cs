@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using KJFramework.EventArgs;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Managers;
 using KJFramework.Net.ProtocolStacks;
 
@@ -29,5 +30,11 @@ namespace KJFramework.Net.Channels
         ///     接收到消息事件
         /// </summary>
         event EventHandler<LightSingleArgEventArgs<List<T>>> ReceivedMessage;
+        /// <summary>
+        ///   生成一个请求的事务唯一标示
+        /// </summary>
+        /// <param name="messageId">消息编号</param>
+        /// <returns>返回创建后的事务唯一标示</returns>
+        TransactionIdentity GenerateRequestIdentity(uint messageId);
     }
 }

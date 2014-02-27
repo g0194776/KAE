@@ -1,4 +1,4 @@
-﻿using KJFramework.Net.Transaction.Identities;
+﻿using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Messages;
 
 namespace KJFramework.Data.Synchronization.Messages

@@ -1,8 +1,6 @@
-﻿using KJFramework.Messages.Helpers;
-using KJFramework.Messages.TypeProcessors.Maps;
+﻿using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.Channels;
-using KJFramework.Net.Transaction.Identities;
-using KJFramework.Net.Transaction.Processors;
+using KJFramework.Net.Transaction.ValueStored;
 
 namespace KJFramework.Data.Synchronization
 {
@@ -25,10 +23,8 @@ namespace KJFramework.Data.Synchronization
         public static void Initialize()
         {
             if (_initialized) return;
-            FixedTypeManager.Add(typeof(MessageIdentity), 5);
-            FixedTypeManager.Add(typeof(TransactionIdentity), 18);
-            IntellectTypeProcessorMapping.Instance.Regist(new MessageIdentityProcessor());
-            IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityProcessor());
+            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
+            ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
             SyncCounter.Instance.Initialize();
             ChannelConst.Initialize();
             _initialized = true;

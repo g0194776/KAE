@@ -10,6 +10,12 @@ namespace KJFramework.Data.Synchronization.UnitTest
 {
     public class DataBroadcasterTest
     {
+        [SetUp]
+        public void Initialize()
+        {
+            SyncDataFramework.Initialize();
+        }
+
         /// <summary>
         ///     测试广播消息
         ///     <para>Key: string, Value: string</para>

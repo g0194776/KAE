@@ -1,11 +1,13 @@
 ﻿using KJFramework.Data.Synchronization.Enums;
-using KJFramework.Data.Synchronization.Messages;
 using KJFramework.Data.Synchronization.Transactions;
 using KJFramework.EventArgs;
+using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Helpers;
+using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Exception;
-using KJFramework.Net.Transaction.Messages;
+using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 using System.Net;
@@ -146,7 +148,7 @@ namespace KJFramework.Data.Synchronization
             TransportChannel transport = new TcpTransportChannel(ipEndPoint);
             transport.Connect();
             if (!transport.IsConnected) throw new ConnectFailException("Remote endpoint cannot reachable! #addr: " + ipEndPoint);
-            _msgChannel = new MessageTransportChannel<BaseMessage>(transport, Global.ProtocolStack);
+            _msgChannel = new MessageTransportChannel<MetadataContainer>(transport, Global.ProtocolStack);
             _msgChannel.ReceivedMessage += MsgChannelReceivedMessage;
             _msgChannel.Disconnected += MsgChannelDisconnected;
             State = BroadcasterState.Connected;
@@ -161,7 +163,7 @@ namespace KJFramework.Data.Synchronization
         private string _catalog;
         private INetworkResource _resource;
         private readonly bool _isAutoReconnect;
-        private IMessageTransportChannel<BaseMessage> _msgChannel;
+        private IMessageTransportChannel<MetadataContainer> _msgChannel;
         private static ITracing _tracing = TracingManager.GetTracing(typeof(DataBroadcaster<TK, TV>));
 
         /// <summary>
@@ -220,17 +222,17 @@ namespace KJFramework.Data.Synchronization
             if (key == null) throw new ArgumentNullException("key");
             bool result = false;
             AutoResetEvent are = new AutoResetEvent(false);
-            BroadcastRequestMessage request = new BroadcastRequestMessage
-            {
-                Catalog = _catalog,
-                Key = DataHelper.ToBytes(_keyType, key),
-                Value = (value == null ? null : DataHelper.ToBytes(_valueType, value))
-            };
+            MetadataContainer container = new MetadataContainer();
+            container.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 3, ServiceId = 0, DetailsId = 0 }));
+            container.SetAttribute(0x0A, new StringValueStored(_catalog));
+            container.SetAttribute(0x0B, new ByteArrayValueStored(DataHelper.ToBytes(_keyType, key)));
+            if (value == null) container.SetAttribute(0x0C, new NullValueStored());
+            else container.SetAttribute(0x0C, new ByteArrayValueStored(DataHelper.ToBytes(_valueType, value)));
             SyncDataTransaction trans = SyncDataTransactionManager.Instance.Create(_msgChannel);
-            trans.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<BaseMessage> e)
+            trans.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<MetadataContainer> e)
             {
-                BroadcastResponseMessage rsp = (BroadcastResponseMessage)e.Target;
-                if (rsp.ErrorId == 0) result = true;
+                MetadataContainer rsp = e.Target;
+                if (!rsp.IsAttibuteExsits(0x0A)) result = true;
                 are.Set();
             };
             trans.Timeout += delegate
@@ -243,7 +245,7 @@ namespace KJFramework.Data.Synchronization
                 result = false;
                 are.Set();
             };
-            trans.SendRequest(request);
+            trans.SendRequest(container);
             are.WaitOne();
             return result;
         }
@@ -257,21 +259,21 @@ namespace KJFramework.Data.Synchronization
         public void BroadcastAsync(TK key, TV value, Action<bool> callback)
         {
             if (key == null) throw new ArgumentNullException("key");
-            BroadcastRequestMessage request = new BroadcastRequestMessage
-            {
-                Catalog = _catalog,
-                Key = DataHelper.ToBytes(_keyType, key),
-                Value = (value == null ? null : DataHelper.ToBytes(_valueType, value))
-            };
+            MetadataContainer container = new MetadataContainer();
+            container.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 3, ServiceId = 0, DetailsId = 0 }));
+            container.SetAttribute(0x0A, new StringValueStored(_catalog));
+            container.SetAttribute(0x0B, new ByteArrayValueStored(DataHelper.ToBytes(_keyType, key)));
+            if (value == null) container.SetAttribute(0x0C, new NullValueStored());
+            else container.SetAttribute(0x0C, new ByteArrayValueStored(DataHelper.ToBytes(_valueType, value)));
             SyncDataTransaction trans = SyncDataTransactionManager.Instance.Create(_msgChannel);
-            trans.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<BaseMessage> e)
+            trans.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<MetadataContainer> e)
             {
-                BroadcastResponseMessage rsp = (BroadcastResponseMessage)e.Target;
-                if (callback != null) callback(rsp.ErrorId == 0);
+                MetadataContainer rsp = e.Target;
+                if (callback != null) callback(!rsp.IsAttibuteExsits(0x0A));
             };
             trans.Failed += delegate { if (callback != null) callback(false); };
             trans.Timeout += delegate { if (callback != null) callback(false); };
-            trans.SendRequest(request);
+            trans.SendRequest(container);
         }
 
         /// <summary>
@@ -320,13 +322,13 @@ namespace KJFramework.Data.Synchronization
         }
 
         //rsp messages received.
-        void MsgChannelReceivedMessage(object sender, LightSingleArgEventArgs<System.Collections.Generic.List<BaseMessage>> e)
+        void MsgChannelReceivedMessage(object sender, LightSingleArgEventArgs<System.Collections.Generic.List<MetadataContainer>> e)
         {
-            IMessageTransportChannel<BaseMessage> msgChannel = (IMessageTransportChannel<BaseMessage>)sender;
-            foreach (BaseMessage msg in e.Target)
+            IMessageTransportChannel<MetadataContainer> msgChannel = (IMessageTransportChannel<MetadataContainer>)sender;
+            foreach (MetadataContainer msg in e.Target)
             {
                 _tracing.Info("L: {0}\r\nR: {1}\r\n{2}", msgChannel.LocalEndPoint, msgChannel.RemoteEndPoint, msg.ToString());
-                if (!msg.TransactionIdentity.IsRequest) SyncDataTransactionManager.Instance.Active(msg.TransactionIdentity, msg);
+                if (!msg.GetAttribute(0x01).GetValue<TransactionIdentity>().IsRequest) SyncDataTransactionManager.Instance.Active(msg.GetAttribute(0x01).GetValue<TransactionIdentity>(), msg);
             }
         }
 

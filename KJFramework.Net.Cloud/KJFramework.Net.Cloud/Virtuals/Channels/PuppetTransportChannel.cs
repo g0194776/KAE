@@ -60,6 +60,14 @@ namespace KJFramework.Net.Cloud.Virtuals.Channels
         }
 
         /// <summary>
+        ///   获取通信信道的类型
+        /// </summary>
+        public override TransportChannelTypes ChannelType
+        {
+            get { return TransportChannelTypes.Puppet; }
+        }
+
+        /// <summary>
         /// 获取本地终结点地址
         /// </summary>
         public override EndPoint LocalEndPoint

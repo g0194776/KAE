@@ -1,6 +1,8 @@
+using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
-using KJFramework.Net.Transaction.Messages;
+using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 
@@ -9,7 +11,7 @@ namespace KJFramework.Data.Synchronization.Transactions
     /// <summary>
     ///     同步数据事务
     /// </summary>
-    internal class SyncDataTransaction : BusinessMessageTransaction
+    internal class SyncDataTransaction : MetadataMessageTransaction
     {
         #region Constructor
 
@@ -24,7 +26,7 @@ namespace KJFramework.Data.Synchronization.Transactions
         ///     基础业务消息事务，提供了相关的基本操作
         /// </summary>
         /// <param name="channel">消息通信信道</param>
-        public SyncDataTransaction(IMessageTransportChannel<BaseMessage> channel)
+        public SyncDataTransaction(IMessageTransportChannel<MetadataContainer> channel)
             : base(channel)
         {
         }
@@ -34,7 +36,7 @@ namespace KJFramework.Data.Synchronization.Transactions
         /// </summary>
         /// <param name="lease">事务生命租期租约</param>
         /// <param name="channel">消息通信信道</param>
-        public SyncDataTransaction(ILease lease, IMessageTransportChannel<BaseMessage> channel)
+        public SyncDataTransaction(ILease lease, IMessageTransportChannel<MetadataContainer> channel)
             : base(lease, channel)
         {
         }
@@ -69,15 +71,15 @@ namespace KJFramework.Data.Synchronization.Transactions
         ///     发送一个请求消息
         /// </summary>
         /// <param name="message">请求消息</param>
-        public new void SendRequest(BaseMessage message)
+        public override void SendRequest(MetadataContainer message)
         {
             if (message == null) return;
-            message.TransactionIdentity = Identity;
-            message.TransactionIdentity.IsRequest = true;
+            Identity.IsRequest = true;
+            message.SetAttribute(0x01, new TransactionIdentityValueStored(Identity));
             _request = message;
             if (!_channel.IsConnected)
             {
-                _tracing.Warn(string.Format("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint));
+                _tracing.Warn("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint);
                 SyncDataTransactionManager.Instance.Remove(Identity);
                 FailedHandler(null);
                 return;
@@ -96,7 +98,6 @@ namespace KJFramework.Data.Synchronization.Transactions
                 //calc REQ time.
                 RequestTime = DateTime.Now;
                 _tracing.Info("SendCount: {0}\r\nL: {1}\r\nR: {2}\r\n{3}", sendCount, _channel.LocalEndPoint, _channel.RemoteEndPoint, message.ToString());
-                GetLease().Change(DateTime.Now.Add(Net.Transaction.Global.TransactionTimeout));
             }
             catch
             {
@@ -110,7 +111,7 @@ namespace KJFramework.Data.Synchronization.Transactions
         ///     发送一个响应消息
         /// </summary>
         /// <param name="message">响应消息</param>
-        public new void SendResponse(BaseMessage message)
+        public override void SendResponse(MetadataContainer message)
         {
             SendResponse(message, true);
         }
@@ -120,18 +121,23 @@ namespace KJFramework.Data.Synchronization.Transactions
         /// </summary>
         /// <param name="message">响应消息</param>
         /// <param name="autoTransactionIdentity">一个标示，指示了当前是否在应答消息中加入请求消息的事务唯一标示 </param>
-        public new void SendResponse(BaseMessage message, bool autoTransactionIdentity)
+        public void SendResponse(MetadataContainer message, bool autoTransactionIdentity)
         {
             _response = message;
             if (message == null || Identity.IsOneway) return;
-            if (_request.TransactionIdentity != null)
+            if (!message.IsAttibuteExsits(0x00)) throw new ArgumentException("#Current RSP message dose not contain any Message-Identity infomation.");
+            MessageIdentity mIdentity = message.GetAttributeAsType<MessageIdentity>(0x00);
+            TransactionIdentityValueStored valueStored = (TransactionIdentityValueStored)_request.GetAttribute(0x01);
+            TransactionIdentity tIdentity;
+            if (valueStored != null)
             {
-                message.TransactionIdentity = Identity;
-                message.TransactionIdentity.IsRequest = false;
+                tIdentity = valueStored.GetValue<TransactionIdentity>();
+                tIdentity.IsRequest = false;
+                message.SetAttribute(0x01, new TransactionIdentityValueStored(tIdentity));
             }
             if (!_channel.IsConnected)
             {
-                _tracing.Warn(string.Format("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint));
+                _tracing.Warn("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint);
                 return;
             }
             try
@@ -141,9 +147,9 @@ namespace KJFramework.Data.Synchronization.Transactions
                 {
                     _tracing.Warn(
                         "#Cannot send binary data to remote endpoint, serialized data maybe is null. \r\n#Ref protocol P: {0}, S: {1}, D: {2}\r\n#Ref Instant Message: \r\n{3}",
-                        message.MessageIdentity.ProtocolId,
-                        message.MessageIdentity.ServiceId,
-                        message.MessageIdentity.DetailsId,
+                        mIdentity.ProtocolId,
+                        mIdentity.ServiceId,
+                        mIdentity.DetailsId,
                         message);
                     return;
                 }
@@ -164,6 +170,7 @@ namespace KJFramework.Data.Synchronization.Transactions
                 FailedHandler(null);
             }
         }
+
 
         #endregion
     }

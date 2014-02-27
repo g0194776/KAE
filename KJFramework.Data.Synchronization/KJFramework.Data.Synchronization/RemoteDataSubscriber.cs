@@ -3,13 +3,17 @@ using System.Net;
 using System.Threading;
 using KJFramework.Data.Synchronization.Enums;
 using KJFramework.Data.Synchronization.EventArgs;
-using KJFramework.Data.Synchronization.Messages;
 using KJFramework.Data.Synchronization.Policies;
 using KJFramework.Data.Synchronization.Transactions;
 using KJFramework.EventArgs;
+using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Helpers;
+using KJFramework.Messages.Types;
+using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Messages;
+using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 
 namespace KJFramework.Data.Synchronization
@@ -45,7 +49,7 @@ namespace KJFramework.Data.Synchronization
         #region Members
 
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (RemoteDataSubscriber<K, V>));
-        private IMessageTransportChannel<BaseMessage> _msgChannel;
+        private IMessageTransportChannel<MetadataContainer> _msgChannel;
         private AutoResetEvent _event;
         //reconnect time start at 3s, step N*2.
         private int _reconnectTime = 3000;
@@ -156,7 +160,7 @@ namespace KJFramework.Data.Synchronization
                 if (_reconnectThread == null) PrepareReconnectThread();
                 return;
             }
-            _msgChannel = new MessageTransportChannel<BaseMessage>(channel, Global.ProtocolStack);
+            _msgChannel = new MessageTransportChannel<MetadataContainer>(channel, Global.ProtocolStack);
             _msgChannel.Disconnected += ChannelDisconnected;
             _msgChannel.ReceivedMessage += ChannelReceivedMessage;
             _state = SubscriberState.ToBeSubscribe;
@@ -265,27 +269,41 @@ namespace KJFramework.Data.Synchronization
                 _state = SubscriberState.Exception;
                 _event.Set();
             };
-            transaction.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<BaseMessage> e)
+            transaction.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<MetadataContainer> e)
             {
-                SubscribeResponseMessage rsp = (SubscribeResponseMessage)e.Target;
-                if (rsp.Result == SubscribeResult.Reject)
+                MetadataContainer rsp = e.Target;
+                if ((SubscribeResult)rsp.GetAttributeAsType<byte>(0x0D) == SubscribeResult.Reject)
                 {
-                    exception = new System.Exception("Remote resource cannot subscribed. #reason: " + rsp.Result);
+                    exception = new System.Exception("Remote resource cannot subscribed. #reason: " + (SubscribeResult)rsp.GetAttributeAsType<byte>(0x0D));
                     _state = SubscriberState.Disconnected;
                     if (_event != null) _event.Set();
                 }
                 else
                 {
                     _state = SubscriberState.Subscribed;
-                    _id = (Guid)rsp.Id;
-                    _policy = rsp.Policy;
+                    _id = rsp.GetAttributeAsType<Guid>(0x0E);
+                    ResourceBlock rb = rsp.GetAttribute(0x0C).GetValue<ResourceBlock>();
+                    _policy = new PublisherPolicy
+                    {
+                        CanRetry = rb.GetAttributeAsType<bool>(0x00),
+                        IsOneway = rb.GetAttributeAsType<bool>(0x01),
+                        RetryCount = rb.GetAttributeAsType<byte>(0x02),
+                        TimeoutSec = rb.GetAttributeAsType<int>(0x03)
+                    };
                     _startTime = DateTime.Now;
                     if (_event != null) _event.Set();
                 }
             };
 
             #endregion
-            transaction.SendRequest(new SubscribeRequestMessage {Catalog = _catalog});
+            transaction.SendRequest((MetadataContainer)new MetadataContainer()
+                .SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity
+                    {
+                        ProtocolId = 0,
+                        ServiceId = 0,
+                        DetailsId = 0
+                    }))
+                .SetAttribute(0x0A, new StringValueStored(_catalog)));
             if (!_event.WaitOne(SubscribeTimeout))
             {
                 _state = SubscriberState.Exception;
@@ -300,22 +318,26 @@ namespace KJFramework.Data.Synchronization
 
         #region Events
 
-        void ChannelReceivedMessage(object sender, LightSingleArgEventArgs<System.Collections.Generic.List<BaseMessage>> e)
+        void ChannelReceivedMessage(object sender, LightSingleArgEventArgs<System.Collections.Generic.List<MetadataContainer>> e)
         {
-            IMessageTransportChannel<BaseMessage> msgChannel = (IMessageTransportChannel<BaseMessage>) sender;
-            foreach (BaseMessage msg in e.Target)
+            IMessageTransportChannel<MetadataContainer> msgChannel = (IMessageTransportChannel<MetadataContainer>)sender;
+            foreach (MetadataContainer msg in e.Target)
             {
                 _tracing.Info("L: {0}\r\nR: {1}\r\n{2}", msgChannel.LocalEndPoint, msgChannel.RemoteEndPoint, msg.ToString());
-                if (!msg.TransactionIdentity.IsRequest) SyncDataTransactionManager.Instance.Active(msg.TransactionIdentity, msg);
+                if (!msg.GetAttribute(0x01).GetValue<TransactionIdentity>().IsRequest) SyncDataTransactionManager.Instance.Active(msg.GetAttribute(0x01).GetValue<TransactionIdentity>(), msg);
                 else
                 {
-                    SyncDataTransaction transaction = new SyncDataTransaction(_msgChannel) { Identity = msg.TransactionIdentity, Request = msg };
-                    SyncDataRequestMessage reqMsg = (SyncDataRequestMessage)msg;
+                    SyncDataTransaction transaction = new SyncDataTransaction(_msgChannel) { Identity = msg.GetAttribute(0x01).GetValue<TransactionIdentity>(), Request = msg };
                     //send response msg.
                     try
                     {
-                        transaction.SendResponse(new SyncDataResponseMessage { TransactionIdentity = reqMsg.TransactionIdentity });
-                        DataRecvEventArgs<K, V> args = new DataRecvEventArgs<K, V>(_catalog, (K)DataHelper.GetObject(typeof(K), reqMsg.Key), (V)DataHelper.GetObject(typeof(V), reqMsg.Value));
+                        transaction.SendResponse((MetadataContainer)new MetadataContainer().SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity
+                        {
+                            ProtocolId = 2,
+                            ServiceId = 0,
+                            DetailsId = 1
+                        })));
+                        DataRecvEventArgs<K, V> args = new DataRecvEventArgs<K, V>(_catalog, (K)DataHelper.GetObject(typeof(K), msg.GetAttributeAsType<byte[]>(0x0B)), (V)DataHelper.GetObject(typeof(V), msg.GetAttributeAsType<byte[]>(0x0C)));
                         MessageRecvHandler(new LightSingleArgEventArgs<DataRecvEventArgs<K, V>>(args));
                     }
                     catch (System.Exception ex) { _tracing.Error(ex, null); }

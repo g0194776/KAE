@@ -1,10 +1,14 @@
 using KJFramework.Data.Synchronization.Enums;
 using KJFramework.Data.Synchronization.EventArgs;
-using KJFramework.Data.Synchronization.Messages;
 using KJFramework.Data.Synchronization.Policies;
+using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Helpers;
+using KJFramework.Messages.Types;
+using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Messages;
+using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
@@ -76,7 +80,7 @@ namespace KJFramework.Data.Synchronization
         protected INetworkResource _resource;
         protected PublisherState _state = PublisherState.Unknown;
         protected IDictionary<Guid, ILocalDataSubscriber> _subscribers = new Dictionary<Guid, ILocalDataSubscriber>();
-        protected IDictionary<Guid, IMessageTransportChannel<BaseMessage>> _broadcasters = new Dictionary<Guid, IMessageTransportChannel<BaseMessage>>();
+        protected IDictionary<Guid, IMessageTransportChannel<MetadataContainer>> _broadcasters = new Dictionary<Guid, IMessageTransportChannel<MetadataContainer>>();
         private static readonly object _lockSubObj = new object();
 
         /// <summary>
@@ -228,23 +232,32 @@ namespace KJFramework.Data.Synchronization
         void NewTransaction(object sender, KJFramework.EventArgs.LightSingleArgEventArgs<NewTransactionEventArgs> e)
         {
             NewTransactionEventArgs args = e.Target;
-            BaseMessage msg = args.Transaction.Request;
+            MetadataContainer msg = args.Transaction.Request;
+            MessageIdentity messageIdentity = msg.GetAttribute(0x00).GetValue<MessageIdentity>();
 
             #region Subscribe.
 
-            if (msg.MessageIdentity.ProtocolId == 0 && msg.MessageIdentity.ServiceId == 0 && msg.MessageIdentity.DetailsId == 0)
+            if (messageIdentity.ProtocolId == 0 && messageIdentity.ServiceId == 0 && messageIdentity.DetailsId == 0)
             {
-                SubscribeRequestMessage req = (SubscribeRequestMessage)msg;
-                if (req.Catalog.ToLower() != _catalog.ToLower()) return;
+                MetadataContainer req = msg;
+                if (req.GetAttributeAsType<string>(0x0A).ToLower() != _catalog.ToLower()) return;
                 LocalDataSubscriber subscriber = new LocalDataSubscriber(_policy, args.Channel);
                 subscriber.Disconnected += SubscriberDisconnected;
                 lock (_lockSubObj) _subscribers.Add(subscriber.Id, subscriber);
-                e.Target.Transaction.SendResponse(new SubscribeResponseMessage
-                                                      {
-                                                          Policy = (PublisherPolicy)_policy,
-                                                          Result = SubscribeResult.Allow,
-                                                          Id = subscriber.Id
-                                                      });
+                e.Target.Transaction.SendResponse((MetadataContainer) new MetadataContainer()
+                                        .SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity
+                                        {
+                                            ProtocolId = 0,
+                                            ServiceId = 0,
+                                            DetailsId = 1
+                                        }))
+                                        .SetAttribute(0x0C, new ResourceBlockStored(new ResourceBlock()
+                                            .SetAttribute(0x00, new BooleanValueStored(_policy.CanRetry))
+                                            .SetAttribute(0x01, new BooleanValueStored(_policy.IsOneway))
+                                            .SetAttribute(0x02, new ByteValueStored(_policy.RetryCount))
+                                            .SetAttribute(0x03, new Int32ValueStored(_policy.TimeoutSec))))
+                                        .SetAttribute(0x0D, new ByteValueStored((byte) SubscribeResult.Allow))
+                                        .SetAttribute(0x0E, new GuidValueStored(subscriber.Id)));
                 return;
             }
 
@@ -252,19 +265,25 @@ namespace KJFramework.Data.Synchronization
 
             #region Unsubscribe.
 
-            if (msg.MessageIdentity.ProtocolId == 1 && msg.MessageIdentity.ServiceId == 0 && msg.MessageIdentity.DetailsId == 0)
+            if (messageIdentity.ProtocolId == 1 && messageIdentity.ServiceId == 0 && messageIdentity.DetailsId == 0)
             {
-                UnSubscribeRequestMessage req = (UnSubscribeRequestMessage)msg;
-                if (req.Catelog.ToLower() != _catalog.ToLower()) return;
+                MetadataContainer req = msg;
+                if (req.GetAttributeAsType<string>(0x0B).ToLower() != _catalog.ToLower()) return;
                 lock (_lockSubObj)
                 {
                     ILocalDataSubscriber subscriber;
-                    if (!_subscribers.TryGetValue(req.Id, out subscriber)) return;
+                    if (!_subscribers.TryGetValue(req.GetAttributeAsType<Guid>(0x0C), out subscriber)) return;
                     subscriber.Disconnected -= SubscriberDisconnected;
                     subscriber.Close();
-                    _subscribers.Remove(req.Id);
+                    _subscribers.Remove(req.GetAttributeAsType<Guid>(0x0C));
                 }
-                e.Target.Transaction.SendResponse(new UnSubscribeResponseMessage());
+                e.Target.Transaction.SendResponse((MetadataContainer)new MetadataContainer()
+                                        .SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity
+                                        {
+                                            ProtocolId = 1,
+                                            ServiceId = 0,
+                                            DetailsId = 1
+                                        })));
                 return;
             }
 
@@ -272,10 +291,10 @@ namespace KJFramework.Data.Synchronization
 
             #region Broadcast.
 
-            if (msg.MessageIdentity.ProtocolId == 3 && msg.MessageIdentity.ServiceId == 0 && msg.MessageIdentity.DetailsId == 0)
+            if (messageIdentity.ProtocolId == 3 && messageIdentity.ServiceId == 0 && messageIdentity.DetailsId == 0)
             {
-                BroadcastRequestMessage broadcastRequest = (BroadcastRequestMessage)msg;
-                if (broadcastRequest.Catalog.ToLower() != _catalog.ToLower()) return;
+                MetadataContainer broadcastRequest = msg;
+                if (broadcastRequest.GetAttributeAsType<string>(0x0A).ToLower() != _catalog.ToLower()) return;
                 #region Add to broadcaster list.
 
                 lock (_broadcasters)
@@ -289,13 +308,19 @@ namespace KJFramework.Data.Synchronization
 
                 #endregion
                 //send rsp at first.
-                e.Target.Transaction.SendResponse(new BroadcastResponseMessage());
+                e.Target.Transaction.SendResponse((MetadataContainer)new MetadataContainer()
+                                        .SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity
+                                        {
+                                            ProtocolId = 3,
+                                            ServiceId = 0,
+                                            DetailsId = 1
+                                        })));
                 //broadcast it for each subscriber.
                 lock (_lockSubObj)
                 {
                     foreach (ILocalDataSubscriber subscriber in _subscribers.Values)
                     {
-                        try { subscriber.Send(_catalog, broadcastRequest.Key, broadcastRequest.Value); }
+                        try { subscriber.Send(_catalog, broadcastRequest.GetAttributeAsType<byte[]>(0x0B), broadcastRequest.GetAttributeAsType<byte[]>(0x0C)); }
                         catch (System.Exception ex) { _tracing.Error(ex, null); }
                     }
                 }

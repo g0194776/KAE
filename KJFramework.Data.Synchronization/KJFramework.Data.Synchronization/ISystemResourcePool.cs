@@ -1,5 +1,5 @@
-﻿using KJFramework.Net.Channels;
-using KJFramework.Net.Transaction.Messages;
+﻿using KJFramework.Messages.Contracts;
+using KJFramework.Net.Channels;
 
 namespace KJFramework.Data.Synchronization
 {
@@ -22,6 +22,6 @@ namespace KJFramework.Data.Synchronization
         /// <param name="res">网络资源</param>
         /// <returns>返回通信信道</returns>
         /// <exception cref="System.NullReferenceException">无效参数</exception>
-        IMessageTransportChannel<BaseMessage> GetChannel(INetworkResource res);
+        IMessageTransportChannel<MetadataContainer> GetChannel(INetworkResource res);
     }
 }

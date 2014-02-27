@@ -76,12 +76,12 @@ namespace KJFramework.Net.Channels.Uri
             {
                 if (_prefix.ToLower() != "pipe")
                 {
-                    throw new System.Exception("非法的Pipe资源地址标示。");
+                    throw new UriFormatException("非法的Pipe资源地址标示。");
                 }
                 String[] inners = Address.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
                 if (inners.Length <= 1 || inners.Length > 2)
                 {
-                    throw new System.Exception("非法的Pipe资源地址标示。");
+                    throw new UriFormatException("非法的Pipe资源地址标示。");
                 }
                 _machineName = inners[0];
                 _pipeName = inners[1];
@@ -89,7 +89,7 @@ namespace KJFramework.Net.Channels.Uri
             catch (System.Exception ex)
             {
                 _tracing.Error(ex, null);
-                throw new System.Exception("非法的Pipe资源地址标示。");
+                throw new System.UriFormatException("非法的Pipe资源地址标示。");
             }
         }
 

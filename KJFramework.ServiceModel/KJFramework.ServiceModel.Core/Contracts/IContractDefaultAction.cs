@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.ServiceModel.Core.EventArgs;
 
 namespace KJFramework.ServiceModel.Core.Contracts

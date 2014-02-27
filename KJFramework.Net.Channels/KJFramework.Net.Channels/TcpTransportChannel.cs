@@ -160,6 +160,14 @@ namespace KJFramework.Net.Channels
         #region Overrides of TransportChannel
 
         /// <summary>
+        ///   获取通信信道的类型
+        /// </summary>
+        public override TransportChannelTypes ChannelType
+        {
+            get { return TransportChannelTypes.TCP; }
+        }
+
+        /// <summary>
         ///     获取或设置延迟设置
         /// </summary>
         /// <exception cref="System.Exception">无效的Socket</exception>

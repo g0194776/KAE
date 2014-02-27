@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Net;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
 using KJFramework.Messages.ValueStored.StoredHelper;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Enums;
+using KJFramework.Net.Channels.Identities;
 
 namespace KJFramework.Net.Transaction.ValueStored
 {
@@ -53,25 +53,16 @@ namespace KJFramework.Net.Transaction.ValueStored
             _toBytesDelegate = delegate(IMemorySegmentProxy proxy, BaseValueStored messageIdentityValueStored)
             {
                 TransactionIdentity identity = messageIdentityValueStored.GetValue<TransactionIdentity>();
-                proxy.WriteByte((byte)(identity.IsRequest ? 1 : 0));
-                proxy.WriteByte((byte)(identity.IsOneway ? 1 : 0)); 
-                proxy.WriteIPEndPoint(identity.EndPoint);
-                proxy.WriteInt32(identity.MessageId);
+                if (identity.IdentityType == TransactionIdentityTypes.TCP) TCPTransactionIdentity.Serialize(0, IdentitySerializationTypes.Metadata, (TCPTransactionIdentity)identity, proxy);
+                else if (identity.IdentityType == TransactionIdentityTypes.NamedPipe) NamedPipeTransactionIdentity.Serialize(0, IdentitySerializationTypes.Metadata, (NamedPipeTransactionIdentity)identity, proxy);
+                else throw new NotSupportedException(string.Format("#We were not support current type of Transaction-Identity yet! {0}", identity.IdentityType));
             };
             _toDataDelegate = delegate(ResourceBlock metadataObject, byte id, byte[] byteData, int offsetStart, uint offsetLength)
             {
-                TransactionIdentity identity = new TransactionIdentity();
-                unsafe
-                {
-                    fixed (byte* pData = &byteData[offsetStart])
-                    {
-                        identity.IsRequest = *pData == 1;
-                        identity.IsOneway = *(pData + 1) == 1; 
-                        identity.EndPoint = new IPEndPoint(new IPAddress(*(long*)(pData + 2)), *(int*)(pData + 10));
-                        identity.MessageId = *(int*)(pData + 14);
-                    }
-                }
-                metadataObject.SetAttribute(id, new TransactionIdentityValueStored(identity));
+                TransactionIdentityTypes identityType = (TransactionIdentityTypes)byteData[offsetStart];
+                if (identityType == TransactionIdentityTypes.TCP) metadataObject.SetAttribute(id, new TransactionIdentityValueStored(TCPTransactionIdentity.Deserialize(byteData, offsetStart, (int)offsetLength)));
+                else if (identityType == TransactionIdentityTypes.NamedPipe) metadataObject.SetAttribute(id, new TransactionIdentityValueStored(NamedPipeTransactionIdentity.Deserialize(byteData, offsetStart, (int)offsetLength)));
+                else throw new NotSupportedException(string.Format("#We were not support current type of Transaction-Identity yet! {0}", identityType));
             };
         }
 

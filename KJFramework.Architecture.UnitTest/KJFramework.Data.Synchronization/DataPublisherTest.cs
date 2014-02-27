@@ -14,6 +14,12 @@ namespace KJFramework.Data.Synchronization.UnitTest
     {
         #region Methods
 
+        [SetUp]
+        public void Initialize()
+        {
+            SyncDataFramework.Initialize();
+        }
+
         /// <summary>
         ///     创建一个数据发布者的测试
         /// </summary>

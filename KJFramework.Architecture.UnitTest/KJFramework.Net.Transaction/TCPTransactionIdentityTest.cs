@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Net;
 using System.Text;
-using KJFramework.Messages.Attributes;
-using KJFramework.Messages.Contracts;
+using KJFramework.Messages.Engine;
+using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Proxies;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Messages.TypeProcessors.Maps;
+using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.Processors;
 using KJFramework.Net.Transaction.ValueStored;
 using NUnit.Framework;
 
 namespace KJFramework.Net.Transaction.UnitTest
 {
-    public class TransactionIdentityTest
+    public class TCPTransactionIdentityTest
     {
         #region Methods.
 
@@ -22,9 +24,9 @@ namespace KJFramework.Net.Transaction.UnitTest
         }
 
         [Test]
-        public void SerializeTest()
+        public void SerializeAsMetadataTest()
         {
-            TransactionIdentity identity = new TransactionIdentity();
+            TransactionIdentity identity = new TCPTransactionIdentity();
             identity.MessageId = 3;
             identity.IsRequest = true;
             identity.EndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 26666);
@@ -33,14 +35,14 @@ namespace KJFramework.Net.Transaction.UnitTest
             stored.ToBytes(proxy);
             byte[] data = proxy.GetBytes();
             Assert.IsNotNull(data);
-            Assert.IsTrue(data.Length == 18);
+            Assert.IsTrue(data.Length == 19);
             PrintBytes(data);
         }
 
         [Test]
-        public void SerializeTest2()
+        public void SerializeAsIntellectObjectTes()
         {
-            TransactionIdentity identity = new TransactionIdentity();
+            TransactionIdentity identity = new TCPTransactionIdentity();
             identity.MessageId = 3;
             identity.IsRequest = true;
             identity.EndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 26666);
@@ -49,59 +51,40 @@ namespace KJFramework.Net.Transaction.UnitTest
             processor.Process(proxy, identity, false, false);
             byte[] data = proxy.GetBytes();
             Assert.IsNotNull(data);
-            Assert.IsTrue(data.Length == 18);
+            Assert.IsTrue(data.Length == 24);
             PrintBytes(data);
         }
 
         [Test]
         public void DeserializeTest()
         {
-            TransactionIdentity identity = new TransactionIdentity();
+            BaseMessage baseMessage = new BaseMessage { MessageIdentity = new MessageIdentity { ProtocolId = 1, ServiceId = 2, DetailsId = 3 } };
+            FixedTypeManager.Add(typeof(MessageIdentity), 5);
+            IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityProcessor());
+            IntellectTypeProcessorMapping.Instance.Regist(new MessageIdentityProcessor());
+            TransactionIdentity identity = new TCPTransactionIdentity();
             identity.MessageId = 3;
             identity.IsRequest = true;
             identity.EndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 26666);
-            TransactionIdentityValueStored stored = new TransactionIdentityValueStored(identity);
-            MemorySegmentProxy proxy = new MemorySegmentProxy();
-            stored.ToBytes(proxy);
-            byte[] data = proxy.GetBytes();
-            Assert.IsNotNull(data);
-            Assert.IsTrue(data.Length == 18);
-            PrintBytes(data);
+            baseMessage.TransactionIdentity = identity;
+            baseMessage.Bind();
+            Assert.IsTrue(baseMessage.IsBind);
+            byte[] data = baseMessage.Body;
+            Assert.IsTrue(data.Length > 0);
+            Assert.IsTrue(data.Length == 34);
 
-            MetadataContainer container = new MetadataContainer();
-            stored.ToData(container, 0, data, 0, (uint) data.Length);
-            Assert.IsTrue(container.IsAttibuteExsits(0x00));
-            Assert.IsNotNull(container.GetAttribute(0x00));
-            Assert.IsNotNull(container.GetAttribute(0x00).GetValue<TransactionIdentity>());
-            Assert.IsTrue(container.GetAttribute(0x00).GetValue<TransactionIdentity>().IsRequest);
-            Assert.IsTrue(container.GetAttribute(0x00).GetValue<TransactionIdentity>().MessageId == 3);
-            Assert.IsNotNull(container.GetAttribute(0x00).GetValue<TransactionIdentity>().EndPoint);
-            Assert.IsTrue(container.GetAttribute(0x00).GetValue<TransactionIdentity>().EndPoint.Port == 26666);
-            Assert.IsTrue(container.GetAttribute(0x00).GetValue<TransactionIdentity>().EndPoint.Address.ToString() == "127.0.0.1");
-        }
 
-        [Test]
-        public void DeserializeTest2()
-        {
-            TransactionIdentity identity = new TransactionIdentity();
-            identity.MessageId = 3;
-            identity.IsRequest = true;
-            identity.EndPoint = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 26666);
-            TransactionIdentityProcessor processor = new TransactionIdentityProcessor();
-            MemorySegmentProxy proxy = new MemorySegmentProxy();
-            processor.Process(proxy, identity, false, false);
-            byte[] data = proxy.GetBytes();
-            Assert.IsNotNull(data);
-            Assert.IsTrue(data.Length == 18);
-            PrintBytes(data);
-
-            TransactionIdentity identity2 = (TransactionIdentity) processor.Process(new IntellectPropertyAttribute(0), data);
-            Assert.IsNotNull(identity2);
-            Assert.IsTrue(identity2.IsRequest);
-            Assert.IsTrue(identity2.MessageId == 3);
-            Assert.IsNotNull(identity2.EndPoint);
-            Assert.IsTrue(identity2.EndPoint.Port == 26666);
-            Assert.IsTrue(identity2.EndPoint.Address.ToString() == "255.255.255.255");
+            BaseMessage newMessage = IntellectObjectEngine.GetObject<BaseMessage>(data);
+            Assert.IsNotNull(newMessage);
+            Assert.IsTrue(newMessage.MessageIdentity.ProtocolId == 1);
+            Assert.IsTrue(newMessage.MessageIdentity.ServiceId == 2);
+            Assert.IsTrue(newMessage.MessageIdentity.DetailsId == 3);
+            Assert.IsNotNull(newMessage.TransactionIdentity);
+            Assert.IsTrue(newMessage.TransactionIdentity.IsRequest);
+            Assert.IsTrue(newMessage.TransactionIdentity.MessageId == 3);
+            Assert.IsNotNull(newMessage.TransactionIdentity.EndPoint);
+            Assert.IsTrue(((IPEndPoint)newMessage.TransactionIdentity.EndPoint).Port == 26666);
+            Assert.IsTrue(((IPEndPoint)newMessage.TransactionIdentity.EndPoint).Address.ToString() == "127.0.0.1");
         }
 
         public static void PrintBytes(byte[] data)

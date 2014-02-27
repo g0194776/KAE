@@ -6,9 +6,9 @@ using KJFramework.Messages.TypeProcessors.Maps;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.HostChannels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.Processors;
@@ -25,7 +25,6 @@ namespace KJFramework.Net.Transaction.UnitTest
         public void Initialize()
         {
             FixedTypeManager.Add(typeof(MessageIdentity), 5);
-            FixedTypeManager.Add(typeof(TransactionIdentity), 18);
             IntellectTypeProcessorMapping.Instance.Regist(new MessageIdentityProcessor());
             IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityProcessor());
         }
@@ -33,8 +32,8 @@ namespace KJFramework.Net.Transaction.UnitTest
         [Test]
         public void ReceiveTransactionTest()
         {
-            MessageTransactionManager manager1 = new MessageTransactionManager(new TransactionIdentityComparer());
-            MessageTransactionManager manager2 = new MessageTransactionManager(new TransactionIdentityComparer());
+            MessageTransactionManager manager1 = new MessageTransactionManager(new TCPTransactionIdentityComparer());
+            MessageTransactionManager manager2 = new MessageTransactionManager(new TCPTransactionIdentityComparer());
             ITransportChannel connectedChannel = null;
             AutoResetEvent msgEvent = new AutoResetEvent(false);
             AutoResetEvent channelEvent = new AutoResetEvent(false);

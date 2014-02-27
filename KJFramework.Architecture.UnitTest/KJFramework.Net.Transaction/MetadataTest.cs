@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
 using NUnit.Framework;
@@ -34,11 +34,11 @@ namespace KJFramework.Net.Transaction.UnitTest
             metadata1.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity1));
             byte[] data1 = protocolStack.ConvertToBytes(metadata1);
             Assert.IsNotNull(data1);
-            Assert.IsTrue(data1.Length == 14);
+            Assert.IsTrue(data1.Length == 16);
             byte[] totalData = new byte[data1.Length];
             System.Buffer.BlockCopy(data1, 0, totalData, 0, data1.Length);
             Assert.IsNotNull(totalData);
-            Assert.IsTrue(totalData.Length == 14);
+            Assert.IsTrue(totalData.Length == 16);
 
             List<MetadataContainer> list = protocolStack.Parse(totalData);
             Assert.IsNotNull(list);
@@ -64,11 +64,11 @@ namespace KJFramework.Net.Transaction.UnitTest
             metadata1.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity1));
             byte[] data1 = protocolStack.ConvertToBytes(metadata1);
             Assert.IsNotNull(data1);
-            Assert.IsTrue(data1.Length == 14);
+            Assert.IsTrue(data1.Length == 16);
             byte[] totalData = new byte[data1.Length+21];
             System.Buffer.BlockCopy(data1, 0, totalData, 10, data1.Length);
             Assert.IsNotNull(totalData);
-            Assert.IsTrue(totalData.Length == 35);
+            Assert.IsTrue(totalData.Length == 37);
 
             List<MetadataContainer> list = protocolStack.Parse(totalData, 10, data1.Length);
             Assert.IsNotNull(list);
@@ -101,15 +101,15 @@ namespace KJFramework.Net.Transaction.UnitTest
             metadata1.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity1));
             byte[] data1 = protocolStack.ConvertToBytes(metadata1);
             Assert.IsNotNull(data1);
-            Assert.IsTrue(data1.Length == 14);
+            Assert.IsTrue(data1.Length == 16);
             byte[] data2 = protocolStack.ConvertToBytes(metadata2);
             Assert.IsNotNull(data2);
-            Assert.IsTrue(data1.Length == 14);
+            Assert.IsTrue(data1.Length == 16);
             byte[] totalData = new byte[data1.Length + 11 + data2.Length];
             System.Buffer.BlockCopy(data1, 0, totalData, 10, data1.Length);
             System.Buffer.BlockCopy(data2,0,totalData,data1.Length+10,data2.Length);
             Assert.IsNotNull(totalData);
-            Assert.IsTrue(totalData.Length == 31);
+            Assert.IsTrue(totalData.Length == 33);
 
             List<MetadataContainer> list = protocolStack.Parse(totalData, 10, data1.Length);
             Assert.IsNotNull(list);
@@ -148,21 +148,21 @@ namespace KJFramework.Net.Transaction.UnitTest
             metadata1.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity1));
             byte[] data1 = protocolStack.ConvertToBytes(metadata1);
             Assert.IsNotNull(data1);
-            Assert.IsTrue(data1.Length == 14);
+            Assert.IsTrue(data1.Length == 16);
             metadata2.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity2));
             byte[] data2 = protocolStack.ConvertToBytes(metadata2);
             Assert.IsNotNull(data2);
-            Assert.IsTrue(data1.Length == 14);
+            Assert.IsTrue(data1.Length == 16);
             metadata3.SetAttribute(0x00, new MessageIdentityValueStored(messageIdentity3));
             byte[] data3 = protocolStack.ConvertToBytes(metadata3);
             Assert.IsNotNull(data3);
-            Assert.IsTrue(data1.Length == 14);
+            Assert.IsTrue(data1.Length == 16);
             byte[] totalData = new byte[data1.Length+data2.Length+data3.Length];
             System.Buffer.BlockCopy(data1,0,totalData,0,data1.Length);
             System.Buffer.BlockCopy(data2, 0, totalData, data1.Length, data2.Length);
             System.Buffer.BlockCopy(data3,0,totalData,data1.Length+data2.Length,data3.Length);
             Assert.IsNotNull(totalData);
-            Assert.IsTrue(totalData.Length == 42);
+            Assert.IsTrue(totalData.Length == 48);
           
             List<MetadataContainer> list = protocolStack.Parse(totalData);
             Assert.IsNotNull(list);

@@ -1,12 +1,14 @@
 using System.Net;
 using KJFramework.Data.Synchronization.Enums;
-using KJFramework.Data.Synchronization.Messages;
 using KJFramework.Data.Synchronization.Policies;
 using KJFramework.Data.Synchronization.Transactions;
+using KJFramework.Messages.Contracts;
+using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Helpers;
-using KJFramework.Net.Transaction.Messages;
 using System;
+using KJFramework.Net.Transaction.ValueStored;
 
 namespace KJFramework.Data.Synchronization
 {
@@ -22,7 +24,7 @@ namespace KJFramework.Data.Synchronization
         /// </summary>
         /// <param name="policy">发布者策略 </param>
         /// <param name="channel">通信信道</param>
-        public LocalDataSubscriber(IPublisherPolicy policy, IMessageTransportChannel<BaseMessage> channel)
+        public LocalDataSubscriber(IPublisherPolicy policy, IMessageTransportChannel<MetadataContainer> channel)
         {
             if (policy == null) throw new ArgumentNullException("policy");
             if (channel == null) throw new ArgumentNullException("channel");
@@ -38,7 +40,7 @@ namespace KJFramework.Data.Synchronization
 
         #region Members
 
-        private IMessageTransportChannel<BaseMessage> _channel;
+        private IMessageTransportChannel<MetadataContainer> _channel;
 
         #endregion
 
@@ -124,7 +126,16 @@ namespace KJFramework.Data.Synchronization
                 Close();
                 return false;
             }
-            SyncDataRequestMessage msg = new SyncDataRequestMessage { Key = key, Value = value, Catalog = catalog };
+            MetadataContainer container = (MetadataContainer) new MetadataContainer()
+                .SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity
+                    {
+                        ProtocolId = 2,
+                        ServiceId = 0,
+                        DetailsId = 0
+                    }))
+                .SetAttribute(0x0A, new StringValueStored(catalog))
+                .SetAttribute(0x0B, new ByteArrayValueStored(key))
+                .SetAttribute(0x0C, new ByteArrayValueStored(value));
             SyncDataTransaction transaction = SyncDataTransactionManager.Instance.Create(IdentityHelper.Create((IPEndPoint) _channel.RemoteEndPoint, Policy.IsOneway), _channel);
             //there is only Timeout event can be used.
             transaction.Timeout += delegate
@@ -132,16 +143,16 @@ namespace KJFramework.Data.Synchronization
                 if (!Policy.CanRetry) return;
                 if (transaction.RetryCount >= Policy.RetryCount) return;
                 transaction.RetryCount++;
-                transaction.SendRequest(msg);
+                transaction.SendRequest(container);
             };
             transaction.Failed += delegate
             {
                 if (!Policy.CanRetry) return;
                 if (transaction.RetryCount >= Policy.RetryCount) return;
                 transaction.RetryCount++;
-                transaction.SendRequest(msg);
+                transaction.SendRequest(container);
             };
-            transaction.SendRequest(msg);
+            transaction.SendRequest(container);
             return true;
         }
 

@@ -1,7 +1,7 @@
 ﻿using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;

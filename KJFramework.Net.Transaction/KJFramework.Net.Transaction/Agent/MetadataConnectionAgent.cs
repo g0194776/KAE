@@ -4,9 +4,9 @@ using System.Net;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Helpers;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Tracing;
 
@@ -66,13 +66,7 @@ namespace KJFramework.Net.Transaction.Agent
                 if (message == null) continue;
                 _tracing.Info("L: {0}\r\nR: {1}\r\n{2}", msgChannel.LocalEndPoint, msgChannel.RemoteEndPoint, message.ToString());
                 TransactionIdentity identity;
-                if (!message.IsAttibuteExsits(0x01))
-                {
-                    identity = new TransactionIdentity {
-                        IsRequest = true, 
-                        EndPoint = (IPEndPoint) _channel.RemoteEndPoint, 
-                        MessageId = 0};
-                }
+                if (!message.IsAttibuteExsits(0x01)) identity = msgChannel.GenerateRequestIdentity(0U);
                 else identity = message.GetAttribute(0x01).GetValue<TransactionIdentity>();
                 //response.
                 if(!identity.IsRequest)

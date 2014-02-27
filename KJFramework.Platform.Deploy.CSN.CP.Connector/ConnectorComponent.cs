@@ -9,10 +9,10 @@ using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Disconvery;
 using KJFramework.Net.Channels.Disconvery.Protocols;
 using KJFramework.Net.Channels.HostChannels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.Objects;
@@ -77,7 +77,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             Console.WriteLine("Initializing CSN protocol stack......");
             _protocolStack = new CSNProtocolStack();
             Global.ProtocolStack = (CSNProtocolStack) _protocolStack;
-            _transactionManager = new MessageTransactionManager(new TransactionIdentityComparer());
+            _transactionManager = new MessageTransactionManager(new TCPTransactionIdentityComparer());
             Console.WriteLine("Initializing scheduler......");
             _requestScheduler = new BaseMessageRequestScheduler()
             .Regist(new Protocols { ProtocolId = 0, ServiceId = 2, DetailsId = 0 }, new CSNGetDataTableRequestMessageProcessor())
@@ -102,7 +102,6 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             Console.WriteLine("Component : #ConnectorComponent loading......!");
             ChannelConst.Initialize();
             FixedTypeManager.Add(typeof(MessageIdentity), 5);
-            FixedTypeManager.Add(typeof(TransactionIdentity), 18);
             IntellectTypeProcessorMapping.Instance.Regist(new MessageIdentityProcessor());
             IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityProcessor());
         }

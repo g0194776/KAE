@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
-using KJFramework.Net.Transaction.Identities;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
 
@@ -57,7 +57,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         public CSNBusinessMessageTransaction Create(TransactionIdentity identity, IMessageTransportChannel<BaseMessage> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
-            CSNBusinessMessageTransaction transaction = new CSNBusinessMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = (TransactionIdentity)identity };
+            CSNBusinessMessageTransaction transaction = new CSNBusinessMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = identity };
             return Add(identity, transaction) ? transaction : null;
         }
 

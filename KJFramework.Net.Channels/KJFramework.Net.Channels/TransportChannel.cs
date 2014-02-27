@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using KJFramework.EventArgs;
 using KJFramework.IO.Buffers;
+using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.Events;
 
 namespace KJFramework.Net.Channels
@@ -31,6 +32,11 @@ namespace KJFramework.Net.Channels
         protected bool _supportSegment;
         protected IByteArrayBuffer _buffer;
         protected LingerOption _lingerState;
+
+        /// <summary>
+        ///   获取通信信道的类型
+        /// </summary>
+        public abstract TransportChannelTypes ChannelType { get; }
 
         /// <summary>
         ///     获取本地终结点地址

@@ -1,9 +1,10 @@
 using KJFramework.Data.Synchronization.EventArgs;
 using KJFramework.Data.Synchronization.Transactions;
 using KJFramework.EventArgs;
+using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.HostChannels;
-using KJFramework.Net.Transaction.Messages;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Tracing;
 using System;
 using System.Threading;
@@ -109,25 +110,25 @@ namespace KJFramework.Data.Synchronization
 
         void ChannelCreated(object sender, LightSingleArgEventArgs<ITransportChannel> e)
         {
-            IMessageTransportChannel<BaseMessage> msgChannel = new MessageTransportChannel<BaseMessage>((IRawTransportChannel) e.Target, Global.ProtocolStack);
+            IMessageTransportChannel<MetadataContainer> msgChannel = new MessageTransportChannel<MetadataContainer>((IRawTransportChannel)e.Target, Global.ProtocolStack);
             msgChannel.Disconnected += MsgChannelDisconnected;
             msgChannel.ReceivedMessage += MsgChannelReceivedMessage;
         }
 
-        void MsgChannelReceivedMessage(object sender, LightSingleArgEventArgs<System.Collections.Generic.List<BaseMessage>> e)
+        void MsgChannelReceivedMessage(object sender, LightSingleArgEventArgs<System.Collections.Generic.List<MetadataContainer>> e)
         {
-            IMessageTransportChannel<BaseMessage> msgChannel = (IMessageTransportChannel<BaseMessage>) sender;
-            foreach (BaseMessage msg in e.Target)
+            IMessageTransportChannel<MetadataContainer> msgChannel = (IMessageTransportChannel<MetadataContainer>)sender;
+            foreach (MetadataContainer msg in e.Target)
             {
                 _tracing.Info("L: {0}\r\nR: {1}\r\n{2}", msgChannel.LocalEndPoint, msgChannel.RemoteEndPoint, msg.ToString());
-                if (!msg.TransactionIdentity.IsRequest) SyncDataTransactionManager.Instance.Active(msg.TransactionIdentity, msg);
-                else NewTransactionHandler(new LightSingleArgEventArgs<NewTransactionEventArgs>(new NewTransactionEventArgs(new SyncDataTransaction(msgChannel) { Identity = msg.TransactionIdentity, Request = msg }, msgChannel)));
+                if (!msg.GetAttribute(0x01).GetValue<TransactionIdentity>().IsRequest) SyncDataTransactionManager.Instance.Active(msg.GetAttribute(0x01).GetValue<TransactionIdentity>(), msg);
+                else NewTransactionHandler(new LightSingleArgEventArgs<NewTransactionEventArgs>(new NewTransactionEventArgs(new SyncDataTransaction(msgChannel) { Identity = msg.GetAttribute(0x01).GetValue<TransactionIdentity>(), Request = msg }, msgChannel)));
             }
         }
 
         void MsgChannelDisconnected(object sender, System.EventArgs e)
         {
-            IMessageTransportChannel<BaseMessage> msgChannel = (IMessageTransportChannel<BaseMessage>) sender;
+            IMessageTransportChannel<MetadataContainer> msgChannel = (IMessageTransportChannel<MetadataContainer>)sender;
             msgChannel.Disconnected -= MsgChannelDisconnected;
             msgChannel.ReceivedMessage -= MsgChannelReceivedMessage;
         }

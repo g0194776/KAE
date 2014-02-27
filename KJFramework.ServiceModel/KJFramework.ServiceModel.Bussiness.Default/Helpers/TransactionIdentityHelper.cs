@@ -1,7 +1,6 @@
-﻿using System.Net;
-using System.Threading;
+﻿using System.Threading;
 using KJFramework.Net.Channels;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;
 
 namespace KJFramework.ServiceModel.Bussiness.Default.Helpers
@@ -25,12 +24,12 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Helpers
         /// <returns>返回创建后的新事务标识</returns>
         public static TransactionIdentity Create(IMessageTransportChannel<Message> channel, bool isOneway, bool isRequest)
         {
-            return new TransactionIdentity
+            return new TCPTransactionIdentity
                        {
-                           EndPoint = (IPEndPoint) channel.LocalEndPoint,
+                           EndPoint = channel.LocalEndPoint,
                            IsOneway = isOneway,
                            IsRequest = isRequest,
-                           MessageId = Interlocked.Increment(ref _msgId)
+                           MessageId = (uint) Interlocked.Increment(ref _msgId)
                        };
         }
 

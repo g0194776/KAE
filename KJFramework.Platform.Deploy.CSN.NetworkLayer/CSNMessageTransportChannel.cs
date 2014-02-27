@@ -5,6 +5,7 @@ using KJFramework.Net.Channel;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Buffers;
 using KJFramework.Net.Channels.Enums;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Managers;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Statistics;
@@ -263,6 +264,14 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         #region Implementation of ITransportChannel
 
         /// <summary>
+        ///   获取通信信道的类型
+        /// </summary>
+        public TransportChannelTypes ChannelType
+        {
+            get { return TransportChannelTypes.Message; }
+        }
+
+        /// <summary>
         ///     获取本地终结点地址
         /// </summary>
         public EndPoint LocalEndPoint
@@ -396,6 +405,19 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         ///     接收到消息事件
         /// </summary>
         public event EventHandler<LightSingleArgEventArgs<List<T>>> ReceivedMessage;
+
+        /// <summary>
+        ///   生成一个请求的事务唯一标示
+        /// </summary>
+        /// <param name="messageId">消息编号</param>
+        /// <returns>返回创建后的事务唯一标示</returns>
+        public TransactionIdentity GenerateRequestIdentity(uint messageId)
+        {
+            if (_rawChannel == null) throw new NotImplementedException("#You cannot generate TransactionIdentity from a un-initialized MessageChannel.");
+            if (_rawChannel.ChannelType == TransportChannelTypes.TCP) return new TCPTransactionIdentity { EndPoint = _rawChannel.RemoteEndPoint, IsRequest = true, MessageId = messageId };
+            throw new NotSupportedException("#Not supported current type of Channel. " + _rawChannel.ChannelType);
+        }
+
         protected void ReceivedMessageHandler(LightSingleArgEventArgs<List<T>> e)
         {
             EventHandler<LightSingleArgEventArgs<List<T>>> handler = ReceivedMessage;

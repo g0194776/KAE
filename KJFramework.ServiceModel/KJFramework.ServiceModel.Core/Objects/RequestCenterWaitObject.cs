@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using KJFramework.Cache;
-using KJFramework.Net.Transaction.Identities;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Timer;
 
 namespace KJFramework.ServiceModel.Core.Objects

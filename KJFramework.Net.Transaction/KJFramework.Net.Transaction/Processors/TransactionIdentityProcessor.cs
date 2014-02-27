@@ -1,9 +1,10 @@
-﻿﻿using System.Net;
-using KJFramework.Messages.Analysers;
+﻿﻿using System;
+﻿using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors;
-using KJFramework.Net.Transaction.Identities;
+﻿using KJFramework.Net.Channels.Enums;
+﻿using KJFramework.Net.Channels.Identities;
 
 namespace KJFramework.Net.Transaction.Processors
 {
@@ -40,11 +41,9 @@ namespace KJFramework.Net.Transaction.Processors
         {
             TransactionIdentity identity = analyseResult.GetValue<TransactionIdentity>(target);
             if (identity == null) return;
-            proxy.WriteByte((byte)attribute.Id);
-            proxy.WriteByte((byte)(identity.IsRequest ? 1 : 0));
-            proxy.WriteByte((byte)(identity.IsOneway ? 1 : 0));
-            proxy.WriteIPEndPoint(identity.EndPoint);
-            proxy.WriteInt32(identity.MessageId);
+            if (identity.IdentityType == TransactionIdentityTypes.TCP) TCPTransactionIdentity.Serialize((byte) attribute.Id, IdentitySerializationTypes.IntellectObject, (TCPTransactionIdentity) identity, proxy);
+            else if (identity.IdentityType == TransactionIdentityTypes.NamedPipe) NamedPipeTransactionIdentity.Serialize((byte)attribute.Id, IdentitySerializationTypes.IntellectObject, (NamedPipeTransactionIdentity)identity, proxy);
+            else throw new NotSupportedException(string.Format("#We were not support current type of Transaction-Identity yet! {0}", identity.IdentityType));
         }
 
         /// <summary>
@@ -59,10 +58,9 @@ namespace KJFramework.Net.Transaction.Processors
         {
             TransactionIdentity identity = (TransactionIdentity)target;
             if (identity == null) return;
-            proxy.WriteByte((byte)(identity.IsRequest ? 1 : 0));
-            proxy.WriteByte((byte)(identity.IsOneway ? 1 : 0)); 
-            proxy.WriteIPEndPoint(identity.EndPoint);
-            proxy.WriteInt32(identity.MessageId);
+            if (identity.IdentityType == TransactionIdentityTypes.TCP) TCPTransactionIdentity.Serialize(0, IdentitySerializationTypes.IntellectObject, (TCPTransactionIdentity)identity, proxy);
+            else if (identity.IdentityType == TransactionIdentityTypes.NamedPipe) NamedPipeTransactionIdentity.Serialize(0, IdentitySerializationTypes.IntellectObject, (NamedPipeTransactionIdentity)identity, proxy);
+            else throw new NotSupportedException(string.Format("#We were not support current type of Transaction-Identity yet! {0}", identity.IdentityType));
         }
 
         /// <summary>
@@ -76,18 +74,10 @@ namespace KJFramework.Net.Transaction.Processors
         /// <exception cref="N:KJFramework.Exception">转换失败</exception>
         public override object Process(IntellectPropertyAttribute attribute, byte[] data)
         {
-            TransactionIdentity identity = new TransactionIdentity();
-            unsafe
-            {
-                fixed (byte* pData = data)
-                {
-                    identity.IsRequest = *pData == 1;
-                    identity.IsOneway = *(pData + 1) == 1; 
-                    identity.EndPoint = new IPEndPoint(new IPAddress(*(long*)(pData + 2)), *(int*)(pData + 10));
-                    identity.MessageId = *(int*)(pData + 14);
-                }
-            }
-            return identity;
+            TransactionIdentityTypes identityType = (TransactionIdentityTypes)data[0];
+            if (identityType == TransactionIdentityTypes.TCP) return TCPTransactionIdentity.Deserialize(data, 0, data.Length);
+            if (identityType == TransactionIdentityTypes.NamedPipe) return NamedPipeTransactionIdentity.Deserialize(data, 0, data.Length);
+            throw new NotSupportedException(string.Format("#We were not support current type of Transaction-Identity yet! {0}", identityType));
         }
 
         /// <summary>
@@ -100,19 +90,10 @@ namespace KJFramework.Net.Transaction.Processors
         /// <param name="length">元数据长度</param>
         public override void Process(object instance, GetObjectAnalyseResult result, byte[] data, int offset, int length = 0)
         {
-            TransactionIdentity identity = new TransactionIdentity();
-            unsafe
-            {
-                fixed (byte* pData = &data[offset])
-                {
-                    identity.IsRequest = *pData == 1;
-                    identity.IsOneway = *(pData + 1) == 1; 
-                    identity.EndPoint = new IPEndPoint(new IPAddress(*(long*)(pData + 2)), *(int*)(pData + 10));
-                    identity.MessageId = *(int*)(pData + 14);
-
-                }
-            }
-            result.SetValue(instance, identity);
+            TransactionIdentityTypes identityType = (TransactionIdentityTypes)data[offset];
+            if (identityType == TransactionIdentityTypes.TCP) result.SetValue(instance, TCPTransactionIdentity.Deserialize(data, offset, length));
+            else if (identityType == TransactionIdentityTypes.NamedPipe) result.SetValue(instance, NamedPipeTransactionIdentity.Deserialize(data, offset, length));
+            else throw new NotSupportedException(string.Format("#We were not support current type of Transaction-Identity yet! {0}", identityType));
         }
 
         #endregion

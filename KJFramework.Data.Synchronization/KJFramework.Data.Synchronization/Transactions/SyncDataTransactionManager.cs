@@ -1,13 +1,14 @@
 using System.Net;
+using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Helpers;
-using KJFramework.Net.Transaction.Identities;
-using KJFramework.Net.Transaction.Messages;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using KJFramework.Net.Transaction.Managers;
 
 namespace KJFramework.Data.Synchronization.Transactions
 {
@@ -33,7 +34,7 @@ namespace KJFramework.Data.Synchronization.Transactions
 
         private Thread _chkThread;
         public static readonly SyncDataTransactionManager Instance = new SyncDataTransactionManager();
-        private static readonly ConcurrentDictionary<TransactionIdentity, SyncDataTransaction> _trans = new ConcurrentDictionary<TransactionIdentity, SyncDataTransaction>(new TransactionIdentityComparer());
+        private static readonly ConcurrentDictionary<TransactionIdentity, SyncDataTransaction> _trans = new ConcurrentDictionary<TransactionIdentity, SyncDataTransaction>(new TCPTransactionIdentityComparer());
 
         #endregion
 
@@ -45,7 +46,7 @@ namespace KJFramework.Data.Synchronization.Transactions
         /// </summary>
         /// <param name="channel">事务内部的通信信道</param>
         /// <returns>返回创建后的新事物</returns>
-        public SyncDataTransaction Create(IMessageTransportChannel<BaseMessage> channel)
+        public SyncDataTransaction Create(IMessageTransportChannel<MetadataContainer> channel)
         {
             if (channel == null) throw new ArgumentNullException("channel");
             SyncDataTransaction tran = new SyncDataTransaction(channel) { Identity = IdentityHelper.Create((IPEndPoint) channel.LocalEndPoint) };
@@ -58,7 +59,7 @@ namespace KJFramework.Data.Synchronization.Transactions
         /// <param name="identity">事务唯一标示</param>
         /// <param name="channel">事务内部的通信信道</param>
         /// <returns>返回创建后的新事物</returns>
-        public SyncDataTransaction Create(TransactionIdentity identity, IMessageTransportChannel<BaseMessage> channel)
+        public SyncDataTransaction Create(TransactionIdentity identity, IMessageTransportChannel<MetadataContainer> channel)
         {
             if (identity == null) throw new ArgumentNullException("identity");
             if (channel == null) throw new ArgumentNullException("channel");
@@ -107,7 +108,7 @@ namespace KJFramework.Data.Synchronization.Transactions
         /// </summary>
         /// <param name="identity">事务唯一标示</param>
         /// <param name="response">响应消息</param>
-        public void Active(TransactionIdentity identity, BaseMessage response)
+        public void Active(TransactionIdentity identity, MetadataContainer response)
         {
             SyncDataTransaction transaction;
             if (!_trans.TryRemove(identity, out transaction)) return;
