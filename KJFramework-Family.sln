@@ -128,7 +128,7 @@ Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "KJFramework.ApplicationEngi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basic Function Libraries (BFL)", "Basic Function Libraries (BFL)", "{418D4BBB-8E3E-42DB-8DE4-8DA1D9BB5101}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructures", "Infrastructures", "{4CFC07AB-744B-47BE-AF77-2396D429837E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform Infrastructures (PI)", "Platform Infrastructures (PI)", "{4CFC07AB-744B-47BE-AF77-2396D429837E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Producibility Architectures (PA)", "Producibility Architectures (PA)", "{BF95361C-3E49-4086-A5DD-395221E31D60}"
 EndProject
