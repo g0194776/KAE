@@ -32,8 +32,8 @@ namespace KJFramework.Net.Transaction.UnitTest
         [Test]
         public void ReceiveTransactionTest()
         {
-            MessageTransactionManager manager1 = new MessageTransactionManager(new TCPTransactionIdentityComparer());
-            MessageTransactionManager manager2 = new MessageTransactionManager(new TCPTransactionIdentityComparer());
+            MessageTransactionManager manager1 = new MessageTransactionManager(new TransactionIdentityComparer());
+            MessageTransactionManager manager2 = new MessageTransactionManager(new TransactionIdentityComparer());
             ITransportChannel connectedChannel = null;
             AutoResetEvent msgEvent = new AutoResetEvent(false);
             AutoResetEvent channelEvent = new AutoResetEvent(false);

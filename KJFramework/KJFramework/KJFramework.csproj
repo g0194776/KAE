@@ -131,8 +131,6 @@
     <Compile Include="Helpers\TypeHelper.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Installers\IServiceInstaller.cs" />
-    <Compile Include="MessageStacks\IMessageStack.cs" />
-    <Compile Include="MessageStacks\MessageStack.cs" />
     <Compile Include="Observers\IObservable.cs" />
     <Compile Include="Observers\IObserver.cs" />
     <Compile Include="Observers\Observer.cs" />
@@ -181,17 +179,10 @@
     <Compile Include="Exception\LogObjectHasNullException.cs" />
     <Compile Include="Exception\SaveLogFileException.cs" />
     <Compile Include="Exception\XmlTextWriterNotFoundException.cs" />
-    <Compile Include="IConfigurable.cs" />
     <Compile Include="IControlable.cs" />
     <Compile Include="Matcher\IMatcher.cs" />
     <Compile Include="Loader\ILoader.cs" />
     <Compile Include="Matcher\Rule\IMatcherRule.cs" />
-    <Compile Include="Plugin\IConfiger.cs" />
-    <Compile Include="Plugin\IExecutable.cs" />
-    <Compile Include="Plugin\IPlugin.cs" />
-    <Compile Include="Plugin\IPluginConfig.cs" />
-    <Compile Include="Plugin\IPluginManagement.cs" />
-    <Compile Include="Plugin\PluginInfomation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Timer\CodeTimer.cs" />
     <Compile Include="Timer\ITimeout.cs" />
@@ -262,6 +253,7 @@
       <Name>KJFramework.Basic</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

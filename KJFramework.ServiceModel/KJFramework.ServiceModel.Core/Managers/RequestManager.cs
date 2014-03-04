@@ -13,7 +13,7 @@ namespace KJFramework.ServiceModel.Core.Managers
     {
         #region Members
 
-        protected readonly ConcurrentDictionary<TransactionIdentity, IBinaryArgContext> _results = new ConcurrentDictionary<TransactionIdentity, IBinaryArgContext>(new TCPTransactionIdentityComparer());
+        protected readonly ConcurrentDictionary<TransactionIdentity, IBinaryArgContext> _results = new ConcurrentDictionary<TransactionIdentity, IBinaryArgContext>(new TransactionIdentityComparer());
 
         #endregion
 

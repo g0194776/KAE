@@ -1,6 +1,7 @@
 using System.Net;
 using System.Threading;
 using KJFramework.Basic.Enum;
+using KJFramework.Dynamic;
 using KJFramework.Dynamic.Components;
 using KJFramework.IO.Helper;
 using KJFramework.Messages.Helpers;
@@ -22,7 +23,6 @@ using KJFramework.Platform.Deploy.CSN.Common.Configurations;
 using KJFramework.Platform.Deploy.CSN.Common.Datas;
 using KJFramework.Platform.Deploy.CSN.CP.Connector.Processors;
 using KJFramework.Platform.Deploy.CSN.ProtocolStack;
-using KJFramework.Plugin;
 using KJFramework.Tracing;
 using System;
 using System.Configuration;
@@ -77,7 +77,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             Console.WriteLine("Initializing CSN protocol stack......");
             _protocolStack = new CSNProtocolStack();
             Global.ProtocolStack = (CSNProtocolStack) _protocolStack;
-            _transactionManager = new MessageTransactionManager(new TCPTransactionIdentityComparer());
+            _transactionManager = new MessageTransactionManager(new TransactionIdentityComparer());
             Console.WriteLine("Initializing scheduler......");
             _requestScheduler = new BaseMessageRequestScheduler()
             .Regist(new Protocols { ProtocolId = 0, ServiceId = 2, DetailsId = 0 }, new CSNGetDataTableRequestMessageProcessor())

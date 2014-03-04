@@ -56,7 +56,7 @@
     <Compile Include="CommonCounter.cs" />
     <Compile Include="Comparers\ProtocolsComparer.cs" />
     <Compile Include="Comparers\ServiceCoreComparer.cs" />
-    <Compile Include="Comparers\TCPTransactionIdentityComparer.cs" />
+    <Compile Include="Comparers\TransactionIdentityComparer.cs" />
     <Compile Include="Configurations\TransactionSettingConfigSection.cs" />
     <Compile Include="Configurations\SettingConfiguration.cs" />
     <Compile Include="Contexts\BusinessTransactionContext.cs" />

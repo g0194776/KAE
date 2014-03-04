@@ -2,7 +2,6 @@ using System;
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Exceptions;
 using KJFramework.Dynamic.Structs;
-using KJFramework.Plugin;
 
 namespace KJFramework.Dynamic.Components
 {

@@ -58,7 +58,7 @@
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.Dynamic\KJFramework.Dynamic.csproj">
       <Project>{47672612-8AA3-4729-A210-4F30E3FB39E4}</Project>
-      <Name>KJFramework.Dynamic %28Dynamic Component Layer\KJFramework.Dynamic%29</Name>
+      <Name>KJFramework.Dynamic %28Basic Function Libraries %28BFL%29\Dynamic Component Layer\KJFramework.Dynamic%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

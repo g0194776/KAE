@@ -1,5 +1,4 @@
-﻿using KJFramework.IO.Helper;
-using KJFramework.Messages.Contracts;
+﻿using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Objects;

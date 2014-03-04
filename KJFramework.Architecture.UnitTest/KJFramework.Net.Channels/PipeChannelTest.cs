@@ -293,7 +293,7 @@ namespace KJFramework.Net.Channels.UnitTest
         [Description("使用事务的方式去测试发送消息")]
         public void SendMessageWithTransactionTest()
         {
-            MetadataTransactionManager manager = new MetadataTransactionManager(new TCPTransactionIdentityComparer());
+            MetadataTransactionManager manager = new MetadataTransactionManager(new TransactionIdentityComparer());
             
             ITransportChannel connectedChannel = null;
             AutoResetEvent resetEvent = new AutoResetEvent(false);

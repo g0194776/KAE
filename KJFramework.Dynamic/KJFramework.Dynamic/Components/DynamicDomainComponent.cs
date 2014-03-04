@@ -1,7 +1,6 @@
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Tables;
 using KJFramework.Dynamic.Visitors;
-using KJFramework.Plugin;
 using KJFramework.ServiceModel.Bussiness.Default.Services;
 using KJFramework.ServiceModel.Elements;
 using KJFramework.Tracing;

@@ -32,7 +32,7 @@ namespace KJFramework.Data.Synchronization.Transactions
 
         private Thread _chkThread;
         public static readonly SyncDataTransactionManager Instance = new SyncDataTransactionManager();
-        private static readonly ConcurrentDictionary<TransactionIdentity, SyncDataTransaction> _trans = new ConcurrentDictionary<TransactionIdentity, SyncDataTransaction>(new TCPTransactionIdentityComparer());
+        private static readonly ConcurrentDictionary<TransactionIdentity, SyncDataTransaction> _trans = new ConcurrentDictionary<TransactionIdentity, SyncDataTransaction>(new TransactionIdentityComparer());
 
         #endregion
 

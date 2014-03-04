@@ -10,7 +10,7 @@ namespace KJFramework.Data.Synchronization
     {
         public static readonly TimeSpan TranTimeout = TimeSpan.Parse(SyncDataConfigSection.Current.Settings.TranTimeout);
         public static readonly int TranChkInterval = int.Parse(SyncDataConfigSection.Current.Settings.TranChkInterval);
-        public static readonly MetadataTransactionManager TransactionManager = new MetadataTransactionManager(new TCPTransactionIdentityComparer()); 
+        public static readonly MetadataTransactionManager TransactionManager = new MetadataTransactionManager(new TransactionIdentityComparer()); 
         public static readonly MetadataProtocolStack ProtocolStack = new MetadataProtocolStack();
     }
 }

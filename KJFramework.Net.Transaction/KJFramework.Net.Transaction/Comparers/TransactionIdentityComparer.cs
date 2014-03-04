@@ -9,7 +9,7 @@ namespace KJFramework.Net.Transaction.Comparers
     /// <summary>
     ///   TCP网络唯一事务标示比较器
     /// </summary>
-    public class TCPTransactionIdentityComparer : EqualityComparer<TransactionIdentity>
+    public class TransactionIdentityComparer : EqualityComparer<TransactionIdentity>
     {
         #region Overrides of EqualityComparer<TransactionIdentity>
 

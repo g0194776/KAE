@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner"
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
   dslVersion="1.0.0.0"
   Id="0f316b15-4749-47e4-aaeb-c52b3fcaa1b5"
   name="KJFramework.ApplicationEngine.Diagrams" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
@@ -70,6 +70,58 @@
                   <upperValueInternal>
                     <literalString
                       Id="7fa31f32-e907-4783-b437-d04d3bc291e8"
+                      name="Upper"
+                      value="*" />
+                  </upperValueInternal>
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="cb895607-9fc1-4290-8438-419674917b8c"
+            isDerived="false"
+            sourceEndRoleName="IKAEApplication"
+            targetEndRoleName="INetworkResource"
+            isLeaf="false"
+            isAbstract="false">
+            <interfaceMoniker
+              Id="f7c48be3-a620-4f2c-9a47-987341c953e7"
+              LastKnownName="INetworkResource"
+              LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="b3e3f0e5-24c7-4e5d-be07-2b038fc1dcbb"
+                  name="IKAEApplication"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="fd88e8de-d59b-452a-986f-c76815399cdc"
+                  name="INetworkResource"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false">
+                  <lowerValueInternal>
+                    <literalString
+                      Id="c5906309-113f-42b9-be07-7deb5560d2fe"
+                      name="Lower"
+                      value="*" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="10e65ae7-9a8b-47cb-b294-66da710280f0"
                       name="Upper"
                       value="*" />
                   </upperValueInternal>
@@ -334,8 +386,47 @@
                   isUnique="false">
                   <type_NamedElement>
                     <undefinedTypeMoniker
-                      Id="f8acae61-69e9-4261-bda2-c548c755a21e"
-                      LastKnownName="Uri"
+                      Id="583d75ca-c0a4-4e76-bdc1-a2979c94f12a"
+                      LastKnownName="INetworkResource[]"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="fe521496-05bf-43e0-9eb6-78bce79b096a"
+            name="RegisterProtocolStack"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="97c4c607-d5a6-402f-b557-a742f2ee2380"
+                  name="protocol"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <enumerationMoniker
+                      Id="5ad7449e-cd51-47a8-8d3f-52590dd63436"
+                      LastKnownName="ProtocolTypes"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="b8d94973-08bc-461e-b091-0fd74b1e61e7"
+                  name="protocolStack"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="1d6ed5e3-ef99-426d-a9e9-6f2c380c5d25"
+                      LastKnownName="object"
                       LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
                   </type_NamedElement>
                 </parameter>
@@ -668,54 +759,6 @@
             </ownedParameters>
           </operation>
           <operation
-            Id="3f3b5644-daee-49ab-b151-6804b1d24a99"
-            name="Pause"
-            isLeaf="false"
-            isStatic="false"
-            isAbstract="true"
-            concurrency="Sequential"
-            isQuery="false">
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter
-                  Id="a217ca70-968d-4be0-8dd1-efdf277d62b9"
-                  direction="Return"
-                  isUnique="false">
-                  <type_NamedElement>
-                    <undefinedTypeMoniker
-                      Id="8ec85a08-5a94-4e47-9562-67cbd4a4bd7b"
-                      LastKnownName="void"
-                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
-          <operation
-            Id="d5db3a5a-228d-405b-b500-c437b60e7817"
-            name="ReOpen"
-            isLeaf="false"
-            isStatic="false"
-            isAbstract="true"
-            concurrency="Sequential"
-            isQuery="false">
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter
-                  Id="5c808b59-20dc-4dab-ad45-69803d7fb0b9"
-                  direction="Return"
-                  isUnique="false">
-                  <type_NamedElement>
-                    <undefinedTypeMoniker
-                      Id="8ec85a08-5a94-4e47-9562-67cbd4a4bd7b"
-                      LastKnownName="void"
-                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
-          <operation
             Id="0237450a-c8a3-4a48-a530-8981f7c98837"
             name="InnerInitialize"
             isLeaf="false"
@@ -792,7 +835,7 @@
             name="AcquireCommunicationSupport"
             isLeaf="false"
             isStatic="false"
-            isAbstract="false"
+            isAbstract="true"
             concurrency="Sequential"
             isQuery="false">
             <ownedParameters>
@@ -803,8 +846,95 @@
                   isUnique="false">
                   <type_NamedElement>
                     <undefinedTypeMoniker
-                      Id="f8acae61-69e9-4261-bda2-c548c755a21e"
-                      LastKnownName="Uri"
+                      Id="583d75ca-c0a4-4e76-bdc1-a2979c94f12a"
+                      LastKnownName="INetworkResource[]"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="0be26cb9-d62d-41a7-97ae-cd4766966e9d"
+            name="RegisterProtocolStack"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="f27fb1af-80a5-4819-b54b-e17c02c47ebc"
+                  name="protocol"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <enumerationMoniker
+                      Id="5ad7449e-cd51-47a8-8d3f-52590dd63436"
+                      LastKnownName="ProtocolTypes"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="60ed38f1-7a10-489e-8fa2-51eaa1644715"
+                  name="protocolStack"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="1d6ed5e3-ef99-426d-a9e9-6f2c380c5d25"
+                      LastKnownName="object"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="7bcbe3a6-788b-43cb-826b-6d5d27a274dd"
+            name="InnerPause"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="5a28cee2-58f7-4368-a1c4-890e244470d7"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="8ec85a08-5a94-4e47-9562-67cbd4a4bd7b"
+                      LastKnownName="void"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="12f5e6d6-607d-4eae-bac7-65ad0846b563"
+            name="InnerReOpen"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="e56d67f8-b80b-49f9-967c-e29733ac9417"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="8ec85a08-5a94-4e47-9562-67cbd4a4bd7b"
+                      LastKnownName="void"
                       LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
                   </type_NamedElement>
                 </parameter>
@@ -1710,42 +1840,6 @@
         isLeaf="false">
         <ownedAttributes>
           <property
-            Id="e84cda82-5828-4005-8fdc-1dc1e1be712a"
-            name="Request"
-            isLeaf="false"
-            isStatic="false"
-            isReadOnly="true"
-            isUnique="false"
-            isDerived="false"
-            isDerivedUnion="false"
-            aggregation="None"
-            isComposite="false">
-            <type_NamedElement>
-              <undefinedTypeMoniker
-                Id="b3bc1779-e4df-44a1-ad57-266c46d7f687"
-                LastKnownName="MetadataContainer"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </type_NamedElement>
-          </property>
-          <property
-            Id="9dc6cfef-17e9-4d50-a80a-3de7406451a0"
-            name="Response"
-            isLeaf="false"
-            isStatic="false"
-            isReadOnly="true"
-            isUnique="false"
-            isDerived="false"
-            isDerivedUnion="false"
-            aggregation="None"
-            isComposite="false">
-            <type_NamedElement>
-              <undefinedTypeMoniker
-                Id="b3bc1779-e4df-44a1-ad57-266c46d7f687"
-                LastKnownName="MetadataContainer"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </type_NamedElement>
-          </property>
-          <property
             Id="3425a848-b7c1-4d01-880c-8fbef4e06d79"
             name="State"
             isLeaf="false"
@@ -1764,6 +1858,94 @@
             </type_NamedElement>
           </property>
         </ownedAttributes>
+        <ownedOperations>
+          <operation
+            Id="cfe94d3a-b344-4bd9-8368-76c169a84397"
+            name="GetRequest&lt;T&gt;"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="1c6c4366-db5c-492d-abcb-ae66258cf497"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="7895a16f-2c80-455a-8cc0-8df742966642"
+                      LastKnownName="T"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="7f08a632-a2e5-4c2c-b4e2-720143c9b8a3"
+            name="SendResponse"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="30ad4178-10af-4d28-a7e5-1eb5906fe76c"
+                  name="obj"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="1d6ed5e3-ef99-426d-a9e9-6f2c380c5d25"
+                      LastKnownName="object"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="afd82ceb-4d3a-453e-98d6-c71366809ed6"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="8ec85a08-5a94-4e47-9562-67cbd4a4bd7b"
+                      LastKnownName="void"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="0815788a-b4bd-44b6-aa84-4030878ea13b"
+            name="GetResponse&lt;T&gt;"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="d585b3d5-94ec-459c-8851-b0679026db58"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="7895a16f-2c80-455a-8cc0-8df742966642"
+                      LastKnownName="T"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperations>
       </Interface>
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -1850,14 +2032,14 @@
               </operationHasOwnedParameters>
               <operationHasOwnedParameters>
                 <parameter
-                  Id="738406b7-b19a-4598-85a3-f58ab5d19c26"
-                  name="transaction"
+                  Id="3969483b-b8b3-4858-9069-cefed57383b9"
+                  name="package"
                   direction="In"
                   isUnique="false">
                   <type_NamedElement>
                     <undefinedTypeMoniker
-                      Id="48f5b272-ba1f-4da5-bddb-579fad12e731"
-                      LastKnownName="MetadataTransaction"
+                      Id="0cffd3c7-06b3-4cb5-908a-d003049fdcdf"
+                      LastKnownName="BusinessPackage"
                       LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
                   </type_NamedElement>
                 </parameter>
@@ -6824,6 +7006,104 @@
       <executionEvent
         Id="3fa2a708-0053-4e17-9208-2f76db9fc643"
         name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="f7c48be3-a620-4f2c-9a47-987341c953e7"
+        name="INetworkResource"
+        isAbstract="false"
+        isLeaf="false">
+        <ownedAttributes>
+          <property
+            Id="091f5e37-bcd4-4abd-a8c7-47bc2d9c7b4d"
+            name="NetworkUri"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="true"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="f8acae61-69e9-4261-bda2-c548c755a21e"
+                LastKnownName="Uri"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="bfc21cb6-3d16-4f21-99eb-a699b7e96994"
+            name="Protocol"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <enumerationMoniker
+                Id="5ad7449e-cd51-47a8-8d3f-52590dd63436"
+                LastKnownName="ProtocolTypes"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributes>
+      </Interface>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="583d75ca-c0a4-4e76-bdc1-a2979c94f12a"
+        name="INetworkResource[]" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="fb69c488-5c12-4347-ad83-07a66a257cbc"
+        name="ProtcolType" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="77ec8c59-0ce8-4408-a381-5b54b7a902c7"
+        name="ProtocolType" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <enumeration
+        Id="5ad7449e-cd51-47a8-8d3f-52590dd63436"
+        name="ProtocolTypes"
+        isAbstract="false"
+        isLeaf="false">
+        <ownedLiterals>
+          <enumerationLiteral
+            Id="bbb5de3c-582d-4e01-aec8-fbf6997239a9"
+            name="Json" />
+          <enumerationLiteral
+            Id="ba4d31c7-9633-41a5-b6ba-fb50c246810b"
+            name="Metadata" />
+          <enumerationLiteral
+            Id="46534792-3112-4897-bb9b-5a0cb06cdb5a"
+            name="IntellectObject" />
+          <enumerationLiteral
+            Id="5032ca52-1d59-4f36-b532-1d6739c0c2ba"
+            name="XML" />
+        </ownedLiterals>
+      </enumeration>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="1d6ed5e3-ef99-426d-a9e9-6f2c380c5d25"
+        name="object" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="7895a16f-2c80-455a-8cc0-8df742966642"
+        name="T" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="0cffd3c7-06b3-4cb5-908a-d003049fdcdf"
+        name="BusinessPackage" />
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType

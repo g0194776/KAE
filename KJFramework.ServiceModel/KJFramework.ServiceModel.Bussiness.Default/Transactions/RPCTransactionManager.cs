@@ -23,7 +23,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Transactions
         ///     * 默认时间：60s.
         /// </summary>
         public RPCTransactionManager()
-            : base(60000, new TCPTransactionIdentityComparer())
+            : base(60000, new TransactionIdentityComparer())
         {
 
         }

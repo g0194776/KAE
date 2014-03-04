@@ -68,7 +68,7 @@
     </ProjectReference>
     <ProjectReference Include="..\KJFramework.Dynamic\KJFramework.Dynamic\KJFramework.Dynamic.csproj">
       <Project>{47672612-8aa3-4729-a210-4f30e3fb39e4}</Project>
-      <Name>KJFramework.Dynamic %28Dynamic Component Layer\KJFramework.Dynamic%29</Name>
+      <Name>KJFramework.Dynamic %28Basic Function Libraries %28BFL%29\Dynamic Component Layer\KJFramework.Dynamic%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
       <Project>{12309506-18a3-48bf-8a55-e950a87a905e}</Project>

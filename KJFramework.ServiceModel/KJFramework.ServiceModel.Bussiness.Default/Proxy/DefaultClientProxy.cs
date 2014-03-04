@@ -82,7 +82,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Proxy
                 ServiceModel.FixedRequestMessage = ServiceModel.Tenant.Rent<RequestServiceMessage>("Fixed:RequestServiceMessage", ServiceModelSettingConfigSection.Current.NetworkLayer.RequestServiceMessagePoolCount);
             if (ServiceModel.FixedRequestWaitObject == null)
                 ServiceModel.FixedRequestWaitObject = ServiceModel.Tenant.Rent<RequestCenterWaitObject>("Fixed:RequestCenterWaitObject", ServiceModelSettingConfigSection.Current.NetworkLayer.RequestCenterWaitObjectPoolCount);
-            _delegators = ServiceModel.Tenant.Rent<TransactionIdentity, AsyncMethodCallback>("Cache:Callbacks, Id: " + Guid.NewGuid(), new TCPTransactionIdentityComparer());
+            _delegators = ServiceModel.Tenant.Rent<TransactionIdentity, AsyncMethodCallback>("Cache:Callbacks, Id: " + Guid.NewGuid(), new TransactionIdentityComparer());
             _delegators.CacheExpired += CacheExpired;
             _status = ProxyStatus.Opend;
         }
@@ -97,7 +97,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Proxy
         private readonly Uri _logicalAddress;
         private IMessageTransportChannel<Message> _msgChannel;
         private readonly ICacheContainer<TransactionIdentity, AsyncMethodCallback> _delegators;
-        private readonly ConcurrentDictionary<TransactionIdentity, RequestCenterWaitObject> _waitObjects = new ConcurrentDictionary<TransactionIdentity, RequestCenterWaitObject>(new TCPTransactionIdentityComparer());
+        private readonly ConcurrentDictionary<TransactionIdentity, RequestCenterWaitObject> _waitObjects = new ConcurrentDictionary<TransactionIdentity, RequestCenterWaitObject>(new TransactionIdentityComparer());
 
         #endregion
 
