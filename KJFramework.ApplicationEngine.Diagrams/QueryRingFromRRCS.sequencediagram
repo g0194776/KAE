@@ -1,17 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SequenceDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" dslVersion="1.0.0.0" Id="628c5b47-4a99-4066-ad8f-99b317418c5a" name="QueryRingFromRRCS" linkedPackageId="13e1968d-c37e-4e72-8d5c-14c98e96d34e" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner">
   <profileInstances>
-    <packageHasProfileInstances Id="136021e0-11bf-491f-b38b-86298057e8dd">
-      <profileInstance Id="2dd883f7-e80e-4be3-83f8-01bcc1b899c8" name="StandardProfileL2">
-        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+    <packageHasProfileInstances Id="6b635b21-a643-4647-81c1-631deb243816">
+      <profileInstance Id="1061ee0a-3945-4b42-a811-e84b37bbee63" name="TextTemplateBindings">
+        <elementDefinition Id="5c3589d2-a74c-48a4-b07e-a755f4d7a70b" />
       </profileInstance>
-      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
-    </packageHasProfileInstances>
-    <packageHasProfileInstances Id="26686941-76a8-431c-aaa2-bdf7cf579eb8">
-      <profileInstance Id="c6aeb5fd-1b79-4cb2-a0a6-b5d659ad8215" name="StandardProfileL3">
-        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
-      </profileInstance>
-      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+      <elementDefinition Id="e6c5a371-8453-4f03-a85a-74b1eece3c18" />
     </packageHasProfileInstances>
   </profileInstances>
   <packagedElements>
@@ -516,5 +510,19 @@
   </packagedElements>
   <package Id="13e1968d-c37e-4e72-8d5c-14c98e96d34e" name="KJFramework.ApplicationEngine.Diagrams">
     <elementDefinition Id="0f316b15-4749-47e4-aaeb-c52b3fcaa1b5" />
+    <profileInstances>
+      <packageHasProfileInstances Id="136021e0-11bf-491f-b38b-86298057e8dd">
+        <profileInstance Id="2dd883f7-e80e-4be3-83f8-01bcc1b899c8" name="StandardProfileL2">
+          <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+        </profileInstance>
+        <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="26686941-76a8-431c-aaa2-bdf7cf579eb8">
+        <profileInstance Id="c6aeb5fd-1b79-4cb2-a0a6-b5d659ad8215" name="StandardProfileL3">
+          <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+        </profileInstance>
+        <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+      </packageHasProfileInstances>
+    </profileInstances>
   </package>
 </SequenceDesignerModel>

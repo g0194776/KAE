@@ -97,7 +97,7 @@
     </ProjectReference>
     <ProjectReference Include="..\KJFramework.Dynamic\KJFramework.Dynamic\KJFramework.Dynamic.csproj">
       <Project>{47672612-8aa3-4729-a210-4f30e3fb39e4}</Project>
-      <Name>KJFramework.Dynamic %28Basic Function Libraries %28BFL%29\Dynamic Component Layer\KJFramework.Dynamic%29</Name>
+      <Name>KJFramework.Dynamic</Name>
     </ProjectReference>
     <ProjectReference Include="..\KJFramework.Game.Basic\KJFramework.Game.Basic\KJFramework.Game.Basic.csproj">
       <Project>{03d02a23-9924-490b-9b76-15315eadc18b}</Project>

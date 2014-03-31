@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="27fd795a-81db-4b6e-971e-b1791d1b9c72" name="KAE" linkedPackageId="f0a0d623-d639-4266-a3b8-cea776614f5b" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner" dslVersion="1.0.0.0" Id="27fd795a-81db-4b6e-971e-b1791d1b9c72" name="KAE" linkedPackageId="f0a0d623-d639-4266-a3b8-cea776614f5b" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
   <packagedElements>
     <logicalClassDesignerModelHasTypes>
       <Interface Id="1d1c93a4-1e92-4f44-878c-8d84108c4e06" name="IKAEApplication" isAbstract="false" isLeaf="false">
@@ -966,6 +966,12 @@
               <referencedTypeMoniker Id="57215792-bace-43c7-ab15-a9fa96631361" LastKnownName="BusinessPackageStates" />
             </type_NamedElement>
           </property>
+          <property Id="91ca5024-bff2-4d19-8938-12e03bf8122b" name="CurrentProtocol" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="7e60e42d-aeaa-4085-804e-2fb5b64c4ffe" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="7124f62d-8405-45ef-845f-4c2cbca8c8b3" LastKnownName="Protocol" />
+            </type_NamedElement>
+          </property>
         </ownedAttributes>
         <ownedOperations>
           <operation Id="9f684706-0a53-4526-9382-d5bd088fc95d" name="GetRequest&lt;T&gt;" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
@@ -1167,6 +1173,11 @@
         <elementDefinition Id="0cffd3c7-06b3-4cb5-908a-d003049fdcdf" />
       </referencedType>
     </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="7124f62d-8405-45ef-845f-4c2cbca8c8b3" name="Protocol" isAbstract="false" isLeaf="false" cachedFullName="Protocol">
+        <elementDefinition Id="7b13cc94-a69b-4d3e-ae01-d465ffb92003" />
+      </referencedType>
+    </packageHasNamedElement>
   </packagedElements>
   <package Id="f0a0d623-d639-4266-a3b8-cea776614f5b" name="KJFramework.ApplicationEngine.Diagrams">
     <elementDefinition Id="0f316b15-4749-47e4-aaeb-c52b3fcaa1b5" />
@@ -1182,6 +1193,12 @@
           <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
         </profileInstance>
         <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="2fabec0f-8982-4a8f-b78d-56d8d299fb45">
+        <profileInstance Id="c38f8bc7-8231-41df-ad1a-0e9557eefd53" name="TextTemplateBindings">
+          <elementDefinition Id="5c3589d2-a74c-48a4-b07e-a755f4d7a70b" />
+        </profileInstance>
+        <elementDefinition Id="e6c5a371-8453-4f03-a85a-74b1eece3c18" />
       </packageHasProfileInstances>
     </profileInstances>
   </package>

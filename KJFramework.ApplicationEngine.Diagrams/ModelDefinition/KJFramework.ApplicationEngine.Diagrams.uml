@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner" xmlns:dm9="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
   dslVersion="1.0.0.0"
   Id="0f316b15-4749-47e4-aaeb-c52b3fcaa1b5"
   name="KJFramework.ApplicationEngine.Diagrams" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
@@ -15,6 +15,12 @@
       <profileInstance
         Id="532ea607-fb19-44b8-8502-3351b05452be"
         name="StandardProfileL3" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances
+      Id="e6c5a371-8453-4f03-a85a-74b1eece3c18">
+      <profileInstance
+        Id="5c3589d2-a74c-48a4-b07e-a755f4d7a70b"
+        name="TextTemplateBindings" />
     </packageHasProfileInstances>
   </profileInstances>
   <packagedElements>
@@ -1857,6 +1863,24 @@
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </type_NamedElement>
           </property>
+          <property
+            Id="7e60e42d-aeaa-4085-804e-2fb5b64c4ffe"
+            name="CurrentProtocol"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="7b13cc94-a69b-4d3e-ae01-d465ffb92003"
+                LastKnownName="Protocol"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </type_NamedElement>
+          </property>
         </ownedAttributes>
         <ownedOperations>
           <operation
@@ -2153,222 +2177,6 @@
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </executionOccurrenceSpecification>
-          <behaviorExecutionSpecification
-            Id="2cf8b3f5-8dff-41d6-8fab-74ad72ce564b"
-            name="BehaviorExecutionSpecification3">
-            <coveredLifelines>
-              <lifelineMoniker
-                Id="e934efcd-8167-41d0-a62b-75773c88b959"
-                LastKnownName="App"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </coveredLifelines>
-            <finish>
-              <executionOccurrenceSpecificationMoniker
-                Id="2fdd7bc3-c23c-4395-b778-a0e188f3abeb"
-                LastKnownName="ExecutionOccurrenceSpecification6"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </finish>
-            <start>
-              <executionOccurrenceSpecificationMoniker
-                Id="d25fad73-d50d-4ebb-9ecf-2acff71159c8"
-                LastKnownName="ExecutionOccurrenceSpecification5"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </start>
-            <nestedOccurrences>
-              <messageOccurrenceSpecificationMoniker
-                Id="b98f6965-58cd-42d6-b400-279848bc95a9"
-                LastKnownName="MessageOccurrenceSpecification6"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-              <messageOccurrenceSpecificationMoniker
-                Id="241701eb-0f87-47fc-be4c-63cfbc93b013"
-                LastKnownName="MessageOccurrenceSpecification7"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </nestedOccurrences>
-          </behaviorExecutionSpecification>
-          <executionOccurrenceSpecification
-            Id="d25fad73-d50d-4ebb-9ecf-2acff71159c8"
-            name="ExecutionOccurrenceSpecification5">
-            <event>
-              <executionOccurrenceSpecificationReferencesEvent>
-                <executionEventMoniker
-                  Id="a95f7a18-e8c5-4140-a612-e51daaac488f"
-                  LastKnownName="ExecutionEvent"
-                  LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-              </executionOccurrenceSpecificationReferencesEvent>
-            </event>
-            <covered>
-              <lifelineMoniker
-                Id="e934efcd-8167-41d0-a62b-75773c88b959"
-                LastKnownName="App"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </executionOccurrenceSpecification>
-          <messageOccurrenceSpecification
-            Id="b9db631c-7f44-4d21-8694-9821039869e1"
-            name="MessageOccurrenceSpecification5">
-            <covered>
-              <lifelineMoniker
-                Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
-                LastKnownName="Host"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
-            Id="b98f6965-58cd-42d6-b400-279848bc95a9"
-            name="MessageOccurrenceSpecification6">
-            <covered>
-              <lifelineMoniker
-                Id="e934efcd-8167-41d0-a62b-75773c88b959"
-                LastKnownName="App"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
-            Id="241701eb-0f87-47fc-be4c-63cfbc93b013"
-            name="MessageOccurrenceSpecification7">
-            <covered>
-              <lifelineMoniker
-                Id="e934efcd-8167-41d0-a62b-75773c88b959"
-                LastKnownName="App"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
-            Id="c5a0b9a9-7042-4d5d-9a23-1bbe0f40bb68"
-            name="MessageOccurrenceSpecification8">
-            <covered>
-              <lifelineMoniker
-                Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
-                LastKnownName="Host"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <executionOccurrenceSpecification
-            Id="2fdd7bc3-c23c-4395-b778-a0e188f3abeb"
-            name="ExecutionOccurrenceSpecification6">
-            <event>
-              <executionOccurrenceSpecificationReferencesEvent>
-                <executionEventMoniker
-                  Id="98bc5af3-a35d-46e9-b626-a7eabdeebc78"
-                  LastKnownName="ExecutionEvent"
-                  LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-              </executionOccurrenceSpecificationReferencesEvent>
-            </event>
-            <covered>
-              <lifelineMoniker
-                Id="e934efcd-8167-41d0-a62b-75773c88b959"
-                LastKnownName="App"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </executionOccurrenceSpecification>
-          <behaviorExecutionSpecification
-            Id="386ce23c-f783-4d7f-9931-77417cb1eb05"
-            name="BehaviorExecutionSpecification4">
-            <coveredLifelines>
-              <lifelineMoniker
-                Id="e934efcd-8167-41d0-a62b-75773c88b959"
-                LastKnownName="App"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </coveredLifelines>
-            <finish>
-              <executionOccurrenceSpecificationMoniker
-                Id="01442605-ab0a-4ead-9d25-cbeef5e252fa"
-                LastKnownName="ExecutionOccurrenceSpecification8"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </finish>
-            <start>
-              <executionOccurrenceSpecificationMoniker
-                Id="8e971972-5d95-41fb-8eff-b2a23bbda8ee"
-                LastKnownName="ExecutionOccurrenceSpecification7"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </start>
-            <nestedOccurrences>
-              <messageOccurrenceSpecificationMoniker
-                Id="b5f29d58-6c87-49d0-9ae2-1712838f5e05"
-                LastKnownName="MessageOccurrenceSpecification10"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-              <messageOccurrenceSpecificationMoniker
-                Id="4fe40e66-1ae2-4345-a1a1-e077b559ad72"
-                LastKnownName="MessageOccurrenceSpecification11"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </nestedOccurrences>
-          </behaviorExecutionSpecification>
-          <executionOccurrenceSpecification
-            Id="8e971972-5d95-41fb-8eff-b2a23bbda8ee"
-            name="ExecutionOccurrenceSpecification7">
-            <event>
-              <executionOccurrenceSpecificationReferencesEvent>
-                <executionEventMoniker
-                  Id="f64be0d3-d7bb-4b97-9f49-cca3b85b7e1b"
-                  LastKnownName="ExecutionEvent"
-                  LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-              </executionOccurrenceSpecificationReferencesEvent>
-            </event>
-            <covered>
-              <lifelineMoniker
-                Id="e934efcd-8167-41d0-a62b-75773c88b959"
-                LastKnownName="App"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </executionOccurrenceSpecification>
-          <messageOccurrenceSpecification
-            Id="b5f29d58-6c87-49d0-9ae2-1712838f5e05"
-            name="MessageOccurrenceSpecification10">
-            <covered>
-              <lifelineMoniker
-                Id="e934efcd-8167-41d0-a62b-75773c88b959"
-                LastKnownName="App"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
-            Id="7e8749b1-770a-4f44-b273-054a6c39b416"
-            name="MessageOccurrenceSpecification9">
-            <covered>
-              <lifelineMoniker
-                Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
-                LastKnownName="Host"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
-            Id="4fe40e66-1ae2-4345-a1a1-e077b559ad72"
-            name="MessageOccurrenceSpecification11">
-            <covered>
-              <lifelineMoniker
-                Id="e934efcd-8167-41d0-a62b-75773c88b959"
-                LastKnownName="App"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
-            Id="6b040bde-3704-49b7-9492-cae6301c9cb7"
-            name="MessageOccurrenceSpecification12">
-            <covered>
-              <lifelineMoniker
-                Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
-                LastKnownName="Host"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <executionOccurrenceSpecification
-            Id="01442605-ab0a-4ead-9d25-cbeef5e252fa"
-            name="ExecutionOccurrenceSpecification8">
-            <event>
-              <executionOccurrenceSpecificationReferencesEvent>
-                <executionEventMoniker
-                  Id="89bc8b1a-c482-456a-b79b-854774f6ca50"
-                  LastKnownName="ExecutionEvent"
-                  LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-              </executionOccurrenceSpecificationReferencesEvent>
-            </event>
-            <covered>
-              <lifelineMoniker
-                Id="e934efcd-8167-41d0-a62b-75773c88b959"
-                LastKnownName="App"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
             Id="40f7d399-a5c9-4763-a9cd-00cc357915a3"
             name="MessageOccurrenceSpecification13">
@@ -2524,22 +2332,22 @@
             </covered>
           </messageOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="b7a68fcc-4084-4892-a1e6-20720f503856"
-            name="MessageOccurrenceSpecification28">
-            <covered>
-              <lifelineMoniker
-                Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
-                LastKnownName="Host"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="61003e72-c304-47d1-b84c-4ae35c8e2bfb"
             name="MessageOccurrenceSpecification27">
             <covered>
               <lifelineMoniker
                 Id="d7fe2799-b969-49d2-bcb4-cffd967d4a2f"
                 LastKnownName="CSN"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="b7a68fcc-4084-4892-a1e6-20720f503856"
+            name="MessageOccurrenceSpecification28">
+            <covered>
+              <lifelineMoniker
+                Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
+                LastKnownName="Host"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -2696,6 +2504,14 @@
                 LastKnownName="MessageOccurrenceSpecification20"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
               <messageOccurrenceSpecificationMoniker
+                Id="1bacb458-2a20-436e-92cb-22e5babffb18"
+                LastKnownName="MessageOccurrenceSpecification29"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="1364bc93-efb5-487a-a54d-4c861b763935"
+                LastKnownName="MessageOccurrenceSpecification32"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <messageOccurrenceSpecificationMoniker
                 Id="37f92f33-8000-4623-8b34-05f45b0b0893"
                 LastKnownName="MessageOccurrenceSpecification21"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
@@ -2739,6 +2555,114 @@
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </messageOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="2a0702ee-e0d3-42cc-b4d4-0be1dc2e9160"
+            name="BehaviorExecutionSpecification10">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="050dcd07-745f-4e0d-89e6-e0d972c7f21b"
+                LastKnownName="APMS"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="2812a1df-cf8e-4368-862f-a23cbaf19e28"
+                LastKnownName="ExecutionOccurrenceSpecification20"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="1eb02e5c-e668-4a43-89eb-bfdc82cda7f1"
+                LastKnownName="ExecutionOccurrenceSpecification19"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="f4390506-79f8-4656-a9d1-7d2c350fd2ff"
+                LastKnownName="MessageOccurrenceSpecification30"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="53a60441-27eb-431e-8c57-19e6677bc5d7"
+                LastKnownName="MessageOccurrenceSpecification31"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="1eb02e5c-e668-4a43-89eb-bfdc82cda7f1"
+            name="ExecutionOccurrenceSpecification19">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="97a557d7-a28b-4cc4-88e8-4ba91be65d87"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="050dcd07-745f-4e0d-89e6-e0d972c7f21b"
+                LastKnownName="APMS"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="f4390506-79f8-4656-a9d1-7d2c350fd2ff"
+            name="MessageOccurrenceSpecification30">
+            <covered>
+              <lifelineMoniker
+                Id="050dcd07-745f-4e0d-89e6-e0d972c7f21b"
+                LastKnownName="APMS"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="1bacb458-2a20-436e-92cb-22e5babffb18"
+            name="MessageOccurrenceSpecification29">
+            <covered>
+              <lifelineMoniker
+                Id="2411f0de-4bb0-47dd-961b-5ae9f0d58a8c"
+                LastKnownName="RRCS"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="1364bc93-efb5-487a-a54d-4c861b763935"
+            name="MessageOccurrenceSpecification32">
+            <covered>
+              <lifelineMoniker
+                Id="2411f0de-4bb0-47dd-961b-5ae9f0d58a8c"
+                LastKnownName="RRCS"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="53a60441-27eb-431e-8c57-19e6677bc5d7"
+            name="MessageOccurrenceSpecification31">
+            <covered>
+              <lifelineMoniker
+                Id="050dcd07-745f-4e0d-89e6-e0d972c7f21b"
+                LastKnownName="APMS"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="2812a1df-cf8e-4368-862f-a23cbaf19e28"
+            name="ExecutionOccurrenceSpecification20">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="40e147df-7036-4998-ab1a-0e7c56a6fa89"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="050dcd07-745f-4e0d-89e6-e0d972c7f21b"
+                LastKnownName="APMS"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
             Id="37f92f33-8000-4623-8b34-05f45b0b0893"
             name="MessageOccurrenceSpecification21">
@@ -2778,7 +2702,7 @@
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="715d88e6-f7c6-4155-af93-9fe91229c64e"
+            Id="29f0ccdb-c90f-4976-a2e1-bab1e1def2d4"
             name="MessageOccurrenceSpecification23">
             <covered>
               <lifelineMoniker
@@ -2788,7 +2712,7 @@
             </covered>
           </messageOccurrenceSpecification>
           <behaviorExecutionSpecification
-            Id="7712c9ae-c6ef-4e52-b889-04fe5660367c"
+            Id="9a410ed5-13ff-4bea-9f72-37b944073d9c"
             name="BehaviorExecutionSpecification8">
             <coveredLifelines>
               <lifelineMoniker
@@ -2798,30 +2722,30 @@
             </coveredLifelines>
             <finish>
               <executionOccurrenceSpecificationMoniker
-                Id="b0a451b9-d865-423e-9121-083238f5bddb"
+                Id="142e3a0e-54d9-42ec-8376-b3479a20f6e8"
                 LastKnownName="ExecutionOccurrenceSpecification16"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </finish>
             <start>
               <executionOccurrenceSpecificationMoniker
-                Id="34661b77-ab75-4d26-8151-bb5003977de3"
+                Id="72723e41-e196-47e5-b5c0-054b70cd884f"
                 LastKnownName="ExecutionOccurrenceSpecification15"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </start>
             <nestedOccurrences>
               <messageOccurrenceSpecificationMoniker
-                Id="1851210e-38f7-40f3-a7ee-0dbd97b1b360"
+                Id="e3fd1ddc-ca60-4acb-bf84-250f9e35fdcb"
                 LastKnownName="MessageOccurrenceSpecification24"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </nestedOccurrences>
           </behaviorExecutionSpecification>
           <executionOccurrenceSpecification
-            Id="34661b77-ab75-4d26-8151-bb5003977de3"
+            Id="72723e41-e196-47e5-b5c0-054b70cd884f"
             name="ExecutionOccurrenceSpecification15">
             <event>
               <executionOccurrenceSpecificationReferencesEvent>
                 <executionEventMoniker
-                  Id="d985362c-b8cd-41ff-b80d-e14fa7fd314a"
+                  Id="890253de-cab7-4cd1-a077-84a4cbd9a006"
                   LastKnownName="ExecutionEvent"
                   LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
               </executionOccurrenceSpecificationReferencesEvent>
@@ -2834,7 +2758,7 @@
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="1851210e-38f7-40f3-a7ee-0dbd97b1b360"
+            Id="e3fd1ddc-ca60-4acb-bf84-250f9e35fdcb"
             name="MessageOccurrenceSpecification24">
             <covered>
               <lifelineMoniker
@@ -2844,12 +2768,12 @@
             </covered>
           </messageOccurrenceSpecification>
           <executionOccurrenceSpecification
-            Id="b0a451b9-d865-423e-9121-083238f5bddb"
+            Id="142e3a0e-54d9-42ec-8376-b3479a20f6e8"
             name="ExecutionOccurrenceSpecification16">
             <event>
               <executionOccurrenceSpecificationReferencesEvent>
                 <executionEventMoniker
-                  Id="df19097e-e5fe-4811-855b-f09854e55bd7"
+                  Id="d01c5dac-0263-427b-b2d7-2277e635b5e3"
                   LastKnownName="ExecutionEvent"
                   LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
               </executionOccurrenceSpecificationReferencesEvent>
@@ -2858,6 +2782,222 @@
               <lifelineMoniker
                 Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
                 LastKnownName="Host"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="5c0d2f6c-b999-4a7a-bdbd-e3635fa30c6e"
+            name="BehaviorExecutionSpecification11">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="e934efcd-8167-41d0-a62b-75773c88b959"
+                LastKnownName="App"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="55bed326-5af6-460f-9a3d-caa1f0e8c8e2"
+                LastKnownName="ExecutionOccurrenceSpecification22"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="a5723562-f457-401d-9a36-fad91366e687"
+                LastKnownName="ExecutionOccurrenceSpecification21"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="f1fb01fc-7d05-497b-ae50-8b9698561cec"
+                LastKnownName="MessageOccurrenceSpecification34"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="87d678df-d869-4d30-b989-b84ac81ba51c"
+                LastKnownName="MessageOccurrenceSpecification35"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="a5723562-f457-401d-9a36-fad91366e687"
+            name="ExecutionOccurrenceSpecification21">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="6b3e3e5e-eae4-416a-866e-f7df5e5ac076"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="e934efcd-8167-41d0-a62b-75773c88b959"
+                LastKnownName="App"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="b5e0151e-d3b3-408a-9a00-741afc6f3f99"
+            name="MessageOccurrenceSpecification33">
+            <covered>
+              <lifelineMoniker
+                Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
+                LastKnownName="Host"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="f1fb01fc-7d05-497b-ae50-8b9698561cec"
+            name="MessageOccurrenceSpecification34">
+            <covered>
+              <lifelineMoniker
+                Id="e934efcd-8167-41d0-a62b-75773c88b959"
+                LastKnownName="App"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="87d678df-d869-4d30-b989-b84ac81ba51c"
+            name="MessageOccurrenceSpecification35">
+            <covered>
+              <lifelineMoniker
+                Id="e934efcd-8167-41d0-a62b-75773c88b959"
+                LastKnownName="App"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="30044d5c-1259-4731-9d89-eed968d3578c"
+            name="MessageOccurrenceSpecification36">
+            <covered>
+              <lifelineMoniker
+                Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
+                LastKnownName="Host"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="55bed326-5af6-460f-9a3d-caa1f0e8c8e2"
+            name="ExecutionOccurrenceSpecification22">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="104d6382-d54b-4e62-a959-1b9e055bca9d"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="e934efcd-8167-41d0-a62b-75773c88b959"
+                LastKnownName="App"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="49ed53f7-670a-4a7a-8834-14b9d349a7d6"
+            name="BehaviorExecutionSpecification12">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="e934efcd-8167-41d0-a62b-75773c88b959"
+                LastKnownName="App"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="5159ef59-0d56-4fc3-b900-f0437dd4c338"
+                LastKnownName="ExecutionOccurrenceSpecification24"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="9cf5f2e2-a257-4abe-9f1e-6d55fc238cd6"
+                LastKnownName="ExecutionOccurrenceSpecification23"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="5321b71d-282d-4e0e-a963-634801abe3f6"
+                LastKnownName="MessageOccurrenceSpecification38"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="4b1abab7-18c2-4114-9c4d-b6955e36ea3a"
+                LastKnownName="MessageOccurrenceSpecification39"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="9cf5f2e2-a257-4abe-9f1e-6d55fc238cd6"
+            name="ExecutionOccurrenceSpecification23">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="5450f404-6b1f-4ca1-b4e2-0b788992c17d"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="e934efcd-8167-41d0-a62b-75773c88b959"
+                LastKnownName="App"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="08c30a86-8bad-4071-ac78-deb6a7f8a8d1"
+            name="MessageOccurrenceSpecification37">
+            <covered>
+              <lifelineMoniker
+                Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
+                LastKnownName="Host"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="5321b71d-282d-4e0e-a963-634801abe3f6"
+            name="MessageOccurrenceSpecification38">
+            <covered>
+              <lifelineMoniker
+                Id="e934efcd-8167-41d0-a62b-75773c88b959"
+                LastKnownName="App"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="4b1abab7-18c2-4114-9c4d-b6955e36ea3a"
+            name="MessageOccurrenceSpecification39">
+            <covered>
+              <lifelineMoniker
+                Id="e934efcd-8167-41d0-a62b-75773c88b959"
+                LastKnownName="App"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="fc7af5df-8470-41e0-8c9d-3bc5e8745a1d"
+            name="MessageOccurrenceSpecification40">
+            <covered>
+              <lifelineMoniker
+                Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
+                LastKnownName="Host"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="5159ef59-0d56-4fc3-b900-f0437dd4c338"
+            name="ExecutionOccurrenceSpecification24">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="1f7b9e37-9754-4504-a9e4-d4d2c6873191"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="e934efcd-8167-41d0-a62b-75773c88b959"
+                LastKnownName="App"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </executionOccurrenceSpecification>
@@ -2880,22 +3020,6 @@
               <executionOccurrenceSpecificationMoniker
                 Id="ec709570-a8ef-4bf6-a707-2f4bac8f6ec1"
                 LastKnownName="ExecutionOccurrenceSpecification4"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-              <messageOccurrenceSpecificationMoniker
-                Id="b9db631c-7f44-4d21-8694-9821039869e1"
-                LastKnownName="MessageOccurrenceSpecification5"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-              <messageOccurrenceSpecificationMoniker
-                Id="c5a0b9a9-7042-4d5d-9a23-1bbe0f40bb68"
-                LastKnownName="MessageOccurrenceSpecification8"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-              <messageOccurrenceSpecificationMoniker
-                Id="7e8749b1-770a-4f44-b273-054a6c39b416"
-                LastKnownName="MessageOccurrenceSpecification9"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-              <messageOccurrenceSpecificationMoniker
-                Id="6b040bde-3704-49b7-9492-cae6301c9cb7"
-                LastKnownName="MessageOccurrenceSpecification12"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
               <messageOccurrenceSpecificationMoniker
                 Id="40f7d399-a5c9-4763-a9cd-00cc357915a3"
@@ -2934,16 +3058,32 @@
                 LastKnownName="MessageOccurrenceSpecification22"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
               <messageOccurrenceSpecificationMoniker
-                Id="715d88e6-f7c6-4155-af93-9fe91229c64e"
+                Id="29f0ccdb-c90f-4976-a2e1-bab1e1def2d4"
                 LastKnownName="MessageOccurrenceSpecification23"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
               <executionOccurrenceSpecificationMoniker
-                Id="34661b77-ab75-4d26-8151-bb5003977de3"
+                Id="72723e41-e196-47e5-b5c0-054b70cd884f"
                 LastKnownName="ExecutionOccurrenceSpecification15"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
               <executionOccurrenceSpecificationMoniker
-                Id="b0a451b9-d865-423e-9121-083238f5bddb"
+                Id="142e3a0e-54d9-42ec-8376-b3479a20f6e8"
                 LastKnownName="ExecutionOccurrenceSpecification16"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="b5e0151e-d3b3-408a-9a00-741afc6f3f99"
+                LastKnownName="MessageOccurrenceSpecification33"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="30044d5c-1259-4731-9d89-eed968d3578c"
+                LastKnownName="MessageOccurrenceSpecification36"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="08c30a86-8bad-4071-ac78-deb6a7f8a8d1"
+                LastKnownName="MessageOccurrenceSpecification37"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="fc7af5df-8470-41e0-8c9d-3bc5e8745a1d"
+                LastKnownName="MessageOccurrenceSpecification40"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </topLevelOccurrences>
           </lifeline>
@@ -2954,20 +3094,20 @@
             lifelineDisplayName="App">
             <topLevelOccurrences>
               <executionOccurrenceSpecificationMoniker
-                Id="d25fad73-d50d-4ebb-9ecf-2acff71159c8"
-                LastKnownName="ExecutionOccurrenceSpecification5"
+                Id="a5723562-f457-401d-9a36-fad91366e687"
+                LastKnownName="ExecutionOccurrenceSpecification21"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
               <executionOccurrenceSpecificationMoniker
-                Id="2fdd7bc3-c23c-4395-b778-a0e188f3abeb"
-                LastKnownName="ExecutionOccurrenceSpecification6"
+                Id="55bed326-5af6-460f-9a3d-caa1f0e8c8e2"
+                LastKnownName="ExecutionOccurrenceSpecification22"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
               <executionOccurrenceSpecificationMoniker
-                Id="8e971972-5d95-41fb-8eff-b2a23bbda8ee"
-                LastKnownName="ExecutionOccurrenceSpecification7"
+                Id="9cf5f2e2-a257-4abe-9f1e-6d55fc238cd6"
+                LastKnownName="ExecutionOccurrenceSpecification23"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
               <executionOccurrenceSpecificationMoniker
-                Id="01442605-ab0a-4ead-9d25-cbeef5e252fa"
-                LastKnownName="ExecutionOccurrenceSpecification8"
+                Id="5159ef59-0d56-4fc3-b900-f0437dd4c338"
+                LastKnownName="ExecutionOccurrenceSpecification24"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </topLevelOccurrences>
           </lifeline>
@@ -3001,6 +3141,14 @@
                 Id="b6aeea7e-ee40-4310-826e-4bef173603ab"
                 LastKnownName="ExecutionOccurrenceSpecification12"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="1eb02e5c-e668-4a43-89eb-bfdc82cda7f1"
+                LastKnownName="ExecutionOccurrenceSpecification19"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="2812a1df-cf8e-4368-862f-a23cbaf19e28"
+                LastKnownName="ExecutionOccurrenceSpecification20"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </topLevelOccurrences>
           </lifeline>
           <lifeline
@@ -3023,7 +3171,7 @@
         <messages>
           <message
             Id="543b60a6-65f5-4700-a35b-081a070c4029"
-            name="Loads Internal Supported App(s)"
+            name="Gets scaned application information(CRC)."
             messageKind="Complete"
             messageSort="SynchCall"
             createSelfMessage="true">
@@ -3037,82 +3185,6 @@
               <messageOccurrenceSpecificationMoniker
                 Id="88bd739f-c4f5-4066-af6c-ea4f7253d0ea"
                 LastKnownName="MessageOccurrenceSpecification4"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </receiveEvent>
-          </message>
-          <message
-            Id="b14060d2-4cad-4f9b-92d0-1039bfd34397"
-            name="Calls .Initialize()"
-            messageKind="Complete"
-            messageSort="SynchCall"
-            createSelfMessage="false">
-            <sendEvent>
-              <messageOccurrenceSpecificationMoniker
-                Id="b9db631c-7f44-4d21-8694-9821039869e1"
-                LastKnownName="MessageOccurrenceSpecification5"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </sendEvent>
-            <receiveEvent>
-              <messageOccurrenceSpecificationMoniker
-                Id="b98f6965-58cd-42d6-b400-279848bc95a9"
-                LastKnownName="MessageOccurrenceSpecification6"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </receiveEvent>
-          </message>
-          <message
-            Id="d7a7417a-6057-4dba-8c50-28cabcc7d39b"
-            name="&lt;&lt;return&gt;&gt;"
-            messageKind="Complete"
-            messageSort="Reply"
-            createSelfMessage="false">
-            <sendEvent>
-              <messageOccurrenceSpecificationMoniker
-                Id="241701eb-0f87-47fc-be4c-63cfbc93b013"
-                LastKnownName="MessageOccurrenceSpecification7"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </sendEvent>
-            <receiveEvent>
-              <messageOccurrenceSpecificationMoniker
-                Id="c5a0b9a9-7042-4d5d-9a23-1bbe0f40bb68"
-                LastKnownName="MessageOccurrenceSpecification8"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </receiveEvent>
-          </message>
-          <message
-            Id="0636af12-9502-4813-a495-d3b66ddba521"
-            name="Calls .Start()"
-            messageKind="Complete"
-            messageSort="SynchCall"
-            createSelfMessage="false">
-            <sendEvent>
-              <messageOccurrenceSpecificationMoniker
-                Id="7e8749b1-770a-4f44-b273-054a6c39b416"
-                LastKnownName="MessageOccurrenceSpecification9"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </sendEvent>
-            <receiveEvent>
-              <messageOccurrenceSpecificationMoniker
-                Id="b5f29d58-6c87-49d0-9ae2-1712838f5e05"
-                LastKnownName="MessageOccurrenceSpecification10"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </receiveEvent>
-          </message>
-          <message
-            Id="ad1b4789-2ccf-4ae0-8143-4937fd16125b"
-            name="&lt;&lt;return&gt;&gt;"
-            messageKind="Complete"
-            messageSort="Reply"
-            createSelfMessage="false">
-            <sendEvent>
-              <messageOccurrenceSpecificationMoniker
-                Id="4fe40e66-1ae2-4345-a1a1-e077b559ad72"
-                LastKnownName="MessageOccurrenceSpecification11"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </sendEvent>
-            <receiveEvent>
-              <messageOccurrenceSpecificationMoniker
-                Id="6b040bde-3704-49b7-9492-cae6301c9cb7"
-                LastKnownName="MessageOccurrenceSpecification12"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </receiveEvent>
           </message>
@@ -3175,7 +3247,7 @@
           </message>
           <message
             Id="9a3e8eff-395a-4645-aa50-36dd2804e884"
-            name="Register"
+            name="Registers to APMS with a group of Application's CRCs."
             messageKind="Complete"
             messageSort="SynchCall"
             createSelfMessage="false">
@@ -3194,7 +3266,7 @@
           </message>
           <message
             Id="610cf2dc-50e6-4608-adf5-3255a77d56d8"
-            name="&lt;&lt;return&gt;&gt;"
+            name="APMS will returns an authorization result of CRCs."
             messageKind="Complete"
             messageSort="Reply"
             createSelfMessage="false">
@@ -3213,7 +3285,7 @@
           </message>
           <message
             Id="c6869cf5-f278-46d5-ae73-3a9a83a57bef"
-            name="Register"
+            name="Registers to RRCS with a group of application's CRCs &amp; each of application's network setting. e.g. (CRC: 1888888880,   Network: tcp://*:6666/,   Protocol:Metadata)"
             messageKind="Complete"
             messageSort="SynchCall"
             createSelfMessage="false">
@@ -3227,6 +3299,44 @@
               <messageOccurrenceSpecificationMoniker
                 Id="382a9fd3-6c1d-460f-8191-ee3f66501695"
                 LastKnownName="MessageOccurrenceSpecification20"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="70bdc1d2-7ad9-4840-bfa7-513a52b0430b"
+            name="Querys those of application's CRCs details information &amp; Validation."
+            messageKind="Complete"
+            messageSort="SynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="1bacb458-2a20-436e-92cb-22e5babffb18"
+                LastKnownName="MessageOccurrenceSpecification29"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="f4390506-79f8-4656-a9d1-7d2c350fd2ff"
+                LastKnownName="MessageOccurrenceSpecification30"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="8b8ab86a-4a7b-4d43-aeda-f1b0cba01555"
+            name="Returns specificed application's information by CRCs."
+            messageKind="Complete"
+            messageSort="Reply"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="53a60441-27eb-431e-8c57-19e6677bc5d7"
+                LastKnownName="MessageOccurrenceSpecification31"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="1364bc93-efb5-487a-a54d-4c861b763935"
+                LastKnownName="MessageOccurrenceSpecification32"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </receiveEvent>
           </message>
@@ -3250,21 +3360,97 @@
             </receiveEvent>
           </message>
           <message
-            Id="1bab84b0-217b-49d0-9218-9bcd78d37e14"
+            Id="8bda1a44-acd4-4c66-9ff9-90ccbbe115d3"
             name="Initializes Modules &amp; Change State"
             messageKind="Complete"
             messageSort="SynchCall"
             createSelfMessage="true">
             <sendEvent>
               <messageOccurrenceSpecificationMoniker
-                Id="715d88e6-f7c6-4155-af93-9fe91229c64e"
+                Id="29f0ccdb-c90f-4976-a2e1-bab1e1def2d4"
                 LastKnownName="MessageOccurrenceSpecification23"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </sendEvent>
             <receiveEvent>
               <messageOccurrenceSpecificationMoniker
-                Id="1851210e-38f7-40f3-a7ee-0dbd97b1b360"
+                Id="e3fd1ddc-ca60-4acb-bf84-250f9e35fdcb"
                 LastKnownName="MessageOccurrenceSpecification24"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="96cc3faf-4005-45c8-b1d5-5895c18c6016"
+            name="Calls Initialize() method on specificed app."
+            messageKind="Complete"
+            messageSort="SynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="b5e0151e-d3b3-408a-9a00-741afc6f3f99"
+                LastKnownName="MessageOccurrenceSpecification33"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="f1fb01fc-7d05-497b-ae50-8b9698561cec"
+                LastKnownName="MessageOccurrenceSpecification34"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="215e40d9-b771-4df1-b871-eedba4998f66"
+            name="&lt;&lt;return&gt;&gt;"
+            messageKind="Complete"
+            messageSort="Reply"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="87d678df-d869-4d30-b989-b84ac81ba51c"
+                LastKnownName="MessageOccurrenceSpecification35"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="30044d5c-1259-4731-9d89-eed968d3578c"
+                LastKnownName="MessageOccurrenceSpecification36"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="70604ae7-d5ba-4a36-b6d4-67d922812e2b"
+            name="Calls Start() method on specificed app."
+            messageKind="Complete"
+            messageSort="SynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="08c30a86-8bad-4071-ac78-deb6a7f8a8d1"
+                LastKnownName="MessageOccurrenceSpecification37"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="5321b71d-282d-4e0e-a963-634801abe3f6"
+                LastKnownName="MessageOccurrenceSpecification38"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="b6d37ff4-554f-4546-914d-9eedd2176f2b"
+            name="&lt;&lt;return&gt;&gt;"
+            messageKind="Complete"
+            messageSort="Reply"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="4b1abab7-18c2-4114-9c4d-b6955e36ea3a"
+                LastKnownName="MessageOccurrenceSpecification39"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="fc7af5df-8470-41e0-8c9d-3bc5e8745a1d"
+                LastKnownName="MessageOccurrenceSpecification40"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </receiveEvent>
           </message>
@@ -3279,26 +3465,6 @@
     <packageHasNamedElement>
       <executionEvent
         Id="9d3e4c2c-8c79-43f4-8ab8-3b05b2cfa802"
-        name="ExecutionEvent" />
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <executionEvent
-        Id="a95f7a18-e8c5-4140-a612-e51daaac488f"
-        name="ExecutionEvent" />
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <executionEvent
-        Id="98bc5af3-a35d-46e9-b626-a7eabdeebc78"
-        name="ExecutionEvent" />
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <executionEvent
-        Id="f64be0d3-d7bb-4b97-9f49-cca3b85b7e1b"
-        name="ExecutionEvent" />
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <executionEvent
-        Id="89bc8b1a-c482-456a-b79b-854774f6ca50"
         name="ExecutionEvent" />
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -3329,16 +3495,6 @@
     <packageHasNamedElement>
       <executionEvent
         Id="c662704b-1f7f-47db-b2e2-40d8d9d6d52b"
-        name="ExecutionEvent" />
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <executionEvent
-        Id="d985362c-b8cd-41ff-b80d-e14fa7fd314a"
-        name="ExecutionEvent" />
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <executionEvent
-        Id="df19097e-e5fe-4811-855b-f09854e55bd7"
         name="ExecutionEvent" />
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -5100,22 +5256,22 @@
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="d29e9c35-24c6-443c-b4ac-f2ea2d407d1e"
-            name="MessageOccurrenceSpecification6">
-            <covered>
-              <lifelineMoniker
-                Id="615abe7f-22f9-4994-9857-fbac891160fa"
-                LastKnownName="APMS"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="4e96fe1e-9471-4558-ad88-c68024e57082"
             name="MessageOccurrenceSpecification5">
             <covered>
               <lifelineMoniker
                 Id="9f6254f6-8af2-4b86-9bf1-ad0b543c2b0c"
                 LastKnownName="Operator"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="d29e9c35-24c6-443c-b4ac-f2ea2d407d1e"
+            name="MessageOccurrenceSpecification6">
+            <covered>
+              <lifelineMoniker
+                Id="615abe7f-22f9-4994-9857-fbac891160fa"
+                LastKnownName="APMS"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -5442,22 +5598,22 @@
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="cc2fe26f-92c9-4380-aa02-487416eabe32"
-            name="MessageOccurrenceSpecification16">
-            <covered>
-              <lifelineMoniker
-                Id="7ab2546d-ee75-425c-8f66-7ba6223e4a5e"
-                LastKnownName="Specified Old Version APP"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="cf12bc38-37e9-434a-b9d4-7925576b7811"
             name="MessageOccurrenceSpecification15">
             <covered>
               <lifelineMoniker
                 Id="0f066b3b-0553-4333-9bf5-698309914bcd"
                 LastKnownName="Host"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="cc2fe26f-92c9-4380-aa02-487416eabe32"
+            name="MessageOccurrenceSpecification16">
+            <covered>
+              <lifelineMoniker
+                Id="7ab2546d-ee75-425c-8f66-7ba6223e4a5e"
+                LastKnownName="Specified Old Version APP"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -5556,22 +5712,22 @@
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="906fbb99-4c19-4958-8aca-2658e2be9a48"
-            name="MessageOccurrenceSpecification7">
-            <covered>
-              <lifelineMoniker
-                Id="615abe7f-22f9-4994-9857-fbac891160fa"
-                LastKnownName="APMS"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="16b22775-72ea-4cd0-bdaa-50cf6b62883e"
             name="MessageOccurrenceSpecification8">
             <covered>
               <lifelineMoniker
                 Id="9f6254f6-8af2-4b86-9bf1-ad0b543c2b0c"
                 LastKnownName="Operator"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="906fbb99-4c19-4958-8aca-2658e2be9a48"
+            name="MessageOccurrenceSpecification7">
+            <covered>
+              <lifelineMoniker
+                Id="615abe7f-22f9-4994-9857-fbac891160fa"
+                LastKnownName="APMS"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -6142,22 +6298,22 @@
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="7a1f4bd6-a296-45cf-a741-eb7de7edc4b9"
-            name="MessageOccurrenceSpecification6">
-            <covered>
-              <lifelineMoniker
-                Id="39ef7be6-2d12-4aae-8439-64a4076c88a1"
-                LastKnownName="APMS"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="3a172f42-7152-41c3-a014-8409c803fe20"
             name="MessageOccurrenceSpecification5">
             <covered>
               <lifelineMoniker
                 Id="74e9bc10-4857-4ca2-8109-8549bc0daa3d"
                 LastKnownName="Operator"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="7a1f4bd6-a296-45cf-a741-eb7de7edc4b9"
+            name="MessageOccurrenceSpecification6">
+            <covered>
+              <lifelineMoniker
+                Id="39ef7be6-2d12-4aae-8439-64a4076c88a1"
+                LastKnownName="APMS"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -6484,22 +6640,22 @@
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="81ce03e4-d520-485f-8527-fc59de05de08"
-            name="MessageOccurrenceSpecification15">
-            <covered>
-              <lifelineMoniker
-                Id="b0ce91dc-5561-4b70-bf51-cb497747c6f5"
-                LastKnownName="Host"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="35861b14-f254-48bb-84de-d4ad61f42044"
             name="MessageOccurrenceSpecification16">
             <covered>
               <lifelineMoniker
                 Id="230a1088-904d-4361-a24d-27094b318553"
                 LastKnownName="Specified Old Version APP"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="81ce03e4-d520-485f-8527-fc59de05de08"
+            name="MessageOccurrenceSpecification15">
+            <covered>
+              <lifelineMoniker
+                Id="b0ce91dc-5561-4b70-bf51-cb497747c6f5"
+                LastKnownName="Host"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -6598,22 +6754,22 @@
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="d4320ca3-96c1-44de-9412-166e584dba1c"
-            name="MessageOccurrenceSpecification7">
-            <covered>
-              <lifelineMoniker
-                Id="39ef7be6-2d12-4aae-8439-64a4076c88a1"
-                LastKnownName="APMS"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="6318e0e4-ba28-471e-9a68-dbdbc6e8dff2"
             name="MessageOccurrenceSpecification8">
             <covered>
               <lifelineMoniker
                 Id="74e9bc10-4857-4ca2-8109-8549bc0daa3d"
                 LastKnownName="Operator"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="d4320ca3-96c1-44de-9412-166e584dba1c"
+            name="MessageOccurrenceSpecification7">
+            <covered>
+              <lifelineMoniker
+                Id="39ef7be6-2d12-4aae-8439-64a4076c88a1"
+                LastKnownName="APMS"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -7104,6 +7260,51 @@
       <undefinedType
         Id="0cffd3c7-06b3-4cb5-908a-d003049fdcdf"
         name="BusinessPackage" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="97a557d7-a28b-4cc4-88e8-4ba91be65d87"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="40e147df-7036-4998-ab1a-0e7c56a6fa89"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="6b3e3e5e-eae4-416a-866e-f7df5e5ac076"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="104d6382-d54b-4e62-a959-1b9e055bca9d"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="5450f404-6b1f-4ca1-b4e2-0b788992c17d"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="1f7b9e37-9754-4504-a9e4-d4d2c6873191"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="890253de-cab7-4cd1-a077-84a4cbd9a006"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="d01c5dac-0263-427b-b2d7-2277e635b5e3"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="7b13cc94-a69b-4d3e-ae01-d465ffb92003"
+        name="Protocol" />
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType

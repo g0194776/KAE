@@ -62,7 +62,7 @@
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.Dynamic\KJFramework.Dynamic\KJFramework.Dynamic.csproj">
       <Project>{47672612-8aa3-4729-a210-4f30e3fb39e4}</Project>
-      <Name>KJFramework.Dynamic %28Basic Function Libraries %28BFL%29\Dynamic Component Layer\KJFramework.Dynamic%29</Name>
+      <Name>KJFramework.Dynamic</Name>
     </ProjectReference>
     <ProjectReference Include="..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
       <Project>{33fe11d3-2810-4432-b64c-b16935bb47cd}</Project>
