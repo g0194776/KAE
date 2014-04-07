@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner" xmlns:dm9="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm9="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner"
   dslVersion="1.0.0.0"
   Id="0f316b15-4749-47e4-aaeb-c52b3fcaa1b5"
   name="KJFramework.ApplicationEngine.Diagrams" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
@@ -40,7 +40,7 @@
             isAbstract="false">
             <interfaceMoniker
               Id="ddf534be-ca2d-4039-a49b-babddd18d70f"
-              LastKnownName="IApplicationFunctionProcessor"
+              LastKnownName="IApplicationFunctionProcessor&lt;T&gt;"
               LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
@@ -266,30 +266,6 @@
           </property>
         </ownedAttributes>
         <ownedOperations>
-          <operation
-            Id="f93475b0-82cd-4ecc-a242-92291f498bd8"
-            name="Initialize"
-            isLeaf="false"
-            isStatic="false"
-            isAbstract="true"
-            concurrency="Sequential"
-            isQuery="false">
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter
-                  Id="567d1e1e-3fac-4d55-a40a-2f52daa37114"
-                  direction="Return"
-                  isUnique="false">
-                  <type_NamedElement>
-                    <undefinedTypeMoniker
-                      Id="8ec85a08-5a94-4e47-9562-67cbd4a4bd7b"
-                      LastKnownName="void"
-                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
           <operation
             Id="b03633ab-ff3d-42d6-b721-c7ebb4ddb05e"
             name="Start"
@@ -613,6 +589,47 @@
               LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
           </interfaceRealization>
         </suppliersInternal>
+        <targetEnds>
+          <association
+            Id="a78c23de-5221-4c3b-908e-c8c0550780f2"
+            isDerived="false"
+            sourceEndRoleName="KAEBusinessApplication"
+            targetEndRoleName="KPPDataStructure"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="0b248a8e-2ee7-4970-b271-ab0c3ed4ffe4"
+              LastKnownName="KPPDataStructure"
+              LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="05a8188b-aa5b-4723-8ab2-b6b0663973d4"
+                  name="KAEBusinessApplication"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="04fad8d9-b408-49b4-a3f2-e43bc53d6faf"
+                  name="KPPDataStructure"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
         <ownedAttributesInternal>
           <property
             Id="6f9304ff-6bcb-4b11-9767-52851cee0239"
@@ -654,30 +671,6 @@
           </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
-          <operation
-            Id="a60f913d-55d5-4a19-9da9-38ece3c57199"
-            name="Initialize"
-            isLeaf="false"
-            isStatic="false"
-            isAbstract="false"
-            concurrency="Sequential"
-            isQuery="false">
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter
-                  Id="320ad5b8-9461-4756-943a-f1bae4d57c40"
-                  direction="Return"
-                  isUnique="false">
-                  <type_NamedElement>
-                    <undefinedTypeMoniker
-                      Id="8ec85a08-5a94-4e47-9562-67cbd4a4bd7b"
-                      LastKnownName="void"
-                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
           <operation
             Id="1209dad1-98aa-4bfc-9f05-8b8933b4ffc2"
             name="Start"
@@ -935,6 +928,45 @@
               <operationHasOwnedParameters>
                 <parameter
                   Id="e56d67f8-b80b-49f9-967c-e29733ac9417"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="8ec85a08-5a94-4e47-9562-67cbd4a4bd7b"
+                      LastKnownName="void"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="7c08d48a-3e7f-4431-b062-3825eab62d7e"
+            name="Initialize"
+            visibility="Package"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="22d72457-2804-42ff-9a9e-52f98e5d70eb"
+                  name="data"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="bcbf44a4-fb47-4cf7-bcbe-7a5ebd114d48"
+                      LastKnownName="KPPDataStructure"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="32f32aba-79e1-4850-becc-e96cfc3eab27"
                   direction="Return"
                   isUnique="false">
                   <type_NamedElement>
@@ -1737,7 +1769,7 @@
             isAbstract="false">
             <interfaceMoniker
               Id="f9553164-2c90-49b5-90f7-4c6b2cb29d47"
-              LastKnownName="IBusinessPackage"
+              LastKnownName="IBusinessPackage&lt;T&gt;"
               LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
@@ -1841,7 +1873,7 @@
     <packageHasNamedElement>
       <Interface
         Id="f9553164-2c90-49b5-90f7-4c6b2cb29d47"
-        name="IBusinessPackage"
+        name="IBusinessPackage&lt;T&gt;"
         isAbstract="false"
         isLeaf="false">
         <ownedAttributes>
@@ -1875,9 +1907,9 @@
             aggregation="None"
             isComposite="false">
             <type_NamedElement>
-              <undefinedTypeMoniker
-                Id="7b13cc94-a69b-4d3e-ae01-d465ffb92003"
-                LastKnownName="Protocol"
+              <enumerationMoniker
+                Id="5ad7449e-cd51-47a8-8d3f-52590dd63436"
+                LastKnownName="ProtocolTypes"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </type_NamedElement>
           </property>
@@ -1885,7 +1917,7 @@
         <ownedOperations>
           <operation
             Id="cfe94d3a-b344-4bd9-8368-76c169a84397"
-            name="GetRequest&lt;T&gt;"
+            name="GetRequest"
             isLeaf="false"
             isStatic="false"
             isAbstract="true"
@@ -1918,20 +1950,6 @@
             <ownedParameters>
               <operationHasOwnedParameters>
                 <parameter
-                  Id="30ad4178-10af-4d28-a7e5-1eb5906fe76c"
-                  name="obj"
-                  direction="In"
-                  isUnique="false">
-                  <type_NamedElement>
-                    <undefinedTypeMoniker
-                      Id="1d6ed5e3-ef99-426d-a9e9-6f2c380c5d25"
-                      LastKnownName="object"
-                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-              <operationHasOwnedParameters>
-                <parameter
                   Id="afd82ceb-4d3a-453e-98d6-c71366809ed6"
                   direction="Return"
                   isUnique="false">
@@ -1943,11 +1961,25 @@
                   </type_NamedElement>
                 </parameter>
               </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="9eff7a3c-60bf-4585-a840-1d9acdc490a9"
+                  name="obj"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="7895a16f-2c80-455a-8cc0-8df742966642"
+                      LastKnownName="T"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
             </ownedParameters>
           </operation>
           <operation
             Id="0815788a-b4bd-44b6-aa84-4030878ea13b"
-            name="GetResponse&lt;T&gt;"
+            name="GetResponse"
             isLeaf="false"
             isStatic="false"
             isAbstract="true"
@@ -1963,6 +1995,44 @@
                     <undefinedTypeMoniker
                       Id="7895a16f-2c80-455a-8cc0-8df742966642"
                       LastKnownName="T"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="b0c80db3-7b06-4275-8f9b-bccebde4cdd7"
+            name="SendRequest"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="ea4bf71e-7730-492a-87e3-774d077f408e"
+                  name="obj"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="7895a16f-2c80-455a-8cc0-8df742966642"
+                      LastKnownName="T"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="77f7441a-a614-4ea1-8a69-41970ebfab0e"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="8ec85a08-5a94-4e47-9562-67cbd4a4bd7b"
+                      LastKnownName="void"
                       LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
                   </type_NamedElement>
                 </parameter>
@@ -2008,29 +2078,9 @@
     <packageHasNamedElement>
       <Interface
         Id="ddf534be-ca2d-4039-a49b-babddd18d70f"
-        name="IApplicationFunctionProcessor"
+        name="IApplicationFunctionProcessor&lt;T&gt;"
         isAbstract="false"
         isLeaf="false">
-        <ownedAttributes>
-          <property
-            Id="aa0f66b1-3c90-4604-8462-f53ecd110d44"
-            name="SupportedProtocol"
-            isLeaf="false"
-            isStatic="false"
-            isReadOnly="true"
-            isUnique="false"
-            isDerived="false"
-            isDerivedUnion="false"
-            aggregation="None"
-            isComposite="false">
-            <type_NamedElement>
-              <classMoniker
-                Id="5857044d-f4e0-4eca-b8ab-1b66981fc3ca"
-                LastKnownName="MessageIdentity"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </type_NamedElement>
-          </property>
-        </ownedAttributes>
         <ownedOperations>
           <operation
             Id="02accba3-cf33-4a49-8441-7c1b702c1d6e"
@@ -2056,14 +2106,14 @@
               </operationHasOwnedParameters>
               <operationHasOwnedParameters>
                 <parameter
-                  Id="3969483b-b8b3-4858-9069-cefed57383b9"
+                  Id="0ab9b41c-4ea8-44fb-86ae-3612b25fbfee"
                   name="package"
                   direction="In"
                   isUnique="false">
                   <type_NamedElement>
-                    <undefinedTypeMoniker
-                      Id="0cffd3c7-06b3-4cb5-908a-d003049fdcdf"
-                      LastKnownName="BusinessPackage"
+                    <interfaceMoniker
+                      Id="f9553164-2c90-49b5-90f7-4c6b2cb29d47"
+                      LastKnownName="IBusinessPackage&lt;T&gt;"
                       LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
                   </type_NamedElement>
                 </parameter>
@@ -2312,22 +2362,22 @@
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="98d99b97-4630-4ee9-88ac-46d32a53db14"
-            name="MessageOccurrenceSpecification26">
-            <covered>
-              <lifelineMoniker
-                Id="d7fe2799-b969-49d2-bcb4-cffd967d4a2f"
-                LastKnownName="CSN"
-                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="ea53fa6d-d4bd-4db5-bfe2-82e310b437e3"
             name="MessageOccurrenceSpecification25">
             <covered>
               <lifelineMoniker
                 Id="691990e1-f5ce-4586-a972-bdfbd444a46f"
                 LastKnownName="Host"
+                LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="98d99b97-4630-4ee9-88ac-46d32a53db14"
+            name="MessageOccurrenceSpecification26">
+            <covered>
+              <lifelineMoniker
+                Id="d7fe2799-b969-49d2-bcb4-cffd967d4a2f"
+                LastKnownName="CSN"
                 LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -7305,6 +7355,60 @@
       <undefinedType
         Id="7b13cc94-a69b-4d3e-ae01-d465ffb92003"
         name="Protocol" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="bcbf44a4-fb47-4cf7-bcbe-7a5ebd114d48"
+        name="KPPDataStructure" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="0b248a8e-2ee7-4970-b271-ab0c3ed4ffe4"
+        name="KPPDataStructure"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedOperationsInternal>
+          <operation
+            Id="af9f0a29-3a97-4373-85fd-96996666d3ea"
+            name="GetField&lt;T&gt;"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="bcd18d17-73de-4d3e-bb8a-14bf912354d6"
+                  name="name"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="640328e8-8712-4f06-8ec7-064fd8e166d0"
+                      LastKnownName="string"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="205c5cde-8791-4dcd-aa3c-2974da1a8586"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="7895a16f-2c80-455a-8cc0-8df742966642"
+                      LastKnownName="T"
+                      LastKnownLocation="KJFramework.ApplicationEngine.Diagrams.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType
