@@ -9,6 +9,7 @@
         void Info(System.Exception ex, string format, params object[] args);
         void Warn(string format, params object[] args);
         void Warn(System.Exception ex, string format, params object[] args);
+        void Error(System.Exception ex);
         void Error(string format, params object[] args);
         void Error(System.Exception ex, string format, params object[] args);
         void Critical(string format, params object[] args);

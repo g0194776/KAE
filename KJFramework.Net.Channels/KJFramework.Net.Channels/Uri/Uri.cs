@@ -6,7 +6,7 @@ namespace KJFramework.Net.Channels.Uri
     /// <summary>
     ///     资源地址标示类，提供了相关的基本操作。
     /// </summary>
-    public abstract class Uri
+    public abstract class Uri : MarshalByRefObject
     {
         #region 成员
 

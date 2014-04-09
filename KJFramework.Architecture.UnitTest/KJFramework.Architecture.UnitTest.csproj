@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KAE\FileCompressionTest.cs" />
+    <Compile Include="KAE\KPPDataHeadTest.cs" />
+    <Compile Include="KAE\PackageAttributeDataSectionTest.cs" />
     <Compile Include="KJFramework.Data.ObjectDB\OutterUnitTest.cs" />
     <Compile Include="KJFramework.Data.ObjectDB\PageControllerUnitTest.cs" />
     <Compile Include="KJFramework.Data.Synchronization\DataBroadcasterTest.cs" />
@@ -75,6 +78,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KJFramework.ApplicationEngine\KJFramework.ApplicationEngine.csproj">
+      <Project>{0a0e8766-fad6-4e67-acec-8d76abfa7822}</Project>
+      <Name>KJFramework.ApplicationEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
       <Project>{d5a0178c-16f7-453e-a301-d1d61910d2af}</Project>
       <Name>KJFramework.Basic</Name>
@@ -156,7 +163,14 @@
       <Name>KJFramework</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="res-files\2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="res-files\1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
