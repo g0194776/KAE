@@ -52,6 +52,7 @@ namespace KJFramework.ApplicationEngine.Helpers
                     fs.Close();
                     if (deleteFile) file.Delete();
                 }
+                s.Finish();
                 byte[] buffer = memoryStream.GetBuffer();
                 byte[] realData = new byte[memoryStream.Length];
                 Buffer.BlockCopy(buffer, 0, realData, 0, realData.Length);
@@ -59,7 +60,6 @@ namespace KJFramework.ApplicationEngine.Helpers
             }
             finally
             {
-                s.Finish();
                 s.Close();
             }
         }
@@ -164,57 +164,46 @@ namespace KJFramework.ApplicationEngine.Helpers
         /// <summary>    
         /// 解压缩文件    
         /// </summary>    
-        /// <param name="GzipFile">压缩包文件名</param>    
+        /// <param name="zippedData">已压缩的文件流</param>    
         /// <param name="targetPath">解压缩目标路径</param>           
-        public static void Decompress(string GzipFile, string targetPath)
+        public static IDictionary<string, byte[]> Decompress(byte[] zippedData)
         {
-            //string directoryName = Path.GetDirectoryName(targetPath + "//") + "//";    
-            string directoryName = targetPath;
-            if (!Directory.Exists(directoryName)) Directory.CreateDirectory(directoryName); //生成解压目录    
-            string CurrentDirectory = directoryName;
+            IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
             byte[] data = new byte[2048];
             int size = 2048;
-            ZipEntry theEntry = null;
-            using (ZipInputStream s = new ZipInputStream(File.OpenRead(GzipFile)))
+            ZipEntry theEntry;
+            using (ZipInputStream s = new ZipInputStream(new MemoryStream(zippedData)))
             {
                 while ((theEntry = s.GetNextEntry()) != null)
                 {
                     if (theEntry.IsDirectory)
                     {
-// 该结点是目录    
-                        if (!Directory.Exists(CurrentDirectory + theEntry.Name))
-                            Directory.CreateDirectory(CurrentDirectory + theEntry.Name);
+                            // 该结点是目录
                     }
                     else
                     {
                         if (theEntry.Name != String.Empty)
                         {
-                            //  检查多级目录是否存在  
-                            if (theEntry.Name.Contains("//"))
-                            {
-                                string parentDirPath = theEntry.Name.Remove(theEntry.Name.LastIndexOf("//") + 1);
-                                if (!Directory.Exists(parentDirPath))
-                                {
-                                    Directory.CreateDirectory(CurrentDirectory + parentDirPath);
-                                }
-                            }
-
                             //解压文件到指定的目录    
-                            using (FileStream streamWriter = File.Create(CurrentDirectory + theEntry.Name))
+                            using (MemoryStream stream = new MemoryStream())
                             {
                                 while (true)
                                 {
                                     size = s.Read(data, 0, data.Length);
                                     if (size <= 0) break;
-                                    streamWriter.Write(data, 0, size);
+                                    stream.Write(data, 0, size);
                                 }
-                                streamWriter.Close();
+                                byte[] buffer = stream.GetBuffer();
+                                byte[] realData = new byte[stream.Length];
+                                Buffer.BlockCopy(buffer, 0, realData, 0, realData.Length);
+                                files.Add(theEntry.Name, realData);
                             }
                         }
                     }
                 }
                 s.Close();
             }
+            return files;
         }
 
         #endregion

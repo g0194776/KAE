@@ -49,6 +49,7 @@
     <Compile Include="Eums\ApplicationStatus.cs" />
     <Compile Include="Eums\BusinessPackageStates.cs" />
     <Compile Include="Eums\ProtocolTypes.cs" />
+    <Compile Include="Exceptions\UnSupportedSectioTypeException.cs" />
     <Compile Include="Exceptions\FolderNotFoundException.cs" />
     <Compile Include="Helpers\FileCompression.cs" />
     <Compile Include="IApplication.cs" />

@@ -8,7 +8,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs
     /// <summary>
     ///    KPP资源文件头
     /// </summary>
-    internal class KPPDataHead : IKPPDataResource
+    internal class KPPDataHead : MarshalByRefObject, IKPPDataResource
     {
         #region Constructor.
 
@@ -85,10 +85,10 @@ namespace KJFramework.ApplicationEngine.Resources.Packs
         public void Pack(MemoryStream stream)
         {
             //file mark.
-            byte[] fileMark = new byte[3] { (byte)'K', (byte)'P', (byte)'P' };
+            byte[] fileMark = { (byte)'K', (byte)'P', (byte)'P' };
             stream.Write(fileMark, 0, fileMark.Length);
             //total length.
-            byte[] totalLength = BitConverter.GetBytes(0UL);
+            byte[] totalLength = BitConverter.GetBytes(GetFieldSafety<ulong>("TotalSize"));
             stream.Write(totalLength, 0, totalLength.Length);
             //CRC.
             byte[] crc = BitConverter.GetBytes(GetFieldSafety<long>("CRC"));

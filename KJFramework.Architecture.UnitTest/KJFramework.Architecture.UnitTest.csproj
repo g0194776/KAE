@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="KAE\FileCompressionTest.cs" />
     <Compile Include="KAE\KPPDataHeadTest.cs" />
+    <Compile Include="KAE\KPPResourceTest.cs" />
     <Compile Include="KAE\PackageAttributeDataSectionTest.cs" />
     <Compile Include="KJFramework.Data.ObjectDB\OutterUnitTest.cs" />
     <Compile Include="KJFramework.Data.ObjectDB\PageControllerUnitTest.cs" />

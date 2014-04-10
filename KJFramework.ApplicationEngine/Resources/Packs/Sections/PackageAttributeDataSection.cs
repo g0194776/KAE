@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using KJFramework.Messages.Exceptions;
@@ -10,7 +9,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
     /// <summary>
     ///    KPP资源包中的包属性节
     /// </summary>
-    internal class PackageAttributeDataSection : IKPPDataResource
+    internal class PackageAttributeDataSection : MarshalByRefObject, IKPPDataResource
     {
         #region Constructor.
 
@@ -91,6 +90,8 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
         /// <param name="stream">资源流</param>
         public unsafe void Pack(MemoryStream stream)
         {
+            //section id.
+            stream.WriteByte(0x00);
             //section length.
             byte[] sectionLengthData = BitConverter.GetBytes(0);
             stream.Write(sectionLengthData, 0, sectionLengthData.Length);
@@ -134,9 +135,11 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             fixed (byte* pByte = identityData) *(Guid*)pByte = identity;
             stream.Write(identityData, 0, identityData.Length);
             /*writes back section length*/
+            long endingPos = stream.Position;
             int length = (int) (stream.Position - position);
             stream.Position = position - 4;
             stream.Write(BitConverter.GetBytes(length), 0, 4);
+            stream.Position = endingPos;
         }
 
         /// <summary>
@@ -145,6 +148,9 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
         /// <param name="stream">资源流</param>
         public unsafe void UnPack(MemoryStream stream)
         {
+            //section id
+            byte id = (byte) stream.ReadByte();
+            if (id != 0x00) throw new FormatException("#Target is NOT a package attribute data section.");
             //section length
             byte[] sectionLengthData = new byte[4];
             stream.Read(sectionLengthData, 0, sectionLengthData.Length);
