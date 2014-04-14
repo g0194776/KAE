@@ -68,9 +68,16 @@ namespace KJFramework.ApplicationEngine.Resources
         /// <param name="path">释放到的目录</param>
         public void ReleaseFiles(string path)
         {
-            if (Directory.Exists(path)) Directory.Delete(path);
+            if (Directory.Exists(path)) Directory.Delete(path, true);
             Directory.CreateDirectory(path);
-            //...
+            foreach (KeyValuePair<string, byte[]> pair in _files)
+            {
+                using (FileStream stream = new FileStream(Path.Combine(path, pair.Key), FileMode.CreateNew))
+                {
+                    stream.Write(pair.Value, 0, pair.Value.Length);
+                    stream.Flush();
+                }
+            }
         }
 
 

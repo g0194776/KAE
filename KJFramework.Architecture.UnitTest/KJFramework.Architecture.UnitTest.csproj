@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KAE\ApplicationFinderTest.cs" />
     <Compile Include="KAE\FileCompressionTest.cs" />
     <Compile Include="KAE\KPPDataHeadTest.cs" />
     <Compile Include="KAE\KPPResourceTest.cs" />

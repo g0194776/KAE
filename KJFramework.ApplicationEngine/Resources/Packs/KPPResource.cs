@@ -78,7 +78,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         /// <exception cref="System.IO.FileNotFoundException">目标文件不存在</exception>
         /// <exception cref="BadImageFormatException">错误的KPP资源包格式</exception>
-        /// <exception cref="UnSupportedSectioTypeException">不支持的数据节类型</exception>
+        /// <exception cref="UnSupportedSectionTypeException">不支持的数据节类型</exception>
         public static KPPDataStructure UnPack(string kppDestinationFilePath)
         {
             if (string.IsNullOrEmpty(kppDestinationFilePath)) throw new ArgumentNullException("kppDestinationFilePath");
@@ -96,7 +96,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs
                     //reset position.
                     stream.Position = stream.Position - 1;
                     Type sectionType;
-                    if (!_sections.TryGetValue(sectionId, out sectionType)) throw new UnSupportedSectioTypeException("#Current data section type cannot be supported. #id: " + sectionId);
+                    if (!_sections.TryGetValue(sectionId, out sectionType)) throw new UnSupportedSectionTypeException("#Current data section type cannot be supported. #id: " + sectionId);
                     IKPPDataResource section = (IKPPDataResource) sectionType.Assembly.CreateInstance(sectionType.FullName);
                     section.UnPack(stream);
                     sections.Add(sectionId, section);

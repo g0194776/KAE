@@ -4,6 +4,7 @@ using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Components;
+using KJFramework.Net.Channels.Identities;
 
 namespace KJFramework.ApplicationEngine
 {
@@ -44,6 +45,19 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         /// <returns>返回支持的网络资源列表</returns>
         public abstract IList<KAENetworkResource> AcquireCommunicationSupport();
+        /// <summary>
+        ///    获取应用内部所有已经支持的网络通讯协议
+        /// </summary>
+        /// <returns>返回支持的网络通信协议列表</returns>
+        public abstract IDictionary<ProtocolTypes, IList<MessageIdentity>> AcquireSupportedProtocols();
+        /// <summary>
+        ///    应用初始化
+        /// </summary>
+        /// <param name="structure">KPP资源包的数据结构</param>
+        internal void Initialize(KPPDataStructure structure)
+        {
+            
+        }
 
         protected override void InnerStart()
         {
