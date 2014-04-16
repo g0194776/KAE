@@ -6,7 +6,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs
     /// <summary>
     ///     KPP数据资源接口
     /// </summary>
-    internal interface IKPPDataResource
+    public interface IKPPDataResource
     {
         #region Methods.
 

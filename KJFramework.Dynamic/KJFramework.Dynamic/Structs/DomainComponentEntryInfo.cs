@@ -5,7 +5,7 @@ namespace KJFramework.Dynamic.Structs
     /// <summary>
     ///     程序域组件信息结构体
     /// </summary>
-    public struct DomainComponentEntryInfo
+    public class DomainComponentEntryInfo
     {
         /// <summary>
         ///     获取或设置文件地址

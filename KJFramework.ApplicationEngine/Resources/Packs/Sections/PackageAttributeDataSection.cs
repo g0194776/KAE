@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Hosting;
 using System.Text;
 using KJFramework.Messages.Exceptions;
 
@@ -46,6 +47,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             _keys.Add("ApplicationMainFileName", typeof(string));
             _keys.Add("GlobalUniqueIdentity", typeof(Guid));
             _keys.Add("SectionLength", typeof(int));
+            _keys.Add("ApplicationLevel", typeof(byte));
         }
 
         /// <summary>
@@ -80,7 +82,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             if (value == null) throw new ArgumentNullException("value");
             Type destType;
             if (!_keys.TryGetValue(name, out destType)) throw new KeyNotFoundException(string.Format("#Illegal resource key: {0}", name));
-            if(!(value.GetType() == destType)) throw new UnexpectedValueException(string.Format("#Illegal value's destination data type."));
+            if(!(value.GetType() == destType)) throw new UnexpectedValueException(string.Format("#Illegal value's destination data type. #Target field type should be: " +destType.Name ));
             _values[name] = value;
         }
 
@@ -129,6 +131,8 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             byte[] mainFileLengthData = BitConverter.GetBytes(mainFileData == null ? 0 : mainFileData.Length);
             stream.Write(mainFileLengthData, 0, mainFileLengthData.Length);
             if (mainFileData != null) stream.Write(mainFileData, 0, mainFileData.Length);
+            //application level.
+            stream.WriteByte(GetFieldSafety<byte>("ApplicationLevel"));
             //global unique identity.
             Guid identity = GetFieldSafety<Guid>("GlobalUniqueIdentity");
             byte[] identityData = new byte[16];
@@ -213,6 +217,9 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
                 mainFile = Encoding.UTF8.GetString(mainFileData);
             }
             SetField("ApplicationMainFileName", mainFile);
+            //application level.
+            byte applicationLevel = (byte) stream.ReadByte();
+            SetField("ApplicationLevel", applicationLevel);
             //global unique identity.
             byte[] identityData = new byte[16];
             stream.Read(identityData, 0, identityData.Length);

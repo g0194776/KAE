@@ -49,6 +49,7 @@
     <Compile Include="Eums\ApplicationStatus.cs" />
     <Compile Include="Eums\BusinessPackageStates.cs" />
     <Compile Include="Eums\ProtocolTypes.cs" />
+    <Compile Include="Exceptions\FolderNotFoundException - Copy.cs" />
     <Compile Include="Exceptions\UnSupportedSectionTypeException.cs" />
     <Compile Include="Exceptions\FolderNotFoundException.cs" />
     <Compile Include="Finders\ApplicationFinder.cs" />
@@ -56,6 +57,8 @@
     <Compile Include="IApplication.cs" />
     <Compile Include="IKAEHost.cs" />
     <Compile Include="KAEHost.cs" />
+    <Compile Include="Objects\ApplicationDynamicObject.cs" />
+    <Compile Include="Objects\ApplicationEntryInfo.cs" />
     <Compile Include="Packages\IBusinessPackage.cs" />
     <Compile Include="Processors\IKAEProcessor.cs" />
     <Compile Include="Processors\MetadataKAEProcessor.cs" />

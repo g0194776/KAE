@@ -53,6 +53,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             Guid guid = Guid.NewGuid();
             PackageAttributeDataSection section = new PackageAttributeDataSection();
             section.SetField("PackName", "kpp.test1");
+            section.SetField("ApplicationLevel", (byte) 0x01);
             section.SetField("PackDescription", "That is a description of current package.");
             section.SetField("EnvironmentFlag", (byte)1);
             section.SetField("Version", "1.1.0");
@@ -73,6 +74,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             Assert.IsTrue(newSection.GetField<string>("PackName") == "kpp.test1");
             Assert.IsTrue(newSection.GetField<string>("PackDescription") == "That is a description of current package.");
             Assert.IsTrue(newSection.GetField<byte>("EnvironmentFlag") == 0x01);
+            Assert.IsTrue(newSection.GetField<byte>("ApplicationLevel") == 0x01);
             Assert.IsTrue(newSection.GetField<string>("Version") == "1.1.0");
             Assert.IsTrue(newSection.GetField<DateTime>("PackTime") == now);
             Assert.IsTrue(newSection.GetField<string>("ApplicationMainFileName") == "1.dll");

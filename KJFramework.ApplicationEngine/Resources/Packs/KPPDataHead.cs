@@ -8,7 +8,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs
     /// <summary>
     ///    KPP资源文件头
     /// </summary>
-    internal class KPPDataHead : MarshalByRefObject, IKPPDataResource
+    public class KPPDataHead : MarshalByRefObject, IKPPDataResource
     {
         #region Constructor.
 

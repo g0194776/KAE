@@ -1,4 +1,6 @@
-﻿using KJFramework.ApplicationEngine.Resources;
+﻿using ICSharpCode.SharpZipLib.Checksums;
+using KJFramework.ApplicationEngine.Objects;
+using KJFramework.ApplicationEngine.Resources;
 using KJFramework.ApplicationEngine.Resources.Packs;
 using KJFramework.Dynamic.Finders;
 using KJFramework.Dynamic.Structs;
@@ -28,9 +30,9 @@ namespace KJFramework.ApplicationEngine.Finders
         /// </summary>
         /// <param name="path">查找路径</param>
         /// <returns>返回程序域组件入口点信息集合</returns>
-        public static IDictionary<string, IList<Tuple<DomainComponentEntryInfo, KPPDataStructure>>> Search(string path)
+        public static IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> Search(string path)
         {
-            IDictionary<string, IList<Tuple<DomainComponentEntryInfo, KPPDataStructure>>> result = new Dictionary<string, IList<Tuple<DomainComponentEntryInfo, KPPDataStructure>>>();
+            IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> result = new Dictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>>();
             String[] files = Directory.GetFiles(path, "*.kpp", SearchOption.AllDirectories);
             if (files.Length > 0)
             {
@@ -56,17 +58,23 @@ namespace KJFramework.ApplicationEngine.Finders
                                 //找到入口点
                                 if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(Application)))
                                 {
-                                    DomainComponentEntryInfo info = new DomainComponentEntryInfo();
+                                    ApplicationEntryInfo info = new ApplicationEntryInfo();
                                     info.FilePath = Path.GetFullPath(mainFilePath);
                                     info.FolderPath = Path.GetFullPath(targetPath);
                                     info.EntryPoint = type.FullName;
-                                    IList<Tuple<DomainComponentEntryInfo, KPPDataStructure>> tuple;
+                                    byte[] data = File.ReadAllBytes(file);
+                                    Crc32 crc = new Crc32();
+                                    crc.Reset();
+                                    crc.Update(data);
+                                    info.FileCRC = crc.Value;
+                                    //info.FileCRC = 
+                                    IList<Tuple<ApplicationEntryInfo, KPPDataStructure>> tuple;
                                     if(!result.TryGetValue(dataStructure.GetSectionField<string>(0x00, "PackName"), out tuple))
                                     {
-                                        tuple = new List<Tuple<DomainComponentEntryInfo, KPPDataStructure>>();
+                                        tuple = new List<Tuple<ApplicationEntryInfo, KPPDataStructure>>();
                                         result.Add(dataStructure.GetSectionField<string>(0x00, "PackName"), tuple);
                                     }
-                                    tuple.Add(new Tuple<DomainComponentEntryInfo, KPPDataStructure>(info, dataStructure));
+                                    tuple.Add(new Tuple<ApplicationEntryInfo, KPPDataStructure>(info, dataStructure));
                                 }
                             }
                             catch (ReflectionTypeLoadException) { }

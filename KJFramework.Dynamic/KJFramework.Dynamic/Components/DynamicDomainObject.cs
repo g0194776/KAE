@@ -47,14 +47,14 @@ namespace KJFramework.Dynamic.Components
 
         private readonly Guid _id;
         private readonly DateTime _createTime;
-        private bool _isUpdating;
+        protected bool _isUpdating;
         protected AppDomain _domain;
         protected DomainComponentEntryInfo _entryInfo;
         protected IDynamicDomainComponent _component;
-        private DateTime _lastUpdateTime;
-        private DynamicDomainComponent _orgComponent;
-        private PluginInfomation _infomation;
-        private Dictionary<StatisticTypes, IStatistic> _statistics = new Dictionary<StatisticTypes, IStatistic>();
+        protected DateTime _lastUpdateTime;
+        protected DynamicDomainComponent _orgComponent;
+        protected PluginInfomation _infomation;
+        protected Dictionary<StatisticTypes, IStatistic> _statistics = new Dictionary<StatisticTypes, IStatistic>();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DynamicDomainObject));
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace KJFramework.Dynamic.Components
         /// <summary>
         ///     开始执行
         /// </summary>
-        public void Start()
+        public virtual void Start()
         {
             if (_domain == null)
             {
@@ -318,8 +318,8 @@ namespace KJFramework.Dynamic.Components
 
         #region Events
 
-        //卸载程序域
-        void DomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        //domain exxception handled proc.
+        protected void DomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             WorkProcessingHandler(new LightSingleArgEventArgs<string>(string.Format("Appdomain {0} occur unhandled error!",_domain.FriendlyName)));
             WorkProcessingHandler(new LightSingleArgEventArgs<string>("   ->STOPPING current ERROR appdomain: " + _domain.FriendlyName));
@@ -331,7 +331,7 @@ namespace KJFramework.Dynamic.Components
         ///     工作状态回报事件
         /// </summary>
         internal event EventHandler<LightSingleArgEventArgs<String>> WorkProcessing;
-        private void WorkProcessingHandler(LightSingleArgEventArgs<string> e)
+        protected void WorkProcessingHandler(LightSingleArgEventArgs<string> e)
         {
             EventHandler<LightSingleArgEventArgs<string>> handler = WorkProcessing;
             if (handler != null) handler(this, e);

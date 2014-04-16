@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using KJFramework.ApplicationEngine.Finders;
+using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Dynamic.Structs;
 using NUnit.Framework;
@@ -20,25 +21,25 @@ namespace KJFramework.Architecture.UnitTest.KAE
             Console.Write("#Packing package...");
             string file = resource.PackTestWithoutDelete();
             string path = Path.GetDirectoryName(file);
-            Assert.IsTrue(Directory.Exists(path));
-            Console.WriteLine("Done");
-            Console.WriteLine("#Target kpp path: " + file);
             try
             {
-                IDictionary<string, IList<Tuple<DomainComponentEntryInfo, KPPDataStructure>>> apps = ApplicationFinder.Search(path);
+                Assert.IsTrue(Directory.Exists(path));
+                Console.WriteLine("Done");
+                Console.WriteLine("#Target kpp path: " + file);
+                IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> apps = ApplicationFinder.Search(path);
                 Assert.IsNotNull(apps);
                 Assert.IsTrue(apps.Count == 1);
-                IList<Tuple<DomainComponentEntryInfo, KPPDataStructure>> tuples;
+                IList<Tuple<ApplicationEntryInfo, KPPDataStructure>> tuples;
                 Assert.IsTrue(apps.TryGetValue("test.package", out tuples));
                 Assert.IsNotNull(tuples);
                 Assert.IsTrue(tuples.Count == 1);
-                Tuple<DomainComponentEntryInfo, KPPDataStructure> tuple = tuples[0];
+                Tuple<ApplicationEntryInfo, KPPDataStructure> tuple = tuples[0];
                 Assert.IsNotNull(tuple.Item1);
                 Assert.IsNotNull(tuple.Item2);
             }
             finally
             {
-                if (File.Exists(file)) File.Decrypt(file);
+                if (File.Exists(file)) File.Delete(file);
             }
         }
 
