@@ -1,5 +1,4 @@
 ﻿using System;
-using KJFramework.ApplicationEngine.Eums;
 
 namespace KJFramework.ApplicationEngine.Attributes
 {
@@ -20,10 +19,6 @@ namespace KJFramework.ApplicationEngine.Attributes
         ///    获取或设置详细服务分类编号
         /// </summary>
         public byte DetailsId { get; set; }
-        /// <summary>
-        ///    获取或设置协议类型
-        /// </summary>
-        public ProtocolTypes ProtocolType { get; set; }
 
         #endregion
     }

@@ -48,6 +48,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             _keys.Add("GlobalUniqueIdentity", typeof(Guid));
             _keys.Add("SectionLength", typeof(int));
             _keys.Add("ApplicationLevel", typeof(byte));
+            _keys.Add("ApplicationPriority", typeof(byte));
         }
 
         /// <summary>
@@ -132,7 +133,9 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             stream.Write(mainFileLengthData, 0, mainFileLengthData.Length);
             if (mainFileData != null) stream.Write(mainFileData, 0, mainFileData.Length);
             //application level.
-            stream.WriteByte(GetFieldSafety<byte>("ApplicationLevel"));
+            stream.WriteByte(GetFieldSafety<byte>("ApplicationLevel"));            
+            //application priority.
+            stream.WriteByte(GetFieldSafety<byte>("ApplicationPriority"));
             //global unique identity.
             Guid identity = GetFieldSafety<Guid>("GlobalUniqueIdentity");
             byte[] identityData = new byte[16];
@@ -220,6 +223,9 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             //application level.
             byte applicationLevel = (byte) stream.ReadByte();
             SetField("ApplicationLevel", applicationLevel);
+            //application priority.
+            byte applicationPriority = (byte)stream.ReadByte();
+            SetField("ApplicationPriority", applicationPriority);
             //global unique identity.
             byte[] identityData = new byte[16];
             stream.Read(identityData, 0, identityData.Length);

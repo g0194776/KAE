@@ -60,6 +60,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             section.SetField("PackTime", now);
             section.SetField("ApplicationMainFileName", "1.dll");
             section.SetField("GlobalUniqueIdentity", guid);
+            section.SetField("ApplicationPriority", (byte)0x05);
             MemoryStream stream = new MemoryStream();
             section.Pack(stream);
             byte[] buffer = stream.GetBuffer();
@@ -75,6 +76,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             Assert.IsTrue(newSection.GetField<string>("PackDescription") == "That is a description of current package.");
             Assert.IsTrue(newSection.GetField<byte>("EnvironmentFlag") == 0x01);
             Assert.IsTrue(newSection.GetField<byte>("ApplicationLevel") == 0x01);
+            Assert.IsTrue(newSection.GetField<byte>("ApplicationPriority") == 0x05);
             Assert.IsTrue(newSection.GetField<string>("Version") == "1.1.0");
             Assert.IsTrue(newSection.GetField<DateTime>("PackTime") == now);
             Assert.IsTrue(newSection.GetField<string>("ApplicationMainFileName") == "1.dll");

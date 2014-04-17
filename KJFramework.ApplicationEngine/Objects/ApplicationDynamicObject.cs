@@ -76,23 +76,22 @@ namespace KJFramework.ApplicationEngine.Objects
                     ObjectHandle cls = _domain.CreateInstanceFrom(_entryInfo.FilePath, _entryInfo.EntryPoint);
                     if (cls != null)
                     {
-                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Unwrapping inner core component......"));
+                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Unwrapping......"));
                         Application app = (Application)cls.Unwrap();
-                        //component.OwnService = OwnService;
                         _application = app;
-                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Trying to renew component life......"));
+                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Trying to renew application life......"));
                         ReLease(new TimeSpan(365, 0, 0, 0));
                         WorkProcessingHandler(new LightSingleArgEventArgs<string>("Calling OnLoading method......"));
                         _application.Initialize(_structure);
                         _application.OnLoading();
-                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Opening dynamic component: " + _entryInfo.EntryPoint));
+                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Starting application: " + _entryInfo.EntryPoint));
                         _application.Start();
-                        WorkProcessingHandler(new LightSingleArgEventArgs<string>(string.Format("Component {0} has been started!", _entryInfo.EntryPoint)));
+                        WorkProcessingHandler(new LightSingleArgEventArgs<string>(string.Format("Application {0} has been started!", _entryInfo.EntryPoint)));
                     }
                 }
                 catch (System.Exception ex)
                 {
-                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("¿ªÆô¶¯Ì¬³ÌÐòÓò×é¼þ´íÎó: " + _entryInfo.EntryPoint + ", Error trace : " + ex.Message));
+                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("#Aplication " + _entryInfo.EntryPoint + ", Error trace : " + ex.Message));
                     _tracing.Error(ex, null);
                     throw;
                 }

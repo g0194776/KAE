@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using KJFramework.ApplicationEngine;
 using KJFramework.ApplicationEngine.Resources;
 
-namespace KJFramework.ApplicationEngine.ApplicationTest
+namespace KJFramework.Architecture.UnitTest.KAE.Applications
 {
     public class TestApplication : Application
     {
@@ -12,6 +14,7 @@ namespace KJFramework.ApplicationEngine.ApplicationTest
 
         protected override void InnerInitialize()
         {
+            
         }
     }
 }

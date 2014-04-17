@@ -49,7 +49,10 @@
     <Compile Include="Eums\ApplicationStatus.cs" />
     <Compile Include="Eums\BusinessPackageStates.cs" />
     <Compile Include="Eums\ProtocolTypes.cs" />
-    <Compile Include="Exceptions\FolderNotFoundException - Copy.cs" />
+    <Compile Include="Exceptions\AllocResourceFailedException.cs" />
+    <Compile Include="Exceptions\IllegalApplicationStatusException.cs" />
+    <Compile Include="Exceptions\DuplicatedProcessorException.cs" />
+    <Compile Include="Exceptions\DuplicatedApplicationException.cs" />
     <Compile Include="Exceptions\UnSupportedSectionTypeException.cs" />
     <Compile Include="Exceptions\FolderNotFoundException.cs" />
     <Compile Include="Finders\ApplicationFinder.cs" />

@@ -32,6 +32,14 @@
         /// <summary>
         ///    正在升级
         /// </summary>
-        Upgrading = 0x06
+        Upgrading = 0x06,
+        /// <summary>
+        ///    已初始化完成
+        /// </summary>
+        Initialized = 0x07,
+        /// <summary>
+        ///     异常
+        /// </summary>
+        Exception = 0x08
     }
 }

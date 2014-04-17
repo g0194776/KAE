@@ -57,7 +57,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
                 Console.WriteLine("#Target kpp path: " + file);
                 IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> apps = ApplicationFinder.Search(path);
                 Assert.IsNotNull(apps);
-                Assert.IsTrue(apps.Count == 1);
+                Assert.IsTrue(apps.Count > 0);
                 IList<Tuple<ApplicationEntryInfo, KPPDataStructure>> tuples;
                 Assert.IsTrue(apps.TryGetValue("test.package", out tuples));
                 Assert.IsNotNull(tuples);

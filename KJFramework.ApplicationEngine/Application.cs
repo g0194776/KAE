@@ -1,10 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KJFramework.ApplicationEngine.Attributes;
 using KJFramework.ApplicationEngine.Eums;
+using KJFramework.ApplicationEngine.Exceptions;
+using KJFramework.ApplicationEngine.Processors;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Components;
+using KJFramework.Messages.Contracts;
+using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Channels.Uri;
+using KJFramework.Net.Transaction.Agent;
+using KJFramework.Net.Transaction.Comparers;
+using KJFramework.Net.Transaction.Managers;
+using KJFramework.Net.Transaction.ProtocolStack;
+using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace KJFramework.ApplicationEngine
 {
@@ -13,6 +26,18 @@ namespace KJFramework.ApplicationEngine
     /// </summary>
     public abstract class Application : DynamicDomainComponent, IApplication
     {
+        #region Constructor.
+
+        /// <summary>
+        ///    KAE应用抽象父类
+        /// </summary>
+        protected Application()
+        {
+            Status = ApplicationStatus.Unknown;
+        }
+
+        #endregion
+
         #region Members.
 
         /// <summary>
@@ -36,6 +61,13 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         public ApplicationStatus Status { get; private set; }
 
+        private KPPDataStructure _structure;
+        private IHostTransportChannel _hostChannel;
+        private IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> _processors;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(Application));
+        private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
+        private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
+
         #endregion
 
         #region Methods.
@@ -45,26 +77,75 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         /// <returns>返回支持的网络资源列表</returns>
         public abstract IList<KAENetworkResource> AcquireCommunicationSupport();
+
         /// <summary>
         ///    获取应用内部所有已经支持的网络通讯协议
         /// </summary>
         /// <returns>返回支持的网络通信协议列表</returns>
-        public abstract IDictionary<ProtocolTypes, IList<MessageIdentity>> AcquireSupportedProtocols();
+        public IDictionary<ProtocolTypes, IList<MessageIdentity>> AcquireSupportedProtocols()
+        {
+            IDictionary<ProtocolTypes, IList<MessageIdentity>> dic = new Dictionary<ProtocolTypes, IList<MessageIdentity>>();
+            foreach (KeyValuePair<ProtocolTypes, Dictionary<MessageIdentity, object>> pair in _processors) dic.Add(pair.Key, pair.Value.Keys.ToList());
+            return dic;
+        }
+
         /// <summary>
         ///    应用初始化
         /// </summary>
         /// <param name="structure">KPP资源包的数据结构</param>
         internal void Initialize(KPPDataStructure structure)
         {
-            
+            _structure = structure;
+            Version = _structure.GetSectionField<string>(0x00, "Version");
+            PackageName = _structure.GetSectionField<string>(0x00, "PackName");
+            Description = _structure.GetSectionField<string>(0x00, "PackDescription");
+            GlobalUniqueId = _structure.GetSectionField<Guid>(0x00, "GlobalUniqueIdentity");
+            Status = ApplicationStatus.Initializing;
+            try
+            { 
+                InnerInitialize();
+                _processors = CollectAbilityProcessors();
+                Status = ApplicationStatus.Initialized;
+            }
+            catch (System.Exception ex)
+            {
+                _tracing.Error(ex);
+                Status = ApplicationStatus.Exception;
+                throw;
+            }
         }
 
         protected override void InnerStart()
         {
+            if (Status != ApplicationStatus.Initialized && Status != ApplicationStatus.Stopped)
+                throw new IllegalApplicationStatusException("#Illegal application status that it couldn't start! #Status: " + Status);
+            //URL FORMAT: pipe://./{APP-Name}_ulong(MD5(DateTime.Now),4 ,8)
+            string url = string.Format("pipe://./{0}_{1}", PackageName, DateTime.Now.Ticks);
+            _hostChannel = new PipeHostTransportChannel(new PipeUri(url), 254);
+            if (!_hostChannel.Regist()) throw new AllocResourceFailedException("#Sadly, We couldn't alloc current network resource. #Resource: " + url);
+            _hostChannel.ChannelCreated += ChannelCreated;
+            _isUseTunnel = true;
+            _tunnelAddress = url;
+            Status = ApplicationStatus.Running;
         }
 
         protected override void InnerStop()
         {
+            if (Status != ApplicationStatus.Running)
+                throw new IllegalApplicationStatusException("#Illegal application status that it couldn't start! #Status: " + Status);
+            Status = ApplicationStatus.Stoping;
+            try
+            {
+                if (_hostChannel != null)
+                {
+                    _hostChannel.ChannelCreated -= ChannelCreated;
+                    _hostChannel.UnRegist();
+                    _hostChannel = null;
+                }
+                _tunnelAddress = null;
+            }
+            catch (System.Exception ex) { _tracing.Error(ex); }
+            finally { Status = ApplicationStatus.Stopped; }
         }
 
         protected override void InnerOnLoading()
@@ -74,6 +155,77 @@ namespace KJFramework.ApplicationEngine
         protected override HealthStatus InnerCheckHealth()
         {
             return HealthStatus.Good;
+        }
+
+        /// <summary>
+        ///     收集目标KAE应用程序集内部的所有消息处理器
+        /// </summary>
+        /// <returns>返回消息处理器可以处理的消息标示集合</returns>
+        /// <exception cref="DuplicatedProcessorException">具有多个能处理相同MessageIdentity的KAE处理器</exception>
+        /// <exception cref="NotSupportedException">不支持的Protocol Type</exception>
+        protected virtual IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> CollectAbilityProcessors()
+        {
+            IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> dic = new Dictionary<ProtocolTypes, Dictionary<MessageIdentity, object>>();
+            Type[] types = GetType().Assembly.GetTypes();
+            foreach (Type type in types)
+            {
+                try
+                {
+                    if (type.IsAbstract) continue;
+                    if (!type.IsSubclassOf(typeof(IntellegenceKAEProcessor)) && !type.IsSubclassOf(typeof(JsonKAEProcessor)) && !type.IsSubclassOf(typeof(MetadataKAEProcessor))) continue;
+                    KAEProcessorPropertiesAttribute[] attributes = (KAEProcessorPropertiesAttribute[])type.GetCustomAttributes(typeof(KAEProcessorPropertiesAttribute), true);
+                    if (attributes.Length == 0)
+                    {
+                        _tracing.Warn("#Found a KAE processor, type: {0}. BUT there wasn't any KAEProcessorPropertiesAttribute can be find.", type.Name);
+                        continue;
+                    }
+                    Dictionary<MessageIdentity, object> subDic;
+                    ProtocolTypes targetProtocolType;
+                    MessageIdentity identity = new MessageIdentity
+                    {
+                        ProtocolId = attributes[0].ProtocolId,
+                        ServiceId = attributes[0].ServiceId,
+                        DetailsId = attributes[0].DetailsId
+                    };
+                    if (type.IsSubclassOf(typeof(IntellegenceKAEProcessor))) targetProtocolType = ProtocolTypes.Intellegence;
+                    else if (type.IsSubclassOf(typeof(JsonKAEProcessor))) targetProtocolType = ProtocolTypes.Json;
+                    else if (type.IsSubclassOf(typeof(MetadataKAEProcessor))) targetProtocolType = ProtocolTypes.Metadata;
+                    else throw new NotSupportedException();
+                    if (!dic.TryGetValue(targetProtocolType, out subDic)) dic.Add(targetProtocolType, (subDic = new Dictionary<MessageIdentity, object>()));
+                    if (subDic.ContainsKey(identity)) throw new DuplicatedProcessorException("#Duplicated KAE processor which it has same ability to handle a type of message. #MessageIdentity: " + identity);
+                    subDic.Add(identity, Activator.CreateInstance(type, this));
+                }
+                catch (System.Exception ex) { _tracing.Error(ex); }
+            }
+            return dic;
+        }
+
+        /// <summary>
+        ///    初始化函数
+        /// </summary>
+        protected abstract void InnerInitialize();
+
+        #endregion
+
+        #region Events.
+
+        //Interval piped name channel connected event.
+        void ChannelCreated(object sender, EventArgs.LightSingleArgEventArgs<ITransportChannel> e)
+        {
+            MetadataConnectionAgent agent = new MetadataConnectionAgent(new MessageTransportChannel<MetadataContainer>((IRawTransportChannel)e.Target, _protocolStack), _transactionManager);
+            agent.Disconnected += AgentDisconnected;
+            agent.NewTransaction += AgentNewTransaction;
+        }
+
+        void AgentDisconnected(object sender, System.EventArgs e)
+        {
+            MetadataConnectionAgent agent = (MetadataConnectionAgent) sender;
+            agent.Disconnected -= AgentDisconnected;
+            agent.NewTransaction -= AgentNewTransaction;
+        }
+
+        void AgentNewTransaction(object sender, EventArgs.LightSingleArgEventArgs<Net.Transaction.IMessageTransaction<MetadataContainer>> e)
+        {
         }
 
         #endregion
