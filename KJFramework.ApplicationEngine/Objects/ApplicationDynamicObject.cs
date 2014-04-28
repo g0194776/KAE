@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Threading;
+using KJFramework.ApplicationEngine.Eums;
+using KJFramework.ApplicationEngine.Packages;
 using KJFramework.ApplicationEngine.Resources;
+using KJFramework.Basic.Enum;
+using KJFramework.Dynamic;
+using KJFramework.Dynamic.Components;
+using KJFramework.Dynamic.Visitors;
 using KJFramework.EventArgs;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Tracing;
 
 namespace KJFramework.ApplicationEngine.Objects
@@ -12,7 +20,7 @@ namespace KJFramework.ApplicationEngine.Objects
     /// <summary>
     ///     KAE应用动态对象
     /// </summary>
-    public class ApplicationDynamicObject : MarshalByRefObject
+    internal class ApplicationDynamicObject : MarshalByRefObject, IApplication
     {
         #region Constructor.
 
@@ -35,6 +43,7 @@ namespace KJFramework.ApplicationEngine.Objects
             builder.AppendLine("   ENTRYPOINT: " + info.EntryPoint);
             builder.AppendLine("   CRC: " + info.FileCRC);
             WorkProcessingHandler(new LightSingleArgEventArgs<string>(builder.ToString()));
+            PreInitialize();
         }
 
         #endregion
@@ -47,55 +56,126 @@ namespace KJFramework.ApplicationEngine.Objects
         private readonly ApplicationEntryInfo _entryInfo;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ApplicationDynamicObject));
 
+        public string Version
+        {
+            get { return _application.Version; }
+        }
+        public string Description
+        {
+            get { return _application.Description; }
+        }
+        public string PackageName
+        {
+            get { return _application.PackageName; }
+        }
+        public Guid GlobalUniqueId
+        {
+            get { return _application.GlobalUniqueId; }
+        }
+        public ApplicationStatus Status
+        {
+            get { return _application.Status; }
+        }
+        public string Name
+        {
+            get { return _application.Name; }
+        }
+        public ApplicationLevel Level
+        {
+            get { return _application.Level; }
+        }
+        public HealthStatus CheckHealth()
+        {
+            return _application.CheckHealth();
+        }
+        public Guid Id
+        {
+            get { return _application.Id; }
+        }
+        public bool Enable
+        {
+            get { return _application.Enable; }
+            set { _application.Enable = value; }
+        }
+        public PluginInfomation PluginInfo
+        {
+            get { return _application.PluginInfo; }
+        }
+        public bool IsUseTunnel
+        {
+            get { return _application.IsUseTunnel; }
+        }
+        public string GetTunnelAddress()
+        {
+            return _application.GetTunnelAddress();
+        }
+
+        [Obsolete("#Sadly, We had not supported this function.", true)]
+        public IComponentTunnelVisitor TunnelVisitor { get; private set; }
+        [Obsolete("#Sadly, We had not supported this property.", true)]
+        public IDynamicDomainService OwnService { get; set; }
+
         #endregion
 
         #region Methods.
+
+        public void SetTunnelAddresses(Dictionary<string, string> addresses)
+        {
+            _application.SetTunnelAddresses(addresses);
+        }
+        public T GetTunnel<T>(string componentName) where T : class
+        {
+            return _application.GetTunnel<T>(componentName);
+        }
+
+        /// <summary>
+        ///    在指定的应用隧道上创建一个业务包裹
+        /// </summary>
+        public IBusinessPackage CreateBusinessPackage()
+        {
+            return null;
+        }
+
+        private void PreInitialize()
+        {
+            if (_domain == null)
+            {
+                AppDomainSetup setup = new AppDomainSetup();
+                setup.ShadowCopyFiles = "true";
+                setup.CachePath = "C:\\AssemblyCached";
+                setup.ConfigurationFile = _entryInfo.FilePath + ".config";
+                setup.ApplicationBase = _entryInfo.FolderPath;
+                setup.ApplicationName = _entryInfo.EntryPoint;
+                setup.ShadowCopyDirectories = _entryInfo.FolderPath;
+                setup.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
+                String componentName = _entryInfo.EntryPoint.Substring(_entryInfo.EntryPoint.LastIndexOf('.') + 1);
+                _domain = AppDomain.CreateDomain("{APPDOMAIN:" + componentName + "}", null, setup);
+                WorkProcessingHandler(new LightSingleArgEventArgs<string>(string.Format("Create domain {0} succeed.", _domain.FriendlyName)));
+                _domain.UnhandledException += DomainUnhandledException;
+                WorkProcessingHandler(new LightSingleArgEventArgs<string>("Creating object handle......"));
+                ObjectHandle cls = _domain.CreateInstanceFrom(_entryInfo.FilePath, _entryInfo.EntryPoint);
+                if (cls != null)
+                {
+                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("Unwrapping......"));
+                    Application app = (Application)cls.Unwrap();
+                    _application = app;
+                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("Trying to renew application life......"));
+                    ReLease(new TimeSpan(365, 0, 0, 0));
+                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("Calling OnLoading method......"));
+                    _application.Initialize(_structure);
+                    _application.OnLoading();
+                }
+            }
+        }
 
         /// <summary>
         ///     开启一个动态对象
         /// </summary>
         public void Start()
         {
-            if (_domain == null)
-            {
-                try
-                {
-                    AppDomainSetup setup = new AppDomainSetup();
-                    setup.ShadowCopyFiles = "true";
-                    setup.CachePath = "C:\\AssemblyCached";
-                    setup.ConfigurationFile = _entryInfo.FilePath + ".config";
-                    setup.ApplicationBase = _entryInfo.FolderPath;
-                    setup.ApplicationName = _entryInfo.EntryPoint;
-                    setup.ShadowCopyDirectories = _entryInfo.FolderPath;
-                    setup.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
-                    String componentName = _entryInfo.EntryPoint.Substring(_entryInfo.EntryPoint.LastIndexOf('.') + 1);
-                    _domain = AppDomain.CreateDomain("{APPDOMAIN:" + componentName + "}", null, setup);
-                    WorkProcessingHandler(new LightSingleArgEventArgs<string>(string.Format("Create domain {0} succeed.", _domain.FriendlyName)));
-                    _domain.UnhandledException += DomainUnhandledException;
-                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("Creating object handle......"));
-                    ObjectHandle cls = _domain.CreateInstanceFrom(_entryInfo.FilePath, _entryInfo.EntryPoint);
-                    if (cls != null)
-                    {
-                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Unwrapping......"));
-                        Application app = (Application)cls.Unwrap();
-                        _application = app;
-                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Trying to renew application life......"));
-                        ReLease(new TimeSpan(365, 0, 0, 0));
-                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Calling OnLoading method......"));
-                        _application.Initialize(_structure);
-                        _application.OnLoading();
-                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Starting application: " + _entryInfo.EntryPoint));
-                        _application.Start();
-                        WorkProcessingHandler(new LightSingleArgEventArgs<string>(string.Format("Application {0} has been started!", _entryInfo.EntryPoint)));
-                    }
-                }
-                catch (System.Exception ex)
-                {
-                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("#Aplication " + _entryInfo.EntryPoint + ", Error trace : " + ex.Message));
-                    _tracing.Error(ex, null);
-                    throw;
-                }
-            }
+            WorkProcessingHandler(new LightSingleArgEventArgs<string>("Starting application: " + _entryInfo.EntryPoint));
+            _application.Start();
+            WorkProcessingHandler(new LightSingleArgEventArgs<string>(string.Format("Application {0} has been started!", _entryInfo.EntryPoint)));
         }
 
         /// <summary>
@@ -127,6 +207,16 @@ namespace KJFramework.ApplicationEngine.Objects
             _domain = null;
         }
 
+        public void UseTunnel<T>(bool metadataExchange = false)
+        {
+            _application.UseTunnel<T>(metadataExchange);
+        }
+
+        public void OnLoading()
+        {
+            _application.OnLoading();
+        }
+
         private void ReLease(TimeSpan time)
         {
             if (_application != null)
@@ -135,6 +225,15 @@ namespace KJFramework.ApplicationEngine.Objects
                 ILease lease = (ILease)marshalByRefObject.InitializeLifetimeService();
                 lease.Renew(time);
             }
+        }
+        public IList<KAENetworkResource> AcquireCommunicationSupport()
+        {
+            return _application.AcquireCommunicationSupport();
+        }
+
+        public IDictionary<ProtocolTypes, IList<MessageIdentity>> AcquireSupportedProtocols()
+        {
+            return _application.AcquireSupportedProtocols();
         }
 
         #endregion

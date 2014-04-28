@@ -1,5 +1,5 @@
 ﻿using System;
-using KJFramework.ApplicationEngine.Packages;
+using KJFramework.Net.Transaction;
 using KJFramework.Tracing;
 
 namespace KJFramework.ApplicationEngine.Processors
@@ -36,8 +36,8 @@ namespace KJFramework.ApplicationEngine.Processors
         /// <summary>
         ///    处理一个网络请求
         /// </summary>
-        /// <param name="package">业务包裹</param>
-        public void Process(IBusinessPackage<T> package)
+        /// <param name="package">消息事务</param>
+        public void Process(IMessageTransaction<T> package)
         {
             try { InnerProcess(package); }
             catch (System.Exception ex) { _tracing.Error(ex); }
@@ -55,8 +55,8 @@ namespace KJFramework.ApplicationEngine.Processors
         /// <summary>
         ///    处理一个网络请求
         /// </summary>
-        /// <param name="package">业务包裹</param>
-        public abstract void InnerProcess(IBusinessPackage<T> package);
+        /// <param name="package">消息事务</param>
+        public abstract void InnerProcess(IMessageTransaction<T> package);
 
         #endregion
     }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using KJFramework.Basic.Enum;
 using KJFramework.Net.Channels.Enums;
@@ -7,7 +7,7 @@ using KJFramework.Statistics;
 namespace KJFramework.Net.Channels
 {
     /// <summary>
-    ///     ͨѶ��������࣬�ṩ����صĻ���������
+    ///     Í¨Ñ¶¶ÔÏó³éÏóÀà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
     /// </summary>
     public abstract class CommunicationObject : ICommunicationObject
     {
@@ -18,7 +18,7 @@ namespace KJFramework.Net.Channels
         protected CommunicationStates _communicationState;
 
         /// <summary>
-        /// ��ȡ������ͳ����
+        /// »ñÈ¡»òÉèÖÃÍ³¼ÆÆ÷
         /// </summary>
         public Dictionary<StatisticTypes, IStatistic> Statistics
         {
@@ -43,42 +43,47 @@ namespace KJFramework.Net.Channels
 
         #region Implementation of ICommunicationObject
 
+
         /// <summary>
-        ///     ֹͣ
+        ///     获取或设置附属标记
+        /// </summary>
+        public object Tag { get; set; }
+        /// <summary>
+        ///     Í£Ö¹
         /// </summary>
         public abstract void Abort();
         /// <summary>
-        ///     ��
+        ///     ´ò¿ª
         /// </summary>
         public abstract void Open();
         /// <summary>
-        ///     �ر�
+        ///     ¹Ø±Õ
         /// </summary>
         public abstract void Close();
         /// <summary>
-        ///     �첽��
+        ///     Òì²½´ò¿ª
         /// </summary>
-        /// <param name="callback">�ص�����</param>
-        /// <param name="state">״̬</param>
-        /// <returns>�����첽���</returns>
+        /// <param name="callback">»Øµ÷º¯Êý</param>
+        /// <param name="state">×´Ì¬</param>
+        /// <returns>·µ»ØÒì²½½á¹û</returns>
         public virtual IAsyncResult BeginOpen(AsyncCallback callback, object state)
         {
             Action action = Open;
             return action.BeginInvoke(callback, state);
         }
         /// <summary>
-        ///     �첽�ر�
+        ///     Òì²½¹Ø±Õ
         /// </summary>
-        /// <param name="callback">�ص�����</param>
-        /// <param name="state">״̬</param>
-        /// <returns>�����첽���</returns>
+        /// <param name="callback">»Øµ÷º¯Êý</param>
+        /// <param name="state">×´Ì¬</param>
+        /// <returns>·µ»ØÒì²½½á¹û</returns>
         public virtual IAsyncResult BeginClose(AsyncCallback callback, object state)
         {
             Action action = Close;
             return action.BeginInvoke(callback, state);
         }
         /// <summary>
-        ///     �첽��
+        ///     Òì²½´ò¿ª
         /// </summary>
         public virtual void EndOpen(IAsyncResult result)
         {
@@ -89,7 +94,7 @@ namespace KJFramework.Net.Channels
             }
         }
         /// <summary>
-        ///     �첽�ر�
+        ///     Òì²½¹Ø±Õ
         /// </summary>
         public virtual void EndClose(IAsyncResult result)
         {
@@ -100,7 +105,7 @@ namespace KJFramework.Net.Channels
             }
         }
         /// <summary>
-        ///     ��ȡ�����õ�ǰ����״̬
+        ///     »ñÈ¡»òÉèÖÃµ±Ç°¿ÉÓÃ×´Ì¬
         /// </summary>
         public bool Enable
         {
@@ -108,14 +113,14 @@ namespace KJFramework.Net.Channels
             set { _enable = value; }
         }
         /// <summary>
-        ///     ��ȡ��ǰͨѶ״̬
+        ///     »ñÈ¡µ±Ç°Í¨Ñ¶×´Ì¬
         /// </summary>
         public CommunicationStates CommunicationState
         {
             get { return _communicationState; }
         }
         /// <summary>
-        ///     �ѹر��¼�
+        ///     ÒÑ¹Ø±ÕÊÂ¼þ
         /// </summary>
         public event EventHandler Closed;
         protected void ClosedHandler(System.EventArgs e)
@@ -124,7 +129,7 @@ namespace KJFramework.Net.Channels
             if (closed != null) closed(this, e);
         }
         /// <summary>
-        ///     ���ڹر��¼�
+        ///     ÕýÔÚ¹Ø±ÕÊÂ¼þ
         /// </summary>
         public event EventHandler Closing;
         protected void ClosingHandler(System.EventArgs e)
@@ -133,7 +138,7 @@ namespace KJFramework.Net.Channels
             if (closing != null) closing(this, e);
         }
         /// <summary>
-        ///     �Ѵ����¼�
+        ///     ÒÑ´íÎóÊÂ¼þ
         /// </summary>
         public event EventHandler Faulted;
         protected void FaultedHandler(System.EventArgs e)
@@ -142,7 +147,7 @@ namespace KJFramework.Net.Channels
             if (faulted != null) faulted(this, e);
         }
         /// <summary>
-        ///     �ѿ����¼�
+        ///     ÒÑ¿ªÆôÊÂ¼þ
         /// </summary>
         public event EventHandler Opened;
         protected void OpenedHandler(System.EventArgs e)
@@ -151,7 +156,7 @@ namespace KJFramework.Net.Channels
             if (opened != null) opened(this, e);
         }
         /// <summary>
-        ///     ���ڿ����¼�
+        ///     ÕýÔÚ¿ªÆôÊÂ¼þ
         /// </summary>
         public event EventHandler Opening;
         protected void OpeningHandler(System.EventArgs e)

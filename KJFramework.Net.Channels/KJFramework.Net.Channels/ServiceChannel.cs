@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using KJFramework.Basic.Enum;
 using KJFramework.Net.Channel;
@@ -9,14 +9,14 @@ using KJFramework.Tracing;
 namespace KJFramework.Net.Channels
 {
     /// <summary>
-    ///     ����ͨ��������࣬�ṩ����صĻ���������
+    ///     ·þÎñÍ¨µÀ³éÏó»ùÀà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
     /// </summary>
     public abstract class ServiceChannel : IServiceChannel
     {
-        #region ���캯��
+        #region ¹¹Ôìº¯Êý
 
         /// <summary>
-        ///     ����ͨ��������࣬�ṩ����صĻ���������
+        ///     ·þÎñÍ¨µÀ³éÏó»ùÀà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
         /// </summary>
         protected ServiceChannel()
         {
@@ -26,18 +26,18 @@ namespace KJFramework.Net.Channels
 
         #endregion
 
-        #region ����
+        #region ·½·¨
 
         /// <summary>
-        ///     ֹͣ
+        ///     Í£Ö¹
         /// </summary>
         protected abstract void InnerAbort();
         /// <summary>
-        ///     ��
+        ///     ´ò¿ª
         /// </summary>
         protected abstract void InnerOpen();
         /// <summary>
-        ///     �ر�
+        ///     ¹Ø±Õ
         /// </summary>
         protected abstract void InnerClose();
 
@@ -59,7 +59,7 @@ namespace KJFramework.Net.Channels
         protected CommunicationStates _communicationState;
 
         /// <summary>
-        /// ��ȡ�����õ�ǰͨ����Ϣ
+        /// »ñÈ¡»òÉèÖÃµ±Ç°Í¨µÀÐÅÏ¢
         /// </summary>
         public BasicChannelInfomation ChannelInfo
         {
@@ -72,7 +72,7 @@ namespace KJFramework.Net.Channels
         #region Implementation of IStatisticable<IStatistic>
 
         /// <summary>
-        /// ��ȡ������ͳ����
+        /// »ñÈ¡»òÉèÖÃÍ³¼ÆÆ÷
         /// </summary>
         public Dictionary<StatisticTypes, IStatistic> Statistics
         {
@@ -97,8 +97,13 @@ namespace KJFramework.Net.Channels
 
         #region Implementation of ICommunicationObject
 
+
         /// <summary>
-        ///     ֹͣ
+        ///     获取或设置附属标记
+        /// </summary>
+        public object Tag { get; set; }
+        /// <summary>
+        ///     Í£Ö¹
         /// </summary>
         public void Abort()
         {
@@ -118,7 +123,7 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     ��
+        ///     ´ò¿ª
         /// </summary>
         public void Open()
         {
@@ -139,7 +144,7 @@ namespace KJFramework.Net.Channels
             }
         }
         /// <summary>
-        ///     �ر�
+        ///     ¹Ø±Õ
         /// </summary>
         public void Close()
         {
@@ -161,29 +166,29 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     �첽��
+        ///     Òì²½´ò¿ª
         /// </summary>
-        /// <param name="callback">�ص�����</param>
-        /// <param name="state">״̬</param>
-        /// <returns>�����첽���</returns>
+        /// <param name="callback">»Øµ÷º¯Êý</param>
+        /// <param name="state">×´Ì¬</param>
+        /// <returns>·µ»ØÒì²½½á¹û</returns>
         public virtual IAsyncResult BeginOpen(AsyncCallback callback, object state)
         {
             Action action = Open;
             return action.BeginInvoke(callback, state);
         }
         /// <summary>
-        ///     �첽�ر�
+        ///     Òì²½¹Ø±Õ
         /// </summary>
-        /// <param name="callback">�ص�����</param>
-        /// <param name="state">״̬</param>
-        /// <returns>�����첽���</returns>
+        /// <param name="callback">»Øµ÷º¯Êý</param>
+        /// <param name="state">×´Ì¬</param>
+        /// <returns>·µ»ØÒì²½½á¹û</returns>
         public virtual IAsyncResult BeginClose(AsyncCallback callback, object state)
         {
             Action action = Close;
             return action.BeginInvoke(callback, state);
         }
         /// <summary>
-        ///     �첽��
+        ///     Òì²½´ò¿ª
         /// </summary>
         public virtual void EndOpen(IAsyncResult result)
         {
@@ -194,7 +199,7 @@ namespace KJFramework.Net.Channels
             }
         }
         /// <summary>
-        ///     �첽�ر�
+        ///     Òì²½¹Ø±Õ
         /// </summary>
         public virtual void EndClose(IAsyncResult result)
         {
@@ -206,7 +211,7 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     ��ȡ�����õ�ǰ����״̬
+        ///     »ñÈ¡»òÉèÖÃµ±Ç°¿ÉÓÃ×´Ì¬
         /// </summary>
         public bool Enable
         {
@@ -215,7 +220,7 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     ��ȡ��ǰͨѶ״̬
+        ///     »ñÈ¡µ±Ç°Í¨Ñ¶×´Ì¬
         /// </summary>
         public CommunicationStates CommunicationState
         {
@@ -223,7 +228,7 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     �ѹر��¼�
+        ///     ÒÑ¹Ø±ÕÊÂ¼þ
         /// </summary>
         public event EventHandler Closed;
         protected void ClosedHandler(System.EventArgs e)
@@ -233,7 +238,7 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     ���ڹر��¼�
+        ///     ÕýÔÚ¹Ø±ÕÊÂ¼þ
         /// </summary>
         public event EventHandler Closing;
         protected void ClosingHandler(System.EventArgs e)
@@ -243,7 +248,7 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     �Ѵ����¼�
+        ///     ÒÑ´íÎóÊÂ¼þ
         /// </summary>
         public event EventHandler Faulted;
         protected void FaultedHandler(System.EventArgs e)
@@ -253,7 +258,7 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     �ѿ����¼�
+        ///     ÒÑ¿ªÆôÊÂ¼þ
         /// </summary>
         public event EventHandler Opened;
         protected void OpenedHandler(System.EventArgs e)
@@ -263,7 +268,7 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     ���ڿ����¼�
+        ///     ÕýÔÚ¿ªÆôÊÂ¼þ
         /// </summary>
         public event EventHandler Opening;
         protected void OpeningHandler(System.EventArgs e)
@@ -277,7 +282,7 @@ namespace KJFramework.Net.Channels
         #region Implementation of IServiceChannel
 
         /// <summary>
-        ///     ��ȡ����ʱ��
+        ///     »ñÈ¡´´½¨Ê±¼ä
         /// </summary>
         public DateTime CreateTime
         {
@@ -285,7 +290,7 @@ namespace KJFramework.Net.Channels
         }
 
         /// <summary>
-        ///     ��ȡͨ��Ψһ��ʾ
+        ///     »ñÈ¡Í¨µÀÎ¨Ò»±êÊ¾
         /// </summary>
         public Guid Key
         {

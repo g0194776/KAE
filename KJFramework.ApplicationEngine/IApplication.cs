@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Dynamic.Components;
-using KJFramework.Net;
 using KJFramework.Net.Channels.Identities;
 
 namespace KJFramework.ApplicationEngine
@@ -35,6 +34,10 @@ namespace KJFramework.ApplicationEngine
         ///    获取应用当前的状态
         /// </summary>
         ApplicationStatus Status { get; }
+        /// <summary>
+        ///    获取应用等级
+        /// </summary>
+        ApplicationLevel Level { get; }
 
         #endregion
 

@@ -54,6 +54,7 @@
     <Compile Include="KAE\Applications\TestApplication.cs" />
     <Compile Include="KAE\ApplicationTest.cs" />
     <Compile Include="KAE\FileCompressionTest.cs" />
+    <Compile Include="KAE\KAEHostTest.cs" />
     <Compile Include="KAE\KPPDataHeadTest.cs" />
     <Compile Include="KAE\KPPResourceTest.cs" />
     <Compile Include="KAE\PackageAttributeDataSectionTest.cs" />

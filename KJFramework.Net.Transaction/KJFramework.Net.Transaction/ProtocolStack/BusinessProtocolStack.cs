@@ -14,7 +14,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
     /// <summary>
     ///     服务器端消息协议栈抽象父类
     /// </summary>
-    public abstract class BusinessProtocolStack : ProtocolStack<BaseMessage>
+    public class BusinessProtocolStack : ProtocolStack<BaseMessage>
     {
         #region Constructor
 
@@ -38,6 +38,15 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         #endregion
 
         #region Overrides of ProtocolStack<BaseMessage>
+
+        /// <summary>
+        ///     协议栈初始化函数
+        /// </summary>
+        /// <returns>返回初始化后的状态</returns>
+        public override bool Initialize()
+        {
+            return true;
+        }
 
         /// <summary>
         /// 解析元数据

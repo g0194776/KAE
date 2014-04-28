@@ -1,74 +1,78 @@
-using System;
+﻿using System;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Statistics;
 
 namespace KJFramework.Net.Channels
 {
     /// <summary>
-    ///     ͨѶ����Ԫ�ӿڣ��ṩ����صĻ���������
+    ///     Í¨Ñ¶¶ÔÏóÔª½Ó¿Ú£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
     /// </summary>
     public interface ICommunicationObject : IStatisticable<IStatistic>, IDisposable
     {
         /// <summary>
-        ///     ֹͣ
+        ///     Í£Ö¹
         /// </summary>
         void Abort();
         /// <summary>
-        ///     ��
+        ///     ´ò¿ª
         /// </summary>
         void Open();
         /// <summary>
-        ///     �ر�
+        ///     ¹Ø±Õ
         /// </summary>
         void Close();
         /// <summary>
-        ///     �첽��
+        ///     Òì²½´ò¿ª
         /// </summary>
-        /// <param name="callback">�ص�����</param>
-        /// <param name="state">״̬</param>
-        /// <returns>�����첽���</returns>
+        /// <param name="callback">»Øµ÷º¯Êý</param>
+        /// <param name="state">×´Ì¬</param>
+        /// <returns>·µ»ØÒì²½½á¹û</returns>
         IAsyncResult BeginOpen(AsyncCallback callback, Object state);
         /// <summary>
-        ///     �첽�ر�
+        ///     Òì²½¹Ø±Õ
         /// </summary>
-        /// <param name="callback">�ص�����</param>
-        /// <param name="state">״̬</param>
-        /// <returns>�����첽���</returns>
+        /// <param name="callback">»Øµ÷º¯Êý</param>
+        /// <param name="state">×´Ì¬</param>
+        /// <returns>·µ»ØÒì²½½á¹û</returns>
         IAsyncResult BeginClose(AsyncCallback callback, Object state);
         /// <summary>
-        ///     �첽��
+        ///     Òì²½´ò¿ª
         /// </summary>
         void EndOpen(IAsyncResult result);
         /// <summary>
-        ///     �첽�ر�
+        ///     Òì²½¹Ø±Õ
         /// </summary>
         void EndClose(IAsyncResult result);
         /// <summary>
-        ///     ��ȡ�����õ�ǰ����״̬
+        ///     »ñÈ¡»òÉèÖÃµ±Ç°¿ÉÓÃ×´Ì¬
         /// </summary>
         bool Enable { get; set; }
         /// <summary>
-        ///     ��ȡ��ǰͨѶ״̬
+        ///     获取或设置附属标记
+        /// </summary>
+        object Tag { get; set; }
+        /// <summary>
+        ///     »ñÈ¡µ±Ç°Í¨Ñ¶×´Ì¬
         /// </summary>
         CommunicationStates CommunicationState { get; }
         /// <summary>
-        ///     �ѹر��¼�
+        ///     ÒÑ¹Ø±ÕÊÂ¼þ
         /// </summary>
         event EventHandler Closed;
         /// <summary>
-        ///     ���ڹر��¼�
+        ///     ÕýÔÚ¹Ø±ÕÊÂ¼þ
         /// </summary>
         event EventHandler Closing;
         /// <summary>
-        ///     �Ѵ����¼�
+        ///     ÒÑ´íÎóÊÂ¼þ
         /// </summary>
         event EventHandler Faulted;
         /// <summary>
-        ///     �ѿ����¼�
+        ///     ÒÑ¿ªÆôÊÂ¼þ
         /// </summary>
         event EventHandler Opened;
         /// <summary>
-        ///     ���ڿ����¼�
+        ///     ÕýÔÚ¿ªÆôÊÂ¼þ
         /// </summary>
         event EventHandler Opening;
     }

@@ -1,14 +1,15 @@
+﻿using KJFramework.Net.Channels.Enums;
 using KJFramework.Tracing;
 using System;
 
 namespace KJFramework.Net.Channels.Uri
 {
     /// <summary>
-    ///     ��Դ��ַ��ʾ�࣬�ṩ����صĻ���������
+    ///     ×ÊÔ´µØÖ·±êÊ¾Àà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
     /// </summary>
     public abstract class Uri : MarshalByRefObject
     {
-        #region ��Ա
+        #region ³ÉÔ±
 
         protected String _prefix;
         protected String _address;
@@ -18,7 +19,7 @@ namespace KJFramework.Net.Channels.Uri
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Uri));
 
         /// <summary>
-        ///     ��ȡ������������URL
+        ///     »ñÈ¡»òÉèÖÃÍêÕûµÄURL
         /// </summary>
         public String Url
         {
@@ -31,7 +32,12 @@ namespace KJFramework.Net.Channels.Uri
         }
 
         /// <summary>
-        ///     ��ȡ�����õ�ַ·��
+        ///    获取当前URL所代表的网络类型
+        /// </summary>
+        public abstract NetworkTypes NetworkType { get; }
+
+        /// <summary>
+        ///     »ñÈ¡»òÉèÖÃµØÖ·Â·¾¶
         /// </summary>
         public String Address
         {
@@ -40,7 +46,7 @@ namespace KJFramework.Net.Channels.Uri
         }
 
         /// <summary>
-        ///     ��ȡ������ǰ׺
+        ///     »ñÈ¡»òÉèÖÃÇ°×º
         /// </summary>
         public String Prefix
         {
@@ -50,20 +56,20 @@ namespace KJFramework.Net.Channels.Uri
 
         #endregion
 
-        #region ���캯��
+        #region ¹¹Ôìº¯Êý
 
         /// <summary>
-        ///     ��Դ��ַ��ʾ�࣬�ṩ����صĻ���������
+        ///     ×ÊÔ´µØÖ·±êÊ¾Àà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
         /// </summary>
         public Uri() : this("")
         { }
 
         /// <summary>
-        ///     ��Դ��ַ��ʾ�࣬�ṩ����صĻ���������
+        ///     ×ÊÔ´µØÖ·±êÊ¾Àà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
         /// </summary>
         /// <param name="url" type="string">
         ///     <para>
-        ///         ������URL��ַ
+        ///         ÍêÕûµÄURLµØÖ·
         ///     </para>
         /// </param>
         public Uri(String url)
@@ -73,7 +79,7 @@ namespace KJFramework.Net.Channels.Uri
 
         #endregion
 
-        #region ���෽��
+        #region ¸¸Àà·½·¨
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
@@ -88,20 +94,20 @@ namespace KJFramework.Net.Channels.Uri
         }
 
         /// <summary>
-        ///     ��ȡ�������ڲ�ʹ�õ�Uri��̬
+        ///     »ñÈ¡·þÎñÆ÷ÄÚ²¿Ê¹ÓÃµÄUriÐÎÌ¬
         /// </summary>
-        /// <returns>����Uri</returns>
+        /// <returns>·µ»ØUri</returns>
         public abstract string GetServiceUri();
 
         #endregion
 
-        #region ����
+        #region ·½·¨
 
         protected virtual void Split()
         {
             if (_url == null)
             {
-                throw new System.Exception("��Դ��ַ��ʾ����Ϊ�ա�");
+                throw new System.Exception("×ÊÔ´µØÖ·±êÊ¾²»ÄÜÎª¿Õ¡£");
             }
             if (_url.Trim() == "")
             {
@@ -112,13 +118,13 @@ namespace KJFramework.Net.Channels.Uri
                 int flagStartOffset;
                 if ((flagStartOffset = _url.IndexOf(_splitFlag)) == -1)
                 {
-                    throw new System.Exception("�Ƿ�����Դ��ַ��ʾ��");
+                    throw new System.Exception("·Ç·¨µÄ×ÊÔ´µØÖ·±êÊ¾¡£");
                 }
                 String prefix = _url.Substring(0, flagStartOffset);
                 String address = _url.Substring(flagStartOffset + _splitFlag.Length, _url.Length - (flagStartOffset + _splitFlag.Length));
                 if (String.IsNullOrEmpty(prefix) || String.IsNullOrEmpty(address))
                 {
-                    throw new System.Exception("�Ƿ�����Դ��ַ��ʾ��");
+                    throw new System.Exception("·Ç·¨µÄ×ÊÔ´µØÖ·±êÊ¾¡£");
                 }
                 _prefix = prefix;
                 _address = address;
@@ -126,7 +132,7 @@ namespace KJFramework.Net.Channels.Uri
             catch (System.Exception ex)
             {
                 _tracing.Error(ex, null);
-                throw new System.Exception("�Ƿ�����Դ��ַ��ʾ��");
+                throw new System.Exception("·Ç·¨µÄ×ÊÔ´µØÖ·±êÊ¾¡£");
             }
         }
 

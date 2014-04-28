@@ -1,33 +1,37 @@
-using System;
+﻿using System;
 using KJFramework.EventArgs;
 
 namespace KJFramework.Net.Channels.HostChannels
 {
     /// <summary>
-    ///     ��������ͨ��Ԫ�ӿڣ��ṩ����صĻ���������
+    ///     ËÞÖ÷´«ÊäÍ¨µÀÔª½Ó¿Ú£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
     /// </summary>
     public interface IHostTransportChannel
     {
         /// <summary>
-        ///     ��ȡΨһ��ʶ
+        ///     获取或设置附属标记
+        /// </summary>
+        object Tag { get; set; }
+        /// <summary>
+        ///     »ñÈ¡Î¨Ò»±êÊ¶
         /// </summary>
         Guid Id { get; }
         /// <summary>
-        ///     ע������
+        ///     ×¢²áÍøÂç
         /// </summary>
-        /// <returns>����ע���״̬</returns>
+        /// <returns>·µ»Ø×¢²áµÄ×´Ì¬</returns>
         bool Regist();
         /// <summary>
-        ///     ע������
+        ///     ×¢ÏúÍøÂç
         /// </summary>
-        /// <returns>����ע���״̬</returns>
+        /// <returns>·µ»Ø×¢²áµÄ×´Ì¬</returns>
         bool UnRegist();
         /// <summary>
-        ///     ����ͨ���¼�
+        ///     ´´½¨Í¨µÀÊÂ¼þ
         /// </summary>
         event EventHandler<LightSingleArgEventArgs<ITransportChannel>> ChannelCreated;
         /// <summary>
-        ///     ͨ���Ͽ��¼�
+        ///     Í¨µÀ¶Ï¿ªÊÂ¼þ
         /// </summary>
         event EventHandler<LightSingleArgEventArgs<ITransportChannel>> ChannelDisconnected;
     }

@@ -88,6 +88,11 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         private EndPoint _remoteIep;
         private ICSNSegmentDataParser<T> _parser;
 
+        /// <summary>
+        ///     获取或设置附属标记
+        /// </summary>
+        public object Tag { get; set; }
+
         #endregion
 
         #region Implementation of IChannel<BasicChannelInfomation>

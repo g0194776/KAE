@@ -60,6 +60,10 @@ namespace KJFramework.ApplicationEngine
         ///    获取应用当前的状态
         /// </summary>
         public ApplicationStatus Status { get; private set; }
+        /// <summary>
+        ///    获取应用等级
+        /// </summary>
+        public ApplicationLevel Level { get; private set; }
 
         private KPPDataStructure _structure;
         private IHostTransportChannel _hostChannel;
@@ -100,6 +104,7 @@ namespace KJFramework.ApplicationEngine
             PackageName = _structure.GetSectionField<string>(0x00, "PackName");
             Description = _structure.GetSectionField<string>(0x00, "PackDescription");
             GlobalUniqueId = _structure.GetSectionField<Guid>(0x00, "GlobalUniqueIdentity");
+            Level = (ApplicationLevel) _structure.GetSectionField<byte>(0x00, "ApplicationLevel");
             Status = ApplicationStatus.Initializing;
             try
             { 

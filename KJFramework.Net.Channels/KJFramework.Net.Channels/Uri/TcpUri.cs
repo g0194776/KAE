@@ -1,23 +1,28 @@
+ï»¿using KJFramework.Net.Channels.Enums;
 using KJFramework.Tracing;
 using System;
 
 namespace KJFramework.Net.Channels.Uri
 {
     /// <summary>
-    ///     Tcp×ÊÔ´µØÖ·±êÊ¾Àà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
+    ///     Tcpèµ„æºåœ°å€
     /// </summary>
     public class TcpUri : Uri
     {
-        #region ³ÉÔ±
+        #region Members.
 
         protected String _hostAddress;
         protected String _serviceName;
         private int _port;
         protected bool _isHost;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (TcpUri));
+        /// <summary>
+        ///     è¯¥URIè¡¨ç¤ºä¸€ä¸ªæœ¬åœ°çš„åŠ¨æ€TCPç«¯å£èµ„æº
+        /// </summary>
+        public static readonly TcpUri Dynamic = new TcpUri("tcp://localhost:*");
 
         /// <summary>
-        ///     »ñÈ¡»òÉèÖÃ·şÎñÃû³Æ
+        ///     è·å–æˆ–è®¾ç½®æœåŠ¡å
         /// </summary>
         public String ServiceName
         {
@@ -26,7 +31,7 @@ namespace KJFramework.Net.Channels.Uri
         }
 
         /// <summary>
-        ///     »ñÈ¡»òÉèÖÃËŞÖ÷µØÖ·
+        ///     è·å–æˆ–è®¾ç½®ä¸»æœºåœ°å€
         /// </summary>
         public String HostAddress
         {
@@ -35,7 +40,7 @@ namespace KJFramework.Net.Channels.Uri
         }
 
         /// <summary>
-        ///     »ñÈ¡»òÉèÖÃËŞÖ÷¶Ë¿Ú
+        ///     è·å–æˆ–è®¾ç½®ç«¯å£å·
         /// </summary>
         public int Port
         {
@@ -44,29 +49,33 @@ namespace KJFramework.Net.Channels.Uri
         }
 
         /// <summary>
-        ///     »ñÈ¡Ò»¸öÖµ£¬¸ÃÖµ±êÊ¾ÁËµ±Ç°¸ø¶¨µÄËŞÖ÷µØÖ·ÊÇ·ñÎª±¾µØµØÖ·¡£
+        ///     è·å–ä¸€ä¸ªæ ‡ç¤ºï¼Œè¡¨ç¤ºäº†å½“å‰çš„åœ°å€æ˜¯å¦æ˜¯ä¸€ä¸ªå®¿ä¸»åœ°å€ç±»å‹
         /// </summary>
         public bool IsHost
         {
             get { return _isHost; }
         }
+        /// <summary>
+        ///    è·å–ä¸€ä¸ªå€¼ï¼Œæ”¹å€¼è¡¨ç¤ºäº†å½“å‰çš„TCPèµ„æºæ˜¯å¦éœ€è¦ä½¿ç”¨éšæœºçš„TCPç«¯å£èµ„æº
+        /// </summary>
+        public bool IsUseDynamicResource { get; private set; }
 
         #endregion
 
-        #region ¹¹Ôìº¯Êı
+        #region Constrcutors.
 
         /// <summary>
-        ///     Tcp×ÊÔ´µØÖ·±êÊ¾Àà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
+        ///     Tcpèµ„æºåœ°å€
         /// </summary>
         public TcpUri() : base("")
         { }
 
         /// <summary>
-        ///     Tcp×ÊÔ´µØÖ·±êÊ¾Àà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
+        ///     Tcpèµ„æºåœ°å€
         /// </summary>
         /// <param name="url" type="string">
         ///     <para>
-        ///         ÍêÕûµÄURLµØÖ·
+        ///         èµ„æºåœ°å€
         ///     </para>
         /// </param>
         public TcpUri(String url)
@@ -78,12 +87,20 @@ namespace KJFramework.Net.Channels.Uri
 
         #endregion
 
-        #region ¸¸Àà·½·¨
+        #region Methods.
 
         /// <summary>
-        ///     »ñÈ¡·şÎñÆ÷ÄÚ²¿Ê¹ÓÃµÄUriĞÎÌ¬
+        ///    è·å–å½“å‰URLæ‰€ä»£è¡¨çš„ç½‘ç»œç±»å‹
         /// </summary>
-        /// <returns>·µ»ØUri</returns>
+        public override NetworkTypes NetworkType
+        {
+            get { return NetworkTypes.TCP; }
+        }
+
+        /// <summary>
+        ///     è·å–æœåŠ¡åœ°å€
+        /// </summary>
+        /// <returns>è¿”å›æœåŠ¡åœ°å€</returns>
         public override string GetServiceUri()
         {
             return _serverUri;
@@ -94,30 +111,25 @@ namespace KJFramework.Net.Channels.Uri
             base.Split();
             try
             {
-                if (_prefix.ToLower() != "tcp")
-                {
-                    throw new System.Exception("·Ç·¨µÄTCP×ÊÔ´µØÖ·±êÊ¾¡£");
-                }
+                if (_prefix.ToLower() != "tcp") throw new System.Exception("#Illegal TCP resource prefix!");
                 int firstFlagOffset = _address.IndexOf("/");
-                if (firstFlagOffset == -1)
-                {
-                    throw new System.Exception("·Ç·¨µÄTCP×ÊÔ´µØÖ·±êÊ¾¡£");
-                }
+                if (firstFlagOffset == -1) firstFlagOffset = _address.Length;
                 String[] hostAddress = _address.Substring(0, firstFlagOffset).Split(new[] {":"},
                                                                                     StringSplitOptions.
                                                                                         RemoveEmptyEntries);
-                String serviceName = _address.Substring(firstFlagOffset + 1, _address.Length - (firstFlagOffset + 1));
-                if (hostAddress.Length <= 1 || String.IsNullOrEmpty(serviceName))
-                {
-                    throw new System.Exception("·Ç·¨µÄTCP×ÊÔ´µØÖ·±êÊ¾¡£");
-                }
+                String serviceName = string.Empty;
+                if(_address.Length > firstFlagOffset)
+                    serviceName = _address.Substring(firstFlagOffset + 1, _address.Length - (firstFlagOffset + 1));
+                if (hostAddress.Length <= 1) throw new System.Exception("#Illegal TCP resource format!");
                 _hostAddress = hostAddress[0];
-                _port = int.Parse(hostAddress[1]);
-                _serviceName = serviceName;
-                if (_port <= 0 || _port > 65535)
+                if (hostAddress[1].Length == 1 && hostAddress[1][0] == '*') IsUseDynamicResource = true;
+                else
                 {
-                    throw new System.Exception("·Ç·¨µÄTCP×ÊÔ´µØÖ·±êÊ¾¡£");
+                    IsUseDynamicResource = false;
+                    _port = int.Parse(hostAddress[1]);
+                    if (_port <= 0 || _port > 65535) throw new System.Exception("#Illegal TCP port!");
                 }
+                _serviceName = serviceName;
                 if (_hostAddress.ToLower() == "localhost" || _hostAddress == "127.0.0.1")
                 {
                     _hostAddress = "127.0.0.1";
@@ -127,7 +139,7 @@ namespace KJFramework.Net.Channels.Uri
             catch (System.Exception ex)
             {
                 _tracing.Error(ex, null);
-                throw new System.Exception("·Ç·¨µÄTCP×ÊÔ´µØÖ·±êÊ¾¡£");
+                throw;
             }
         }
 

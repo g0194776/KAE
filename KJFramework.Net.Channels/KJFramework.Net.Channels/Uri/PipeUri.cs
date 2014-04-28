@@ -1,21 +1,22 @@
+ï»¿using KJFramework.Net.Channels.Enums;
 using KJFramework.Tracing;
 using System;
 
 namespace KJFramework.Net.Channels.Uri
 {
     /// <summary>
-    ///     Pipe×ÊÔ´µØÖ·±êÊ¾Àà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
+    ///     PipeÃ—ÃŠÃ”Â´ÂµÃ˜Ã–Â·Â±ÃªÃŠÂ¾Ã€Ã Â£Â¬ÃŒÃ¡Â¹Â©ÃÃ‹ÃÃ Â¹Ã˜ÂµÃ„Â»Ã¹Â±Â¾Â²Ã™Ã—Ã·Â¡Â£
     /// </summary>
     public class PipeUri : Uri
     {
-        #region ³ÉÔ±
+        #region Â³Ã‰Ã”Â±
 
         protected String _machineName;
         protected String _pipeName;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(PipeUri));
 
         /// <summary>
-        ///     »ñÈ¡»òÉèÖÃIPCÃû³Æ
+        ///     Â»Ã±ÃˆÂ¡Â»Ã²Ã‰Ã¨Ã–ÃƒIPCÃƒÃ»Â³Ã†
         /// </summary>
         public String PipeName
         {
@@ -24,7 +25,7 @@ namespace KJFramework.Net.Channels.Uri
         }
 
         /// <summary>
-        ///     »ñÈ¡»òÉèÖÃ»úÆ÷Ãû
+        ///     Â»Ã±ÃˆÂ¡Â»Ã²Ã‰Ã¨Ã–ÃƒÂ»ÃºÃ†Ã·ÃƒÃ»
         /// </summary>
         public String MachineName
         {
@@ -34,20 +35,20 @@ namespace KJFramework.Net.Channels.Uri
 
         #endregion
 
-        #region ¹¹Ôìº¯Êı
+        #region Â¹Â¹Ã”Ã¬ÂºÂ¯ÃŠÃ½
 
         /// <summary>
-        ///     ×ÊÔ´µØÖ·±êÊ¾Àà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
+        ///     Ã—ÃŠÃ”Â´ÂµÃ˜Ã–Â·Â±ÃªÃŠÂ¾Ã€Ã Â£Â¬ÃŒÃ¡Â¹Â©ÃÃ‹ÃÃ Â¹Ã˜ÂµÃ„Â»Ã¹Â±Â¾Â²Ã™Ã—Ã·Â¡Â£
         /// </summary>
         public PipeUri() : base("")
         { }
 
         /// <summary>
-        ///     ×ÊÔ´µØÖ·±êÊ¾Àà£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
+        ///     Ã—ÃŠÃ”Â´ÂµÃ˜Ã–Â·Â±ÃªÃŠÂ¾Ã€Ã Â£Â¬ÃŒÃ¡Â¹Â©ÃÃ‹ÃÃ Â¹Ã˜ÂµÃ„Â»Ã¹Â±Â¾Â²Ã™Ã—Ã·Â¡Â£
         /// </summary>
         /// <param name="url" type="string">
         ///     <para>
-        ///         ÍêÕûµÄURLµØÖ·
+        ///         ÃÃªÃ•Ã»ÂµÃ„URLÂµÃ˜Ã–Â·
         ///     </para>
         /// </param>
         public PipeUri(String url) : base(url)
@@ -58,12 +59,20 @@ namespace KJFramework.Net.Channels.Uri
 
         #endregion
 
-        #region ¸¸Àà·½·¨
+        #region Â¸Â¸Ã€Ã Â·Â½Â·Â¨
 
         /// <summary>
-        ///     »ñÈ¡·şÎñÆ÷ÄÚ²¿Ê¹ÓÃµÄUriĞÎÌ¬
+        ///    è·å–å½“å‰URLæ‰€ä»£è¡¨çš„ç½‘ç»œç±»å‹
         /// </summary>
-        /// <returns>·µ»ØUri</returns>
+        public override NetworkTypes NetworkType
+        {
+            get { return NetworkTypes.Pipe; }
+        }
+
+        /// <summary>
+        ///     Â»Ã±ÃˆÂ¡Â·Ã¾ÃÃ±Ã†Ã·Ã„ÃšÂ²Â¿ÃŠÂ¹Ã“ÃƒÂµÃ„UriÃÃÃŒÂ¬
+        /// </summary>
+        /// <returns>Â·ÂµÂ»Ã˜Uri</returns>
         public override string GetServiceUri()
         {
             return _serverUri;
@@ -76,12 +85,12 @@ namespace KJFramework.Net.Channels.Uri
             {
                 if (_prefix.ToLower() != "pipe")
                 {
-                    throw new UriFormatException("·Ç·¨µÄPipe×ÊÔ´µØÖ·±êÊ¾¡£");
+                    throw new UriFormatException("Â·Ã‡Â·Â¨ÂµÃ„PipeÃ—ÃŠÃ”Â´ÂµÃ˜Ã–Â·Â±ÃªÃŠÂ¾Â¡Â£");
                 }
                 String[] inners = Address.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
                 if (inners.Length <= 1 || inners.Length > 2)
                 {
-                    throw new UriFormatException("·Ç·¨µÄPipe×ÊÔ´µØÖ·±êÊ¾¡£");
+                    throw new UriFormatException("Â·Ã‡Â·Â¨ÂµÃ„PipeÃ—ÃŠÃ”Â´ÂµÃ˜Ã–Â·Â±ÃªÃŠÂ¾Â¡Â£");
                 }
                 _machineName = inners[0];
                 _pipeName = inners[1];
@@ -89,7 +98,7 @@ namespace KJFramework.Net.Channels.Uri
             catch (System.Exception ex)
             {
                 _tracing.Error(ex, null);
-                throw new System.UriFormatException("·Ç·¨µÄPipe×ÊÔ´µØÖ·±êÊ¾¡£");
+                throw new System.UriFormatException("Â·Ã‡Â·Â¨ÂµÃ„PipeÃ—ÃŠÃ”Â´ÂµÃ˜Ã–Â·Â±ÃªÃŠÂ¾Â¡Â£");
             }
         }
 

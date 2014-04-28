@@ -67,6 +67,7 @@
     <Compile Include="EndPoints\NamedPipeEndPoint.cs" />
     <Compile Include="Enums\IdentitySerializationTypes.cs" />
     <Compile Include="Enums\TransactionIdentityTypes.cs" />
+    <Compile Include="Enums\NetworkTypes.cs" />
     <Compile Include="Enums\TransportChannelTypes.cs" />
     <Compile Include="Events\SegmentReceiveEventArgs.cs" />
     <Compile Include="ChannelCounter.cs" />

@@ -91,6 +91,11 @@ namespace KJFramework.Net.Channels
         private ISegmentDataParser<T> _parser;
         private readonly TransportChannelTypes _channelType;
 
+        /// <summary>
+        ///     获取或设置附属标记
+        /// </summary>
+        public object Tag { get; set; }
+
         #endregion
 
         #region Implementation of IChannel<BasicChannelInfomation>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner" dslVersion="1.0.0.0" Id="27fd795a-81db-4b6e-971e-b1791d1b9c72" name="KAE" linkedPackageId="f0a0d623-d639-4266-a3b8-cea776614f5b" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="27fd795a-81db-4b6e-971e-b1791d1b9c72" name="KAE" linkedPackageId="f0a0d623-d639-4266-a3b8-cea776614f5b" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
   <packagedElements>
     <logicalClassDesignerModelHasTypes>
       <Interface Id="1d1c93a4-1e92-4f44-878c-8d84108c4e06" name="IKAEApplication" isAbstract="false" isLeaf="false">
@@ -911,7 +911,7 @@
         <elementDefinition Id="23fdf8d5-9ddf-4cc6-9342-f76cd39740ad" />
         <targetEnds>
           <association Id="71fad345-a91a-4f79-bc34-7a2ccbb01653" isDerived="false" sourceEndRoleName="IKAEHostEventPool" targetEndRoleName="IBusinessPackage" isLeaf="false" isAbstract="false">
-            <interfaceMoniker Id="61d2bcbc-da60-40f3-96e3-23ae1a2db8d4" LastKnownName="IBusinessPackage&lt;T&gt;" />
+            <interfaceMoniker Id="61d2bcbc-da60-40f3-96e3-23ae1a2db8d4" LastKnownName="IBusinessPackage" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
                 <memberEnd Id="d72265e7-26f0-4a41-8320-7d4bc9dcaa7c" name="IKAEHostEventPool" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
@@ -970,8 +970,14 @@
       </referencedType>
     </packageHasNamedElement>
     <logicalClassDesignerModelHasTypes>
-      <Interface Id="61d2bcbc-da60-40f3-96e3-23ae1a2db8d4" name="IBusinessPackage&lt;T&gt;" isAbstract="false" isLeaf="false">
+      <Interface Id="61d2bcbc-da60-40f3-96e3-23ae1a2db8d4" name="IBusinessPackage" isAbstract="false" isLeaf="false">
         <elementDefinition Id="f9553164-2c90-49b5-90f7-4c6b2cb29d47" />
+        <generalsInternal>
+          <generalization Id="311fa7dc-430a-4aff-be89-b70b6e48c354" isSubstitutable="false">
+            <interfaceMoniker Id="88e49e6e-3e09-49f1-8372-aba321222255" LastKnownName="IMessageTransaction&lt;T&gt;" />
+            <elementDefinition Id="b54a4e42-5484-45c7-a575-d87235e46ae0" />
+          </generalization>
+        </generalsInternal>
         <ownedAttributes>
           <property Id="5f6d7526-8a5a-48f3-9781-fc68dd3ec0da" name="State" isLeaf="false" isStatic="false" isReadOnly="true" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="3425a848-b7c1-4d01-880c-8fbef4e06d79" />
@@ -986,76 +992,6 @@
             </type_NamedElement>
           </property>
         </ownedAttributes>
-        <ownedOperations>
-          <operation Id="9f684706-0a53-4526-9382-d5bd088fc95d" name="GetRequest" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="cfe94d3a-b344-4bd9-8368-76c169a84397" />
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter Id="26a5abb2-1581-4a95-93dc-73cc3b0b642e" direction="Return" isUnique="false">
-                  <elementDefinition Id="1c6c4366-db5c-492d-abcb-ae66258cf497" />
-                  <type_NamedElement>
-                    <referencedTypeMoniker Id="4c778fad-d484-4989-8134-d7e0fdde99a0" LastKnownName="T" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
-          <operation Id="7aa86c0c-f080-4741-94e3-1b7873c5a8b1" name="SendResponse" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="7f08a632-a2e5-4c2c-b4e2-720143c9b8a3" />
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter Id="ec586476-f7a5-461a-bd29-8b5c0fd419f3" direction="Return" isUnique="false">
-                  <elementDefinition Id="afd82ceb-4d3a-453e-98d6-c71366809ed6" />
-                  <type_NamedElement>
-                    <referencedTypeMoniker Id="979624c3-1cdf-48d2-8657-2f2cbf990bec" LastKnownName="void" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-              <operationHasOwnedParameters>
-                <parameter Id="49882b16-fcd8-4494-9be9-0f7126ec0920" name="obj" direction="In" isUnique="false">
-                  <elementDefinition Id="9eff7a3c-60bf-4585-a840-1d9acdc490a9" />
-                  <type_NamedElement>
-                    <referencedTypeMoniker Id="4c778fad-d484-4989-8134-d7e0fdde99a0" LastKnownName="T" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
-          <operation Id="9a20d8ed-998f-495a-9d41-a91abd7d23ab" name="GetResponse" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="0815788a-b4bd-44b6-aa84-4030878ea13b" />
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter Id="570e9785-1ca5-41e9-91b1-9a3176dedd45" direction="Return" isUnique="false">
-                  <elementDefinition Id="d585b3d5-94ec-459c-8851-b0679026db58" />
-                  <type_NamedElement>
-                    <referencedTypeMoniker Id="4c778fad-d484-4989-8134-d7e0fdde99a0" LastKnownName="T" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
-          <operation Id="b86c6563-da24-46a6-a76d-97b45d7658cf" name="SendRequest" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="b0c80db3-7b06-4275-8f9b-bccebde4cdd7" />
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter Id="7f3e45ea-0d30-4e28-974d-225537ff539f" name="obj" direction="In" isUnique="false">
-                  <elementDefinition Id="ea4bf71e-7730-492a-87e3-774d077f408e" />
-                  <type_NamedElement>
-                    <referencedTypeMoniker Id="4c778fad-d484-4989-8134-d7e0fdde99a0" LastKnownName="T" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-              <operationHasOwnedParameters>
-                <parameter Id="bbaad656-b366-452c-bf1d-68b043cfb470" direction="Return" isUnique="false">
-                  <elementDefinition Id="77f7441a-a614-4ea1-8a69-41970ebfab0e" />
-                  <type_NamedElement>
-                    <referencedTypeMoniker Id="979624c3-1cdf-48d2-8657-2f2cbf990bec" LastKnownName="void" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
-        </ownedOperations>
       </Interface>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
@@ -1101,18 +1037,18 @@
             <elementDefinition Id="02accba3-cf33-4a49-8441-7c1b702c1d6e" />
             <ownedParameters>
               <operationHasOwnedParameters>
-                <parameter Id="bdf9886a-8da1-4ed9-9a93-6d66f9f84daa" direction="Return" isUnique="false">
-                  <elementDefinition Id="4c653494-48e8-4709-86b0-2beb791023e4" />
+                <parameter Id="0ec9e472-881f-488d-881d-7ee5f8302125" direction="Return" isUnique="false">
+                  <elementDefinition Id="6ef547aa-02d6-4b3e-bd46-5d29837c6f53" />
                   <type_NamedElement>
                     <referencedTypeMoniker Id="979624c3-1cdf-48d2-8657-2f2cbf990bec" LastKnownName="void" />
                   </type_NamedElement>
                 </parameter>
               </operationHasOwnedParameters>
               <operationHasOwnedParameters>
-                <parameter Id="539dc373-c3c0-4729-b640-232830278d0f" name="package" direction="In" isUnique="false">
-                  <elementDefinition Id="0ab9b41c-4ea8-44fb-86ae-3612b25fbfee" />
+                <parameter Id="bdddb866-1763-4564-a511-f98ad38763bb" name="transaction" direction="In" isUnique="false">
+                  <elementDefinition Id="b2d4b5c1-e110-40dc-982d-de60192a63a3" />
                   <type_NamedElement>
-                    <referencedTypeMoniker Id="ee7ae231-0d0c-4005-80dc-cede9de470c4" LastKnownName="IBusinessPackage&lt;T&gt;" />
+                    <referencedTypeMoniker Id="0196eff8-dfea-4e63-8e06-7faf8bd7da49" LastKnownName="IMessageTransaction&lt;T&gt;" />
                   </type_NamedElement>
                 </parameter>
               </operationHasOwnedParameters>
@@ -1190,11 +1126,6 @@
       </referencedType>
     </packageHasNamedElement>
     <packageHasNamedElement>
-      <referencedType Id="ee7ae231-0d0c-4005-80dc-cede9de470c4" name="IBusinessPackage&lt;T&gt;" isAbstract="false" isLeaf="false" cachedFullName="KJFramework.ApplicationEngine.Diagrams::IBusinessPackage&lt;T&gt;">
-        <elementDefinition Id="f9553164-2c90-49b5-90f7-4c6b2cb29d47" />
-      </referencedType>
-    </packageHasNamedElement>
-    <packageHasNamedElement>
       <referencedType Id="55ace9ae-bdbb-444a-a1d3-27ba1840666e" name="ProtocolTypes" isAbstract="false" isLeaf="false" cachedFullName="KJFramework.ApplicationEngine.Diagrams::ProtocolTypes">
         <elementDefinition Id="5ad7449e-cd51-47a8-8d3f-52590dd63436" />
       </referencedType>
@@ -1232,6 +1163,69 @@
         </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <Interface Id="88e49e6e-3e09-49f1-8372-aba321222255" name="IMessageTransaction&lt;T&gt;" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="5efb72e5-0278-4ff6-b50d-ffd8ea883414" />
+        <ownedOperations>
+          <operation Id="744273d4-bd5c-4c76-a385-2ac0606b8b52" name="SendRequest" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="edaa2aa9-eccc-40f1-acae-030f7266deec" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="69a44ae0-8d49-40e8-b2a4-59bd9649d3b1" name="msg" direction="In" isUnique="false">
+                  <elementDefinition Id="0648a3ff-2b36-42cc-918f-dfc5fadb879a" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="4c778fad-d484-4989-8134-d7e0fdde99a0" LastKnownName="T" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="57e310b0-09f0-4514-a35a-1a793a4084e1" direction="Return" isUnique="false">
+                  <elementDefinition Id="cc736543-424d-4834-800e-1240a2587750" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="979624c3-1cdf-48d2-8657-2f2cbf990bec" LastKnownName="void" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="2ef4178e-227a-49a6-bc50-02c22f3dc591" name="SendResponse" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="09cb913a-250d-46f4-859c-c36c698ce750" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="3b8107ed-241a-4f6d-9bbe-77f675cdd87f" name="msg" direction="In" isUnique="false">
+                  <elementDefinition Id="e84a5f26-d525-40b3-a102-e0fa14eb7ca0" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="4c778fad-d484-4989-8134-d7e0fdde99a0" LastKnownName="T" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="01c18705-0f58-4192-b1c2-64de63cd4253" direction="Return" isUnique="false">
+                  <elementDefinition Id="921788db-a9fe-4600-8171-1addd99de885" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="979624c3-1cdf-48d2-8657-2f2cbf990bec" LastKnownName="void" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="31f0bbcf-4112-449f-b10d-2fec000537f6" name="Failed : &lt;&lt;event&gt;&gt;" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="c7cb726f-731c-47cd-aa03-f6fa4a9ebc52" />
+          </operation>
+          <operation Id="4702a1ab-a5cb-4ee5-ab51-7307424c03ae" name="Timeout : &lt;&lt;event&gt;&gt;" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="8d2740aa-dc39-47d8-aa44-bee3b70c7181" />
+          </operation>
+          <operation Id="3e49649c-1034-4404-b223-d5136b73cfdf" name="ResponseReceived : &lt;&lt;event&gt;&gt;" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="77f72571-a6bf-43a4-8d5a-600ef085c796" />
+          </operation>
+        </ownedOperations>
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="0196eff8-dfea-4e63-8e06-7faf8bd7da49" name="IMessageTransaction&lt;T&gt;" isAbstract="false" isLeaf="false" cachedFullName="KJFramework.ApplicationEngine.Diagrams::IMessageTransaction&lt;T&gt;">
+        <elementDefinition Id="5efb72e5-0278-4ff6-b50d-ffd8ea883414" />
+      </referencedType>
+    </packageHasNamedElement>
   </packagedElements>
   <package Id="f0a0d623-d639-4266-a3b8-cea776614f5b" name="KJFramework.ApplicationEngine.Diagrams">
     <elementDefinition Id="0f316b15-4749-47e4-aaeb-c52b3fcaa1b5" />

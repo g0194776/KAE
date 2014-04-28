@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace KJFramework.Net.Channels.Identities
 {
@@ -7,6 +8,7 @@ namespace KJFramework.Net.Channels.Identities
     ///     <para>* 此标示仅用来与客户端通讯时使用</para>
     /// </summary>
     [StructLayout(LayoutKind.Explicit, Size = 5)]
+    [Serializable]
     public struct MessageIdentity
     {
         /// <summary>

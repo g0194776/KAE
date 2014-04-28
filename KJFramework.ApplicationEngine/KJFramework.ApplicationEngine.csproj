@@ -46,8 +46,11 @@
   <ItemGroup>
     <Compile Include="Application.cs" />
     <Compile Include="Attributes\KAEProcessorPropertiesAttribute.cs" />
+    <Compile Include="Eums\ApplicationLevel.cs" />
     <Compile Include="Eums\ApplicationStatus.cs" />
     <Compile Include="Eums\BusinessPackageStates.cs" />
+    <Compile Include="Eums\KAEErrorCodes.cs" />
+    <Compile Include="Eums\KAEHostStatus.cs" />
     <Compile Include="Eums\ProtocolTypes.cs" />
     <Compile Include="Exceptions\AllocResourceFailedException.cs" />
     <Compile Include="Exceptions\IllegalApplicationStatusException.cs" />
@@ -57,9 +60,12 @@
     <Compile Include="Exceptions\FolderNotFoundException.cs" />
     <Compile Include="Finders\ApplicationFinder.cs" />
     <Compile Include="Helpers\FileCompression.cs" />
+    <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="IApplication.cs" />
     <Compile Include="IKAEHost.cs" />
     <Compile Include="KAEHost.cs" />
+    <Compile Include="Messages\KAEResponseMessage.cs" />
+    <Compile Include="Messages\KAERequestMessage.cs" />
     <Compile Include="Objects\ApplicationDynamicObject.cs" />
     <Compile Include="Objects\ApplicationEntryInfo.cs" />
     <Compile Include="Packages\IBusinessPackage.cs" />
