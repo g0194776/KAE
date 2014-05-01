@@ -40,6 +40,10 @@
         /// <summary>
         ///     异常
         /// </summary>
-        Exception = 0x08
+        Exception = 0x08,
+        /// <summary>
+        ///     已加载
+        /// </summary>
+        Loaded
     }
 }

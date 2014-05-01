@@ -1,6 +1,7 @@
 ﻿using System;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 
 namespace KJFramework.Net.Transaction
 {
@@ -21,7 +22,10 @@ namespace KJFramework.Net.Transaction
         /// <summary>
         ///     获取或设置响应消息
         /// </summary>
-        T Response { get; set; }
+        T Response { get; set; }        /// <summary>
+        ///     »ñÈ¡»òÉèÖÃµ±Ç°ÊÂÎñµÄÎ¨Ò»±êÊ¾
+        /// </summary>
+        TransactionIdentity Identity { get; }
         /// <summary>
         ///     设置响应消息，并激活处理流程
         /// </summary>

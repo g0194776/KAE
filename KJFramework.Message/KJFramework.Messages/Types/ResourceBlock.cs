@@ -13,9 +13,31 @@ namespace KJFramework.Messages.Types
     /// </summary>
     public class ResourceBlock
     {
+        #region Constructors.
+
+        /// <summary>
+        ///    资源块对象
+        /// </summary>
+        public ResourceBlock()
+        {
+            
+        }
+
+        /// <summary>
+        ///     内部构造函数，用于初始化一个拥有了内部数据的包装对象
+        /// </summary>
+        /// <param name="dic">内部结构数据</param>
+        internal ResourceBlock(Dictionary<byte, BaseValueStored> dic)
+        {
+            if (dic == null) throw new ArgumentNullException("dic");
+            _valueStoreds = dic;
+        }
+
+        #endregion
+
         #region Members
 
-        protected readonly Dictionary<byte, BaseValueStored> _valueStoreds = new Dictionary<byte, BaseValueStored>();
+        protected Dictionary<byte, BaseValueStored> _valueStoreds = new Dictionary<byte, BaseValueStored>();
 
         #endregion
 

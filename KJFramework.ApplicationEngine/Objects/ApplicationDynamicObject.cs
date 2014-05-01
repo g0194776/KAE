@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Lifetime;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using KJFramework.ApplicationEngine.Eums;
+using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Packages;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Basic.Enum;
@@ -12,7 +14,14 @@ using KJFramework.Dynamic;
 using KJFramework.Dynamic.Components;
 using KJFramework.Dynamic.Visitors;
 using KJFramework.EventArgs;
+using KJFramework.Messages.Contracts;
+using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Channels.Uri;
+using KJFramework.Net.Transaction.Comparers;
+using KJFramework.Net.Transaction.Helpers;
+using KJFramework.Net.Transaction.Managers;
+using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Tracing;
 
 namespace KJFramework.ApplicationEngine.Objects
@@ -30,6 +39,7 @@ namespace KJFramework.ApplicationEngine.Objects
         /// <param name="info">应用入口结构信息</param>
         /// <param name="structure">KPP应用资源包的数据结构</param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
+        /// <exception cref="CannotConnectToTunnelException">无法建立正常的隧道连接</exception>
         public ApplicationDynamicObject(ApplicationEntryInfo info, KPPDataStructure structure)
         {
             if (info == null) throw new ArgumentNullException("info");
@@ -44,6 +54,7 @@ namespace KJFramework.ApplicationEngine.Objects
             builder.AppendLine("   CRC: " + info.FileCRC);
             WorkProcessingHandler(new LightSingleArgEventArgs<string>(builder.ToString()));
             PreInitialize();
+            InitializeTunnel();
         }
 
         #endregion
@@ -54,6 +65,9 @@ namespace KJFramework.ApplicationEngine.Objects
         protected AppDomain _domain;
         private readonly KPPDataStructure _structure;
         private readonly ApplicationEntryInfo _entryInfo;
+        private IMessageTransportChannel<MetadataContainer> _msgChannel; 
+        private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
+        private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ApplicationDynamicObject));
 
         public string Version
@@ -133,7 +147,10 @@ namespace KJFramework.ApplicationEngine.Objects
         /// </summary>
         public IBusinessPackage CreateBusinessPackage()
         {
-            return null;
+            BusinessPackage package =  new BusinessPackage(_msgChannel);
+            package.Identity = IdentityHelper.Create(package.GetChannel().LocalEndPoint, package.GetChannel().ChannelType);
+            _transactionManager.Add(package.Identity, package);
+            return package;
         }
 
         private void PreInitialize()
@@ -159,6 +176,7 @@ namespace KJFramework.ApplicationEngine.Objects
                     WorkProcessingHandler(new LightSingleArgEventArgs<string>("Unwrapping......"));
                     Application app = (Application)cls.Unwrap();
                     _application = app;
+                    _application.IsUseTunnel = true;
                     WorkProcessingHandler(new LightSingleArgEventArgs<string>("Trying to renew application life......"));
                     ReLease(new TimeSpan(365, 0, 0, 0));
                     WorkProcessingHandler(new LightSingleArgEventArgs<string>("Calling OnLoading method......"));
@@ -166,6 +184,19 @@ namespace KJFramework.ApplicationEngine.Objects
                     _application.OnLoading();
                 }
             }
+        }
+
+        /// <summary>
+        ///     建立与APP之间的内部通信隧道
+        /// </summary>
+        /// <exception cref="CannotConnectToTunnelException">无法建立正常的隧道连接</exception>
+        private void InitializeTunnel()
+        {
+            PipeUri uri = new PipeUri(GetTunnelAddress());
+            ITransportChannel channel = new PipeTransportChannel(uri);
+            channel.Connect();
+            if (!channel.IsConnected) throw new CannotConnectToTunnelException("#Couldn't connect to specified remote tunnel address: " + uri);
+            _msgChannel = new MessageTransportChannel<MetadataContainer>((IRawTransportChannel)channel, _protocolStack);
         }
 
         /// <summary>

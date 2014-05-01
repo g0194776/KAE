@@ -61,7 +61,7 @@ namespace KJFramework.Net.Transaction
         /// <summary>
         ///     获取或设置当前事务的唯一标示
         /// </summary>
-        public TransactionIdentity Identity { get; set; }
+        public TransactionIdentity Identity { get; internal set; }
         /// <summary>
         ///     获取事务的创建时间
         /// </summary>

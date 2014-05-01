@@ -130,6 +130,7 @@ namespace KJFramework.Dynamic.Components
         public bool IsUseTunnel
         {
             get { return _isUseTunnel; }
+            internal set { _isUseTunnel = value; }
         }
 
         /// <summary>

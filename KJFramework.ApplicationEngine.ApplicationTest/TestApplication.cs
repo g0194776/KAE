@@ -10,7 +10,7 @@ namespace KJFramework.ApplicationEngine.ApplicationTest
         public override IList<KAENetworkResource> AcquireCommunicationSupport()
         {
              IList<KAENetworkResource> networks = new List<KAENetworkResource>();
-            networks.Add(new KAENetworkResource{NetworkUri = new TcpUri("tcp://localhost:6666"), Protocol = ProtocolTypes.Intellegence});
+            networks.Add(new KAENetworkResource{NetworkUri = new TcpUri("tcp://localhost:6666"), Protocol = ProtocolTypes.Metadata});
             return networks;
         }
 

@@ -27,6 +27,7 @@ namespace KJFramework.ApplicationEngine.Helpers
         private static readonly List<int> _usedPorts = new List<int>();
         private static readonly MetadataProtocolStack _metadataPk = new MetadataProtocolStack();
         private static readonly BusinessProtocolStack _intellegencePk = new BusinessProtocolStack();
+        private static readonly MetadataTransactionManager _metadataTm = new MetadataTransactionManager(new TransactionIdentityComparer());
         private static readonly MessageTransactionManager _intellegenceTm = new MessageTransactionManager(new TransactionIdentityComparer());
 
         #endregion
@@ -126,9 +127,9 @@ namespace KJFramework.ApplicationEngine.Helpers
             switch (protocol)
             {
                 case ProtocolTypes.Metadata:
-                    return _metadataPk;
+                    return _metadataTm;
                 case ProtocolTypes.Intellegence:
-                    return _intellegencePk;
+                    return _intellegenceTm;
                 default:
                     throw new NotSupportedException(string.Format("#We've not supported current protocol: {0}!", protocol));
             }

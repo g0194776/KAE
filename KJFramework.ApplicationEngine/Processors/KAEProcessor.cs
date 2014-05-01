@@ -56,7 +56,7 @@ namespace KJFramework.ApplicationEngine.Processors
         ///    处理一个网络请求
         /// </summary>
         /// <param name="package">消息事务</param>
-        public abstract void InnerProcess(IMessageTransaction<T> package);
+        protected abstract void InnerProcess(IMessageTransaction<T> package);
 
         #endregion
     }

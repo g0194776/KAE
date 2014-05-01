@@ -12,7 +12,7 @@ namespace KJFramework.Architecture.UnitTest.KAE.Applications.Processors
         {
         }
 
-        public override void InnerProcess(IMessageTransaction<string> package)
+        protected override void InnerProcess(IMessageTransaction<string> package)
         {
         }
     }
