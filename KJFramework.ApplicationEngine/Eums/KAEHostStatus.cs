@@ -20,6 +20,10 @@
         /// <summary>
         ///    异常状态
         /// </summary>
-        Error = 0x03
+        Error = 0x03,
+        /// <summary>
+        ///    已准备好, 正在注册到远程RRCS服务中
+        /// </summary>
+        Prepared = 0x04,
     }
 }

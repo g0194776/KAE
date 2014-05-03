@@ -4,27 +4,24 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4F0E39EE-C748-45ED-9CAA-6E567925C944}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{A9CE242A-56D7-4B97-93BF-F287CB288356}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KJFramework.ApplicationEngine.ApplicationTest2</RootNamespace>
-    <AssemblyName>KJFramework.ApplicationEngine.ApplicationTest2</AssemblyName>
+    <RootNamespace>KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent</RootNamespace>
+    <AssemblyName>KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\KJFramework.ApplicationEngine.RRCS\bin\Debug\Components\KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,33 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="BasicComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Apps\635347513887692496.kpp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\KJFramework.ApplicationEngine.ApplicationTest\KJFramework.ApplicationEngine.ApplicationTest.csproj">
-      <Project>{67211fa7-fe08-45c3-9bd1-d06f3d389951}</Project>
-      <Name>KJFramework.ApplicationEngine.ApplicationTest</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.ApplicationEngine\KJFramework.ApplicationEngine.csproj">
-      <Project>{0a0e8766-fad6-4e67-acec-8d76abfa7822}</Project>
-      <Name>KJFramework.ApplicationEngine</Name>
-    </ProjectReference>
     <ProjectReference Include="..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
       <Project>{d5a0178c-16f7-453e-a301-d1d61910d2af}</Project>
       <Name>KJFramework.Basic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
-      <Project>{6f85c222-1cd2-44d4-8d06-22f557d4cf04}</Project>
-      <Name>KJFramework.Cache</Name>
+    <ProjectReference Include="..\KJFramework.Dynamic\KJFramework.Dynamic\KJFramework.Dynamic.csproj">
+      <Project>{47672612-8aa3-4729-a210-4f30e3fb39e4}</Project>
+      <Name>KJFramework.Dynamic</Name>
     </ProjectReference>
     <ProjectReference Include="..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
       <Project>{12309506-18a3-48bf-8a55-e950a87a905e}</Project>

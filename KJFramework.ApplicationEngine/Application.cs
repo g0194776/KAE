@@ -76,15 +76,17 @@ namespace KJFramework.ApplicationEngine
         ///    获取应用等级
         /// </summary>
         public ApplicationLevel Level { get; private set; }
+        /// <summary>
+        ///    获取应用kpp文件的CRC
+        /// </summary>
+        internal long CRC { get { return _structure.GetHeadField<long>("CRC"); } }
 
         private KPPDataStructure _structure;
         private IHostTransportChannel _hostChannel;
         private IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> _processors;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Application));
         private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
-
-        private static readonly MetadataTransactionManager _transactionManager =
-            new MetadataTransactionManager(new TransactionIdentityComparer());
+        private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
 
         #endregion
 
@@ -102,8 +104,7 @@ namespace KJFramework.ApplicationEngine
         /// <returns>返回支持的网络通信协议列表</returns>
         public IDictionary<ProtocolTypes, IList<MessageIdentity>> AcquireSupportedProtocols()
         {
-            IDictionary<ProtocolTypes, IList<MessageIdentity>> dic =
-                new Dictionary<ProtocolTypes, IList<MessageIdentity>>();
+            IDictionary<ProtocolTypes, IList<MessageIdentity>> dic = new Dictionary<ProtocolTypes, IList<MessageIdentity>>();
             foreach (KeyValuePair<ProtocolTypes, Dictionary<MessageIdentity, object>> pair in _processors)
                 dic.Add(pair.Key, pair.Value.Keys.ToList());
             return dic;
@@ -143,9 +144,7 @@ namespace KJFramework.ApplicationEngine
 
         protected override void InnerStop()
         {
-            if (Status != ApplicationStatus.Running)
-                throw new IllegalApplicationStatusException(
-                    "#Illegal application status that it couldn't start! #Status: " + Status);
+            if (Status != ApplicationStatus.Running) throw new IllegalApplicationStatusException("#Illegal application status that it couldn't start! #Status: " + Status);
             Status = ApplicationStatus.Stoping;
             try
             {
@@ -157,18 +156,13 @@ namespace KJFramework.ApplicationEngine
                 }
                 _tunnelAddress = null;
             }
-            catch (System.Exception ex)
-            {
-                _tracing.Error(ex);
-            }
-            finally
-            {
-                Status = ApplicationStatus.Stopped;
-            }
+            catch (System.Exception ex) { _tracing.Error(ex); }
+            finally { Status = ApplicationStatus.Stopped; }
         }
 
         protected override void InnerOnLoading()
         {
+            //initializes something before actual business starting.
             ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
             if (Status != ApplicationStatus.Initialized && Status != ApplicationStatus.Stopped) throw new IllegalApplicationStatusException("#Illegal application status that it couldn't start! #Status: " + Status);

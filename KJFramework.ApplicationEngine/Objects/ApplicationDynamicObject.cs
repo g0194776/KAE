@@ -98,6 +98,10 @@ namespace KJFramework.ApplicationEngine.Objects
         {
             get { return _application.Level; }
         }
+        public long CRC
+        {
+            get { return _application.CRC; }
+        }
         public HealthStatus CheckHealth()
         {
             return _application.CheckHealth();

@@ -1,4 +1,7 @@
-﻿using KJFramework.ApplicationEngine.Eums;
+﻿using System.Linq;
+using System.Net;
+using KJFramework.ApplicationEngine.Connectors;
+using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Helpers;
@@ -40,8 +43,9 @@ namespace KJFramework.ApplicationEngine
         ///     动态程序域服务，提供了相关的基本操作。
         ///     <para>* 使用此构造将会从配置文件中读取服务相关信息</para>
         /// </summary>
-        public KAEHost()
-            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1))
+        /// <param name="rrcsAddr">远程RRCS服务地址</param>
+        public KAEHost(IPEndPoint rrcsAddr)
+            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), rrcsAddr)
         {
         }
 
@@ -49,13 +53,18 @@ namespace KJFramework.ApplicationEngine
         ///     动态程序域服务，提供了相关的基本操作。
         /// </summary>
         /// <param name="workRoot">工作目录</param>
+        /// <param name="rrcsAddr">远程RRCS服务地址</param>
         /// <exception cref="System.ArgumentNullException">参数错误</exception>
         /// <exception cref="DirectoryNotFoundException">工作目录错误</exception>
-        public KAEHost(String workRoot)
+        /// <exception cref="ArgumentException">无法找到远程RRCS服务地址</exception>
+        public KAEHost(string workRoot, IPEndPoint rrcsAddr)
         {
             if (workRoot == null) throw new ArgumentNullException("workRoot");
             if (!Directory.Exists(workRoot)) throw new DirectoryNotFoundException("Current work root don't existed. #dir: " + workRoot);
             _workRoot = workRoot;
+            if (rrcsAddr == null) throw new ArgumentException("#We couldn't find any RRCS remoting address.");
+            _rrcsAddr = rrcsAddr;
+            _rrcsConnector = new RRCSConnector(_rrcsAddr, this);
         }
 
         #endregion
@@ -63,9 +72,16 @@ namespace KJFramework.ApplicationEngine
         #region Members.
 
         private readonly string _workRoot;
+        private IList<long> _crcs;
+        private readonly IPEndPoint _rrcsAddr;
+        private readonly RRCSConnector _rrcsConnector;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (KAEHost));
         private IList<IHostTransportChannel> _hostChannels;
+        //caches for network end-points by respective MessageIdentity.
+        //1st level of key = MessageIdentity + App Level; second level of key = application's version.
+        private IDictionary<string, IDictionary<string, IList<string>>> _caches;
         private IDictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> _protocolDic;
+
         /// <summary>
         ///    获取内部运行的应用数量
         /// </summary>
@@ -124,6 +140,8 @@ namespace KJFramework.ApplicationEngine
         /// <summary>
         ///    开启KAE宿主
         /// </summary>
+        /// <exception cref="ConflictedBasicallyResourceException">KAE应用本地资源冲突异常</exception>
+        /// <exception cref="DuplicatedApplicationException">KAE应用的版本或者版本冲突异常</exception>
         public void Start()
         {
             IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> apps = Initialize();
@@ -134,7 +152,7 @@ namespace KJFramework.ApplicationEngine
             }
             _hostChannels = new List<IHostTransportChannel>();
 
-            #region Step 1, Build default network.
+            #region #Step 1, Build default network.
 
             InitializeDefaultNetworkResource();
 
@@ -142,20 +160,62 @@ namespace KJFramework.ApplicationEngine
 
             #region #Step 2, initializes current suported mapping from protocol & message identity & application's level.
 
+            /*
+             * We had chosen this kind of comminucation cache because that 
+             * The RRCS need decides where the right load balancing addresses are.
+             * So, we splicted those of remoting information into different parts which grouped by the applications' version.
+             * 
+             * P:1,S:2,D:3_Stable
+             *      --- 1.1.0
+             *          --- tcp://192.168.1.1:8000
+             *          --- tcp://192.168.1.2:8000
+             *          --- tcp://192.168.1.3:8000
+             *          --- tcp://192.168.1.4:8000
+             *          --- tcp://192.168.1.5:8000
+             *--- http://192.168.1.1:9000
+             *      --- 1.2.0
+             *          --- tcp://192.168.1.1:8000
+             *          --- tcp://192.168.1.2:8000
+             *          --- tcp://192.168.1.3:8000
+             *          --- tcp://192.168.1.4:8000
+             *          --- tcp://192.168.1.5:8000
+             *          --- http://192.168.1.1:9000
+             */
+            _crcs = new List<long>();
             List<Tuple<ApplicationLevel, IList<KAENetworkResource>>> networkResources = new List<Tuple<ApplicationLevel, IList<KAENetworkResource>>>();
+            IDictionary<string, IDictionary<string, IList<string>>> caches = new Dictionary<string, IDictionary<string, IList<string>>>();
             Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> protocolDic = new Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>>();
             foreach (KeyValuePair<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> pair in apps)
             {
                 foreach (KeyValuePair<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>> subPair in pair.Value)
                 {
+                    _crcs.Add(subPair.Value.Item3.CRC);
                     IDictionary<ProtocolTypes, IList<MessageIdentity>> supportedProtocols = subPair.Value.Item3.AcquireSupportedProtocols();
                     IList<KAENetworkResource> communicationSupport = subPair.Value.Item3.AcquireCommunicationSupport();
+                    Dictionary<ProtocolTypes, KAENetworkResource> communicationSupportDic = communicationSupport.ToDictionary(a => a.Protocol);
+                    //checking point for pairs the supported MessageIdentities & network communication end-points.
+                    IEnumerable<KeyValuePair<ProtocolTypes, IList<MessageIdentity>>> checkingResult = supportedProtocols.Where(s => !communicationSupportDic.ContainsKey(s.Key));
+                    if (checkingResult.Any()) throw new ConflictedBasicallyResourceException("#We coulnd't starts the application that there has some conflictions about basically resource.\r\nYou should to check your application's code that there has allocated propers resources for any suporrted processors.");
                     //appending wanted network resources.
                     if (communicationSupport != null && communicationSupport.Count != 0) networkResources.Add(new Tuple<ApplicationLevel, IList<KAENetworkResource>>(subPair.Value.Item3.Level, communicationSupport));
-                    foreach (KeyValuePair<ProtocolTypes, IList<MessageIdentity>> innerPair in supportedProtocols) InitializeNetworkProtocolHandler(protocolDic, innerPair, subPair.Value.Item3);
+                    foreach (KeyValuePair<ProtocolTypes, IList<MessageIdentity>> innerPair in supportedProtocols)
+                    {
+                        InitializeNetworkProtocolHandler(protocolDic, innerPair, subPair.Value.Item3);
+                        foreach (MessageIdentity messageIdentity in innerPair.Value)
+                        {
+                            string identity = string.Format("MSG-IDENTITY: {0}, {1}, {2}; APP-LEVEL: {3};", messageIdentity.ProtocolId, messageIdentity.ServiceId, messageIdentity.DetailsId, subPair.Value.Item3.Level);
+                            IDictionary<string, IList<string>> versions;
+                            if (!caches.TryGetValue(identity, out versions)) caches.Add(identity, (versions = new Dictionary<string, IList<string>>()));
+                            versions.Add(subPair.Value.Item3.Version, new List<string>());
+                            IList<string> endpoints;
+                            if (!versions.TryGetValue(subPair.Value.Item3.Version, out endpoints)) versions.Add(subPair.Value.Item3.Version, (endpoints = new List<string>()));
+                            endpoints.Add(communicationSupportDic[innerPair.Key].NetworkUri.ToString());
+                        }
+                    }
                 }
             }
             _protocolDic = protocolDic;
+            _caches = caches;
 
             #endregion
 
@@ -166,7 +226,8 @@ namespace KJFramework.ApplicationEngine
             
             #endregion
 
-            Status = KAEHostStatus.Started;
+            _rrcsConnector.Start();
+            Status = KAEHostStatus.Prepared;
         }
 
         private void InitializeNetworkProtocolHandler(Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> dic, KeyValuePair<ProtocolTypes, IList<MessageIdentity>> values, ApplicationDynamicObject dynamicObject)
@@ -350,6 +411,23 @@ namespace KJFramework.ApplicationEngine
                     msgTransaction2.SendResponse(rspMsg2);
                     break;
             }
+        }
+
+        /// <summary>
+        ///     Gets local supported network communication protocols.
+        /// </summary>
+        /// <returns>returns a dictionary that which contains a group of local supported commmunications end-points.</returns>
+        internal IList<long> GetNetworkCache()
+        {
+            return _crcs;
+        }
+
+        /// <summary>
+        ///     Update local supported caches.
+        /// </summary>
+        /// <param name="cache">end-points that which it need to be updating.</param>
+        internal void UpdateNetworkCache(IDictionary<string, IDictionary<string, IList<string>>> cache)
+        {
         }
 
         private void HandleSystemCommand(IMessageTransaction<MetadataContainer> transaction)
