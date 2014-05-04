@@ -54,6 +54,7 @@
     <Compile Include="Eums\KAEErrorCodes.cs" />
     <Compile Include="Eums\KAEHostStatus.cs" />
     <Compile Include="Eums\ProtocolTypes.cs" />
+    <Compile Include="Exceptions\MissingSupportedNetworkException.cs" />
     <Compile Include="Exceptions\CannotConnectToTunnelException.cs" />
     <Compile Include="Exceptions\AllocResourceFailedException.cs" />
     <Compile Include="Exceptions\IllegalApplicationStatusException.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Resources\Packs\KPPDataHead.cs" />
     <Compile Include="Resources\Packs\Sections\PackageAttributeDataSection.cs" />
     <Compile Include="Resources\Packs\KPPResource.cs" />
+    <Compile Include="Rings\KetamaRing.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">

@@ -27,7 +27,7 @@ namespace KJFramework.ApplicationEngine.ApplicationTest2
             ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
             MemoryAllotter.Instance.Initialize();
-            KAEHost host = new KAEHost(Path.GetFullPath("."), new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9999)); 
+            KAEHost host = new KAEHost(Path.GetFullPath("."), new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6611)); 
             host.Start();
             FieldInfo field = host.GetType().GetField("_hostChannels", BindingFlags.NonPublic | BindingFlags.Instance);
             List<IHostTransportChannel> channels = (List<IHostTransportChannel>)field.GetValue(host);

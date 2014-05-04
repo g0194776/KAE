@@ -1,4 +1,5 @@
-﻿using KJFramework.EventArgs;
+﻿using KJFramework.ApplicationEngine.Eums;
+using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
@@ -108,7 +109,13 @@ namespace KJFramework.ApplicationEngine.Connectors
          *  ===========================================
          *      0x00 - Message Identity
          *      0x01 - Transaction Identity
-         *      0x0A - CRC(S) (ARRAY)
+         *      0x0A - Application's Information (ARRAY)
+         *      -------- Internal resource block's structure --------
+         *          0x00 - application's CRC.
+         *          0x01 - application's network resource blocks  (ARRAY)
+         *          -------- Internal resource block's structure --------
+         *              0x00 - supported newtork protocol.
+         *              0x01 - network end-points.  (STRING ARRAY).
          * 
          *  [RSP MESSAGE]
          *  ===========================================
@@ -164,41 +171,41 @@ namespace KJFramework.ApplicationEngine.Connectors
             transaction.SendRequest(reqMsg);
         }
 
-        private MetadataContainer CreateRequestMessage()
-        {
-            IList<long> caches = _host.GetNetworkCache();
-            if (caches == null || caches.Count == 0) return null;
-            MetadataContainer reqMsg = new MetadataContainer();
-            reqMsg.SetAttribute(0x0A, new Int64ArrayValueStored(caches.ToArray()));
-            return reqMsg;
-        }
-
         //private MetadataContainer CreateRequestMessage()
         //{
-        //    IDictionary<string, IDictionary<string, IList<string>>> caches = _host.GetNetworkCache();
-        //    if (caches.Count == 0) return null;
+        //    IList<long> caches = _host.GetNetworkCache();
+        //    if (caches == null || caches.Count == 0) return null;
         //    MetadataContainer reqMsg = new MetadataContainer();
-        //    ResourceBlock[] blocks = new ResourceBlock[caches.Count];
-        //    reqMsg.SetAttribute(0x0A, new ResourceBlockArrayStored(blocks));
-        //    int offset = 0;
-        //    foreach (KeyValuePair<string, IDictionary<string, IList<string>>> pair in caches)
-        //    {
-        //        ResourceBlock block = (blocks[offset] = new ResourceBlock());
-        //        ResourceBlock[] innerBlocks = new ResourceBlock[pair.Value.Count];
-        //        block.SetAttribute(0x00, new StringValueStored(pair.Key));
-        //        block.SetAttribute(0x01, new ResourceBlockArrayStored(innerBlocks));
-        //        int innerOffset = 0;
-        //        foreach (KeyValuePair<string, IList<string>> innerPair in pair.Value)
-        //        {
-        //            ResourceBlock innerBlock = (innerBlocks[innerOffset] = new ResourceBlock());
-        //            innerBlock.SetAttribute(0x00, new StringValueStored(innerPair.Key));
-        //            innerBlock.SetAttribute(0x01, new StringArrayValueStored(innerPair.Value.ToArray()));
-        //            innerOffset++;
-        //        }
-        //        offset++;
-        //    }
+        //    reqMsg.SetAttribute(0x0A, new Int64ArrayValueStored(caches.ToArray()));
         //    return reqMsg;
         //}
+
+        private MetadataContainer CreateRequestMessage()
+        {
+            Dictionary<long, Dictionary<ProtocolTypes, IList<string>>> caches = _host.GetNetworkCache();
+            if (caches.Count == 0) return null;
+            MetadataContainer reqMsg = new MetadataContainer();
+            ResourceBlock[] blocks = new ResourceBlock[caches.Count];
+            reqMsg.SetAttribute(0x0A, new ResourceBlockArrayStored(blocks));
+            int offset = 0;
+            foreach (KeyValuePair<long, Dictionary<ProtocolTypes, IList<string>>> pair in caches)
+            {
+                ResourceBlock block = (blocks[offset] = new ResourceBlock());
+                ResourceBlock[] innerBlocks = new ResourceBlock[pair.Value.Count];
+                block.SetAttribute(0x00, new Int64ValueStored(pair.Key));
+                block.SetAttribute(0x01, new ResourceBlockArrayStored(innerBlocks));
+                int innerOffset = 0;
+                foreach (KeyValuePair<ProtocolTypes, IList<string>> innerPair in pair.Value)
+                {
+                    ResourceBlock innerBlock = (innerBlocks[innerOffset] = new ResourceBlock());
+                    innerBlock.SetAttribute(0x00, new ByteValueStored((byte) innerPair.Key));
+                    innerBlock.SetAttribute(0x01, new StringArrayValueStored(innerPair.Value.ToArray()));
+                    innerOffset++;
+                }
+                offset++;
+            }
+            return reqMsg;
+        }
 
         private void AnalyizeRRCSResult(MetadataContainer rspMsg)
         {

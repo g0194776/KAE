@@ -72,7 +72,6 @@ namespace KJFramework.ApplicationEngine
         #region Members.
 
         private readonly string _workRoot;
-        private IList<long> _crcs;
         private readonly IPEndPoint _rrcsAddr;
         private readonly RRCSConnector _rrcsConnector;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (KAEHost));
@@ -80,6 +79,7 @@ namespace KJFramework.ApplicationEngine
         //caches for network end-points by respective MessageIdentity.
         //1st level of key = MessageIdentity + App Level; second level of key = application's version.
         private IDictionary<string, IDictionary<string, IList<string>>> _caches;
+        private Dictionary<long, Dictionary<ProtocolTypes, IList<string>>> _preparedNetworkCache;
         private IDictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> _protocolDic;
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace KJFramework.ApplicationEngine
         public string WorkRoot { get; private set; }
         /// <summary>
         ///    获取KAE宿主当前状态
-        /// </summary>
+        /// </summary>0
         public KAEHostStatus Status { get; private set; }
 
         #endregion
@@ -130,6 +130,19 @@ namespace KJFramework.ApplicationEngine
                                 tuple.Item2.GetSectionField<byte>(0x00, "ApplicationLevel")));
                     //assembles a new dynamic object for application.
                     ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2);
+                    IList<KAENetworkResource> communicationSupport = dynamicObject.AcquireCommunicationSupport();
+                    IList<ProtocolTypes> protocols = (communicationSupport == null ? null : communicationSupport.Select(d=> d.Protocol).ToList());
+                    IDictionary<ProtocolTypes, IList<MessageIdentity>> supportedProtocols = dynamicObject.AcquireSupportedProtocols();
+                    if (supportedProtocols != null)
+                    {
+                        foreach (KeyValuePair<ProtocolTypes, IList<MessageIdentity>> valuePair in supportedProtocols)
+                        {
+                            if (protocols == null && valuePair.Key != ProtocolTypes.Metadata) 
+                                throw new MissingSupportedNetworkException(string.Format("#Current KAE application {0} couldn't supports this kind of network protocol. #Protocol: {1}", dynamicObject.PackageName,valuePair.Key));
+                            if (protocols != null && !protocols.Contains(valuePair.Key))
+                                throw new MissingSupportedNetworkException(string.Format("#Current KAE application {0} couldn't supports this kind of network protocol. #Protocol: {1}", dynamicObject.PackageName, valuePair.Key));
+                        }
+                    }
                     entry = new Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>(tuple.Item1, tuple.Item2, dynamicObject);
                     subDic.Add(appFullKey, entry);
                 }
@@ -154,7 +167,7 @@ namespace KJFramework.ApplicationEngine
 
             #region #Step 1, Build default network.
 
-            InitializeDefaultNetworkResource();
+            TcpUri defaultNetworkUri = InitializeDefaultNetworkResource();
 
             #endregion
 
@@ -172,7 +185,7 @@ namespace KJFramework.ApplicationEngine
              *          --- tcp://192.168.1.3:8000
              *          --- tcp://192.168.1.4:8000
              *          --- tcp://192.168.1.5:8000
-             *--- http://192.168.1.1:9000
+             *          --- http://192.168.1.1:9000
              *      --- 1.2.0
              *          --- tcp://192.168.1.1:8000
              *          --- tcp://192.168.1.2:8000
@@ -181,7 +194,7 @@ namespace KJFramework.ApplicationEngine
              *          --- tcp://192.168.1.5:8000
              *          --- http://192.168.1.1:9000
              */
-            _crcs = new List<long>();
+            _preparedNetworkCache = new Dictionary<long, Dictionary<ProtocolTypes, IList<string>>>();
             List<Tuple<ApplicationLevel, IList<KAENetworkResource>>> networkResources = new List<Tuple<ApplicationLevel, IList<KAENetworkResource>>>();
             IDictionary<string, IDictionary<string, IList<string>>> caches = new Dictionary<string, IDictionary<string, IList<string>>>();
             Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> protocolDic = new Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>>();
@@ -189,12 +202,39 @@ namespace KJFramework.ApplicationEngine
             {
                 foreach (KeyValuePair<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>> subPair in pair.Value)
                 {
-                    _crcs.Add(subPair.Value.Item3.CRC);
                     IDictionary<ProtocolTypes, IList<MessageIdentity>> supportedProtocols = subPair.Value.Item3.AcquireSupportedProtocols();
                     IList<KAENetworkResource> communicationSupport = subPair.Value.Item3.AcquireCommunicationSupport();
-                    Dictionary<ProtocolTypes, KAENetworkResource> communicationSupportDic = communicationSupport.ToDictionary(a => a.Protocol);
+                    Dictionary<ProtocolTypes, KAENetworkResource> communicationSupportDic = (communicationSupport !=null ? communicationSupport.ToDictionary(a => a.Protocol) : null);
+                    #region Collects KAE Host information.
+
+                    //collects current KAE host resources.
+                    Dictionary<ProtocolTypes, IList<string>> preparedFirstLevel;
+                    if (!_preparedNetworkCache.TryGetValue(subPair.Value.Item3.CRC, out preparedFirstLevel))
+                        _preparedNetworkCache.Add(subPair.Value.Item3.CRC, (preparedFirstLevel = new Dictionary<ProtocolTypes, IList<string>>()));
+                    IList<string> preparedSecLevel;
+                    if (communicationSupportDic == null)
+                    {
+                        if (!preparedFirstLevel.TryGetValue(ProtocolTypes.Metadata, out preparedSecLevel))
+                            preparedFirstLevel.Add(ProtocolTypes.Metadata, (preparedSecLevel = new List<string>()));
+                        if (!preparedSecLevel.Contains(defaultNetworkUri.ToString())) preparedSecLevel.Add(defaultNetworkUri.ToString());
+                    }
+                    else
+                    {
+                        foreach (KeyValuePair<ProtocolTypes, KAENetworkResource> collectPair in communicationSupportDic)
+                        {
+                            if (!preparedFirstLevel.TryGetValue(collectPair.Key, out preparedSecLevel))
+                                preparedFirstLevel.Add(collectPair.Key, (preparedSecLevel = new List<string>()));
+                            if (!preparedSecLevel.Contains(collectPair.Value.NetworkUri.ToString())) preparedSecLevel.Add(collectPair.Value.NetworkUri.ToString());
+                        }
+                    }
+
+                    #endregion
                     //checking point for pairs the supported MessageIdentities & network communication end-points.
-                    IEnumerable<KeyValuePair<ProtocolTypes, IList<MessageIdentity>>> checkingResult = supportedProtocols.Where(s => !communicationSupportDic.ContainsKey(s.Key));
+                    IEnumerable<KeyValuePair<ProtocolTypes, IList<MessageIdentity>>> checkingResult;
+                    if (communicationSupportDic != null)
+                        checkingResult = supportedProtocols.Where(s => !communicationSupportDic.ContainsKey(s.Key));
+                    //by default supported network type.
+                    else checkingResult = supportedProtocols.Where(s => s.Key != ProtocolTypes.Metadata);
                     if (checkingResult.Any()) throw new ConflictedBasicallyResourceException("#We coulnd't starts the application that there has some conflictions about basically resource.\r\nYou should to check your application's code that there has allocated propers resources for any suporrted processors.");
                     //appending wanted network resources.
                     if (communicationSupport != null && communicationSupport.Count != 0) networkResources.Add(new Tuple<ApplicationLevel, IList<KAENetworkResource>>(subPair.Value.Item3.Level, communicationSupport));
@@ -209,7 +249,8 @@ namespace KJFramework.ApplicationEngine
                             versions.Add(subPair.Value.Item3.Version, new List<string>());
                             IList<string> endpoints;
                             if (!versions.TryGetValue(subPair.Value.Item3.Version, out endpoints)) versions.Add(subPair.Value.Item3.Version, (endpoints = new List<string>()));
-                            endpoints.Add(communicationSupportDic[innerPair.Key].NetworkUri.ToString());
+                            if (communicationSupportDic != null) endpoints.Add(communicationSupportDic[innerPair.Key].NetworkUri.ToString());
+                            else endpoints.Add(defaultNetworkUri.ToString());
                         }
                     }
                 }
@@ -266,17 +307,19 @@ namespace KJFramework.ApplicationEngine
         /// <summary>
         ///     初始化KAE宿主默认的网络资源
         /// </summary>
-        private void InitializeDefaultNetworkResource()
+        private TcpUri InitializeDefaultNetworkResource()
         {
-            IHostTransportChannel defaultChannel = NetworkHelper.BuildDefaultHostChannel();
+            TcpUri uri;
+            TcpHostTransportChannel defaultChannel = (TcpHostTransportChannel) NetworkHelper.BuildDefaultHostChannel();
             defaultChannel.ChannelCreated += ChannelCreated;
             if (!defaultChannel.Regist())
             {
                 defaultChannel.ChannelCreated -= ChannelCreated;
                 throw new AllocResourceFailedException("#Sadly, We couldn't alloc default KAE host network resource. ");
             }
-            defaultChannel.Tag = new Tuple<KAENetworkResource, ApplicationLevel>(new KAENetworkResource{NetworkUri = new TcpUri("tcp://localhost:*"), Protocol = ProtocolTypes.Metadata}, ApplicationLevel.Unknown);
+            defaultChannel.Tag = new Tuple<KAENetworkResource, ApplicationLevel>(new KAENetworkResource { NetworkUri = (uri = new TcpUri(string.Format("tcp://localhost:{0}", defaultChannel.Port))), Protocol = ProtocolTypes.Metadata }, ApplicationLevel.Unknown);
             _hostChannels.Add(defaultChannel);
+            return uri;
         }
 
         /// <summary>
@@ -417,9 +460,9 @@ namespace KJFramework.ApplicationEngine
         ///     Gets local supported network communication protocols.
         /// </summary>
         /// <returns>returns a dictionary that which contains a group of local supported commmunications end-points.</returns>
-        internal IList<long> GetNetworkCache()
+        internal Dictionary<long, Dictionary<ProtocolTypes, IList<string>>> GetNetworkCache()
         {
-            return _crcs;
+            return _preparedNetworkCache;
         }
 
         /// <summary>
