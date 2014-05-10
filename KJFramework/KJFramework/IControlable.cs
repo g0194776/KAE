@@ -1,16 +1,16 @@
-namespace KJFramework
+ï»¿namespace KJFramework
 {
     /// <summary>
-    ///     ¿É¿ØÖÆ¶ÔÏó½Ó¿Ú£¬Ìá¹©ÁËÒ»¸ö¶ÔÏóµÄ¿ªÊ¼£¬Í£Ö¹·½·¨¡£
+    ///     ï¿½É¿ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Ó¿Ú£ï¿½ï¿½á¹©ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½Ê¼ï¿½ï¿½Í£Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public interface IControlable
     {
         /// <summary>
-        ///     ¿ªÊ¼Ö´ÐÐ
+        ///     ï¿½ï¿½Ê¼Ö´ï¿½ï¿½
         /// </summary>
         void Start();
         /// <summary>
-        ///     Í£Ö¹Ö´ÐÐ
+        ///     Í£Ö¹Ö´ï¿½ï¿½
         /// </summary>
         void Stop();  
     }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
 using KJFramework.Dynamic.Components;
+using KJFramework.Tracing;
 
 namespace KJFramework.Dynamic.Template.Service
 {
@@ -28,6 +30,7 @@ namespace KJFramework.Dynamic.Template.Service
 
         private String _name;
         private IDynamicDomainService _service;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (TemplateService));
 
         #endregion
 
@@ -44,6 +47,8 @@ namespace KJFramework.Dynamic.Template.Service
                 //Thread.Sleep(20000);
                 string exePath = Process.GetCurrentProcess().MainModule.FileName;
                 string path = exePath.Substring(0, exePath.LastIndexOf('\\') + 1);
+                _tracing.Info("exePath: " + exePath);
+                _tracing.Info("path: " + path);
                 DynamicDomainService service = new DynamicDomainService(path, null);
                 try { service.Start(); }
                 catch (System.Exception ex)

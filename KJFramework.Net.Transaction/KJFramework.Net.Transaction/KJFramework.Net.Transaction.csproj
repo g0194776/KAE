@@ -61,6 +61,7 @@
     <Compile Include="Configurations\SettingConfiguration.cs" />
     <Compile Include="Contexts\BusinessTransactionContext.cs" />
     <Compile Include="Enums\QueueSequence.cs" />
+    <Compile Include="FailMetadataTransaction.cs" />
     <Compile Include="FailMessageTransaction.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Pools\IntellectObjectSystemConnectionPool.cs" />
     <Compile Include="Pools\MetadataSystemConnectionPool.cs" />
     <Compile Include="Processors\IMessageTransactionProcessor.cs" />
+    <Compile Include="Processors\MessageTransactionProcessor.cs" />
     <Compile Include="ProtocolStack\MetadataProtocolStack.cs" />
     <Compile Include="Schedulers\INewRequestScheduler.cs" />
     <Compile Include="Schedulers\IRequestScheduler.cs" />

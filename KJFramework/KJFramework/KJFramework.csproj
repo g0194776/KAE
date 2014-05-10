@@ -59,6 +59,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="mysql.data">
+      <HintPath>..\..\Depend Files\mysql.data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -99,12 +102,20 @@
     <Compile Include="Core\Native\Native.cs" />
     <Compile Include="Core\Native\Network.cs" />
     <Compile Include="Core\Native\Win32API.cs" />
-    <Compile Include="Datas\CmdParameter.cs" />
     <Compile Include="Datas\Database.cs" />
-    <Compile Include="Datas\DbPerfCounter.cs" />
-    <Compile Include="Datas\DbReader.cs" />
-    <Compile Include="Datas\MsSqlDatabase.cs" />
+    <Compile Include="Datas\DatabaseManager.cs" />
+    <Compile Include="Datas\DatabaseOperation.cs" />
+    <Compile Include="Datas\DataReader.cs" />
+    <Compile Include="Datas\DbType.cs" />
+    <Compile Include="Datas\MysqlDatabase.cs" />
+    <Compile Include="Datas\SqlServerDatabase.cs" />
+    <Compile Include="Datas\SqlUtils.cs" />
+    <Compile Include="Enums\ExecuteResults.cs" />
     <Compile Include="Exception\LightException.cs" />
+    <Compile Include="Results\ExecuteResult.cs" />
+    <Compile Include="Results\ExecuteResultOfT.cs" />
+    <Compile Include="Results\FailExecuteResult.cs" />
+    <Compile Include="Results\FailExecuteResultOfT.cs" />
     <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
     <Compile Include="Configurations\Configurations.cs" />
@@ -130,6 +141,8 @@
     <Compile Include="Helpers\SerializableHelper.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
+    <Compile Include="Results\IExecuteResult.cs" />
+    <Compile Include="Results\IExecuteResultOfT.cs" />
     <Compile Include="Installers\IServiceInstaller.cs" />
     <Compile Include="Observers\IObservable.cs" />
     <Compile Include="Observers\IObserver.cs" />

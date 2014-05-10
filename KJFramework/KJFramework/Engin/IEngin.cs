@@ -1,3 +1,5 @@
+using KJFramework.Results;
+
 namespace KJFramework.Engin
 {
     /// <summary>

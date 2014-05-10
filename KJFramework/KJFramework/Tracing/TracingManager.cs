@@ -41,7 +41,7 @@ namespace KJFramework.Tracing
             {
                 case "file": _provider = new FileTracingProvider(TracingSettings.Datasource); break;
                 case "con": _provider = new StdErrTracingProvider(); break;
-                case "db": _provider = new DbTracingProvider(TracingSettings.Datasource); break;
+                //case "db": _provider = new DbTracingProvider(TracingSettings.Datasource); break;
                 default: _provider = null; break;
             }
         }

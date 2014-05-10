@@ -1,9 +1,10 @@
-﻿using KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processors;
+﻿using KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Helpers;
+using KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processors;
 using KJFramework.Basic.Enum;
+using KJFramework.Datas;
 using KJFramework.Dynamic.Components;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
-using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.Transaction.Agent;
@@ -14,7 +15,6 @@ using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.Schedulers;
 using System;
 using System.Configuration;
-using KJFramework.Net.Transaction.ValueStored;
 
 namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
 {
@@ -53,8 +53,9 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
         protected override void InnerOnLoading()
         {
             //initializes something before actual business starting.
-            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
-            ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
+            SystemWorker.Instance.Initialize("RRCS", true);
+            string connectionStr = SystemWorker.Instance.ConfigurationProxy.GetField("APMS", "DatabaseConnection");
+            ApplicationHelper.Initialize(new Database(connectionStr, 120));
             _scheduler.Regist(new Protocols {ProtocolId = 0xFC, ServiceId = 0, DetailsId = 0}, new RegisterProcessor());
         }
 

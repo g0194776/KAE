@@ -1,4 +1,5 @@
 using System;
+using KJFramework.Results;
 
 namespace KJFramework.Diagnostics
 {

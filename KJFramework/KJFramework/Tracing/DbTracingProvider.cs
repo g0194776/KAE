@@ -4,13 +4,14 @@ using KJFramework.Datas;
 
 namespace KJFramework.Tracing 
 {
+    [Obsolete("Useless TracingProvider", true)]
     public class DbTracingProvider : ITracingProvider
     {
         private Database _db;
 
         public DbTracingProvider(string connStr)
         {
-            _db = Database.GetDatabase(connStr);
+            _db = new Database(connStr, 12000);
         }
 
         public void Write(string pid, string pname, string machine, TraceItem[] items)
@@ -34,7 +35,7 @@ namespace KJFramework.Tracing
                     machine
                 );
             }
-            _db.ExecuteBulkCopy(table);
+            //_db.ExecuteBulkCopy(table);
         }
     }
 }

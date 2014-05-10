@@ -465,6 +465,23 @@ namespace KJFramework.ApplicationEngine
             return _preparedNetworkCache;
         }
 
+
+        /*  [RSP MESSAGE]
+         *  ===========================================
+         *      0x00 - Message Identity
+         *      0x01 - Transaction Identity
+         *      0x0A - Error Id
+         *      0x0B - Error Reason
+         *      0x0C - Remoting cached End-Points resource blocks (ARRAY)
+         *      -------- Internal resource block's structure --------
+         *          0x00 - application's level.
+         *          0x01 - application's version.
+         *          0x02 - targeted application's network resource uri (STRING)
+         *          0x01 - targeted application supported all network abilities  (ARRAY)
+         *          -------- Internal resource block's structure --------
+         *              0x00 - Message Identity
+         *              0x01 - Supported Protocol
+         */
         /// <summary>
         ///     Update local supported caches.
         /// </summary>
