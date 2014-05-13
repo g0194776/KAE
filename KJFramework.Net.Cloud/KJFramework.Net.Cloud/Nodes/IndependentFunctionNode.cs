@@ -1,5 +1,5 @@
-using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Components;
+using KJFramework.Enums;
 using KJFramework.Net.Exception;
 
 namespace KJFramework.Net.Cloud.Nodes

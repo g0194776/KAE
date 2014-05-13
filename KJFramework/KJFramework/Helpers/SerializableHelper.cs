@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using KJFramework.Basic.Enum;
 using KJFramework.Encrypt;
+using KJFramework.Enums;
 
 namespace KJFramework.Helpers
 {

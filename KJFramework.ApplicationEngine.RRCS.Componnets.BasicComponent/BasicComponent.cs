@@ -1,8 +1,13 @@
-﻿using KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Helpers;
+﻿using System.Collections.Generic;
+using KJFramework.ApplicationEngine.Helpers;
+using KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Helpers;
 using KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processors;
-using KJFramework.Basic.Enum;
+using KJFramework.Data.Synchronization;
+using KJFramework.Data.Synchronization.Enums;
+using KJFramework.Data.Synchronization.Factories;
 using KJFramework.Datas;
 using KJFramework.Dynamic.Components;
+using KJFramework.Enums;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
@@ -15,6 +20,7 @@ using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.Schedulers;
 using System;
 using System.Configuration;
+using KJFramework.Tracing;
 
 namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
 {
@@ -24,6 +30,7 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
 
         private IHostTransportChannel _hostChannel;
         private readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (BasicComponent));
         private readonly MetadataMessageRequestScheduler _scheduler = new MetadataMessageRequestScheduler();
         private readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
 
@@ -36,6 +43,7 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
             _hostChannel = new TcpHostTransportChannel(int.Parse(ConfigurationManager.AppSettings["Port"]));
             _hostChannel.ChannelCreated += ChannelCreated;
             if (!_hostChannel.Regist()) throw new System.Exception("#RRCS couldn't open TCP network resource. #Port: " + ConfigurationManager.AppSettings["Port"]);
+            RemotingServerManager.Initialize();
             Console.WriteLine("RRCS Started.");
         }
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 using KJFramework.Net.Channels;
 using KJFramework.Statistics;
 using Uri = KJFramework.Net.Channels.Uri.Uri;

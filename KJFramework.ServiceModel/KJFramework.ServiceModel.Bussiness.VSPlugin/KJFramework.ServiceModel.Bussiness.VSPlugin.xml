@@ -38,7 +38,7 @@
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Argument">
             <summary>
-                ²ÎÊýÐÅÏ¢
+                参数信息
             </summary>
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IArgument">
@@ -68,22 +68,22 @@
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Argument.Id">
             <summary>
-                »ñÈ¡²ÎÊý±àºÅ
+                获取参数编号
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Argument.Type">
             <summary>
-                »ñÈ¡²ÎÊýÀàÐÍ
+                获取参数类型
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Argument.Name">
             <summary>
-                »ñÈ¡²ÎÊýÃû³Æ
+                获取参数名称
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Argument.ReferenceId">
             <summary>
-                »ñÈ¡²ÎÊýÏà¹ØÀàÐÍÐÅÏ¢
+                获取参数相关类型信息
             </summary>
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod">
@@ -93,7 +93,7 @@
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method">
             <summary>
-                    Ô¤ÀÀ·½·¨
+                    预览方法
             </summary>
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IMethod">
@@ -149,13 +149,13 @@
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.#ctor(System.String)">
             <summary>
-                Ô¤ÀÀ·½·¨
+                预览方法
             </summary>
-            <param name="basePath">ÆõÔ¼»ù´¡µØÖ·</param>
+            <param name="basePath">契约基础地址</param>
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.InitializeArgument">
             <summary>
-                ³õÊ¼»¯²ÎÊýÐÅÏ¢
+                初始化参数信息
             </summary>
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.Clone">
@@ -178,48 +178,48 @@
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.Name">
             <summary>
-                »ñÈ¡·½·¨Ãû
+                获取方法名
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.FullName">
             <summary>
-                »ñÈ¡·½·¨È«Ãû
+                获取方法全名
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.MethodToken">
             <summary>
-                »ñÈ¡·½·¨ÁîÅÆ
+                获取方法令牌
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.ReturnType">
             <summary>
-                »ñÈ¡·µ»ØÖµÀàÐÍ
+                获取返回值类型
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.ReferenceId">
             <summary>
-                ·µ»ØÖµÀàÐÍ¶¨ÒåId
-                <para>* ´ËÖµ½öµ±IsRetTypeCustome = trueÊ±ÓÐÐ§.</para>
+                返回值类型定义Id
+                <para>* 此值仅当IsRetTypeCustome = true时有效.</para>
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.HasReturnValue">
             <summary>
-                 »ñÈ¡Ò»¸ö±êÊ¾£¬¸Ã±êÊ¾±íÊ¾ÁËµ±Ç°·½·¨Ê±ºò¾ßÓÐ·µ»ØÖµ
+                 获取一个标示，该标示表示了当前方法时候具有返回值
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.IsAsync">
             <summary>
-                »ñÈ¡Ò»¸ö±êÊ¾£¬¸Ã±êÊ¾±íÊ¾ÁËµ±Ç°·½·¨ÊÇ·ñÎªÒì²½·½·¨
+                获取一个标示，该标示表示了当前方法是否为异步方法
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.IsOneway">
             <summary>
-                »ñÈ¡Ò»¸ö±êÊ¾£¬¸Ã±êÊ¾±íÊ¾ÁËµ±Ç°·½·¨ÊÇ·ñÎªµ¥ÏòµÄ
+                获取一个标示，该标示表示了当前方法是否为单向的
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method.Arguments">
             <summary>
-                »ñÈ¡²ÎÊý¼¯ºÏ
+                获取参数集合
             </summary>
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.AsyncMethod.#ctor(KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.Method,System.String)">
@@ -323,59 +323,59 @@
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.RemotingService">
             <summary>
-                Ô¶³Ì·þÎñ
+                远程服务
             </summary>
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.RemotingService.#ctor(System.String,System.Boolean)">
             <summary>
-                Ô¶³Ì·þÎñ
+                远程服务
             </summary>
-            <param name="path">Ô¶³Ì·þÎñµØÖ·</param>
+            <param name="path">远程服务地址</param>
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.RemotingService.GetPreviewMethods">
             <summary>
-                »ñÈ¡·þÎñµÄÃèÊö·½·¨¼¯ºÏ
+                获取服务的描述方法集合
             </summary>
-            <returns>·µ»ØÃèÊö·½·¨¼¯ºÏ</returns>
+            <returns>返回描述方法集合</returns>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.RemotingService.Infomation">
             <summary>
-                »ñÈ¡·þÎñÏà¹ØÐÅÏ¢
+                获取服务相关信息
             </summary>
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation">
             <summary>
-                ·þÎñÐÅÏ¢
+                服务信息
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation.Name">
             <summary>
-                »ñÈ¡·þÎñÃû³Æ
+                获取服务名称
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation.FullName">
             <summary>
-                »ñÈ¡·þÎñÈ«Ãû³Æ
+                获取服务全名称
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation.Description">
             <summary>
-                »ñÈ¡·þÎñÃèÊö
+                获取服务描述
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation.Version">
             <summary>
-                »ñÈ¡·þÎñµ±Ç°°æ±¾ºÅ
+                获取服务当前版本号
             </summary>
         </member>
         <member name="P:KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.ServiceInfomation.EndPoint">
             <summary>
-                »ñÈ¡Ô¶³Ì·þÎñµØÖ·
+                获取远程服务地址
             </summary>
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.ContractGenerator">
             <summary>
-                ÆõÔ¼Éú³ÉÆ÷£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷
+                契约生成器，提供了相关的基本操作
             </summary>
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.IContractGenerator">
@@ -391,22 +391,22 @@
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.ContractGenerator.#ctor(System.String)">
             <summary>
-                ÆõÔ¼Éú³ÉÆ÷£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷
+                契约生成器，提供了相关的基本操作
             </summary>
             <param name="path">
-                 ÎÄ¼þµØÖ·
-                <para>±ÈÈç: c:\</para>
+                 文件地址
+                <para>比如: c:\</para>
             </param>
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.ContractGenerator.Generate(KJFramework.ServiceModel.Bussiness.VSPlugin.Contracts.IRemotingService)">
             <summary>
-                ÎªÖ¸¶¨Ô¶³Ì·þÎñÉú³É±¾µØÆõÔ¼ÎÄ¼þ
+                为指定远程服务生成本地契约文件
             </summary>
-            <param name="service">Ô¶³Ì·þÎñ</param>
+            <param name="service">远程服务</param>
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.DefaultSourceFileGenerator">
             <summary>
-                CONNECT.¼¼ÊõÔ´´úÂëÎÄ¼þÉú³ÉÆ÷
+                CONNECT.技术源代码文件生成器
             </summary>
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.ISourceFileGenerator">
@@ -426,22 +426,22 @@
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.DefaultSourceFileGenerator.#ctor(System.String,System.String)">
             <summary>
-                CONNECT.¼¼ÊõÔ´´úÂëÎÄ¼þÉú³ÉÆ÷
+                CONNECT.技术源代码文件生成器
             </summary>
-            <param name="className">ÀàÃû</param>
+            <param name="className">类名</param>
             <param name="path">
-                 ±£´æµØÖ·
-                <para>±ÈÈç: c:\</para>
+                 保存地址
+                <para>比如: c:\</para>
             </param>
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.DefaultSourceFileGenerator.GenerateProperty(System.String,System.String,System.Int32,System.Boolean)">
             <summary>
-                ´´½¨Ò»¸ö×Ö¶Î
+                创建一个字段
             </summary>
         </member>
         <member name="M:KJFramework.ServiceModel.Bussiness.VSPlugin.Generators.DefaultSourceFileGenerator.Generate">
             <summary>
-                Éú³ÉÎÄ¼þ
+                生成文件
             </summary>
         </member>
         <member name="T:KJFramework.ServiceModel.Bussiness.VSPlugin.Properties.Resources">

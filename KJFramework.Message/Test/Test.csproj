@@ -59,10 +59,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
-      <Project>{12309506-18a3-48bf-8a55-e950a87a905e}</Project>
-      <Name>KJFramework.IO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
       <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>
       <Name>KJFramework</Name>

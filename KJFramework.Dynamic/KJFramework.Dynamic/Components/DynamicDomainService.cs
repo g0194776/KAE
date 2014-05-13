@@ -1,11 +1,11 @@
 using System.Configuration;
-using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Configurations;
 using KJFramework.Dynamic.Extends;
 using KJFramework.Dynamic.Finders;
 using KJFramework.Dynamic.Loaders;
 using KJFramework.Dynamic.Pools;
 using KJFramework.Dynamic.Structs;
+using KJFramework.Enums;
 using KJFramework.EventArgs;
 using KJFramework.Tracing;
 using System;

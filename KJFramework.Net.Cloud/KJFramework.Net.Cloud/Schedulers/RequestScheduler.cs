@@ -1,4 +1,4 @@
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Cloud.Nodes;
 using KJFramework.Net.Cloud.Objects;

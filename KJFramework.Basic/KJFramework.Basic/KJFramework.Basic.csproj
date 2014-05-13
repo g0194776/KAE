@@ -72,48 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enum\ArgTypes.cs" />
-    <Compile Include="Enum\BindingTypes.cs" />
-    <Compile Include="Enum\ClientNetworkProtocolTypes.cs" />
-    <Compile Include="Enum\ConfigurationLoaderTypes.cs" />
-    <Compile Include="Enum\HealthStatus.cs" />
-    <Compile Include="Enum\InfomationCollectorTypes.cs" />
-    <Compile Include="Enum\IntellectOptionalPropertyTypes.cs" />
-    <Compile Include="Enum\MetadataSerializerTypes.cs" />
-    <Compile Include="Enum\RemedyServiceTypes.cs" />
-    <Compile Include="Enum\RemoteGatewayHeartBeatState.cs" />
-    <Compile Include="Enum\RemoteServiceState.cs" />
-    <Compile Include="Enum\SchedulerPriority.cs" />
-    <Compile Include="Enum\DataPriority.cs" />
-    <Compile Include="Enum\DebugGrade.cs" />
-    <Compile Include="Enum\FileAckableTransmissionTypes.cs" />
-    <Compile Include="Enum\KJFrameworkParserTypes.cs" />
-    <Compile Include="Enum\LogType.cs" />
-    <Compile Include="Enum\MessageTransferType.cs" />
-    <Compile Include="Enum\NetMessageFlagType.cs" />
-    <Compile Include="Enum\OSType.cs" />
-    <Compile Include="Enum\OSVersion.cs" />
-    <Compile Include="Enum\PerformanceType.cs" />
-    <Compile Include="Enum\PerformanceTestTypes.cs" />
-    <Compile Include="Enum\PluginType.cs" />
-    <Compile Include="Enum\ProcessingTypes.cs" />
-    <Compile Include="Enum\ProtocolType.cs" />
-    <Compile Include="Enum\ScopePermission.cs" />
-    <Compile Include="Enum\SerializableTypes.cs" />
-    <Compile Include="Enum\SessionType.cs" />
-    <Compile Include="Enum\ShortcutWindowStyle.cs" />
-    <Compile Include="Enum\ShowProcessTypes.cs" />
-    <Compile Include="Enum\SortType.cs" />
-    <Compile Include="Enum\ASRecevieMessageProcessTypes.cs" />
-    <Compile Include="Enum\StatisticTypes.cs" />
-    <Compile Include="Enum\TaskPriority.cs" />
-    <Compile Include="Enum\TimerStartType.cs" />
-    <Compile Include="Enum\UserGrade.cs" />
-    <Compile Include="Enum\OnlineState.cs" />
-    <Compile Include="Exception\SortPropertyNotFoundException.cs" />
-    <Compile Include="IMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Struct\ShortCutData.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

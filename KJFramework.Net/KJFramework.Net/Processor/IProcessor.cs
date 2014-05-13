@@ -1,6 +1,4 @@
-﻿using KJFramework.Basic;
-
-namespace KJFramework.Net.Processor
+﻿namespace KJFramework.Net.Processor
 {
     /// <summary>
     ///     处理器元接口，提供了相关的基本操作。

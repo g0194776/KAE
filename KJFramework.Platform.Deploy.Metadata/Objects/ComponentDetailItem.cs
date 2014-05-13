@@ -1,5 +1,5 @@
 using System;
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Contracts;
 

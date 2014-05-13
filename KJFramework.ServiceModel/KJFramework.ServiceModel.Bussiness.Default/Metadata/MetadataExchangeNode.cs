@@ -1,4 +1,4 @@
-﻿using KJFramework.IO.Helper;
+﻿using KJFramework.Helpers;
 using KJFramework.ServiceModel.Bussiness.Default.Metadata.Actions;
 using KJFramework.Tracing;
 using System;

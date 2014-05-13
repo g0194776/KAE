@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using KJFramework.Basic.Enum;
 using KJFramework.Diagnostics.Collectors;
+using KJFramework.Enums;
 using KJFramework.EventArgs;
 
 namespace KJFramework.Diagnostics

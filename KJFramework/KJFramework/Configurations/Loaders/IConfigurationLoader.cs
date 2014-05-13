@@ -1,5 +1,5 @@
 using System;
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 using KJFramework.Statistics;
 
 namespace KJFramework.Configurations.Loaders

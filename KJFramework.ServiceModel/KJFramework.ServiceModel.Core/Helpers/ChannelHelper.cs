@@ -1,4 +1,4 @@
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.Channels.Uri;

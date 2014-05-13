@@ -6,9 +6,9 @@ using System.Text;
 using System.Xml;
 using KJFramework.ApplicationEngine.Configurations.Settings;
 using KJFramework.Attribute;
-using KJFramework.Basic.Enum;
 using KJFramework.Configurations.Loaders;
 using KJFramework.Configurations.Objects;
+using KJFramework.Enums;
 using KJFramework.Helpers;
 using KJFramework.Statistics;
 

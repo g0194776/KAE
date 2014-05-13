@@ -1,7 +1,7 @@
-using System;
+ï»¿using System;
 using System.Diagnostics;
 using System.Text;
-using KJFramework.IO.Helper;
+using KJFramework.Helpers;
 using KJFramework.Net;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.HostChannels;
@@ -10,7 +10,7 @@ using KJFramework.ServiceModel.Bussiness.Default.Metadata.Actions;
 namespace KJFramework.ServiceModel.Bussiness.Default.Metadata
 {
     /// <summary>
-    ///     »ùÓÚHTTPÐ­ÒéµÄÔªÊý¾Ý½»»»ÍøÂç½Úµã£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
+    ///     ï¿½ï¿½ï¿½ï¿½HTTPÐ­ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ý½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµã£¬ï¿½á¹©ï¿½ï¿½ï¿½ï¿½ØµÄ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public class HttpMetadataExchangeNode : MetadataExchangeNode
     {
@@ -23,7 +23,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Metadata
         #region Overrides of MetadataExchangeNode
 
         /// <summary>
-        ///     ¿ªÆôÔªÊý¾Ý½»»»
+        ///     ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ý½ï¿½ï¿½ï¿½
         /// </summary>
         public override void Start()
         {
@@ -31,7 +31,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Metadata
         }
 
         /// <summary>
-        ///     Í£Ö¹ÔªÊý¾Ý½»»»
+        ///     Í£Ö¹Ôªï¿½ï¿½ï¿½Ý½ï¿½ï¿½ï¿½
         /// </summary>
         public override void Stop()
         {
@@ -43,7 +43,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Metadata
         }
 
         /// <summary>
-        ///     ³õÊ¼»¯¿ª·ÅÔªÊý¾Ý½Úµã
+        ///     ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ý½Úµï¿½
         /// </summary>
         protected override void InitializeMetadataNode()
         {

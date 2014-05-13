@@ -1,4 +1,4 @@
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels.Statistics;
 using KJFramework.Net.EventArgs;

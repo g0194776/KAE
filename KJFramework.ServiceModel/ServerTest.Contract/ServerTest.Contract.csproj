@@ -54,14 +54,6 @@
     <Compile Include="SpeendObject.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
-      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
-      <Name>KJFramework.Basic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
-      <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
-      <Name>KJFramework.IO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
       <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
       <Name>KJFramework.Messages</Name>

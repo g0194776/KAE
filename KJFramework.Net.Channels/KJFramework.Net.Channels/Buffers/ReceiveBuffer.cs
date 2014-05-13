@@ -1,4 +1,4 @@
-using KJFramework.IO.Buffers;
+using KJFramework.Buffers;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;

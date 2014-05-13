@@ -1,5 +1,5 @@
-using KJFramework.Basic.Enum;
 using KJFramework.Cache.Cores;
+using KJFramework.Enums;
 using KJFramework.Messages.Helpers;
 using KJFramework.ServiceModel.Bussiness.Default.Counters;
 using KJFramework.ServiceModel.Bussiness.Default.Messages;

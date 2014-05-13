@@ -1,6 +1,6 @@
 using System;
-using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Structs;
+using KJFramework.Enums;
 using KJFramework.EventArgs;
 
 namespace KJFramework.Dynamic.Components

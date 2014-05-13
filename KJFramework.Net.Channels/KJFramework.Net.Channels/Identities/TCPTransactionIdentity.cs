@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using KJFramework.IO.Helper;
+using KJFramework.Helpers;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Proxies;
 using KJFramework.Net.Channels.Enums;

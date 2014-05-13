@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Concurrent;
-using KJFramework.IO.Helper;
+using KJFramework.Helpers;
 using KJFramework.ServiceModel.Bussiness.Default.Descriptions;
 using KJFramework.ServiceModel.Bussiness.Default.Metadata;
 using KJFramework.ServiceModel.Bussiness.Default.Metadata.Actions;

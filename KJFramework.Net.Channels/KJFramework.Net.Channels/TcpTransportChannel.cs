@@ -1,5 +1,5 @@
-using KJFramework.Basic.Enum;
 using KJFramework.Cache.Cores;
+using KJFramework.Enums;
 using KJFramework.Net.Channels.Caches;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.Events;

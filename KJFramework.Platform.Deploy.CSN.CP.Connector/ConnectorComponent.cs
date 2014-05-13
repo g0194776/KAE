@@ -1,9 +1,9 @@
 using System.Net;
 using System.Threading;
-using KJFramework.Basic.Enum;
 using KJFramework.Dynamic;
 using KJFramework.Dynamic.Components;
-using KJFramework.IO.Helper;
+using KJFramework.Enums;
+using KJFramework.Helpers;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.TypeProcessors.Maps;
 using KJFramework.Net.Channels;

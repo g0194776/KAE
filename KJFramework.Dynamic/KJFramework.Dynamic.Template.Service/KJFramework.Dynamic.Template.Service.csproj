@@ -75,10 +75,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
-      <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
-      <Name>KJFramework.IO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
       <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
       <Name>KJFramework</Name>

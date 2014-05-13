@@ -1,4 +1,4 @@
-﻿using KJFramework.Basic.Enum;
+﻿using KJFramework.Enums;
 using KJFramework.Statistics;
 using KJFramework.Tracing;
 using System;

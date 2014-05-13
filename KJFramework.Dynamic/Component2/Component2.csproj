@@ -48,10 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
-      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
-      <Name>KJFramework.Basic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
       <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
       <Name>KJFramework</Name>

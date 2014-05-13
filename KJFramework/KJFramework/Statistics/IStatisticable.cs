@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 
 namespace KJFramework.Statistics
 {

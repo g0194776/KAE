@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Components;
+using KJFramework.Enums;
 
 namespace KJFramework.Dynamic.Pools
 {

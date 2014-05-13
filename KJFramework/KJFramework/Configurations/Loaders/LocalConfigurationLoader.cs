@@ -5,9 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 using KJFramework.Attribute;
-using KJFramework.Basic.Enum;
 using KJFramework.Configurations.Objects;
 using KJFramework.Configurations.Statistics;
+using KJFramework.Enums;
 using KJFramework.Helpers;
 using KJFramework.Statistics;
 

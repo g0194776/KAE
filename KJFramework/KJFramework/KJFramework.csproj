@@ -67,6 +67,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -84,6 +85,8 @@
     <Compile Include="Attribute\InjectionAttribute.cs" />
     <Compile Include="Attribute\CustomerFieldAttribute.cs" />
     <Compile Include="Attribute\PerformanceCounterAttribute.cs" />
+    <Compile Include="Buffers\ByteArrayBuffer.cs" />
+    <Compile Include="Buffers\IByteArrayBuffer.cs" />
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Compress\Compressor.cs" />
     <Compile Include="Compress\DeflateCompressor.cs" />
@@ -110,8 +113,40 @@
     <Compile Include="Datas\MysqlDatabase.cs" />
     <Compile Include="Datas\SqlServerDatabase.cs" />
     <Compile Include="Datas\SqlUtils.cs" />
+    <Compile Include="Enums\BindingTypes.cs" />
+    <Compile Include="Enums\ConfigurationLoaderTypes.cs" />
+    <Compile Include="Enums\DataPriority.cs" />
     <Compile Include="Enums\ExecuteResults.cs" />
+    <Compile Include="Enums\HealthStatus.cs" />
+    <Compile Include="Enums\InfomationCollectorTypes.cs" />
+    <Compile Include="Enums\OSType.cs" />
+    <Compile Include="Enums\OSVersion.cs" />
+    <Compile Include="Enums\PluginType.cs" />
+    <Compile Include="Enums\ProcessingTypes.cs" />
+    <Compile Include="Enums\ProtocolType.cs" />
+    <Compile Include="Enums\SchedulerPriority.cs" />
+    <Compile Include="Enums\SerializableTypes.cs" />
+    <Compile Include="Enums\ShortcutWindowStyle.cs" />
+    <Compile Include="Enums\ShowProcessTypes.cs" />
+    <Compile Include="Enums\StatisticTypes.cs" />
+    <Compile Include="Enums\TaskPriority.cs" />
+    <Compile Include="Enums\TimerStartType.cs" />
+    <Compile Include="EventArgs\FulfilEventArgs.cs" />
+    <Compile Include="EventArgs\MouseMoveEventArgs.cs" />
+    <Compile Include="Exception\FileHasExistsException.cs" />
+    <Compile Include="Exception\FileNotFoundException.cs" />
     <Compile Include="Exception\LightException.cs" />
+    <Compile Include="Exception\PluginPathNotFoundException.cs" />
+    <Compile Include="Helpers\ByteArrayHelper.cs" />
+    <Compile Include="Helpers\CommandHelper.cs" />
+    <Compile Include="Helpers\ConsoleHelper.cs" />
+    <Compile Include="Helpers\DirectoryHelper.cs" />
+    <Compile Include="Helpers\ProcessHelper.cs" />
+    <Compile Include="Helpers\ResourceHelper.cs" />
+    <Compile Include="Hook\IIOHook.cs" />
+    <Compile Include="Hook\IKeyboardHook.cs" />
+    <Compile Include="Hook\IMouseHook.cs" />
+    <Compile Include="IMetadata.cs" />
     <Compile Include="Results\ExecuteResult.cs" />
     <Compile Include="Results\ExecuteResultOfT.cs" />
     <Compile Include="Results\FailExecuteResult.cs" />
@@ -168,6 +203,7 @@
     <Compile Include="Statistics\IStatistic.cs" />
     <Compile Include="Statistics\IStatisticable.cs" />
     <Compile Include="Statistics\Statistic.cs" />
+    <Compile Include="Struct\ShortCutData.cs" />
     <Compile Include="Tasks\ITask.cs" />
     <Compile Include="Tasks\Task.cs" />
     <Compile Include="Encrypt\EncrptyRijndaelHelper.cs" />
@@ -259,12 +295,6 @@
   <ItemGroup>
     <Content Include="DllReference\zlib.net.dll" />
     <Content Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
-      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
-      <Name>KJFramework.Basic</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

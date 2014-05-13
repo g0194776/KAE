@@ -69,22 +69,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Buffers\ByteArrayBuffer.cs" />
-    <Compile Include="Buffers\IByteArrayBuffer.cs" />
-    <Compile Include="EventArgs\FulfilEventArgs.cs" />
-    <Compile Include="EventArgs\MouseMoveEventArgs.cs" />
-    <Compile Include="Exception\FileHasExistsException.cs" />
-    <Compile Include="Exception\FileNotFoundException.cs" />
-    <Compile Include="Helper\ByteArrayHelper.cs" />
-    <Compile Include="Helper\CommandHelper.cs" />
-    <Compile Include="Helper\ConsoleHelper.cs" />
-    <Compile Include="Helper\DirectoryHelper.cs" />
-    <Compile Include="Exception\PluginPathNotFoundException.cs" />
-    <Compile Include="Helper\ProcessHelper.cs" />
-    <Compile Include="Helper\ResourceHelper.cs" />
-    <Compile Include="Hook\IIOHook.cs" />
-    <Compile Include="Hook\IKeyboardHook.cs" />
-    <Compile Include="Hook\IMouseHook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +98,11 @@
       <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
       <Name>KJFramework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EventArgs\" />
+    <Folder Include="Exception\" />
+    <Folder Include="Helper\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

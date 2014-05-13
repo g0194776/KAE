@@ -112,10 +112,6 @@
     <Folder Include="Extends\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
-      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
-      <Name>KJFramework.Basic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
       <Project>{6F85C222-1CD2-44D4-8D06-22F557D4CF04}</Project>
       <Name>KJFramework.Cache</Name>
@@ -123,10 +119,6 @@
     <ProjectReference Include="..\..\KJFramework.Dynamic\KJFramework.Dynamic\KJFramework.Dynamic.csproj">
       <Project>{47672612-8AA3-4729-A210-4F30E3FB39E4}</Project>
       <Name>KJFramework.Dynamic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\KJFramework.IO\KJFramework.IO\KJFramework.IO.csproj">
-      <Project>{12309506-18A3-48BF-8A55-E950A87A905E}</Project>
-      <Name>KJFramework.IO</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
       <Project>{33FE11D3-2810-4432-B64C-B16935BB47CD}</Project>

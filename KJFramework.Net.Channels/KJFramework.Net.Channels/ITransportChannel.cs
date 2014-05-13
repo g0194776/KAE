@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using KJFramework.IO.Buffers;
+using KJFramework.Buffers;
 using KJFramework.Net.Channels.Enums;
 
 namespace KJFramework.Net.Channels

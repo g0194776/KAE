@@ -1,10 +1,12 @@
-﻿using KJFramework.ApplicationEngine.Entities;
+﻿using System;
+using KJFramework.ApplicationEngine.Entities;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Helpers;
 using KJFramework.Enums;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
+using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Processors;
@@ -101,7 +103,10 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processor
                     return;
                 }
             }
-            RemotingServerManager.Register(metadataDic);
+            Guid guid = Guid.NewGuid();
+            transaction.GetChannel().Tag = guid;
+            transaction.GetChannel().Disconnected += ChannelDisconnected;
+            RemotingServerManager.Register(guid, metadataDic);
             rspMsg.SetAttribute(0x0A, new ByteValueStored((byte)KAEErrorCodes.OK));
             transaction.SendResponse(rspMsg);
         }
@@ -122,6 +127,18 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processor
                 }
             }
             return true;
+        }
+
+        #endregion
+
+        #region Events
+
+        void ChannelDisconnected(object sender, System.EventArgs e)
+        {
+            IMessageTransportChannel<MetadataContainer> msgChannel = (IMessageTransportChannel<MetadataContainer>) sender;
+            msgChannel.Disconnected -= ChannelDisconnected;
+            Guid guid = (Guid) msgChannel.Tag;
+            RemotingServerManager.UnRegister(guid);
         }
 
         #endregion

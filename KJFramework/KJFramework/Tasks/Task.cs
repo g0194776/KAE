@@ -1,6 +1,6 @@
 using System;
 using System.Threading;
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 
 namespace KJFramework.Tasks
 {

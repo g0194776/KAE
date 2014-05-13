@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Visitors;
+using KJFramework.Enums;
 
 namespace KJFramework.Dynamic.Components
 {

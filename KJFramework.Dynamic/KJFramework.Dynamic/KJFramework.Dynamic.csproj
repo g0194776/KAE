@@ -78,10 +78,6 @@
     <Content Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\KJFramework.Basic\KJFramework.Basic\KJFramework.Basic.csproj">
-      <Project>{D5A0178C-16F7-453E-A301-D1D61910D2AF}</Project>
-      <Name>KJFramework.Basic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
       <Project>{33FE11D3-2810-4432-B64C-B16935BB47CD}</Project>
       <Name>KJFramework.Net.Channels</Name>

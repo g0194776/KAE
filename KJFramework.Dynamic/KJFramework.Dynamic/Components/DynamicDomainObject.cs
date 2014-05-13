@@ -1,7 +1,7 @@
-using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Exceptions;
 using KJFramework.Dynamic.Statistics;
 using KJFramework.Dynamic.Structs;
+using KJFramework.Enums;
 using KJFramework.EventArgs;
 using KJFramework.Statistics;
 using KJFramework.Tracing;

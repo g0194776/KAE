@@ -1,30 +1,30 @@
-using KJFramework.Basic.Enum;
+ï»¿using KJFramework.Enums;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Uri;
 
 namespace KJFramework.ServiceModel.Elements
 {
     /// <summary>
-    ///     IPC°ó¶¨·½Ê½
+    ///     IPCï¿½ó¶¨·ï¿½Ê½
     /// </summary>
     public class PipeBinding : Binding
     {
-        #region ¹¹Ôìº¯Êý
+        #region ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½
 
         
         /// <summary>
-        ///     »ùÓÚTCPÐ­ÒéµÄ°ó¶¨·½Ê½£¬ Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷¡£
+        ///     ï¿½ï¿½ï¿½ï¿½TCPÐ­ï¿½ï¿½Ä°ó¶¨·ï¿½Ê½ï¿½ï¿½ ï¿½á¹©ï¿½ï¿½ï¿½ï¿½ØµÄ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
-        /// <param name="localAddress">°ó¶¨µØÖ·</param>
+        /// <param name="localAddress">ï¿½ó¶¨µï¿½Ö·</param>
         public PipeBinding(string localAddress)
             : this(new PipeUri(localAddress))
         {
         }
 
         /// <summary>
-        ///     IPC°ó¶¨·½Ê½
+        ///     IPCï¿½ó¶¨·ï¿½Ê½
         /// </summary>
-        /// <param name="localAddress">Ô¶³ÌµØÖ·</param>
+        /// <param name="localAddress">Ô¶ï¿½Ìµï¿½Ö·</param>
         public PipeBinding(PipeUri localAddress)
             : base(new PipeBindingElement(), localAddress)
         {
@@ -32,10 +32,10 @@ namespace KJFramework.ServiceModel.Elements
         }
 
         /// <summary>
-        ///     IPC°ó¶¨·½Ê½
+        ///     IPCï¿½ó¶¨·ï¿½Ê½
         /// </summary>
-        /// <param name="bingdingElements">°ó¶¨ÔªËØ</param>
-        /// <param name="localAddress">Ô¶³ÌµØÖ·</param>
+        /// <param name="bingdingElements">ï¿½ï¿½Ôªï¿½ï¿½</param>
+        /// <param name="localAddress">Ô¶ï¿½Ìµï¿½Ö·</param>
         public PipeBinding(BindingElement<IServiceChannel> bingdingElements, PipeUri localAddress)
             : base(bingdingElements, localAddress)
         {
@@ -47,7 +47,7 @@ namespace KJFramework.ServiceModel.Elements
         #region Overrides of Binding
 
         /// <summary>
-        ///     ³õÊ¼»¯
+        ///     ï¿½ï¿½Ê¼ï¿½ï¿½
         /// </summary>
         public override void Initialize()
         {

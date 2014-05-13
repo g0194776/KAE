@@ -380,7 +380,7 @@ namespace KJFramework.ApplicationEngine
          *      0x00 - MessageIdentity
          *      0x01 - TransactionIdentity
          *      0x0A - Protocol Type
-         *      0x0B - Specified Value
+         *      0x0B - Specified REQ Message Structure
          * RSP Message:
          *      0x00 - MessageIdentity
          *      0x01 - TransactionIdentity

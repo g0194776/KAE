@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 using KJFramework.Statistics;
 
 namespace KJFramework.Net.Channels.Transactions.Processors

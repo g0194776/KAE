@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using KJFramework.Basic.Enum;
 using KJFramework.Engin.Worker;
+using KJFramework.Enums;
 
 namespace KJFramework.Engin.Scheduler.Rule
 {

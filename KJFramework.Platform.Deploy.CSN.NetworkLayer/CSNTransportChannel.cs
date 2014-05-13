@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using KJFramework.Buffers;
 using KJFramework.EventArgs;
-using KJFramework.IO.Buffers;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Enums;
 

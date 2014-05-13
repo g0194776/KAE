@@ -1,6 +1,5 @@
 ﻿using System;
-using KJFramework.Basic;
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 using KJFramework.EventArgs;
 
 namespace KJFramework.Timer

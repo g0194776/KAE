@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using KJFramework.Basic.Enum;
 using KJFramework.Dynamic.Components;
+using KJFramework.Enums;
 using KJFramework.Timer;
 
 namespace Component1

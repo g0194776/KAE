@@ -1,6 +1,6 @@
-﻿using KJFramework.Basic.Enum;
+﻿using KJFramework.Buffers;
+using KJFramework.Enums;
 using KJFramework.EventArgs;
-using KJFramework.IO.Buffers;
 using KJFramework.Net.Channel;
 using KJFramework.Net.Channels.Buffers;
 using KJFramework.Net.Channels.Enums;
