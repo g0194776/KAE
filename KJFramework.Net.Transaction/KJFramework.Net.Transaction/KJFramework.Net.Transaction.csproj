@@ -122,7 +122,7 @@
       <Name>KJFramework.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
-      <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
+      <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>
       <Name>KJFramework</Name>
     </ProjectReference>
   </ItemGroup>

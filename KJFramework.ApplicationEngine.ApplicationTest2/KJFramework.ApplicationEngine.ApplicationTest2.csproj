@@ -49,7 +49,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Apps\635347513887692496.kpp">
+    <None Include="Apps\635381780411058011.kpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -105,5 +105,24 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
         }
 
         #endregion
+
+        /// <summary>
+        ///    获取RRCS内部目前所支持的所有通信节点信息
+        /// </summary>
+        /// <returns>返回RRCS内部的所有信息</returns>
+        public static IDictionary<string, List<string>> GetAllInformation()
+        {
+            lock (_lockObj)
+            {
+                IDictionary<string, List<string>> dic = new Dictionary<string, List<string>>();
+                foreach (KeyValuePair<string, SortedDictionary<Guid, List<string>>> pair in _addresses)
+                {
+                    List<string> values = new List<string>();
+                    foreach (KeyValuePair<Guid, List<string>> valuePair in pair.Value) values.AddRange(valuePair.Value);
+                    dic.Add(pair.Key, values);
+                }
+                return dic;
+            }
+        }
     }
 }

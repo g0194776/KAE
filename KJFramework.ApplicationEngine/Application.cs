@@ -4,6 +4,7 @@ using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Helpers;
 using KJFramework.ApplicationEngine.Processors;
 using KJFramework.ApplicationEngine.Resources;
+using KJFramework.ApplicationEngine.Rings;
 using KJFramework.Dynamic.Components;
 using KJFramework.Enums;
 using KJFramework.EventArgs;
@@ -83,20 +84,16 @@ namespace KJFramework.ApplicationEngine
 
         private KPPDataStructure _structure;
         private IHostTransportChannel _hostChannel;
+        private readonly object _ringLockObj = new object();
         private IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> _processors;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Application));
         private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
         private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
+        private readonly IDictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>> _rings = new Dictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>>();
 
         #endregion
 
         #region Methods.
-
-        /// <summary>
-        ///    获取应用内部所有支持的网络资源列表
-        /// </summary>
-        /// <returns>返回支持的网络资源列表</returns>
-        public abstract IList<KAENetworkResource> AcquireCommunicationSupport();
 
         /// <summary>
         ///    获取应用内部所有已经支持的网络通讯协议
@@ -108,6 +105,37 @@ namespace KJFramework.ApplicationEngine
             foreach (KeyValuePair<ProtocolTypes, Dictionary<MessageIdentity, object>> pair in _processors)
                 dic.Add(pair.Key, pair.Value.Keys.ToList());
             return dic;
+        }
+
+        /// <summary>
+        ///    更新网络缓存信息
+        /// </summary>
+        /// <param name="cache">网络信息</param>
+        public void UpdateNetworkCache(Dictionary<string, List<string>> cache)
+        {
+            foreach (KeyValuePair<string, List<string>> pair in cache)
+            {
+                string[] contents = pair.Key.Split(new[] {"_"}, StringSplitOptions.RemoveEmptyEntries);
+                string[] ids = contents[0].Replace("(", "").Replace(")", "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                ApplicationLevel level;
+                if (!Enum.TryParse(contents[2], out level))
+                {
+                    _tracing.Error("#Couldn't parse targeted value to the Application Level. Value: {0}." + contents[2]);
+                    continue;
+                }
+                MessageIdentity identity = new MessageIdentity
+                {
+                    ProtocolId = byte.Parse(ids[0]),
+                    ServiceId = byte.Parse(ids[1]),
+                    DetailsId = byte.Parse(ids[2])
+                };
+                //prepares kathma ring.
+                KetamaRing ring = new KetamaRing(pair.Value.Select(v => new KAEHostNode(v)).ToList());
+                lock (_ringLockObj)
+                {
+                    _rings[identity] = new Dictionary<ApplicationLevel, KetamaRing>();
+                }
+            }
         }
 
         /// <summary>

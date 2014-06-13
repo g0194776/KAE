@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using KJFramework.ApplicationEngine.Entities;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Helpers;
@@ -107,7 +108,9 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processor
             transaction.GetChannel().Tag = guid;
             transaction.GetChannel().Disconnected += ChannelDisconnected;
             RemotingServerManager.Register(guid, metadataDic);
+            IDictionary<string, List<string>> information = RemotingServerManager.GetAllInformation();
             rspMsg.SetAttribute(0x0A, new ByteValueStored((byte)KAEErrorCodes.OK));
+            rspMsg.SetAttribute(0x0C, new ResourceBlockArrayStored(ConvertReturnMessage(information)));
             transaction.SendResponse(rspMsg);
         }
 
@@ -120,13 +123,27 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processor
                 if (!resources.TryGetValue(pair.Key, out networkResources)) return false;
                 foreach (MessageIdentity identity in pair.Value)
                 {
-                    string key = string.Format("({0}_{1}_{2})_{3}_{4}_{5}", identity.ProtocolId, identity.ServiceId, identity.DetailsId, pair.Key, appInfo.Level, appInfo.Version);
+                    string key = string.Format("({0},{1},{2})_{3}_{4}_{5}", identity.ProtocolId, identity.ServiceId, identity.DetailsId, pair.Key, appInfo.Level, appInfo.Version);
                     List<string> tempValue;
                     if(!dic.TryGetValue(key, out tempValue)) dic.Add(key, (tempValue = new List<string>()));
                     tempValue.AddRange(networkResources);
                 }
             }
             return true;
+        }
+
+        private ResourceBlock[] ConvertReturnMessage(IDictionary<string, List<string>> dic)
+        {
+            ResourceBlock[] msgs = new ResourceBlock[dic.Count];
+            int offset = 0;
+            foreach (KeyValuePair<string, List<string>> pair in dic)
+            {
+                ResourceBlock msg = new ResourceBlock();
+                msg.SetAttribute(0x00, new StringValueStored(pair.Key));
+                msg.SetAttribute(0x01, new StringArrayValueStored(pair.Value.ToArray()));
+                msgs[offset++] = msg;
+            }
+            return msgs;
         }
 
         #endregion

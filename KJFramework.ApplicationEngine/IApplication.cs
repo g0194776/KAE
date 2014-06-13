@@ -44,15 +44,15 @@ namespace KJFramework.ApplicationEngine
         #region Methods.
 
         /// <summary>
-        ///    获取应用内部所有支持的网络资源列表
-        /// </summary>
-        /// <returns>返回支持的网络资源列表</returns>
-        IList<KAENetworkResource> AcquireCommunicationSupport();
-        /// <summary>
         ///    获取应用内部所有已经支持的网络通讯协议
         /// </summary>
         /// <returns>返回支持的网络通信协议列表</returns>
         IDictionary<ProtocolTypes, IList<MessageIdentity>> AcquireSupportedProtocols();
+        /// <summary>
+        ///    更新网络缓存信息
+        /// </summary>
+        /// <param name="cache">网络信息</param>
+        void UpdateNetworkCache(Dictionary<string, List<string>> cache);
 
         #endregion
     }

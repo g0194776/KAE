@@ -44,15 +44,6 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\Depend Files\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="KJFramework">
-      <HintPath>..\Depend Files\KJFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="KJFramework.Basic">
-      <HintPath>..\Depend Files\KJFramework.Basic.dll</HintPath>
-    </Reference>
-    <Reference Include="KJFramework.IO">
-      <HintPath>..\Depend Files\KJFramework.IO.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -246,6 +237,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extends\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

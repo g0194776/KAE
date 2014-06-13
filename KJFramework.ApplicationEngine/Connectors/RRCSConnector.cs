@@ -5,6 +5,7 @@ using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
@@ -32,10 +33,12 @@ namespace KJFramework.ApplicationEngine.Connectors
         /// </summary>
         /// <param name="rrcsAddr">远程RRCS服务地址</param>
         /// <param name="host">KAE宿主</param>
-        public RRCSConnector(IPEndPoint rrcsAddr, KAEHost host)
+        /// <param name="defaultKAENetwork">KAE宿主的默认网络通信地址</param>
+        public RRCSConnector(IPEndPoint rrcsAddr, KAEHost host, TcpUri defaultKAENetwork)
         {
             _rrcsAddr = rrcsAddr;
             _host = host;
+            _defaultKAENetwork = defaultKAENetwork;
         }
 
         #endregion
@@ -43,6 +46,7 @@ namespace KJFramework.ApplicationEngine.Connectors
         #region Members.
 
         private readonly KAEHost _host;
+        private readonly TcpUri _defaultKAENetwork;
         private readonly IPEndPoint _rrcsAddr;
         private MetadataConnectionAgent _agent;
         private Thread _thread;
@@ -109,6 +113,7 @@ namespace KJFramework.ApplicationEngine.Connectors
          *  ===========================================
          *      0x00 - Message Identity
          *      0x01 - Transaction Identity
+         *      0x02 - KAE-Host's Default Communication Port
          *      0x0A - Application's Information (ARRAY)
          *      -------- Internal resource block's structure --------
          *          0x00 - application's CRC.
@@ -126,10 +131,7 @@ namespace KJFramework.ApplicationEngine.Connectors
          *      0x0C - Remoting cached End-Points resource blocks (ARRAY)
          *      -------- Internal resource block's structure --------
          *          0x00 - application's network identity.
-         *          0x01 - application's version resource blocks  (ARRAY)
-         *          -------- Internal resource block's structure --------
-         *              0x00 - application's version.
-         *              0x01 - application's end-points (STRING ARRAY).
+         *          0x01 - application's end-points (STRING ARRAY).
          */
         private void RegisterToRRCS()
         {
@@ -171,20 +173,12 @@ namespace KJFramework.ApplicationEngine.Connectors
             transaction.SendRequest(reqMsg);
         }
 
-        //private MetadataContainer CreateRequestMessage()
-        //{
-        //    IList<long> caches = _host.GetNetworkCache();
-        //    if (caches == null || caches.Count == 0) return null;
-        //    MetadataContainer reqMsg = new MetadataContainer();
-        //    reqMsg.SetAttribute(0x0A, new Int64ArrayValueStored(caches.ToArray()));
-        //    return reqMsg;
-        //}
-
         private MetadataContainer CreateRequestMessage()
         {
             Dictionary<long, Dictionary<ProtocolTypes, IList<string>>> caches = _host.GetNetworkCache();
             if (caches.Count == 0) return null;
             MetadataContainer reqMsg = new MetadataContainer();
+            reqMsg.SetAttribute(0x02, new Int32ValueStored(_defaultKAENetwork.Port));
             ResourceBlock[] blocks = new ResourceBlock[caches.Count];
             reqMsg.SetAttribute(0x0A, new ResourceBlockArrayStored(blocks));
             int offset = 0;
@@ -207,27 +201,30 @@ namespace KJFramework.ApplicationEngine.Connectors
             return reqMsg;
         }
 
+
+        /*  [RSP MESSAGE]
+         *  ===========================================
+         *      0x00 - Message Identity
+         *      0x01 - Transaction Identity
+         *      0x0A - Error Id
+         *      0x0B - Error Reason
+         *      0x0C - Remoting cached End-Points resource blocks (ARRAY)
+         *      -------- Internal resource block's structure --------
+         *          0x00 - application's identity.
+         *          0x01 - application's end-points (STRING ARRAY).
+         */
         private void AnalyizeRRCSResult(MetadataContainer rspMsg)
         {
             ResourceBlock[] blocks;
             if (!rspMsg.IsAttibuteExsits(0x0C) || (blocks = rspMsg.GetAttributeAsType<ResourceBlock[]>(0x0C)) == null) return;
             if (blocks.Length == 0) return;
-            IDictionary<string, IDictionary<string, IList<string>>> caches = new Dictionary<string, IDictionary<string, IList<string>>>();
+            Dictionary<string, List<string>> caches = new Dictionary<string, List<string>>();
             foreach (ResourceBlock block in blocks)
             {
-                IDictionary<string, IList<string>> firstLevel;
+                List<string> firstLevel;
                 if(!caches.TryGetValue(block.GetAttributeAsType<string>(0x00), out firstLevel))
-                    caches.Add(block.GetAttributeAsType<string>(0x00), (firstLevel = new Dictionary<string, IList<string>>()));
-                ResourceBlock[] innerBlocks;
-                if(!block.IsAttibuteExsits(0x01) || (innerBlocks = block.GetAttributeAsType<ResourceBlock[]>(0x01)) == null) break;
-                if(innerBlocks.Length == 0) break;
-                foreach (ResourceBlock innerBlock in innerBlocks)
-                {
-                    IList<string> secondLevel;
-                    if(!firstLevel.TryGetValue(innerBlock.GetAttributeAsType<string>(0x00), out secondLevel))
-                        firstLevel.Add(innerBlock.GetAttributeAsType<string>(0x00), (secondLevel = new List<string>()));
-                    ((List<string>) secondLevel).AddRange(innerBlock.GetAttributeAsType<string[]>(0x01));
-                }
+                    caches.Add(block.GetAttributeAsType<string>(0x00), (firstLevel = new List<string>()));
+                firstLevel.AddRange(block.GetAttributeAsType<string[]>(0x01));
             }
             _host.UpdateNetworkCache(caches);
         }

@@ -256,19 +256,20 @@ namespace KJFramework.ApplicationEngine.Objects
         {
             if (_application != null)
             {
-                MarshalByRefObject marshalByRefObject = (MarshalByRefObject)_application;
+                MarshalByRefObject marshalByRefObject = _application;
                 ILease lease = (ILease)marshalByRefObject.InitializeLifetimeService();
                 lease.Renew(time);
             }
-        }
-        public IList<KAENetworkResource> AcquireCommunicationSupport()
-        {
-            return _application.AcquireCommunicationSupport();
         }
 
         public IDictionary<ProtocolTypes, IList<MessageIdentity>> AcquireSupportedProtocols()
         {
             return _application.AcquireSupportedProtocols();
+        }
+
+        public void UpdateNetworkCache(Dictionary<string, List<string>> cache)
+        {
+            
         }
 
         #endregion

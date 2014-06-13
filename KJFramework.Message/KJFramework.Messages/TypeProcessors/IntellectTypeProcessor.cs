@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using KJFramework.Basic.Enum;
+using KJFramework.Enums;
 using KJFramework.Messages.Analysers;
 using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Proxies;

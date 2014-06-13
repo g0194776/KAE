@@ -5,10 +5,10 @@ using KJFramework.Net.Transaction;
 
 namespace KJFramework.ApplicationEngine.ApplicationTest.Processors
 {
-    [KAEProcessorProperties(ProtocolId = 1, ServiceId = 0, DetailsId = 2)]
-    public class TestMetadataKAEProcessor : MetadataKAEProcessor
+    [KAEProcessorProperties(ProtocolId = 1, ServiceId = 0, DetailsId = 3)]
+    public class TestMetadataKAEProcessor2 : MetadataKAEProcessor
     {
-        public TestMetadataKAEProcessor(IApplication application)
+        public TestMetadataKAEProcessor2(IApplication application)
             : base(application)
         {
         }
