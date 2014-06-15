@@ -52,6 +52,7 @@
     <None Include="Apps\635381780411058011.kpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Apps\special.kpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.ApplicationEngine.ApplicationTest\KJFramework.ApplicationEngine.ApplicationTest.csproj">
