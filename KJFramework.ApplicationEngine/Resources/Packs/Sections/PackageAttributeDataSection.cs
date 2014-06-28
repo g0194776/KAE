@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Hosting;
 using System.Text;
 using KJFramework.Messages.Exceptions;
 
@@ -49,6 +48,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             _keys.Add("SectionLength", typeof(int));
             _keys.Add("ApplicationLevel", typeof(byte));
             _keys.Add("ApplicationPriority", typeof(byte));
+            _keys.Add("IsCompletedEnvironment", typeof(bool));
         }
 
         /// <summary>
@@ -133,9 +133,11 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             stream.Write(mainFileLengthData, 0, mainFileLengthData.Length);
             if (mainFileData != null) stream.Write(mainFileData, 0, mainFileData.Length);
             //application level.
-            stream.WriteByte(GetFieldSafety<byte>("ApplicationLevel"));            
+            stream.WriteByte(GetFieldSafety<byte>("ApplicationLevel"));
             //application priority.
             stream.WriteByte(GetFieldSafety<byte>("ApplicationPriority"));
+            //Is completed environment.
+            stream.WriteByte((GetFieldSafety<bool>("IsCompletedEnvironment") ? (byte) 0x01 : (byte) 0x00));
             //global unique identity.
             Guid identity = GetFieldSafety<Guid>("GlobalUniqueIdentity");
             byte[] identityData = new byte[16];
@@ -226,6 +228,9 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             //application priority.
             byte applicationPriority = (byte)stream.ReadByte();
             SetField("ApplicationPriority", applicationPriority);
+            //Is completed environment.
+            byte isCompletedEnvironment = (byte)stream.ReadByte();
+            SetField("IsCompletedEnvironment", isCompletedEnvironment == 0x01);
             //global unique identity.
             byte[] identityData = new byte[16];
             stream.Read(identityData, 0, identityData.Length);

@@ -29,7 +29,68 @@ namespace KJFramework.ApplicationEngine.Resources.Packs
 
         #region Members.
 
-        private static readonly Dictionary<byte, Type> _sections; 
+        private static readonly Dictionary<byte, Type> _sections;
+
+        private static IList<string> _frameworkFiles = new[]
+        {
+            "kjframework.dll", 
+            "kjframework.pdb", 
+            "kjframework.xml", 
+            "kjframework.cache.dll", 
+            "kjframework.cache.pdb", 
+            "kjframework.cache.xml", 
+            "kjframework.data.objectdb.dll", 
+            "kjframework.data.objectdb.pdb", 
+            "kjframework.data.objectdb.xml", 
+            "kjframework.dynamic.dll",
+            "kjframework.dynamic.pdb",
+            "kjframework.dynamic.xml",
+            "kjframework.net.dll",
+            "kjframework.net.pdb",
+            "kjframework.net.xml",
+            "kjframework.net.channels.dll", 
+            "kjframework.net.channels.pdb", 
+            "kjframework.net.channels.xml", 
+            "kjframework.net.cloud.dll", 
+            "kjframework.net.cloud.pdb", 
+            "kjframework.net.cloud.xml", 
+            "kjframework.messages.dll",
+            "kjframework.messages.pdb",
+            "kjframework.messages.xml",
+            "kjframework.data.synchronization.dll", 
+            "kjframework.data.synchronization.pdb", 
+            "kjframework.data.synchronization.xml", 
+            "kjframework.servicemodel.dll", 
+            "kjframework.servicemodel.pdb", 
+            "kjframework.servicemodel.xml", 
+            "kjframework.test.loadrunner.dll",
+            "kjframework.test.loadrunner.pdb",
+            "kjframework.test.loadrunner.xml",
+            "kjframework.net.transaction.dll", 
+            "kjframework.net.transaction.pdb", 
+            "kjframework.net.transaction.xml", 
+            "kjframework.applicationengine.dll",
+            "kjframework.applicationengine.pdb",
+            "kjframework.applicationengine.xml",
+            "icsharpcode.sharpziplib.dll",
+            "icsharpcode.sharpziplib.pdb",
+            "icsharpcode.sharpziplib.xml",
+            "kjframework.platform.deploy.csn.networklayer.dll",
+            "kjframework.platform.deploy.csn.networklayer.pdb",
+            "kjframework.platform.deploy.csn.networklayer.xml",
+            "kjframework.platform.deploy.csn.protocolstack.dll",
+            "kjframework.platform.deploy.csn.protocolstack.pdb",
+            "kjframework.platform.deploy.csn.protocolstack.xml",
+            "kjframework.platform.deploy.metadata.dll",
+            "kjframework.platform.deploy.metadata.pdb",
+            "kjframework.platform.deploy.metadata.xml",
+            "kjframework.servicemodel.bussiness.default.dll",
+            "kjframework.servicemodel.bussiness.default.pdb",
+            "kjframework.servicemodel.bussiness.default.xml",
+            "kjframework.servicemodel.core.dll",
+            "kjframework.servicemodel.core.pdb",
+            "kjframework.servicemodel.core.xml"
+        };
 
         #endregion
 
@@ -41,13 +102,33 @@ namespace KJFramework.ApplicationEngine.Resources.Packs
         /// <param name="folderPath">资源路径</param>
         /// <param name="kppDestinationFilePath">要存放的KPP资源文件地址</param>
         /// <param name="head">KPP资源文件头</param>
+        /// <param name="isCompletedEnvironment">一个值，标示了当前要封装的包裹是否按照完整运行时所需要的所有依赖文件来包装</param>
         /// <param name="sections">KPP数据节集合</param>
         /// <exception cref="FolderNotFoundException">目标文件夹不存在</exception>
-        public static void Pack(string folderPath, string kppDestinationFilePath, KPPDataHead head, params IKPPDataResource[] sections)
+        public static void Pack(string folderPath, string kppDestinationFilePath, KPPDataHead head, bool isCompletedEnvironment = true, params IKPPDataResource[] sections)
         {
             if (!Directory.Exists(folderPath)) throw new FolderNotFoundException("#Target folder path couldn't be find.");
             if (File.Exists(kppDestinationFilePath)) File.Delete(kppDestinationFilePath);
+            #region Procedure of handling non completed runtime package.
 
+            if (!isCompletedEnvironment)
+            {
+                string[] tempFiles = Directory.GetFiles(folderPath);
+                foreach (string file in tempFiles)
+                {
+                    string lowerCaseFile = file.ToLower();
+                    foreach (string globalFile in _frameworkFiles)
+                    {
+                        if (lowerCaseFile.Contains(globalFile))
+                        {
+                            File.Delete(file);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            #endregion
             //handles ZIP stream.
             List<FileInfo> files = Directory.GetFiles(folderPath).Select(f => new FileInfo(f)).ToList();
             byte[] data = FileCompression.CompressFile(files, 9, false);

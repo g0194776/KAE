@@ -43,7 +43,7 @@ namespace KJFramework.ApplicationEngine.Finders
                         //analyzes kpp package.
                         KPPDataStructure dataStructure = KPPResource.UnPack(file);
                         if(dataStructure == null) continue;
-                        string targetPath = Path.Combine(Path.GetDirectoryName(file), string.Format("temp_files_{0}", DateTime.Now.Date.ToString("yyyy-MM-dd")));
+                        string targetPath = Path.Combine(Path.GetDirectoryName(file), string.Format("tempfiles_{0}_{1}_{2}", Path.GetFileName(file), dataStructure.GetSectionField<string>(0x00, "Version"), DateTime.Now.Date.ToString("yyyy-MM-dd")));
                         //releases files from kpp package.
                         dataStructure.ReleaseFiles(targetPath);
                         //picks up main file data.

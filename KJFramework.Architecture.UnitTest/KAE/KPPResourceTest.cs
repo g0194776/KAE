@@ -26,7 +26,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             section.SetField("PackTime", now);
             section.SetField("ApplicationMainFileName", "1.txt");
             section.SetField("GlobalUniqueIdentity", guid);
-            KPPResource.Pack("res-files", fileName, head, section);
+            KPPResource.Pack("res-files", fileName, head, true, section);
             Assert.IsTrue(File.Exists(fileName));
             File.Delete(fileName);
         }
@@ -46,7 +46,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             section.SetField("PackTime", now);
             section.SetField("ApplicationMainFileName", "KJFramework.ApplicationEngine.ApplicationTest.dll");
             section.SetField("GlobalUniqueIdentity", guid);
-            KPPResource.Pack(@"..\..\..\KJFramework.ApplicationEngine.ApplicationTest\bin\Debug\", fileName, head, section);
+            KPPResource.Pack(@"..\..\..\KJFramework.ApplicationEngine.ApplicationTest\bin\Debug\", fileName, head, true, section);
             Assert.IsTrue(File.Exists(fileName));
             File.Delete(fileName);
         }
@@ -62,11 +62,34 @@ namespace KJFramework.Architecture.UnitTest.KAE
             section.SetField("PackName", "test.package");
             section.SetField("PackDescription", "test package description.");
             section.SetField("EnvironmentFlag", (byte)0x01);
+            section.SetField("Version", "2.0.0");
+            section.SetField("PackTime", now);
+            section.SetField("ApplicationMainFileName", "KJFramework.ApplicationEngine.ApplicationTest.dll");
+            section.SetField("GlobalUniqueIdentity", guid);
+            section.SetField("IsCompletedEnvironment", true);
+            KPPResource.Pack(@"..\..\..\KJFramework.ApplicationEngine.ApplicationTest\bin\Debug\", fileName, head, true, section);
+            Assert.IsTrue(File.Exists(fileName));
+            return Path.GetFullPath(fileName);
+        }
+
+
+        [Test]
+        public string PackNonCompletedEnvironmentTestWithoutDelete()
+        {
+            DateTime now = DateTime.Now;
+            string fileName = DateTime.Now.Ticks + ".kpp";
+            Guid guid = Guid.NewGuid();
+            KPPDataHead head = new KPPDataHead();
+            PackageAttributeDataSection section = new PackageAttributeDataSection();
+            section.SetField("PackName", "test.package");
+            section.SetField("PackDescription", "test package description.");
+            section.SetField("EnvironmentFlag", (byte)0x01);
             section.SetField("Version", "1.0.0");
             section.SetField("PackTime", now);
             section.SetField("ApplicationMainFileName", "KJFramework.ApplicationEngine.ApplicationTest.dll");
             section.SetField("GlobalUniqueIdentity", guid);
-            KPPResource.Pack(@"..\..\..\KJFramework.ApplicationEngine.ApplicationTest\bin\Debug\", fileName, head, section);
+            section.SetField("IsCompletedEnvironment", false);
+            KPPResource.Pack(@"..\..\..\KJFramework.ApplicationEngine.ApplicationTest\bin\Debug\", fileName, head, false, section);
             Assert.IsTrue(File.Exists(fileName));
             return Path.GetFullPath(fileName);
         }
@@ -86,7 +109,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             section.SetField("PackTime", now);
             section.SetField("ApplicationMainFileName", "1.txt");
             section.SetField("GlobalUniqueIdentity", guid);
-            KPPResource.Pack("res-files", fileName, head, section);
+            KPPResource.Pack("res-files", fileName, head, true, section);
             Assert.IsTrue(File.Exists(fileName));
 
             KPPDataStructure structure = KPPResource.UnPack(fileName);

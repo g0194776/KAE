@@ -77,6 +77,12 @@ namespace KJFramework.ApplicationEngine
         ///    获取应用等级
         /// </summary>
         public ApplicationLevel Level { get; private set; }
+
+        /// <summary>
+        ///    获取一个值，该值标示了当前KPP包裹是否包含了一个完整的运行环境所需要的所有依赖文件
+        /// </summary>
+        public bool IsCompletedEnvironment { get; private set; }
+
         /// <summary>
         ///    获取应用kpp文件的CRC
         /// </summary>
@@ -150,6 +156,7 @@ namespace KJFramework.ApplicationEngine
             Description = _structure.GetSectionField<string>(0x00, "PackDescription");
             GlobalUniqueId = _structure.GetSectionField<Guid>(0x00, "GlobalUniqueIdentity");
             Level = (ApplicationLevel) _structure.GetSectionField<byte>(0x00, "ApplicationLevel");
+            IsCompletedEnvironment = _structure.GetSectionField<bool>(0x00, "IsCompletedEnvironment");
             Status = ApplicationStatus.Initializing;
             try
             {

@@ -49,10 +49,12 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Apps\635381780411058011.kpp">
+    <None Include="Apps\635395833908212890.kpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Apps\special.kpp" />
+    <None Include="Apps\special2.kpp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.ApplicationEngine.ApplicationTest\KJFramework.ApplicationEngine.ApplicationTest.csproj">

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Lifetime;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using KJFramework.ApplicationEngine.Eums;
@@ -127,6 +126,10 @@ namespace KJFramework.ApplicationEngine.Objects
         {
             return _application.GetTunnelAddress();
         }
+        public bool IsCompletedEnvironment
+        {
+            get { return _application.IsCompletedEnvironment; }
+        }
 
         [Obsolete("#Sadly, We had not supported this function.", true)]
         public IComponentTunnelVisitor TunnelVisitor { get; private set; }
@@ -159,34 +162,42 @@ namespace KJFramework.ApplicationEngine.Objects
 
         private void PreInitialize()
         {
-            if (_domain == null)
+            try
             {
-                AppDomainSetup setup = new AppDomainSetup();
-                setup.ShadowCopyFiles = "true";
-                setup.CachePath = "C:\\AssemblyCached";
-                setup.ConfigurationFile = _entryInfo.FilePath + ".config";
-                setup.ApplicationBase = _entryInfo.FolderPath;
-                setup.ApplicationName = _entryInfo.EntryPoint;
-                setup.ShadowCopyDirectories = _entryInfo.FolderPath;
-                setup.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
-                String componentName = _entryInfo.EntryPoint.Substring(_entryInfo.EntryPoint.LastIndexOf('.') + 1);
-                _domain = AppDomain.CreateDomain("{APPDOMAIN:" + componentName + "}", null, setup);
-                WorkProcessingHandler(new LightSingleArgEventArgs<string>(string.Format("Create domain {0} succeed.", _domain.FriendlyName)));
-                _domain.UnhandledException += DomainUnhandledException;
-                WorkProcessingHandler(new LightSingleArgEventArgs<string>("Creating object handle......"));
-                ObjectHandle cls = _domain.CreateInstanceFrom(_entryInfo.FilePath, _entryInfo.EntryPoint);
-                if (cls != null)
+                if (_domain == null)
                 {
-                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("Unwrapping......"));
-                    Application app = (Application)cls.Unwrap();
-                    _application = app;
-                    _application.IsUseTunnel = true;
-                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("Trying to renew application life......"));
-                    ReLease(new TimeSpan(365, 0, 0, 0));
-                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("Calling OnLoading method......"));
-                    _application.Initialize(_structure);
-                    _application.OnLoading();
+                    AppDomainSetup setup = new AppDomainSetup();
+                    setup.ShadowCopyFiles = "true";
+                    setup.CachePath = "C:\\AssemblyCached";
+                    setup.ConfigurationFile = _entryInfo.FilePath + ".config";
+                    setup.ApplicationBase = (_structure.GetSectionField<bool>(0x00, "IsCompletedEnvironment") ? _entryInfo.FolderPath : AppDomain.CurrentDomain.BaseDirectory);
+                    setup.ApplicationName = _entryInfo.EntryPoint;
+                    setup.ShadowCopyDirectories = _entryInfo.FolderPath;
+                    setup.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
+                    String componentName = _entryInfo.EntryPoint.Substring(_entryInfo.EntryPoint.LastIndexOf('.') + 1);
+                    _domain = AppDomain.CreateDomain("{APPDOMAIN:" + componentName + "}", null, setup);
+                    WorkProcessingHandler(new LightSingleArgEventArgs<string>(string.Format("Create domain {0} succeed.", _domain.FriendlyName)));
+                    _domain.UnhandledException += DomainUnhandledException;
+                    WorkProcessingHandler(new LightSingleArgEventArgs<string>("Creating object handle......"));
+                    ObjectHandle cls = _domain.CreateInstanceFrom(_entryInfo.FilePath, _entryInfo.EntryPoint);
+                    if (cls != null)
+                    {
+                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Unwrapping......"));
+                        Application app = (Application)cls.Unwrap();
+                        _application = app;
+                        _application.IsUseTunnel = true;
+                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Trying to renew application life......"));
+                        ReLease(new TimeSpan(365, 0, 0, 0));
+                        WorkProcessingHandler(new LightSingleArgEventArgs<string>("Calling OnLoading method......"));
+                        _application.Initialize(_structure);
+                        _application.OnLoading();
+                    }
                 }
+            }
+            catch (System.Exception ex)
+            {
+                _tracing.Error(ex);
+                throw;
             }
         }
 
