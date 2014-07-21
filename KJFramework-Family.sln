@@ -153,7 +153,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{08B0B7AB-3968-47B9-A062-6081906FEA46}"
 	ProjectSection(SolutionItems) = preProject
+		csndb_local_data.txt = csndb_local_data.txt
 		kae_db.txt = kae_db.txt
+		kae_demo_data.txt = kae_demo_data.txt
 	EndProjectSection
 EndProject
 Global
