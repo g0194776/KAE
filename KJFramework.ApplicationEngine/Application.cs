@@ -1,4 +1,5 @@
-﻿using KJFramework.ApplicationEngine.Attributes;
+﻿using System.Threading;
+using KJFramework.ApplicationEngine.Attributes;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Helpers;
@@ -90,12 +91,11 @@ namespace KJFramework.ApplicationEngine
 
         private KPPDataStructure _structure;
         private IHostTransportChannel _hostChannel;
-        private readonly object _ringLockObj = new object();
         private IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> _processors;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Application));
         private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
         private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
-        private readonly IDictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>> _rings = new Dictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>>();
+        private IDictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>> _rings = new Dictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>>();
 
         #endregion
 
@@ -119,6 +119,7 @@ namespace KJFramework.ApplicationEngine
         /// <param name="cache">网络信息</param>
         public void UpdateNetworkCache(Dictionary<string, List<string>> cache)
         {
+            IDictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>> rings = new Dictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>>();
             foreach (KeyValuePair<string, List<string>> pair in cache)
             {
                 string[] contents = pair.Key.Split(new[] {"_"}, StringSplitOptions.RemoveEmptyEntries);
@@ -137,11 +138,11 @@ namespace KJFramework.ApplicationEngine
                 };
                 //prepares kathma ring.
                 KetamaRing ring = new KetamaRing(pair.Value.Select(v => new KAEHostNode(v)).ToList());
-                lock (_ringLockObj)
-                {
-                    _rings[identity] = new Dictionary<ApplicationLevel, KetamaRing>();
-                }
+                IDictionary<ApplicationLevel, KetamaRing> tempDic;
+                if (!rings.TryGetValue(identity, out tempDic)) rings.Add(identity, (tempDic = new Dictionary<ApplicationLevel, KetamaRing>()));
+                tempDic[level] = ring;
             }
+            Interlocked.Exchange(ref _rings, rings);
         }
 
         /// <summary>
@@ -302,10 +303,7 @@ namespace KJFramework.ApplicationEngine
         //Interval piped name channel connected event.
         private void ChannelCreated(object sender, LightSingleArgEventArgs<ITransportChannel> e)
         {
-            MetadataConnectionAgent agent =
-                new MetadataConnectionAgent(
-                    new MessageTransportChannel<MetadataContainer>((IRawTransportChannel) e.Target, _protocolStack),
-                    _transactionManager);
+            MetadataConnectionAgent agent = new MetadataConnectionAgent(new MessageTransportChannel<MetadataContainer>((IRawTransportChannel) e.Target, _protocolStack), _transactionManager);
             agent.Disconnected += AgentDisconnected;
             agent.NewTransaction += AgentNewTransaction;
         }
@@ -335,7 +333,7 @@ namespace KJFramework.ApplicationEngine
         {
             MetadataContainer reqMsg = e.Target.Request;
             ProtocolTypes protocol = (ProtocolTypes) reqMsg.GetAttributeAsType<byte>(0x0A);
-            MessageIdentity messageIdentity = e.Target.Request.GetAttributeAsType<ResourceBlock>(0x0B).GetAttributeAsType<MessageIdentity>(0x00);
+            MessageIdentity messageIdentity = reqMsg.GetAttributeAsType<ResourceBlock>(0x0B).GetAttributeAsType<MessageIdentity>(0x00);
             object transaction = AssembleNewTransparencyTransaction(e.Target);
             object pObject;
             Dictionary<MessageIdentity, object> dic;

@@ -263,6 +263,10 @@ namespace KJFramework.ApplicationEngine.Objects
             _application.OnLoading();
         }
 
+        /// <summary>
+        ///    续租生命周期
+        /// </summary>
+        /// <param name="time">生命周期续租的时间</param>
         private void ReLease(TimeSpan time)
         {
             if (_application != null)
@@ -273,14 +277,22 @@ namespace KJFramework.ApplicationEngine.Objects
             }
         }
 
+        /// <summary>
+        ///    获取应用内部所有已经支持的网络通讯协议
+        /// </summary>
+        /// <returns>返回支持的网络通信协议列表</returns>
         public IDictionary<ProtocolTypes, IList<MessageIdentity>> AcquireSupportedProtocols()
         {
             return _application.AcquireSupportedProtocols();
         }
 
+        /// <summary>
+        ///    更新网络缓存信息
+        /// </summary>
+        /// <param name="cache">网络信息</param>
         public void UpdateNetworkCache(Dictionary<string, List<string>> cache)
         {
-            
+            _application.UpdateNetworkCache(cache);
         }
 
         #endregion
