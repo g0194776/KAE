@@ -29,6 +29,8 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processor
          *  ===========================================
          *      0x00 - Message Identity
          *      0x01 - Transaction Identity
+         *      0x02 - KAE-Host's Default Communication Port
+         *      0x03 - Register Source Type
          *      0x0A - Application's Information (ARRAY)
          *      -------- Internal resource block's structure --------
          *          0x00 - application's CRC.
@@ -112,13 +114,16 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processor
                     return;
                 }
             }
+            KAEHostRegisterSourceTypes registerType = (KAEHostRegisterSourceTypes) reqMsg.GetAttributeAsType<byte>(0x03);
             Guid guid = Guid.NewGuid();
-            transaction.GetChannel().Tag = guid;
+            transaction.GetChannel().Tag = new Tuple<KAEHostRegisterSourceTypes, Guid>(registerType, guid);
             transaction.GetChannel().Disconnected += ChannelDisconnected;
             RemotingServerManager.Register(guid, metadataDic);
             IDictionary<string, List<string>> information = RemotingServerManager.GetAllInformation();
             rspMsg.SetAttribute(0x0A, new ByteValueStored((byte)KAEErrorCodes.OK));
             rspMsg.SetAttribute(0x0C, new ResourceBlockArrayStored(ConvertReturnMessage(information)));
+            rspMsg.SetAttribute(0x0D, new GuidValueStored(guid));
+            rspMsg.SetAttribute(0x0E, new StringValueStored(RemotingServerManager.RemotingPublisherUri.ToString()));
             transaction.SendResponse(rspMsg);
         }
 
@@ -162,8 +167,8 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processor
         {
             IMessageTransportChannel<MetadataContainer> msgChannel = (IMessageTransportChannel<MetadataContainer>) sender;
             msgChannel.Disconnected -= ChannelDisconnected;
-            Guid guid = (Guid) msgChannel.Tag;
-            RemotingServerManager.UnRegister(guid);
+            Tuple<KAEHostRegisterSourceTypes, Guid> tuple = (Tuple<KAEHostRegisterSourceTypes, Guid>)msgChannel.Tag;
+            if (tuple.Item1 == KAEHostRegisterSourceTypes.Service) RemotingServerManager.UnRegister(tuple.Item2);
         }
 
         #endregion

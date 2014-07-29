@@ -20,6 +20,10 @@
         /// <summary>
         ///    元数据插槽格式
         /// </summary>
-        Metadata = 0x03
+        Metadata = 0x03,
+        /// <summary>
+        ///    留给KAE宿主自己的，基于元数据插槽格式的网络通信协议
+        /// </summary>
+        INTERNAL_SPECIAL_RESOURCE = 0xFF
     }
 }

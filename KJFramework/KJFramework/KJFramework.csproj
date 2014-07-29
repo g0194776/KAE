@@ -105,6 +105,13 @@
     <Compile Include="Core\Native\Native.cs" />
     <Compile Include="Core\Native\Network.cs" />
     <Compile Include="Core\Native\Win32API.cs" />
+    <Compile Include="Counters\EmptyLightPerfCounter.cs" />
+    <Compile Include="Counters\ILightPerfCounter.cs" />
+    <Compile Include="Counters\LightPerfCounterCategory.cs" />
+    <Compile Include="Counters\LightPerfCounterFactory.cs" />
+    <Compile Include="Counters\LightPerfCounter.cs" />
+    <Compile Include="Counters\NumberOfItems64PerfCounter.cs" />
+    <Compile Include="Counters\NumberOfItems32PerfCounter.cs" />
     <Compile Include="Datas\Database.cs" />
     <Compile Include="Datas\DatabaseManager.cs" />
     <Compile Include="Datas\DatabaseOperation.cs" />

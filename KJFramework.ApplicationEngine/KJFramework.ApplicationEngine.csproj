@@ -58,6 +58,7 @@
     <Compile Include="Eums\ApplicationStatus.cs" />
     <Compile Include="Eums\BusinessPackageStates.cs" />
     <Compile Include="Eums\KAEErrorCodes.cs" />
+    <Compile Include="Eums\KAEHostRegisterSourceTypes.cs" />
     <Compile Include="Eums\KAEHostStatus.cs" />
     <Compile Include="Eums\ProtocolTypes.cs" />
     <Compile Include="Exceptions\IPv4LocalAddressNotFoundException.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="IApplication.cs" />
     <Compile Include="IKAEHost.cs" />
     <Compile Include="KAEHost.cs" />
+    <Compile Include="KAESettings.cs" />
+    <Compile Include="Managers\KAEHostNetworkResourceManager.cs" />
     <Compile Include="Messages\KAEResponseMessage.cs" />
     <Compile Include="Messages\KAERequestMessage.cs" />
     <Compile Include="Messages\KAETunnelTransportResponseMessage.cs" />

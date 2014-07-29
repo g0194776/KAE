@@ -117,6 +117,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Architecture.UnitTest", "KJFramework.Architecture.UnitTest\KJFramework.Architecture.UnitTest.csproj", "{902711A1-8E1E-4F60-AD34-1DC3E4BE35E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KAE", "KAE", "{3BB13ECB-28BA-4D58-9406-3C6BCDE8CB27}"
+	ProjectSection(SolutionItems) = preProject
+		TODO.txt = TODO.txt
+	EndProjectSection
 EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "KJFramework.ApplicationEngine.Diagrams", "KJFramework.ApplicationEngine.Diagrams\KJFramework.ApplicationEngine.Diagrams.modelproj", "{72138203-6EDC-4E36-9F30-DD78D115DFE1}"
 EndProject
@@ -157,6 +160,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{08B0B7AB-3968-
 		kae_db.txt = kae_db.txt
 		kae_demo_data.txt = kae_demo_data.txt
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Executable Shell", "Executable Shell", "{0F91337F-BA7C-4964-A5EE-E3C7EC4ABACE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.ApplicationEngine.KAEWorker", "KJFramework.ApplicationEngine.KAEWorker\KJFramework.ApplicationEngine.KAEWorker.csproj", "{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -608,6 +615,16 @@ Global
 		{A9CE242A-56D7-4B97-93BF-F287CB288356}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A9CE242A-56D7-4B97-93BF-F287CB288356}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A9CE242A-56D7-4B97-93BF-F287CB288356}.Release|x86.ActiveCfg = Release|Any CPU
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -678,9 +695,11 @@ Global
 		{61B65966-110D-4FA6-AC46-F02D4D4DE26A} = {4D005021-7846-4973-AB1D-912D18041C8A}
 		{CC87EFEA-3B2E-47CC-BBFF-E0EE702D9274} = {4D005021-7846-4973-AB1D-912D18041C8A}
 		{AAD4E8A3-58B3-41F6-9B25-6305CFFED484} = {4D005021-7846-4973-AB1D-912D18041C8A}
+		{0F91337F-BA7C-4964-A5EE-E3C7EC4ABACE} = {4D005021-7846-4973-AB1D-912D18041C8A}
 		{BA6AA9E8-017F-4985-9020-3D95771E9EAC} = {CC87EFEA-3B2E-47CC-BBFF-E0EE702D9274}
 		{A9CE242A-56D7-4B97-93BF-F287CB288356} = {CC87EFEA-3B2E-47CC-BBFF-E0EE702D9274}
 		{0A0E8766-FAD6-4E67-ACEC-8D76ABFA7822} = {AAD4E8A3-58B3-41F6-9B25-6305CFFED484}
+		{C41C3DAB-E43D-48D9-A432-BA10D86C67C1} = {0F91337F-BA7C-4964-A5EE-E3C7EC4ABACE}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KJFramework.vsmdi

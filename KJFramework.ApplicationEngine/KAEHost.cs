@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using System.Net;
-using KJFramework.ApplicationEngine.Connectors;
+﻿using KJFramework.ApplicationEngine.Connectors;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Helpers;
+using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Messages;
 using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Packages;
@@ -15,7 +14,6 @@ using KJFramework.Messages.Engine;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
@@ -30,6 +28,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Threading;
 using Uri = KJFramework.Net.Channels.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine
@@ -111,6 +112,12 @@ namespace KJFramework.ApplicationEngine
         /// </exception>
         private IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> Initialize()
         {
+            if (!KAEHostNetworkResourceManager.IsInitialized)
+            {
+                KAEHostNetworkResourceManager.IntellegenceNewTransaction += IntellegenceNewTransaction;
+                KAEHostNetworkResourceManager.MetadataNewTransaction += MetadataNewTransaction;
+                KAEHostNetworkResourceManager.Initialize();
+            }
             IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> appMetadata = ApplicationFinder.Search(_workRoot);
             if (appMetadata == null || appMetadata.Count == 0) return new Dictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>>();
             //re-composites.
@@ -157,7 +164,7 @@ namespace KJFramework.ApplicationEngine
 
             #region #Step 1, Build default network.
 
-            _defaultKAENetwork = InitializeDefaultNetworkResource();
+            _defaultKAENetwork = (TcpUri) KAEHostNetworkResourceManager.GetResourceUri(ProtocolTypes.INTERNAL_SPECIAL_RESOURCE);
 
             #endregion
 
@@ -199,7 +206,8 @@ namespace KJFramework.ApplicationEngine
                     foreach (KeyValuePair<ProtocolTypes, IList<MessageIdentity>> innerPair in supportedProtocols)
                     {
                         InitializeNetworkProtocolHandler(protocolDic, innerPair, subPair.Value.Item3);
-                        Uri networkUri = InitializeNetworkResource(NetworkTypes.TCP, innerPair.Key, subPair.Value.Item3.Level);
+                        Uri networkUri = KAEHostNetworkResourceManager.GetResourceUri(innerPair.Key);
+                        if (networkUri == null) throw new AllocResourceFailedException("#There wasn't any network resource can be supported. #Protocol: " + innerPair.Key);
                         tmpDic.Add(innerPair.Key, networkUri);
                         foreach (MessageIdentity messageIdentity in innerPair.Value)
                         {
@@ -237,6 +245,7 @@ namespace KJFramework.ApplicationEngine
             _rrcsConnector = new RRCSConnector(_rrcsAddr, this, _defaultKAENetwork);
             _rrcsConnector.Start();
             Status = KAEHostStatus.Prepared;
+            Thread.Sleep(0);
         }
 
         private void InitializeNetworkProtocolHandler(Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> dic, KeyValuePair<ProtocolTypes, IList<MessageIdentity>> values, ApplicationDynamicObject dynamicObject)
@@ -253,47 +262,6 @@ namespace KJFramework.ApplicationEngine
         }
 
         /// <summary>
-        ///     初始化相关的KAE网络资源
-        /// </summary>
-        /// <param name="network">网络通信类型</param>
-        /// <param name="protocol">通信协议类型</param>
-        /// <param name="level">应用等级</param>
-        /// <exception cref="NotSupportedException">不支持的网络类型</exception>
-        /// <exception cref="AllocResourceFailedException">申请网络资源失败</exception>
-        private Uri InitializeNetworkResource(NetworkTypes network, ProtocolTypes protocol, ApplicationLevel level)
-        {
-            Uri uri;
-            IHostTransportChannel channel = NetworkHelper.BuildHostChannel(network, out uri);
-            channel.ChannelCreated += ChannelCreated;
-            if (!channel.Regist())
-            {
-                channel.ChannelCreated -= ChannelCreated;
-                throw new AllocResourceFailedException("#Sadly, We couldn't alloc current network resource. #Uri: " + uri);
-            }
-            channel.Tag = new Tuple<KAENetworkResource, ApplicationLevel>(new KAENetworkResource { NetworkUri = uri, Protocol = protocol }, level);
-            _hostChannels.Add(channel);
-            return uri;
-        }
-
-        /// <summary>
-        ///     初始化KAE宿主默认的网络资源
-        /// </summary>
-        private TcpUri InitializeDefaultNetworkResource()
-        {
-            TcpUri uri;
-            TcpHostTransportChannel defaultChannel = (TcpHostTransportChannel) NetworkHelper.BuildDefaultHostChannel();
-            defaultChannel.ChannelCreated += ChannelCreated;
-            if (!defaultChannel.Regist())
-            {
-                defaultChannel.ChannelCreated -= ChannelCreated;
-                throw new AllocResourceFailedException("#Sadly, We couldn't alloc default KAE host network resource. ");
-            }
-            defaultChannel.Tag = new Tuple<KAENetworkResource, ApplicationLevel>(new KAENetworkResource { NetworkUri = (uri = new TcpUri(string.Format("tcp://localhost:{0}", defaultChannel.Port))), Protocol = ProtocolTypes.Metadata }, ApplicationLevel.Unknown);
-            _hostChannels.Add(defaultChannel);
-            return uri;
-        }
-
-        /// <summary>
         ///    开启KAE宿主
         /// </summary>
         public void Stop()
@@ -307,7 +275,17 @@ namespace KJFramework.ApplicationEngine
             Status = KAEHostStatus.Stopped;
         }
 
-        //handles redirection business.
+        /*
+         *  处理外部请求的总入口
+         *  
+         *  [RSP MESSAGE]
+         *  ===========================================
+         *      0x00 - Message Identity
+         *      0x01 - Transaction Identity
+         *      0x02 - Requested Targeting APP Level (REQUIRED)
+         *      ...
+         *      Other Business Fields
+         */
         private void HandleBusiness(Tuple<KAENetworkResource, ApplicationLevel> tag, object transaction, MessageIdentity reqMsgIdentity, object reqMsg)
         {
             ApplicationDynamicObject dynamicObj;
@@ -508,9 +486,9 @@ namespace KJFramework.ApplicationEngine
         void MetadataNewTransaction(object sender, LightSingleArgEventArgs<IMessageTransaction<MetadataContainer>> e)
         {
             MetadataConnectionAgent agent = (MetadataConnectionAgent)sender;
-            Tuple<KAENetworkResource, ApplicationLevel> tag = (Tuple<KAENetworkResource, ApplicationLevel>)agent.Tag;
             IMessageTransaction<MetadataContainer> transaction = e.Target;
             MetadataContainer reqMsg = transaction.Request;
+            Tuple<KAENetworkResource, ApplicationLevel> tag = new Tuple<KAENetworkResource, ApplicationLevel>((KAENetworkResource)agent.Tag, (ApplicationLevel)reqMsg.GetAttributeAsType<byte>(0x02));
             MessageIdentity reqMsgIdentity = reqMsg.GetAttributeAsType<MessageIdentity>(0x00);
             /*
              * We always makes a checking on the Metadata protocol network communication. 
@@ -524,9 +502,9 @@ namespace KJFramework.ApplicationEngine
         void IntellegenceNewTransaction(object sender, LightSingleArgEventArgs<IMessageTransaction<BaseMessage>> e)
         {
             IntellectObjectConnectionAgent agent = (IntellectObjectConnectionAgent)sender;
-            Tuple<KAENetworkResource, ApplicationLevel> tag = (Tuple<KAENetworkResource, ApplicationLevel>)agent.Tag;
             IMessageTransaction<BaseMessage> transaction = e.Target;
             KAERequestMessage reqMsg = (KAERequestMessage)transaction.Request;
+            Tuple<KAENetworkResource, ApplicationLevel> tag = new Tuple<KAENetworkResource, ApplicationLevel>((KAENetworkResource)agent.Tag, reqMsg.RequestedLevel);
             MessageIdentity reqMsgIdentity = reqMsg.MessageIdentity;
             HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg);
         }

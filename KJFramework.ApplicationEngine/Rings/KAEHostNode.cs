@@ -17,7 +17,9 @@ namespace KJFramework.ApplicationEngine.Rings
         /// <param name="address">远程KAE宿主终结点地址</param>
         public KAEHostNode(string address)
         {
-            string[] contents = address.Split(new[] {":"}, StringSplitOptions.RemoveEmptyEntries);
+            RawAddress = address;
+            string newAddress = address.Substring(address.LastIndexOf("://") + 3);
+            string[] contents = newAddress.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
             EndPoint = new IPEndPoint(IPAddress.Parse(contents[0]), int.Parse(contents[1]));
         }
 
@@ -34,6 +36,10 @@ namespace KJFramework.ApplicationEngine.Rings
         ///    获取当前KAE宿主所支持的网络协议类型
         /// </summary>
         public ProtocolTypes Protocol { get; private set; }
+        /// <summary>
+        ///    获取远程通信地址的原始形态链接
+        /// </summary>
+        public string RawAddress { get; private set; }
 
 
         #endregion

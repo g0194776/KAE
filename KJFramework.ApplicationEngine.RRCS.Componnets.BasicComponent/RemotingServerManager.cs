@@ -2,9 +2,11 @@
 using KJFramework.Data.Synchronization;
 using KJFramework.Data.Synchronization.Enums;
 using KJFramework.Data.Synchronization.Factories;
+using KJFramework.Net.Channels.Uri;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
+using Uri = KJFramework.Net.Channels.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
 {
@@ -23,6 +25,8 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
         private static readonly Dictionary<string, SortedDictionary<Guid, List<string>>> _addresses = new Dictionary<string, SortedDictionary<Guid, List<string>>>();
         private static readonly Dictionary<string, IDataPublisher<string, string[]>> _publishers = new Dictionary<string, IDataPublisher<string, string[]>>();
 
+        public static Uri RemotingPublisherUri { get; private set; }
+
         #endregion
 
         #region Methods.
@@ -38,6 +42,7 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
                 throw new System.Exception("#RRCS couldn't open a defaut remoting server publisher.");
             }
             lock (_lockObjForPublisher) _publishers.Add("*", defaultPublisher);
+            RemotingPublisherUri = new TcpUri(string.Format("tcp://{0}:{1}", NetworkHelper.GetCurrentMachineIP(), resource.GetResource<int>()));
         }
 
         public static void Register(Guid guid, IDictionary<string, List<string>> dic)

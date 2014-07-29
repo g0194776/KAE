@@ -1,4 +1,6 @@
-﻿using KJFramework.Net.Transaction.Messages;
+﻿using KJFramework.ApplicationEngine.Eums;
+using KJFramework.Messages.Attributes;
+using KJFramework.Net.Transaction.Messages;
 
 namespace KJFramework.ApplicationEngine.Messages
 {
@@ -7,6 +9,16 @@ namespace KJFramework.ApplicationEngine.Messages
     /// </summary>
     public abstract class KAERequestMessage : BaseMessage
     {
+        #region Members.
+
+        /// <summary>
+        ///    请求到目标KAE应用的应用等级
+        /// </summary>
+        [IntellectProperty(2)]
+        public ApplicationLevel RequestedLevel { get; set; }
+
+        #endregion
+
         #region Methods.
 
         /// <summary>

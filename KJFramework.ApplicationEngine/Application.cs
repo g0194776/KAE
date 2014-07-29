@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using KJFramework.ApplicationEngine.Attributes;
+﻿using KJFramework.ApplicationEngine.Attributes;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Helpers;
@@ -91,6 +90,7 @@ namespace KJFramework.ApplicationEngine
 
         private KPPDataStructure _structure;
         private IHostTransportChannel _hostChannel;
+        private readonly object _lockObj = new object();
         private IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> _processors;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Application));
         private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
@@ -119,7 +119,6 @@ namespace KJFramework.ApplicationEngine
         /// <param name="cache">网络信息</param>
         public void UpdateNetworkCache(Dictionary<string, List<string>> cache)
         {
-            IDictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>> rings = new Dictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>>();
             foreach (KeyValuePair<string, List<string>> pair in cache)
             {
                 string[] contents = pair.Key.Split(new[] {"_"}, StringSplitOptions.RemoveEmptyEntries);
@@ -138,11 +137,13 @@ namespace KJFramework.ApplicationEngine
                 };
                 //prepares kathma ring.
                 KetamaRing ring = new KetamaRing(pair.Value.Select(v => new KAEHostNode(v)).ToList());
-                IDictionary<ApplicationLevel, KetamaRing> tempDic;
-                if (!rings.TryGetValue(identity, out tempDic)) rings.Add(identity, (tempDic = new Dictionary<ApplicationLevel, KetamaRing>()));
-                tempDic[level] = ring;
+                lock (_lockObj)
+                {
+                    IDictionary<ApplicationLevel, KetamaRing> tempDic;
+                    if (!_rings.TryGetValue(identity, out tempDic)) _rings.Add(identity, (tempDic = new Dictionary<ApplicationLevel, KetamaRing>()));
+                    tempDic[level] = ring;
+                }
             }
-            Interlocked.Exchange(ref _rings, rings);
         }
 
         /// <summary>

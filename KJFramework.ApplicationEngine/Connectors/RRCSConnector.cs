@@ -1,4 +1,8 @@
 ﻿using KJFramework.ApplicationEngine.Eums;
+using KJFramework.Data.Synchronization;
+using KJFramework.Data.Synchronization.Enums;
+using KJFramework.Data.Synchronization.EventArgs;
+using KJFramework.Data.Synchronization.Factories;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Types;
@@ -51,7 +55,8 @@ namespace KJFramework.ApplicationEngine.Connectors
         private MetadataConnectionAgent _agent;
         private Thread _thread;
         private bool _enable;
-        private bool _connectedToRRCS = false;
+        private bool _connectedToRRCS;
+        private IRemoteDataSubscriber<string, string[]> _subscriber;
         private AutoResetEvent _resetEvent = new AutoResetEvent(false);
         private static readonly TimeSpan _sleepInterval = TimeSpan.Parse("00:00:05");
         private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
@@ -114,6 +119,7 @@ namespace KJFramework.ApplicationEngine.Connectors
          *      0x00 - Message Identity
          *      0x01 - Transaction Identity
          *      0x02 - KAE-Host's Default Communication Port
+         *      0x03 - Register Source Type
          *      0x0A - Application's Information (ARRAY)
          *      -------- Internal resource block's structure --------
          *          0x00 - application's CRC.
@@ -132,6 +138,8 @@ namespace KJFramework.ApplicationEngine.Connectors
          *      -------- Internal resource block's structure --------
          *          0x00 - application's network identity.
          *          0x01 - application's end-points (STRING ARRAY).
+         *      0x0D - Current Registed Process' Token (GUID).
+         *      0x0E - Remoting RRCS Publisher Accessed Uri.
          */
         private void RegisterToRRCS()
         {
@@ -168,6 +176,7 @@ namespace KJFramework.ApplicationEngine.Connectors
                     return;
                 }
                 _connectedToRRCS = true;
+                DescribeRRCS(rspMsg.GetAttributeAsType<string>(0x0E));
                 AnalyizeRRCSResult(rspMsg);
             };
             transaction.SendRequest(reqMsg);
@@ -179,6 +188,7 @@ namespace KJFramework.ApplicationEngine.Connectors
             if (caches.Count == 0) return null;
             MetadataContainer reqMsg = new MetadataContainer();
             reqMsg.SetAttribute(0x02, new Int32ValueStored(_defaultKAENetwork.Port));
+            reqMsg.SetAttribute(0x03, new ByteValueStored((byte) KAEHostRegisterSourceTypes.Service));
             ResourceBlock[] blocks = new ResourceBlock[caches.Count];
             reqMsg.SetAttribute(0x0A, new ResourceBlockArrayStored(blocks));
             int offset = 0;
@@ -200,7 +210,6 @@ namespace KJFramework.ApplicationEngine.Connectors
             }
             return reqMsg;
         }
-
 
         /*  [RSP MESSAGE]
          *  ===========================================
@@ -229,6 +238,26 @@ namespace KJFramework.ApplicationEngine.Connectors
             _host.UpdateNetworkCache(caches);
         }
 
+        /// <summary>
+        ///    订阅远程RRCS服务的发布者
+        /// </summary>
+        /// <param name="rrcsPublisherUri">远程RRCS服务的发布者地址</param>
+        private void DescribeRRCS(string rrcsPublisherUri)
+        {
+            rrcsPublisherUri = rrcsPublisherUri.Substring(rrcsPublisherUri.LastIndexOf("://") + 3);
+            _subscriber = DataSubscriberFactory.Instance.Create<string, string[]>("*", new NetworkResource(rrcsPublisherUri), true);
+            _subscriber.MessageRecv += SubscriberMessageRecv;
+            _subscriber.Open();
+        }
+
+        #region Events.
+        void SubscriberMessageRecv(object sender, LightSingleArgEventArgs<DataRecvEventArgs<string, string[]>> e)
+        {
+            Dictionary<string, List<string>> caches = new Dictionary<string, List<string>>();
+            caches.Add(e.Target.Key, new List<string>(e.Target.Value));
+            _host.UpdateNetworkCache(caches);
+        }
+
         void AgentDisconnected(object sender, System.EventArgs e)
         {
             MetadataConnectionAgent agent = (MetadataConnectionAgent)sender;
@@ -236,6 +265,8 @@ namespace KJFramework.ApplicationEngine.Connectors
             _connectedToRRCS = false;
             _agent = null;
         }
+
+        #endregion
 
         #endregion
     }
