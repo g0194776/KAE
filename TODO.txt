@@ -6,3 +6,12 @@
 4. 初步完成了ApplicationDynamicObject和真实Application之间的协同调用
 5. 更新了KAE宿主进程启动时使用随机网络资源的分配方式
 6. 修改了从HostChannel到ConnectionAgent中对于Tag字段值的使用规则
+
+
+What's the next:
+------------------------------------------------
+1. 完成LightPerformanceCounter的编写, 并将此应用于KAEHost内部
+2. 针对RRCS内部通过crc从数据库获取APP信息的场景做进程内缓存
+3. 重写SystemWorker的ConfigurationProxy类，并支持接口传入callback函数
+4. 为CSN增加配置信息变化的Publisher
+5. 重写SystemConnectionPool，为其增加Multiple Socket Connection的支持

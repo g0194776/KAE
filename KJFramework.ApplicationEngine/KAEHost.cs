@@ -2,7 +2,6 @@
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Finders;
-using KJFramework.ApplicationEngine.Helpers;
 using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Messages;
 using KJFramework.ApplicationEngine.Objects;
@@ -13,14 +12,10 @@ using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
-using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
-using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
@@ -78,7 +73,6 @@ namespace KJFramework.ApplicationEngine
         private TcpUri _defaultKAENetwork;
         private RRCSConnector _rrcsConnector;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (KAEHost));
-        private IList<IHostTransportChannel> _hostChannels;
         private readonly object _protocolDicLockObj = new object();
         //caches for network end-points by respective MessageIdentity.
         //1st level of key = MessageIdentity + App Level; second level of key = application's version.
@@ -160,7 +154,6 @@ namespace KJFramework.ApplicationEngine
                 _tracing.Critical("#KAE Host running on process id {0} had no prepared application!");
                 return;
             }
-            _hostChannels = new List<IHostTransportChannel>();
 
             #region #Step 1, Build default network.
 
@@ -266,12 +259,6 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         public void Stop()
         {
-            foreach (IHostTransportChannel channel in _hostChannels)
-            {
-                channel.ChannelCreated -= ChannelCreated;
-                channel.UnRegist();
-            }
-            _hostChannels.Clear();
             Status = KAEHostStatus.Stopped;
         }
 
@@ -454,34 +441,6 @@ namespace KJFramework.ApplicationEngine
         #endregion
 
         #region Events.
-
-        void ChannelCreated(object sender, LightSingleArgEventArgs<ITransportChannel> e)
-        {
-            IHostTransportChannel hostChannel = (IHostTransportChannel) sender;
-            Tuple<KAENetworkResource, ApplicationLevel> tag = (Tuple<KAENetworkResource, ApplicationLevel>) hostChannel.Tag;
-            if (tag.Item1.Protocol == ProtocolTypes.Metadata)
-            {
-                IMessageTransportChannel<MetadataContainer> msgChannel = new MessageTransportChannel<MetadataContainer>((IRawTransportChannel) e.Target, (IProtocolStack<MetadataContainer>) NetworkHelper.GetProtocolStack(tag.Item1.Protocol));
-                MetadataConnectionAgent agent = new MetadataConnectionAgent(msgChannel, (MetadataTransactionManager) NetworkHelper.GetTransactionManager(tag.Item1.Protocol));
-                agent.Disconnected += AgentDisconnected;
-                agent.NewTransaction += MetadataNewTransaction;
-                agent.Tag = tag;
-            }
-            else if (tag.Item1.Protocol == ProtocolTypes.Intellegence)
-            {
-                IMessageTransportChannel<BaseMessage> msgChannel = new MessageTransportChannel<BaseMessage>((IRawTransportChannel)e.Target, (IProtocolStack<BaseMessage>)NetworkHelper.GetProtocolStack(tag.Item1.Protocol));
-                IntellectObjectConnectionAgent agent = new IntellectObjectConnectionAgent(msgChannel, (MessageTransactionManager) NetworkHelper.GetTransactionManager(tag.Item1.Protocol));
-                agent.Disconnected += AgentDisconnected;
-                agent.NewTransaction += IntellegenceNewTransaction;
-                agent.Tag = tag;
-            }
-        }
-
-        void AgentDisconnected(object sender, System.EventArgs e)
-        {
-            IConnectionAgent agent = (IConnectionAgent)sender;
-            agent.Disconnected -= AgentDisconnected;
-        }
 
         void MetadataNewTransaction(object sender, LightSingleArgEventArgs<IMessageTransaction<MetadataContainer>> e)
         {
