@@ -47,9 +47,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Apps\635395833908212890.kpp" />
-    <None Include="Apps\special2.kpp">
+    <None Include="Apps\635433858931961061.kpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Apps\special2.kpp" />
+    <None Include="Apps\special3_withRSP.kpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.ApplicationEngine\KJFramework.ApplicationEngine.csproj">

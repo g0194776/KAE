@@ -80,7 +80,11 @@ namespace KJFramework.Net.Transaction
         public virtual V GetTransaction(TransactionIdentity key)
         {
             V transaction;
-            return _transactions.TryGetValue(key, out transaction) ? transaction : default(V);
+            if (_transactions.TryGetValue(key, out transaction))
+            {
+                return transaction;
+            }
+            return default(V);
         }
 
         /// <summary>

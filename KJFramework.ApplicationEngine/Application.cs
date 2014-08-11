@@ -310,6 +310,8 @@ namespace KJFramework.ApplicationEngine
                     MetadataMessageTransaction transaction = new MetadataMessageTransaction(preTransaction.GetChannel());
                     transaction.Identity = preTransaction.Identity;
                     transaction.Request = preTransaction.Request.GetAttributeAsType<ResourceBlock>(0x0B).AsMetadataContainer();
+                    //reset current transaction identity to the original.
+                    transaction.Request.SetAttribute(0x01, new TransactionIdentityValueStored(preTransaction.Identity));
                     transaction.NeedResponse = !transaction.Identity.IsOneway;
                     return transaction;
             }

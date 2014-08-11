@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting;
-using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Threading;
 using KJFramework.ApplicationEngine.Eums;
@@ -19,11 +18,13 @@ using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Configurations;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
+using KJFramework.Net.Transaction;
+using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
-using KJFramework.Net.Transaction.Helpers;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Tracing;
+using ILease = System.Runtime.Remoting.Lifetime.ILease;
 
 namespace KJFramework.ApplicationEngine.Objects
 {
@@ -73,7 +74,7 @@ namespace KJFramework.ApplicationEngine.Objects
         private readonly KPPDataStructure _structure;
         private readonly ApplicationEntryInfo _entryInfo;
         private readonly ChannelInternalConfigSettings _settings;
-        private IMessageTransportChannel<MetadataContainer> _msgChannel; 
+        private IServerConnectionAgent<MetadataContainer> _agent;
         private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
         private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ApplicationDynamicObject));
@@ -158,17 +159,6 @@ namespace KJFramework.ApplicationEngine.Objects
             return _application.GetTunnel<T>(componentName);
         }
 
-        /// <summary>
-        ///    在指定的应用隧道上创建一个业务包裹
-        /// </summary>
-        public IBusinessPackage CreateBusinessPackage()
-        {
-            BusinessPackage package =  new BusinessPackage(_msgChannel);
-            package.Identity = IdentityHelper.Create(package.GetChannel().LocalEndPoint, package.GetChannel().ChannelType);
-            _transactionManager.Add(package.Identity, package);
-            return package;
-        }
-
         private void PreInitialize()
         {
             try
@@ -212,6 +202,19 @@ namespace KJFramework.ApplicationEngine.Objects
         }
 
         /// <summary>
+        ///    在指定的应用隧道上创建一个业务包裹
+        /// </summary>
+        public IBusinessPackage CreateBusinessPackage()
+        {
+            MessageTransaction<MetadataContainer> transaction = _agent.CreateTransaction();
+            BusinessPackage package = new BusinessPackage((MetadataMessageTransaction) transaction);
+            package.ProtocolType = ProtocolTypes.Metadata;
+            package.State = BusinessPackageStates.ReceivedOutsideRequest;
+            Console.WriteLine(package.Transaction.Identity);
+            return package;
+        }
+
+        /// <summary>
         ///     建立与APP之间的内部通信隧道
         /// </summary>
         /// <exception cref="CannotConnectToTunnelException">无法建立正常的隧道连接</exception>
@@ -221,7 +224,7 @@ namespace KJFramework.ApplicationEngine.Objects
             ITransportChannel channel = new PipeTransportChannel(uri);
             channel.Connect();
             if (!channel.IsConnected) throw new CannotConnectToTunnelException("#Couldn't connect to specified remote tunnel address: " + uri);
-            _msgChannel = new MessageTransportChannel<MetadataContainer>((IRawTransportChannel)channel, _protocolStack);
+            _agent = new MetadataConnectionAgent(new MessageTransportChannel<MetadataContainer>((IRawTransportChannel)channel, _protocolStack), _transactionManager);
         }
 
         /// <summary>

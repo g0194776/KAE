@@ -71,6 +71,7 @@
     <Compile Include="Exceptions\ConflictedBasicallyResourceException.cs" />
     <Compile Include="Exceptions\UnSupportedSectionTypeException.cs" />
     <Compile Include="Exceptions\FolderNotFoundException.cs" />
+    <Compile Include="Extends\MetadataContainerExtend.cs" />
     <Compile Include="Finders\ApplicationFinder.cs" />
     <Compile Include="Helpers\FileCompression.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />

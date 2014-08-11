@@ -49,7 +49,7 @@ namespace KJFramework.Net.Transaction
         ///     获取或设置事务管理器
         /// </summary>
         public MetadataTransactionManager TransactionManager { get; set; }
-        protected static readonly ITracing _tracing = TracingManager.GetTracing(typeof(BusinessMessageTransaction));
+        protected static readonly ITracing _tracing = TracingManager.GetTracing(typeof(MetadataMessageTransaction));
         /// <summary>
         ///     获取或设置请求消息
         /// </summary>

@@ -31,6 +31,8 @@ namespace KJFramework.Net.Transaction.Comparers
             }
             else if (x.IdentityType == TransactionIdentityTypes.NamedPipe)
             {
+                if (x.IsOneway != y.IsOneway) return false;
+                if (x.MessageId != y.MessageId) return false;
                 if (((NamedPipeEndPoint)x.EndPoint).GetPipeCodeId() != ((NamedPipeEndPoint)y.EndPoint).GetPipeCodeId()) return false;
             }
             return true;

@@ -66,8 +66,8 @@ namespace KJFramework.Architecture.UnitTest.KAE
             section.SetField("PackTime", now);
             section.SetField("ApplicationMainFileName", "KJFramework.ApplicationEngine.ApplicationTest.dll");
             section.SetField("GlobalUniqueIdentity", guid);
-            section.SetField("IsCompletedEnvironment", true);
-            KPPResource.Pack(@"..\..\..\KJFramework.ApplicationEngine.ApplicationTest\bin\Debug\", fileName, head, true, section);
+            section.SetField("IsCompletedEnvironment", false);
+            KPPResource.Pack(@"..\..\..\KJFramework.ApplicationEngine.ApplicationTest\bin\Debug\", fileName, head, false, section);
             Assert.IsTrue(File.Exists(fileName));
             return Path.GetFullPath(fileName);
         }

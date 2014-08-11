@@ -21,6 +21,8 @@ namespace KJFramework.ApplicationEngine.SendMessageTest
     {
         static void Main(string[] args)
         {
+            Console.Write("Loop Count: ");
+            int count = int.Parse(Console.ReadLine());
             Console.Write("Remoting KAEHost Metadata Port: ");
             int port = int.Parse(Console.ReadLine());
             ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
@@ -32,26 +34,29 @@ namespace KJFramework.ApplicationEngine.SendMessageTest
             ITransportChannel channel = new TcpTransportChannel(new IPEndPoint(IPAddress.Parse("127.0.0.1"), port));
             channel.Connect();
             MetadataConnectionAgent agent = new MetadataConnectionAgent(new MessageTransportChannel<MetadataContainer>((IRawTransportChannel)channel, new MetadataProtocolStack()), transactionManager);
-            MessageTransaction<MetadataContainer> transaction = agent.CreateTransaction();
-            transaction.Failed += delegate(object sender, System.EventArgs eventArgs)
+            for (int i = 0; i < count; i++)
             {
-                Console.WriteLine("FAIL");
-            };
-            transaction.Timeout += delegate(object sender, System.EventArgs eventArgs)
-            {
-                Console.WriteLine("Timeout");
-            };
-            transaction.ResponseArrived +=
-                delegate(object sender, LightSingleArgEventArgs<MetadataContainer> eventArgs)
+                MessageTransaction<MetadataContainer> transaction = agent.CreateTransaction();
+                transaction.Failed += delegate(object sender, System.EventArgs eventArgs)
                 {
-                    Console.WriteLine("Received RSP:");
-                    Console.WriteLine(eventArgs.Target);
+                    Console.WriteLine("FAIL");
                 };
-            MetadataContainer reqMsg = new MetadataContainer();
-            reqMsg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 1, ServiceId = 0, DetailsId = 2 }));
-            reqMsg.SetAttribute(0x02, new ByteValueStored((byte) ApplicationLevel.Stable));
-            reqMsg.SetAttribute(0x0A, new StringValueStored("Hello, KAE"));
-            transaction.SendRequest(reqMsg);
+                transaction.Timeout += delegate(object sender, System.EventArgs eventArgs)
+                {
+                    Console.WriteLine("Timeout");
+                };
+                transaction.ResponseArrived +=
+                    delegate(object sender, LightSingleArgEventArgs<MetadataContainer> eventArgs)
+                    {
+                        Console.WriteLine("Received RSP:");
+                        Console.WriteLine(eventArgs.Target);
+                    };
+                MetadataContainer reqMsg = new MetadataContainer();
+                reqMsg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 1, ServiceId = 0, DetailsId = 2 }));
+                reqMsg.SetAttribute(0x02, new ByteValueStored((byte)ApplicationLevel.Stable));
+                reqMsg.SetAttribute(0x0A, new StringValueStored("Hello, KAE"));
+                transaction.SendRequest(reqMsg);
+            }
             Console.WriteLine("Wrote OK...");
             Console.ReadLine();
         }

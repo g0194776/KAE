@@ -1,33 +1,32 @@
 ﻿using KJFramework.ApplicationEngine.Eums;
-using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction;
-using System;
 
 namespace KJFramework.ApplicationEngine.Packages
 {
     /// <summary>
     ///     业务包裹
     /// </summary>
-    internal class BusinessPackage : MetadataMessageTransaction, IBusinessPackage
+    internal class BusinessPackage : IBusinessPackage
     {
         #region Constructors.
 
         /// <summary>
         ///     业务包裹
         /// </summary>
-        /// <param name="channel">承载元数据通信协议的消息通信信道</param>
-        /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public BusinessPackage(IMessageTransportChannel<MetadataContainer> channel)
-            : base(channel)
+        /// <param name="transaction">本次通信所使用的网络消息事务</param>
+        public BusinessPackage(MetadataMessageTransaction transaction)
         {
-            if (channel == null) throw new ArgumentNullException("channel");
+            Transaction = transaction;
         }
 
         #endregion
 
         #region Members.
 
+        /// <summary>
+        ///    获取或设置本次通信所使用的网络消息事务
+        /// </summary>
+        public MetadataMessageTransaction Transaction { get; internal set; }
         /// <summary>
         ///    获取当前业务包裹的状态
         /// </summary>

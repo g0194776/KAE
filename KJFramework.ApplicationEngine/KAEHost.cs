@@ -2,6 +2,7 @@
 using KJFramework.ApplicationEngine.Connectors;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
+using KJFramework.ApplicationEngine.Extends;
 using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Messages;
@@ -302,7 +303,7 @@ namespace KJFramework.ApplicationEngine
         {
             _rspRemainningCounter.Increment();
             ApplicationDynamicObject dynamicObj;
-            IBusinessPackage package;
+            BusinessPackage package;
             lock (_protocolDicLockObj)
             {
                 //Targeted network protocol CANNOT be support.
@@ -326,18 +327,20 @@ namespace KJFramework.ApplicationEngine
                     return;
                 }
                 //acquires a business package for getting the return value from targeted application.
-                package = dynamicObj.CreateBusinessPackage();
+                package = (BusinessPackage) dynamicObj.CreateBusinessPackage();
             }
-            package.Failed += delegate { HandleErrorSituation(ProtocolTypes.Metadata, transaction, KAEErrorCodes.TunnelCommunicationFailed, "#Occured failed while communicating with the targeted application."); };
-            package.Timeout += delegate { HandleErrorSituation(ProtocolTypes.Metadata, transaction, KAEErrorCodes.TunnelCommunicationTimeout, "#Occured timeout while communicating with the targeted application."); };
-            package.ResponseArrived += delegate(object o, LightSingleArgEventArgs<MetadataContainer> args)
+            package.Transaction.Failed += delegate { HandleErrorSituation(ProtocolTypes.Metadata, transaction, KAEErrorCodes.TunnelCommunicationFailed, "#Occured failed while communicating with the targeted application."); };
+            package.Transaction.Timeout += delegate { HandleErrorSituation(ProtocolTypes.Metadata, transaction, KAEErrorCodes.TunnelCommunicationTimeout, "#Occured timeout while communicating with the targeted application."); };
+            package.Transaction.ResponseArrived += delegate(object o, LightSingleArgEventArgs<MetadataContainer> args)
             {
+                package.State = BusinessPackageStates.ReceivedDeliveryResponse;
                 //error situation.
-                if (args.Target.GetAttributeAsType<byte>(0x0A) != 0x00)
+                if (args.Target.GetAttributeByIdSafety<byte>(0x0A) != 0x00)
                     HandleErrorSituation(ProtocolTypes.Metadata, transaction, (KAEErrorCodes)args.Target.GetAttributeAsType<byte>(0x0A), args.Target.GetAttributeAsType<string>(0x0B));
                 else HandleSucceedSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.OK, args.Target);
             };
-            package.SendRequest(CreateTunnelMessage(tag.Item1.Protocol, reqMsg));
+            package.Transaction.SendRequest(CreateTunnelMessage(tag.Item1.Protocol, reqMsg));
+            package.State = BusinessPackageStates.Delivered;
         }
 
         /*
@@ -412,7 +415,7 @@ namespace KJFramework.ApplicationEngine
                     MetadataContainer rspMsg = new MetadataContainer();
                     rspMsg.SetAttribute(0x00, new MessageIdentityValueStored(msgIdentity));
                     rspMsg.SetAttribute(0x0A, new ByteValueStored((byte)errorCode));
-                    rspMsg.SetAttribute(0x0C, rspMessage.GetAttribute(0x0C));
+                    if (rspMessage.IsAttibuteExsits(0x0C)) rspMsg.SetAttribute(0x0C, rspMessage.GetAttribute(0x0C));
                     msgTransaction.SendResponse(rspMsg);
                     break;
                 case ProtocolTypes.Intellegence:
