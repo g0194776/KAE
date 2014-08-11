@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: InternalsVisibleTo("KJFramework.Platform.Deploy.CSN.NetworkLayer")]
 [assembly: InternalsVisibleTo("KJFramework.Architecture.UnitTest")]
+[assembly: InternalsVisibleTo("KJFramework.ApplicationEngine")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

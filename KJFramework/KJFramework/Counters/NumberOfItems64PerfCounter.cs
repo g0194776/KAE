@@ -25,7 +25,6 @@ namespace KJFramework.Counters
         #region Members.
 
         private long _value;
-        private readonly DateTime _creatTime = DateTime.Now;
 
         #endregion
 
@@ -53,7 +52,7 @@ namespace KJFramework.Counters
         /// <returns>返回当前性能计数器的值</returns>
         public override float GetValue()
         {
-            return (float) (_value/(DateTime.Now - _creatTime).TotalSeconds);
+            return _value;
         }
 
         #endregion

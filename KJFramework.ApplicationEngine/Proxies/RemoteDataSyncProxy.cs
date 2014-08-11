@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using KJFramework.Data.Synchronization;
 using KJFramework.Data.Synchronization.Enums;
 using KJFramework.Data.Synchronization.EventArgs;
@@ -8,55 +8,54 @@ using KJFramework.EventArgs;
 namespace KJFramework.ApplicationEngine.Proxies
 {
     /// <summary>
-    ///     Ô¶³ÌÊı¾İÍ¬²½´úÀíÆ÷
-    ///     <para>* ÓÃÓÚ¼ò»¯ÓëSNCÖ®¼äµÄÍ¨ĞÅ½»»¥</para>
+    ///     è¿œç¨‹æ•°æ®åŒæ­¥ä»£ç†å™¨
     /// </summary>
     internal sealed class RemoteDataSyncProxy : IRemoteDataSyncProxy
     {
         #region Constructor
 
         /// <summary>
-        ///     Ô¶³ÌÊı¾İÍ¬²½´úÀíÆ÷
-        ///     <para>* ÓÃÓÚ¼ò»¯ÓëSNCÖ®¼äµÄÍ¨ĞÅ½»»¥</para>
+        ///     è¿œç¨‹æ•°æ®åŒæ­¥ä»£ç†å™¨
         /// </summary>
-        public RemoteDataSyncProxy()
+        /// <param name="iep">è¿œç¨‹Data Sync Publisherçš„è®¿é—®åœ°å€</param>
+        /// <exception cref="ArgumentNullException">å‚æ•°ä¸èƒ½ä¸ºç©º</exception>
+        public RemoteDataSyncProxy(string iep)
         {
-            _sncGlobalConfigIep = SystemWorker.Instance.ConfigurationProxy.GetField("Common", "SAPS_Address");
+            if (string.IsNullOrEmpty(iep)) throw new ArgumentNullException(iep);
+            _iep = iep;
         }
 
         #endregion
 
         #region Members
 
-        private readonly string _sncGlobalConfigIep;
+        private readonly string _iep;
 
         #endregion
 
         #region Implementation of IRemoteDataSyncProxy
 
         /// <summary>
-        ///     ´´½¨Ò»¸öÊı¾İ¶©ÔÄÕß£¬²¢ÇÒ¶©ÔÄµ½Ô¶³ÌSAPSÉÏ
+        ///     åˆ›å»ºä¸€ä¸ªæ•°æ®è®¢é˜…è€…ï¼Œå¹¶ä¸”è®¢é˜…åˆ°è¿œç¨‹Data Publisherä¸Š
         /// </summary>
-        /// <param name="catalog">SAPSÉÏµÄ·ÖÀà</param>
-        /// <param name="callback">»Øµ÷º¯Êı</param>
-        /// <param name="isAutoReconnect">Á¬½Ó¶Ï¿ªºóµÄÖØÁ¬±êÊ¶</param>
-        /// <returns>·µ»Ø¶©ÔÄºóµÄ×´Ì¬</returns>
-        public IRemoteDataSubscriber<string, string> Regist(string catalog, EventHandler<LightSingleArgEventArgs<DataRecvEventArgs<string, string>>> callback, bool isAutoReconnect = false)
+        /// <param name="catalog">Data Publisherä¸Šçš„åˆ†ç±»</param>
+        /// <param name="callback">å›è°ƒå‡½æ•°</param>
+        /// <param name="isAutoReconnect">è¿æ¥æ–­å¼€åçš„é‡è¿æ ‡è¯†</param>
+        public void Regist(string catalog, EventHandler<LightSingleArgEventArgs<DataRecvEventArgs<string, string>>> callback, bool isAutoReconnect = false)
         {
-            return Regist(catalog, _sncGlobalConfigIep, callback, isAutoReconnect);
+            Regist(catalog, _iep, callback, isAutoReconnect);
         }
 
         /// <summary>
-        ///     ´´½¨Ò»¸öÊı¾İ¶©ÔÄÕß£¬²¢ÇÒ¶©ÔÄµ½Ô¶³ÌSAPSÉÏ
+        ///     åˆ›å»ºä¸€ä¸ªæ•°æ®è®¢é˜…è€…ï¼Œå¹¶ä¸”è®¢é˜…åˆ°è¿œç¨‹Data Publisherä¸Š
         /// </summary>
-        /// <typeparam name="K">KeyÀàĞÍ</typeparam>
-        /// <typeparam name="V">ValueÀàĞÍ</typeparam>
-        /// <param name="catalog">SAPSÉÏµÄ·ÖÀà</param>
-        /// <param name="iep">Ô¶³ÌµØÖ·</param>
-        /// <param name="callback">»Øµ÷º¯Êı</param>
-        /// <param name="isAutoReconnect">Á¬½Ó¶Ï¿ªºóµÄÖØÁ¬±êÊ¶</param>
-        /// <returns>·µ»Ø¶©ÔÄºóµÄ×´Ì¬</returns>
-        public IRemoteDataSubscriber<K, V> Regist<K, V>(string catalog, string iep, EventHandler<LightSingleArgEventArgs<DataRecvEventArgs<K, V>>> callback, bool isAutoReconnect = false)
+        /// <typeparam name="K">Keyç±»å‹</typeparam>
+        /// <typeparam name="V">Valueç±»å‹</typeparam>
+        /// <param name="catalog">Data Publisherä¸Šçš„åˆ†ç±»</param>
+        /// <param name="iep">è¿œç¨‹åœ°å€</param>
+        /// <param name="callback">å›è°ƒå‡½æ•°</param>
+        /// <param name="isAutoReconnect">è¿æ¥æ–­å¼€åçš„é‡è¿æ ‡è¯†</param>
+        public void Regist<K, V>(string catalog, string iep, EventHandler<LightSingleArgEventArgs<DataRecvEventArgs<K, V>>> callback, bool isAutoReconnect = false)
         {
             if (string.IsNullOrEmpty(catalog)) throw new ArgumentNullException("catalog");
             if (callback == null) throw new ArgumentNullException("callback");
@@ -65,7 +64,6 @@ namespace KJFramework.ApplicationEngine.Proxies
             SubscriberState state = subscriber.Open();
             if (state != SubscriberState.Subscribed && !isAutoReconnect) throw new System.Exception("#Cannot regist remote data subscriber to SAPS. #iep: " + iep);
             subscriber.MessageRecv += callback;
-            return subscriber;
         }
 
         #endregion

@@ -1,7 +1,9 @@
 ﻿using KJFramework.ApplicationEngine.Attributes;
 using KJFramework.ApplicationEngine.Processors;
 using KJFramework.Messages.Contracts;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
+using KJFramework.Net.Transaction.ValueStored;
 
 namespace KJFramework.ApplicationEngine.ApplicationTest.Processors
 {
@@ -15,6 +17,12 @@ namespace KJFramework.ApplicationEngine.ApplicationTest.Processors
 
         protected override void InnerProcess(IMessageTransaction<MetadataContainer> package)
         {
+            MetadataContainer reqMsg = package.Request;
+            MetadataContainer rspMsg = new MetadataContainer();
+            MessageIdentity identity = reqMsg.GetAttributeAsType<MessageIdentity>(0x00);
+            identity.DetailsId += 1;
+            rspMsg.SetAttribute(0x00, new MessageIdentityValueStored(identity));
+            package.SendResponse(rspMsg);
         }
     }
 }

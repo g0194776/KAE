@@ -15,3 +15,32 @@ What's the next:
 3. 重写SystemWorker的ConfigurationProxy类，并支持接口传入callback函数
 4. 为CSN增加配置信息变化的Publisher
 5. 重写SystemConnectionPool，为其增加Multiple Socket Connection的支持
+
+
+
+
+8月11日进度
+------------------------------------------------
+1. 为CSN增加配置信息变化的Publisher
+2. 完成LightPerformanceCounter的编写, 并将此应用于KAEHost内部
+3. 创建了一个VS插件，用于日后更加便利的使用KAE
+4. 重写SystemWorker的ConfigurationProxy类，并支持接口传入callback函数
+
+	其实我们的初衷很简单，就是希望KAE宿主	能够HANDLE所有的网络资源。我们不期待任何的KPP能拥有或者创建属于自己的网络资源。介于此，
+	我们特地为KAEHost和KPP之间打通了一个隧道，好让来自KPP里面获取配置信息的方法调用能够路由到
+	默认应用程序域(Default AppDomain)中的代码块上，这样一来我们就没必要让每个KPP都与CSN来一次亲密的接触。
+
+	这样做的好处是显而易见的，因为我们只需要在KAE宿主中做好对于CSN服务的连接管理，反向更新订阅就够了。
+	从KPP的加载速度上来讲，这一点也是至关重要的。我们特地为SystemWorker设计了一个精简的内部初始化方法“InitializeForKPP”。
+	正式由于此方法，在KPP进行初始化的时候没必要再从CSN拿一遍所有的配置信息。这之间节省了连接的开销，通信的开销。
+	从灵活度来讲，这样的做法会让底层的结构更加清晰，甚至于在KAE宿主级别可以定制这个进程内部所有KPP的通信基础资源。
+
+
+
+	
+What's the next:
+------------------------------------------------
+1. 重写SystemConnectionPool，为其增加Multiple Socket Connection的支持
+2. 开始着手于设计动态负载的分发模块
+3. 完善并走通从APP到KAEHost的Send RSP流程
+4. 开始开发基于KAE的VS Tools

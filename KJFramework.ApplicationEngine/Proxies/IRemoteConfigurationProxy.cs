@@ -1,4 +1,5 @@
 ﻿using System;
+using KJFramework.EventArgs;
 using KJFramework.Platform.Deploy.Metadata.Objects;
 
 namespace KJFramework.ApplicationEngine.Proxies
@@ -14,19 +15,10 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// </summary>
         /// <param name="role">角色名称</param>
         /// <param name="field">字段名</param>
+        /// <param name="callback">配置信息更新后的回调函数</param>
         /// <returns>返回相应字段的值</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        string GetField(string role, string field);
-        /// <summary>
-        ///     获取某个字段的值
-        /// </summary>
-        /// <param name="database">数据库名</param>
-        /// <param name="table">表名</param>
-        /// <param name="service">服务名称</param>
-        /// <param name="field">字段名</param>
-        /// <returns>返回相应字段的值</returns>
-        /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        string GetField(string database, string table, string service, string field);
+        string GetField(string role, string field, Action<string> callback = null);
         /// <summary>
         ///     获取部分配置信息
         /// </summary>
@@ -41,7 +33,8 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="table">表名</param>
         /// <returns>返回表数据</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        DataTable GetTable(string database, string table);        /// <summary>
+        DataTable GetTable(string database, string table);        
+        /// <summary>
         ///     获取指定表的数据
         /// </summary>
         /// <param name="database">数据库名</param>
@@ -67,5 +60,15 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <returns>返回表数据</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         T[] GetTable<T>(string table, bool hasCache) where T : class, new();
+        /// <summary>
+        ///    接收到了来自远程CSN的配置信息更新推送
+        /// </summary>
+        /// <param name="key">KEY</param>
+        /// <param name="value">VALUE</param>
+        void UpdateConfiguration(string key, string value);
+        /// <summary>
+        ///    如果收到了来自CSN的配置信息变更通知，则触发此事件
+        /// </summary>
+        event EventHandler<LightSingleArgEventArgs<Tuple<string, string>>> ConfigurationUpdated;
     }
 }

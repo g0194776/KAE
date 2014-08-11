@@ -54,10 +54,12 @@
     <Compile Include="KAE\Applications\Processors\TestJsonKAEProcessor.cs" />
     <Compile Include="KAE\Applications\TestApplication.cs" />
     <Compile Include="KAE\ApplicationTest.cs" />
+    <Compile Include="KAE\CommunicationTest.cs" />
     <Compile Include="KAE\FileCompressionTest.cs" />
     <Compile Include="KAE\KAEHostTest.cs" />
     <Compile Include="KAE\KPPDataHeadTest.cs" />
     <Compile Include="KAE\KPPResourceTest.cs" />
+    <Compile Include="KAE\LocalCSNTest.cs" />
     <Compile Include="KAE\PackageAttributeDataSectionTest.cs" />
     <Compile Include="KJFramework.Data.ObjectDB\OutterUnitTest.cs" />
     <Compile Include="KJFramework.Data.ObjectDB\PageControllerUnitTest.cs" />

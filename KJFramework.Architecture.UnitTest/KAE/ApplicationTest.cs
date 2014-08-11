@@ -39,7 +39,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
                 Assert.IsNotNull(tuple.Item2);
                 TestApplication application = new TestApplication();
                 Assert.IsTrue(application.Status == ApplicationStatus.Unknown);
-                application.Initialize(tuple.Item2);
+                application.Initialize(tuple.Item2, null, null);
                 Assert.IsTrue(application.PackageName == "test.package");
                 Assert.IsTrue(application.Version == "1.0.0");
                 Assert.IsTrue(application.Description == "test package description.");

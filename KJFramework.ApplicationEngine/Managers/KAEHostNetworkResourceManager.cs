@@ -58,6 +58,7 @@ namespace KJFramework.ApplicationEngine.Managers
                 }
                 hostChannel.Tag = new KAENetworkResource { NetworkUri = uri, Protocol = KAESettings.SupportedProtocols[j] };
                 _resources.Add(KAESettings.SupportedProtocols[j], new Tuple<IHostTransportChannel, Uri>(hostChannel, uri));
+                Console.WriteLine("     #Initialized network resource, P: {0} URL: {1}", KAESettings.SupportedProtocols[j], uri);
             }
         }
 
@@ -123,21 +124,21 @@ namespace KJFramework.ApplicationEngine.Managers
         ///    新的基于元数据协议的网络事务被创建事件
         /// </summary>
         public static event EventHandler<LightSingleArgEventArgs<IMessageTransaction<MetadataContainer>>> MetadataNewTransaction;
-        private static void OnMetadataNewTransaction(LightSingleArgEventArgs<IMessageTransaction<MetadataContainer>> e)
+        private static void OnMetadataNewTransaction(object sender, LightSingleArgEventArgs<IMessageTransaction<MetadataContainer>> e)
         {
             EventHandler<LightSingleArgEventArgs<IMessageTransaction<MetadataContainer>>> handler =
                 MetadataNewTransaction;
-            if (handler != null) handler(null, e);
+            if (handler != null) handler(sender, e);
         }
 
         /// <summary>
         ///    新的基于智能对象协议的网络事务被创建事件
         /// </summary>
         public static event EventHandler<LightSingleArgEventArgs<IMessageTransaction<BaseMessage>>> IntellegenceNewTransaction;
-        private static void OnIntellegenceNewTransaction(LightSingleArgEventArgs<IMessageTransaction<BaseMessage>> e)
+        private static void OnIntellegenceNewTransaction(object sender, LightSingleArgEventArgs<IMessageTransaction<BaseMessage>> e)
         {
             EventHandler<LightSingleArgEventArgs<IMessageTransaction<BaseMessage>>> handler = IntellegenceNewTransaction;
-            if (handler != null) handler(null, e);
+            if (handler != null) handler(sender, e);
         }
 
         private static void AgentDisconnected(object sender, System.EventArgs e)
@@ -148,12 +149,12 @@ namespace KJFramework.ApplicationEngine.Managers
 
         private static void MetadataNewTransactionHandler(object sender, LightSingleArgEventArgs<IMessageTransaction<MetadataContainer>> e)
         {
-            OnMetadataNewTransaction(e);
+            OnMetadataNewTransaction(sender, e);
         }
 
         private static void IntellegenceNewTransactionHandler(object sender, LightSingleArgEventArgs<IMessageTransaction<BaseMessage>> e)
         {
-            OnIntellegenceNewTransaction(e);
+            OnIntellegenceNewTransaction(sender, e);
         }
 
         #endregion

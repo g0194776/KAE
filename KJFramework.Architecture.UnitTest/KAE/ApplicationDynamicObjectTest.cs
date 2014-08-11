@@ -34,7 +34,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
                 Tuple<ApplicationEntryInfo, KPPDataStructure> tuple = tuples[0];
                 Assert.IsNotNull(tuple.Item1);
                 Assert.IsNotNull(tuple.Item2);
-                ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2);
+                ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2, null, null);
             }
             finally
             {
@@ -65,7 +65,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
                 Tuple<ApplicationEntryInfo, KPPDataStructure> tuple = tuples[0];
                 Assert.IsNotNull(tuple.Item1);
                 Assert.IsNotNull(tuple.Item2);
-                ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2);
+                ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2, null, null);
                 dynamicObject.Start();
             }
             finally

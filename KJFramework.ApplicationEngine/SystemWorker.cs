@@ -9,6 +9,7 @@ using KJFramework.Messages.Helpers;
 using KJFramework.Messages.TypeProcessors.Maps;
 using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Configurations;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.ProtocolStacks;
@@ -44,25 +45,12 @@ namespace KJFramework.ApplicationEngine
 
         private static bool _isInitialized;
         private static INetworkCluster<BaseMessage> _clsuter;
-        private static INetworkCluster<MetadataContainer> _metadataCluster; 
-        private IRemoteDataSyncProxy _syncProxy;
+        private static INetworkCluster<MetadataContainer> _metadataCluster;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(SystemWorker));
         private MessageTransactionManager _transactionManager;
         private MetadataTransactionManager _metadataTransactionManager;
         private readonly Dictionary<string, IProtocolStack<BaseMessage>> _protocolStacks = new Dictionary<string, IProtocolStack<BaseMessage>>();
         private static readonly MetadataProtocolStack _metadataProtocolStack = new MetadataProtocolStack();
-
-        /// <summary>
-        ///     获取远程数据同步代理器
-        /// </summary>
-        public IRemoteDataSyncProxy DataSyncProxy
-        {
-            get
-            {
-                if (_syncProxy == null) throw new System.Exception("You *MUST* call SystemWorker.Instance.Initialize() first!!!");
-                return _syncProxy;
-            }
-        }
 
         /// <summary>
         ///     系统工作者，提供了相关的基本操作
@@ -93,35 +81,28 @@ namespace KJFramework.ApplicationEngine
         {
             get { return _isInitialized; }
         }
-
         /// <summary>
-        ///     初始化属于指定服务角色的系统工作者
-        ///     <para>* 当使用此方法，并传递useRemoteConfig=true时，此方法内部将使用默认的远程配置设置</para>
+        ///    获取一个值，该值标示了当前SystemWorker的实例是否服务于指定的某个KPP
         /// </summary>
-        /// <param name="role">服务角色</param>
-        /// <param name="useRemoteConfig">是否使用远程配置的标示</param>
-        /// <param name="notificationHandler">异常通知处理器</param>
-        /// <param name="csnAddress">远程CSN的IP地址</param>
-        public void Initialize(string role, bool useRemoteConfig = false, ITracingNotificationHandler notificationHandler = null, string csnAddress = null)
-        {
-            Initialize(role, useRemoteConfig, RemoteConfigurationSetting.Default, notificationHandler, csnAddress ?? ConfigurationManager.AppSettings["CSN"]);
-        }
+        public static bool IsInSpecifiedKPP { get; private set; }
 
         /// <summary>
         ///     初始化属于指定服务角色的系统工作者
         /// </summary>
         /// <param name="role">服务角色</param>
-        /// <param name="useRemoteConfig">是否使用远程配置的标示</param>
         /// <param name="setting">远程配置设置</param>
         /// <param name="notificationHandler">异常通知处理器</param>
         /// <param name="csnAddress">远程CSN的IP地址</param>
+        /// <param name="csnPublisherAddress">远程CSN的数据发布者访问地址</param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public void Initialize(string role, bool useRemoteConfig, RemoteConfigurationSetting setting, ITracingNotificationHandler notificationHandler = null, string csnAddress = null)
+        public void Initialize(string role, RemoteConfigurationSetting setting, ITracingNotificationHandler notificationHandler = null, string csnAddress = null, string csnPublisherAddress = null)
         {
-            if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");
-            if (useRemoteConfig && setting == null) throw new ArgumentNullException("setting");
             if (IsInitialized) return;
-            _configurationProxy = (!useRemoteConfig ? (IRemoteConfigurationProxy)new RemoteConfigurationProxy(csnAddress) : new SolitaryRemoteConfigurationProxy(csnAddress));
+            if (setting == null) setting = RemoteConfigurationSetting.Default;
+            if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");
+            if (string.IsNullOrEmpty(csnAddress)) csnAddress = ConfigurationManager.AppSettings["CSN"];
+            if (string.IsNullOrEmpty(csnPublisherAddress)) csnPublisherAddress = ConfigurationManager.AppSettings["CSN-Publisher"];
+            _configurationProxy = new SolitaryRemoteConfigurationProxy(csnAddress, csnPublisherAddress);
             //Regist("LGS", new LGSProtocolStack());
             TracingManager.NotificationHandler = notificationHandler ?? new RemoteLogProxy();
             Role = role;
@@ -131,15 +112,45 @@ namespace KJFramework.ApplicationEngine
             ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
             //config remote configuration loader.
-            if (useRemoteConfig)
-                KJFramework.Configurations.Configurations.RemoteConfigLoader = new RemoteConfigurationLoader(setting);
+            KJFramework.Configurations.Configurations.RemoteConfigLoader = new RemoteConfigurationLoader(setting);
             //initialize long...long memory buffer for tcp layer.
             ChannelConst.Initialize();
             CommonCounter.Instance.Initialize();
             _transactionManager = new MessageTransactionManager(new TransactionIdentityComparer());
             _metadataTransactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
-            _syncProxy = new RemoteDataSyncProxy();
             _isInitialized = true;
+            IsInSpecifiedKPP = false;
+        }
+
+        /// <summary>
+        ///     为KPP专门设计的初始化SystemWorker的函数
+        /// </summary>
+        /// <param name="role">服务角色</param>
+        /// <param name="proxy">KAE宿主代理器</param>
+        /// <param name="settings">KJFramework网络层设置集</param>
+        /// <exception cref="ArgumentNullException">参数不能为空</exception>
+        internal void InitializeForKPP(string role, IKAEHostProxy proxy, ChannelInternalConfigSettings settings)
+        {
+            if (IsInitialized) return;
+            if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");
+            _configurationProxy = new KPPConfigurationProxy(proxy);
+            //Regist("LGS", new LGSProtocolStack());
+            TracingManager.NotificationHandler = new RemoteLogProxy();
+            Role = role;
+            FixedTypeManager.Add(typeof(MessageIdentity), 5);
+            IntellectTypeProcessorMapping.Instance.Regist(new MessageIdentityProcessor());
+            IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityProcessor());
+            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
+            ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
+            //config remote configuration loader.
+            KJFramework.Configurations.Configurations.RemoteConfigLoader = new RemoteConfigurationLoader(RemoteConfigurationSetting.Default);
+            //initialize long...long memory buffer for tcp layer.
+            ChannelConst.Initialize(settings);
+            CommonCounter.Instance.Initialize();
+            _transactionManager = new MessageTransactionManager(new TransactionIdentityComparer());
+            _metadataTransactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
+            _isInitialized = true;
+            IsInSpecifiedKPP = true;
         }
 
         /// <summary>

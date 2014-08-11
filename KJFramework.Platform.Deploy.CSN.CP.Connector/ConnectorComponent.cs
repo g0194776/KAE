@@ -1,5 +1,8 @@
-using System.Net;
+锘縰sing System.Net;
 using System.Threading;
+using KJFramework.Data.Synchronization;
+using KJFramework.Data.Synchronization.Enums;
+using KJFramework.Data.Synchronization.Factories;
 using KJFramework.Dynamic;
 using KJFramework.Dynamic.Components;
 using KJFramework.Enums;
@@ -11,6 +14,7 @@ using KJFramework.Net.Channels.Disconvery;
 using KJFramework.Net.Channels.Disconvery.Protocols;
 using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
@@ -30,23 +34,23 @@ using System.Configuration;
 namespace KJFramework.Platform.Deploy.CSN.CP.Connector
 {
     /// <summary>
-    ///     CSN基础连接器组件，用于将配置分发给订阅者
+    ///    CSN鏈嶅姟缁勪欢
     /// </summary>
     public class ConnectorComponent : DynamicDomainComponent
     {
         #region Constructor
 
         /// <summary>
-        ///     CSN基础连接器组件，用于将配置分发给订阅者
+        ///    CSN鏈嶅姟缁勪欢
         /// </summary>
         public ConnectorComponent()
         {
-            _name = "CSN基础连接器功能组件";
+            _name = "CSN";
             _pluginInfo = new PluginInfomation();
             _pluginInfo.CatalogName = "Plugins";
             _pluginInfo.Version = "0.0.0.1";
             _pluginInfo.ServiceName = "CSN.Components.ConnectorComponent";
-            _pluginInfo.Description = "CSN基础连接器组件，用于将配置分发给订阅者";
+            _pluginInfo.Description = "CSN";
         }
 
         #endregion
@@ -60,6 +64,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
         private CommonBoradcastProtocol _sendObj;
         private Thread _thread;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ConnectorComponent));
+        private IDataPublisher<string, string[]> _defaultPublisher;
 
         #endregion
 
@@ -74,6 +79,13 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             if (!regist) throw new System.Exception("#CSN regist network failed!");
             hostChannel.ChannelCreated += ChannelCreated;
             Console.WriteLine("Regist network node at local tcp port: " + CSNSettingConfigSection.Current.Settings.HostPort);
+            Console.WriteLine("Openning data publisher......");
+            _defaultPublisher = DataPublisherFactory.Instance.Create<string, string[]>("*", new NetworkResource(CSNSettingConfigSection.Current.Settings.UpdatingPublisher));
+            if (_defaultPublisher.Open() != PublisherState.Open)
+            {
+                _tracing.Critical("#CSN couldn't open a defaut remoting server publisher.");
+                throw new System.Exception("#CSN couldn't open a defaut remoting server publisher.");
+            }
             Console.WriteLine("Initializing CSN protocol stack......");
             _protocolStack = new CSNProtocolStack();
             Global.ProtocolStack = (CSNProtocolStack) _protocolStack;
@@ -138,7 +150,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
         }
 
         /// <summary>
-        ///     CSN启动后获取及发送广播包
+        ///     CSN脝么露炉潞贸禄帽脠隆录掳路垄脣脥鹿茫虏楼掳眉
         /// </summary>
         private void CSNBoradcastStart()
         {
@@ -152,13 +164,13 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             int port = int.Parse(broadcastAddress.Substring(offset + 1, broadcastAddress.Length - (offset + 1)));
             _outputPin = new DiscoveryOnputPin(new IPEndPoint(IPAddress.Parse(iep), port));
             _sendObj = new CommonBoradcastProtocol { Key = "CSN", Environment = environment, Value = localAddress };
-            //启动循环发送广播包的线程
+            //脝么露炉脩颅禄路路垄脣脥鹿茫虏楼掳眉碌脛脧脽鲁脤
             _thread = new Thread(SendProc) { Name = "Thread::SendCSNInfo", IsBackground = true };
             _thread.Start();
         }
 
         /// <summary>
-        ///     CSN启动后每隔5S发送CSN广播包的线程
+        ///     CSN脝么露炉潞贸脙驴赂么5S路垄脣脥CSN鹿茫虏楼掳眉碌脛脧脽鲁脤
         /// </summary>
         private void SendProc()
         {

@@ -1,3 +1,4 @@
+ï»¿using System;
 using KJFramework.Cache;
 using KJFramework.Cache.Containers;
 using KJFramework.Net.Channels.Caches;
@@ -6,72 +7,95 @@ using KJFramework.Net.Channels.Configurations;
 namespace KJFramework.Net.Channels
 {
     /// <summary>
-    ///   KJFrameworkÄÚ²¿ÍøÂç²ãºËĞÄ³õÊ¼»¯»ù´¡Àà
+    ///   KJFrameworkç½‘ç»œåº•å±‚é…ç½®
     /// </summary>
     public static class ChannelConst
     {
         /// <summary>
-        ///     ´«ÊäÍ¨µÀ»º³åÇø´óĞ¡
+        ///    è·å–æˆ–è®¾ç½®åŸºäºè€ç‰ˆæœ¬ç¼“å†²åŒºçš„æ€»ä½“å¤§å°
         /// </summary>
-        public static int RecvBufferSize = ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
-                                               ? 4096
-                                               : ChannelModelSettingConfigSection.Current.Settings.RecvBufferSize;
+        public static int RecvBufferSize;
         /// <summary>
-        ///     µ×²ãSocketAsyncEventArgs»º´æ¸öÊı
-        ///     <para>* ´ËÀàĞÍ»º´æ½«»á³ÖÓĞÄÚ´æ»º³åÇø</para>
+        ///     è·å–æˆ–è®¾ç½®SocketAsyncEventArgsç¼“å­˜çš„æ•°é‡
         /// </summary>
-        public static int BuffStubPoolSize = ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
-                                               ? 200000
-                                               : ChannelModelSettingConfigSection.Current.Settings.BuffStubPoolSize;
+        public static int BuffStubPoolSize;
         /// <summary>
-        ///     µ×²ãÌá¹©¸øÃüÃû¹ÜµÀÊ¹ÓÃµÄ»º³åÇø»º´æ¸öÊı
-        ///     <para>* ´ËÀàĞÍ»º´æ½«»á³ÖÓĞÄÚ´æ»º³åÇø</para>
+        ///     è·å–æˆ–è®¾ç½®åŸºäºå‘½åç®¡é“çš„ç¼“å†²æ± å¤§å°
         /// </summary>
-        public static int NamedPipeBuffStubPoolSize = ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
-                                               ? 200000
-                                               : ChannelModelSettingConfigSection.Current.Settings.NamedPipeBuffStubPoolSize;
+        public static int NamedPipeBuffStubPoolSize;
         /// <summary>
-        ///     µ×²ãSocketAsyncEventArgs»º´æ¸öÊı
+        ///     è·å–æˆ–è®¾ç½®å‘é€ä¸å…³è”ä»»ä½•BUFFçš„ç¼“å†²å¯¹è±¡ä¸ªæ•°
         /// </summary>
-        public static int NoBuffStubPoolSize = ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
-                                               ? 200000
-                                               : ChannelModelSettingConfigSection.Current.Settings.NoBuffStubPoolSize;
+        public static int NoBuffStubPoolSize;
         /// <summary>
-        ///     ´Ë×Ö¶ÎÓÃÓÚÅĞ¶ÏÒ»¸öÏûÏ¢ÊÇ·ñĞèÒª·Ö°ü´«Êä
+        ///     è·å–æˆ–è®¾ç½®æœ€å¤§æ¶ˆæ¯é•¿åº¦
         /// </summary>
-        public static int MaxMessageDataLength = ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
-                                               ? 5120
-                                               : ChannelModelSettingConfigSection.Current.Settings.MaxMessageDataLength;
+        public static int MaxMessageDataLength;
         /// <summary>
-        ///     »º³åÇøÄÚ´æÆ¬¶Î´óĞ¡
+        ///     è·å–æˆ–è®¾ç½®å†…å­˜ç¼“å†²åŒºä¸­æ¯ä¸€ä¸ªå†…å­˜åˆ†ç‰‡çš„å¤§å°
         /// </summary>
-        public static int SegmentSize = ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
-                                               ? 5120
-                                               : ChannelModelSettingConfigSection.Current.Settings.SegmentSize;
-        /// <summary>
-        ///     ĞèÒªÉêÇëµÄ»º³åÇøÄÚ´æ×Ü´óĞ¡
-        /// </summary>
-        public static int MemoryChunkSize = SegmentSize * (BuffStubPoolSize + NamedPipeBuffStubPoolSize);
+        public static int SegmentSize;
 
 
+        //æœ€ç»ˆè®¡ç®—å¥½çš„æ€»å…±å†…å­˜ç¼“å†²åŒºå¤§å°
+        private static int _memoryChunkSize;
         private static bool _initialized;
-        /// <summary>
-        ///     ÄÚ´æÆ¬¶ÎÈİÆ÷
-        /// </summary>
-        public static readonly IMemoryChunkCacheContainer SegmentContainer = new MemoryChunkCacheContainer(SegmentSize, MemoryChunkSize);
-        public static ICacheTenant Tenant = new CacheTenant();
-        public static IFixedCacheContainer<SocketBuffStub> BuffAsyncStubPool = Tenant.Rent<SocketBuffStub>("Pool::BuffSocketIOStub", BuffStubPoolSize);
-        public static IFixedCacheContainer<BuffStub> NamedPipeBuffPool = Tenant.Rent<BuffStub>("Pool::NamedPipeIOStub", NamedPipeBuffStubPoolSize);
-        public static IFixedCacheContainer<NoBuffSocketStub> NoBuffAsyncStubPool = Tenant.Rent<NoBuffSocketStub>("Pool::NoBuffSocketIOStub", NoBuffStubPoolSize);
+        internal static IMemoryChunkCacheContainer SegmentContainer;
+        internal static ICacheTenant Tenant;
+        internal static IFixedCacheContainer<SocketBuffStub> BuffAsyncStubPool;
+        internal static IFixedCacheContainer<BuffStub> NamedPipeBuffPool;
+        internal static IFixedCacheContainer<NoBuffSocketStub> NoBuffAsyncStubPool;
 
         #region Methods
 
         /// <summary>
-        ///     Initialize global memory pool.
+        ///     åˆå§‹åŒ–KJFrameworkå…¨å±€çš„åº•å±‚ç½‘ç»œç¼“å†²åŒº
         /// </summary>
         public static void Initialize()
         {
+            ChannelInternalConfigSettings settings = new ChannelInternalConfigSettings();
+            settings.RecvBufferSize = (ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
+                ? 4096
+                : ChannelModelSettingConfigSection.Current.Settings.RecvBufferSize);
+            settings.BuffStubPoolSize = (ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
+                ? 200000
+                : ChannelModelSettingConfigSection.Current.Settings.BuffStubPoolSize);
+            settings.NamedPipeBuffStubPoolSize = (ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
+                ? 200000
+                : ChannelModelSettingConfigSection.Current.Settings.NamedPipeBuffStubPoolSize);
+            settings.NoBuffStubPoolSize = (ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
+                ? 200000
+                : ChannelModelSettingConfigSection.Current.Settings.NoBuffStubPoolSize);
+            settings.MaxMessageDataLength = (ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
+                ? 5120
+                : ChannelModelSettingConfigSection.Current.Settings.MaxMessageDataLength);
+            settings.SegmentSize = (ChannelModelSettingConfigSection.Current == null || ChannelModelSettingConfigSection.Current.Settings == null
+                ? 5120
+                : ChannelModelSettingConfigSection.Current.Settings.SegmentSize);
+            Initialize(settings);
+        }
+
+        /// <summary>
+        ///     æŒ‰ç…§ä¸€ä¸ªé…ç½®é›†æ¥åˆå§‹åŒ–KJFrameworkå…¨å±€çš„åº•å±‚ç½‘ç»œç¼“å†²åŒº
+        /// </summary>
+        internal static void Initialize(ChannelInternalConfigSettings settings)
+        {
             if (_initialized) return;
+            if (settings == null) throw new ArgumentNullException("settings");
+            //initializes global value.
+            RecvBufferSize = settings.RecvBufferSize;
+            BuffStubPoolSize = settings.BuffStubPoolSize;
+            NamedPipeBuffStubPoolSize = settings.NamedPipeBuffStubPoolSize;
+            NoBuffStubPoolSize = settings.NoBuffStubPoolSize;
+            MaxMessageDataLength = settings.MaxMessageDataLength;
+            SegmentSize = settings.SegmentSize;
+            _memoryChunkSize = SegmentSize*(BuffStubPoolSize + NamedPipeBuffStubPoolSize);
+            SegmentContainer = new MemoryChunkCacheContainer(SegmentSize, _memoryChunkSize);
+            Tenant = new CacheTenant();
+            BuffAsyncStubPool = Tenant.Rent<SocketBuffStub>("Pool::BuffSocketIOStub", BuffStubPoolSize);
+            NamedPipeBuffPool = Tenant.Rent<BuffStub>("Pool::NamedPipeIOStub", NamedPipeBuffStubPoolSize);
+            NoBuffAsyncStubPool = Tenant.Rent<NoBuffSocketStub>("Pool::NoBuffSocketIOStub", NoBuffStubPoolSize);
+
             ChannelCounter.Instance.Initialize();
             _initialized = true;
         }

@@ -7,6 +7,7 @@ using System.Threading;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Packages;
+using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Dynamic;
 using KJFramework.Dynamic.Components;
@@ -15,6 +16,7 @@ using KJFramework.Enums;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Configurations;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction.Comparers;
@@ -37,13 +39,18 @@ namespace KJFramework.ApplicationEngine.Objects
         /// </summary>
         /// <param name="info">应用入口结构信息</param>
         /// <param name="structure">KPP应用资源包的数据结构</param>
+        /// <param name="settings">每个APP所使用的网络资源配置集</param>
+        /// <param name="proxy">KAE宿主代理器</param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         /// <exception cref="CannotConnectToTunnelException">无法建立正常的隧道连接</exception>
-        public ApplicationDynamicObject(ApplicationEntryInfo info, KPPDataStructure structure)
+        public ApplicationDynamicObject(ApplicationEntryInfo info, KPPDataStructure structure, ChannelInternalConfigSettings settings, IKAEHostProxy proxy)
         {
             if (info == null) throw new ArgumentNullException("info");
             if (structure == null) throw new ArgumentNullException("structure");
+            if (settings == null) throw new ArgumentNullException("settings");
             _entryInfo = info;
+            _settings = settings;
+            _proxy = proxy;
             _structure = structure;
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("#NEW COMPONENT...");
@@ -62,8 +69,10 @@ namespace KJFramework.ApplicationEngine.Objects
 
         private Application _application;
         protected AppDomain _domain;
+        private readonly IKAEHostProxy _proxy;
         private readonly KPPDataStructure _structure;
         private readonly ApplicationEntryInfo _entryInfo;
+        private readonly ChannelInternalConfigSettings _settings;
         private IMessageTransportChannel<MetadataContainer> _msgChannel; 
         private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
         private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
@@ -189,8 +198,9 @@ namespace KJFramework.ApplicationEngine.Objects
                         WorkProcessingHandler(new LightSingleArgEventArgs<string>("Trying to renew application life......"));
                         ReLease(new TimeSpan(365, 0, 0, 0));
                         WorkProcessingHandler(new LightSingleArgEventArgs<string>("Calling OnLoading method......"));
-                        _application.Initialize(_structure);
+                        _application.Initialize(_structure, _settings, _proxy);
                         _application.OnLoading();
+                        _application.Start();
                     }
                 }
             }
@@ -293,6 +303,16 @@ namespace KJFramework.ApplicationEngine.Objects
         public void UpdateNetworkCache(Dictionary<string, List<string>> cache)
         {
             _application.UpdateNetworkCache(cache);
+        }
+
+        /// <summary>
+        ///    反向更新从CSN推送过来的KEY和VALUE配置信息
+        /// </summary>
+        /// <param name="key">KEY</param>
+        /// <param name="value">VALUE</param>
+        public void UpdateConfiguration(string key, string value)
+        {
+            _application.UpdateConfiguration(key, value);
         }
 
         #endregion

@@ -7,7 +7,7 @@ namespace KJFramework.Platform.Deploy.CSN.Common.Configurations
     public class CSNSettingConfigSection : CustomerSection<CSNSettingConfigSection>
     {
         /// <summary>
-        ///   KJFramework.Platform.Deploy.CSN≈‰÷√œÓ
+        ///   KJFramework.Platform.Deploy.CSN
         /// </summary>
         [CustomerField("KJFramework.Platform.Deploy.CSN")]
         public SettingConfiguration Settings;

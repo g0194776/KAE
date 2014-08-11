@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using KJFramework.ApplicationEngine.Attributes;
+ï»¿using KJFramework.ApplicationEngine.Attributes;
+using KJFramework.Data.Synchronization.EventArgs;
 using KJFramework.EventArgs;
 using KJFramework.Helpers;
 using KJFramework.Net.Channels;
@@ -15,23 +11,32 @@ using KJFramework.Platform.Deploy.CSN.NetworkLayer;
 using KJFramework.Platform.Deploy.CSN.ProtocolStack;
 using KJFramework.Platform.Deploy.Metadata.Objects;
 using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading;
 
 namespace KJFramework.ApplicationEngine.Proxies
 {
     /// <summary>
-    ///     Ô¶³ÌÅäÖÃĞÅÏ¢´úÀíÆ÷Ôª½Ó¿Ú£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷
+    ///    ç‹¬ç«‹çš„è·å–è¿œç¨‹é…ç½®ä¿¡æ¯ä»£ç†å™¨
     /// </summary>
     public class SolitaryRemoteConfigurationProxy : IRemoteConfigurationProxy
     {
         #region Constructor
 
         /// <summary>
-        ///     Ô¶³ÌÅäÖÃĞÅÏ¢´úÀíÆ÷Ôª½Ó¿Ú£¬Ìá¹©ÁËÏà¹ØµÄ»ù±¾²Ù×÷
+        ///     ç‹¬ç«‹çš„è·å–è¿œç¨‹é…ç½®ä¿¡æ¯ä»£ç†å™¨
         /// </summary>
-        public SolitaryRemoteConfigurationProxy(string csnAddress)
+        /// <param name="csnAddress">è¿œç¨‹CSNåœ°å€</param>
+        /// <param name="csnDataPublisherAddress">è¿œç¨‹CSNçš„æ•°æ®å‘å¸ƒè€…è®¿é—®åœ°å€</param>
+        /// <exception cref="ArgumentNullException">è¿œç¨‹CSNåœ°å€ä¸èƒ½ä¸ºç©º</exception>
+        public SolitaryRemoteConfigurationProxy(string csnAddress, string csnDataPublisherAddress = null)
         {
             if (string.IsNullOrEmpty(csnAddress)) throw new ArgumentNullException("csnAddress");
             _csnAddress = csnAddress;
+            _csnDataPublisherAddress = csnDataPublisherAddress;
             _protocolStack = new CSNProtocolStack();
             _protocolStack.Initialize();
         }
@@ -41,13 +46,17 @@ namespace KJFramework.ApplicationEngine.Proxies
         #region Members
 
         private readonly string _csnAddress;
+        private readonly string _csnDataPublisherAddress;
+        private IRemoteDataSyncProxy _syncProxy;
         private object _lockTablesObj = new object();
+        private object _lockCallbackObj = new object();
         private IMessageTransportChannel<BaseMessage> _channel;
         private static string _subscriberKey = "SystemSubscriber";
         private static CSNProtocolStack _protocolStack;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (SolitaryRemoteConfigurationProxy));
         private static readonly CSNMessageTransactionManager _transactionManager = new CSNMessageTransactionManager(new TransactionIdentityComparer());
         private readonly Dictionary<string, string> _configCaches = new Dictionary<string, string>();
+        private readonly Dictionary<string, Action<string>> _callbacks = new Dictionary<string, Action<string>>();
         private readonly Dictionary<string, DataTable> _cacheTables = new Dictionary<string, DataTable>();
         private readonly Dictionary<string, Dictionary<string, string>> _cacheKeys = new Dictionary<string, Dictionary<string, string>>();
 
@@ -56,12 +65,17 @@ namespace KJFramework.ApplicationEngine.Proxies
         #region Methods
 
         /// <summary>
-        ///     ×¼±¸ÓëCSNÖ®¼äµÄÍ¨ĞÅÁ¬½Ó
+        ///    å‡†å¤‡åˆ°è¿œç¨‹CSNæœåŠ¡çš„TCPé“¾æ¥
         /// </summary>
-        /// <exception cref="Exception">×¼±¸Ê§°Ü</exception>
+        /// <exception cref="Exception">æ— æ³•è¿æ¥åˆ°è¿œç¨‹çš„CSNæœåŠ¡</exception>
         private void PrepareConnection()
         {
             if (_channel != null && _channel.IsConnected) return;
+            if (!string.IsNullOrEmpty(_csnDataPublisherAddress) && _syncProxy == null)
+            {
+                _syncProxy = new RemoteDataSyncProxy(_csnDataPublisherAddress);
+                _syncProxy.Regist("*", SyncUpdatingConfig, true);
+            }
             int offset = _csnAddress.LastIndexOf(':');
             string ip = _csnAddress.Substring(0, offset);
             int port = int.Parse(_csnAddress.Substring(offset + 1, _csnAddress.Length - (offset + 1)));
@@ -76,10 +90,10 @@ namespace KJFramework.ApplicationEngine.Proxies
         }
 
         /// <summary>
-        ///     »ñÈ¡»º´æµÄÊı¾İ±í
+        ///    è·å–ç¼“å­˜è¡¨
         /// </summary>
-        /// <param name="key">Êı¾İ±íÎ¨Ò»±êÊ¾</param>
-        /// <returns>·µ»ØÊı¾İ±í</returns>
+        /// <param name="key">ç¼“å­˜KEY</param>
+        /// <returns>è¿”å›ç¼“å­˜æ•°æ®è¡¨</returns>
         private DataTable GetCacheTable(string key)
         {
             lock (_lockTablesObj)
@@ -99,31 +113,36 @@ namespace KJFramework.ApplicationEngine.Proxies
         #region Implementation of IRemoteConfigurationProxy
         
         /// <summary>
-        ///     »ñÈ¡Ä³¸ö×Ö¶ÎµÄÖµ
-        ///     <para>* Ê¹ÓÃ´Ë·½·¨½«»á×Ô¶¯´ÓºËĞÄÅäÖÃ±íÖĞ¶ÁÈ¡Êı¾İ</para>
+        ///     æ ¹æ®ä¸€ä¸ªè§’è‰²åå’Œä¸€ä¸ªé…ç½®é¡¹çš„KEYåç§°æ¥è·å–ä¸€ä¸ªé…ç½®ä¿¡æ¯
         /// </summary>
-        /// <param name="role">½ÇÉ«Ãû³Æ</param>
-        /// <param name="field">×Ö¶ÎÃû</param>
-        /// <returns>·µ»ØÏàÓ¦×Ö¶ÎµÄÖµ</returns>
-        /// <exception cref="ArgumentNullException">²ÎÊı²»ÄÜÎª¿Õ</exception>
-        public string GetField(string role, string field)
+        /// <param name="role">è§’è‰²åç§°</param>
+        /// <param name="field">é…ç½®ä¿¡æ¯çš„KEY</param>
+        /// <param name="callback">é…ç½®ä¿¡æ¯æ›´æ–°åçš„å›è°ƒå‡½æ•°</param>
+        /// <returns>è¿”å›ç›¸åº”çš„é…ç½®ä¿¡æ¯</returns>
+        /// <exception cref="ArgumentNullException">å‚æ•°ä¸èƒ½ä¸ºç©º</exception>
+        public string GetField(string role, string field, Action<string> callback = null)
         {
             if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");
+            if (string.IsNullOrEmpty(field)) throw new ArgumentNullException("field");
             return GetField("CSNDB", "HA_ConfigInfo", role, field);
         }
 
         /// <summary>
-        ///     »ñÈ¡Ä³¸ö×Ö¶ÎµÄÖµ
+        ///     æ ¹æ®ä¸€ä¸ªæ•°æ®åº“åã€è¡¨åç§°ã€è§’è‰²åå’Œä¸€ä¸ªé…ç½®é¡¹çš„KEYåç§°æ¥è·å–ä¸€ä¸ªé…ç½®ä¿¡æ¯
         /// </summary>
-        /// <typeparam name="T">×Ö¶ÎÀàĞÍ</typeparam>
-        /// <param name="database">Êı¾İ¿âÃû</param>
-        /// <param name="table">±íÃû</param>
-        /// <param name="service">·şÎñÃû³Æ</param>
-        /// <param name="field">×Ö¶ÎÃû</param>
-        /// <returns>·µ»ØÏàÓ¦×Ö¶ÎµÄÖµ</returns>
-        /// <exception cref="ArgumentNullException">²ÎÊı²»ÄÜÎª¿Õ</exception>
-        public string GetField(string database, string table, string service, string field)
+        /// <param name="database">æ•°æ®åº“åç§°</param>
+        /// <param name="table">æ•°æ®è¡¨åç§°</param>
+        /// <param name="service">è§’è‰²å</param>
+        /// <param name="field">é…ç½®ä¿¡æ¯çš„KEY</param>
+        /// <param name="callback">é…ç½®ä¿¡æ¯æ›´æ–°åçš„å›è°ƒå‡½æ•°</param>
+        /// <returns>è¿”å›ç›¸åº”çš„é…ç½®ä¿¡æ¯</returns>
+        /// <exception cref="ArgumentNullException">å‚æ•°ä¸èƒ½ä¸ºç©º</exception>
+        private string GetField(string database, string table, string service, string field, Action<string> callback = null)
         {
+            if (string.IsNullOrEmpty(database)) throw new ArgumentNullException("database");
+            if (string.IsNullOrEmpty(table)) throw new ArgumentNullException("table");
+            if (string.IsNullOrEmpty(service)) throw new ArgumentNullException("service");
+            if (string.IsNullOrEmpty(field)) throw new ArgumentNullException("field");
             string result = null;
             #region Get cache first.
 
@@ -161,6 +180,21 @@ namespace KJFramework.ApplicationEngine.Proxies
                 result = values.ContainsKey(field) ? values[field] : null;
 
                 #endregion
+
+                #region Register subscriber & updating callbacks.
+
+                if (callback != null)
+                {
+                    //Registers configuration updating callbacks.
+                    lock (_lockCallbackObj)
+                    {
+                        Action<string> tempCallback;
+                        string tempKey = string.Format("{0}.{1}.{2}.{3}", database, table, service, field);
+                        if (!_callbacks.TryGetValue(tempKey, out tempCallback)) _callbacks[tempKey] = callback;
+                    }
+                }
+
+                #endregion
                 autoResetEvent.Set();
             };
             transaction.Failed += delegate
@@ -187,11 +221,11 @@ namespace KJFramework.ApplicationEngine.Proxies
         }
 
         /// <summary>
-        ///     »ñÈ¡²¿·ÖÅäÖÃĞÅÏ¢
+        ///     è·å–æŒ‡å®šé…ç½®æ–‡ä»¶ä¸­çš„é…ç½®ä¿¡æ¯æ®µè½
         /// </summary>
-        /// <param name="configKey">ÅäÖÃÎÄ¼şKEYÃû³Æ</param>
-        /// <returns>Èç¹û²»´æÔÚÖ¸¶¨Ìõ¼şµÄÅäÖÃÎÄ¼ş£¬Ôò·µ»Ønull</returns>
-        /// <exception cref="ArgumentNullException">²ÎÊı²»ÄÜÎª¿Õ</exception>
+        /// <param name="configKey">é…ç½®ä¿¡æ¯æ®µè½åç§°</param>
+        /// <returns>è¿”å›æŒ‡å®šçš„é…ç½®ä¿¡æ¯æ®µè½</returns>
+        /// <exception cref="ArgumentNullException">å‚æ•°ä¸èƒ½ä¸ºç©º</exception>
         public string GetPartialConfig(string configKey)
         {
             if (string.IsNullOrEmpty(configKey)) throw new ArgumentNullException("configKey");
@@ -241,25 +275,25 @@ namespace KJFramework.ApplicationEngine.Proxies
         }
 
         /// <summary>
-        ///     »ñÈ¡Ö¸¶¨±íµÄÊı¾İ
+        ///     æ ¹æ®æŒ‡å®šçš„æ•°æ®åº“åå’Œæ•°æ®è¡¨åè·å–ä¸€ä¸ªæ•°æ®é›†åˆ
         /// </summary>
-        /// <param name="database">Êı¾İ¿âÃû</param>
-        /// <param name="table"></param>
-        /// <returns>·µ»Ø±íÊı¾İ</returns>
-        /// <exception cref="ArgumentNullException">²ÎÊı²»ÄÜÎª¿Õ</exception>
+        /// <param name="database">æ•°æ®åº“åç§°</param>
+        /// <param name="table">æ•°æ®è¡¨åç§°</param>
+        /// <returns>è¿”å›æŒ‡å®šçš„æ•°æ®é›†åˆ</returns>
+        /// <exception cref="ArgumentNullException">å‚æ•°ä¸èƒ½ä¸ºç©º</exception>
         public DataTable GetTable(string database, string table)
         {
             return GetTable(database, table, true);
         }
 
         /// <summary>
-        ///     »ñÈ¡Ö¸¶¨±íµÄÊı¾İ
+        ///     æ ¹æ®æŒ‡å®šçš„æ•°æ®åº“åå’Œæ•°æ®è¡¨åè·å–ä¸€ä¸ªæ•°æ®é›†åˆ
         /// </summary>
-        /// <param name="database">Êı¾İ¿âÃû</param>
-        /// <param name="table">±íÃû</param>
-        /// <param name="hasCache">»º´æ±êÊ¶</param>
-        /// <returns>·µ»Ø±íÊı¾İ</returns>
-        /// <exception cref="ArgumentNullException">²ÎÊı²»ÄÜÎª¿Õ</exception>
+        /// <param name="database">æ•°æ®åº“åç§°</param>
+        /// <param name="table">æ•°æ®è¡¨åç§°</param>
+        /// <param name="hasCache">æ˜¯å¦ç¼“å­˜æ ‡ç¤º</param>
+        /// <returns>è¿”å›æŒ‡å®šçš„æ•°æ®é›†åˆ</returns>
+        /// <exception cref="ArgumentNullException">å‚æ•°ä¸èƒ½ä¸ºç©º</exception>
         public DataTable GetTable(string database, string table, bool hasCache)
         {
             DataTable result = null;
@@ -312,25 +346,23 @@ namespace KJFramework.ApplicationEngine.Proxies
         }
 
         /// <summary>
-        ///     »ñÈ¡Ö¸¶¨±íµÄËùÓĞ¼ÇÂ¼£¬²¢½«Ã¿Ò»¸ö¼ÇÂ¼°ü×°ÎªÖ¸¶¨ÀàĞÍµÄĞÎÊ½
-        ///     <para>* Ê¹ÓÃ´Ë·½·¨Ö»ÄÜ´ÓCSNDBÖĞ¹ıÈ¥Ö¸¶¨±íµÄÄÚÈİ</para>
+        ///     æ ¹æ®æŒ‡å®šçš„æ•°æ®è¡¨åè·å–ä¸€ä¸ªæ•°æ®é›†åˆï¼Œå¹¶å°†è¿™ä¸ªæ•°æ®é›†åˆä¸­çš„æ¯ä¸€è¡Œè½¬æ¢ä¸ºä¸€ä¸ªè‡ªå®šä¹‰ç±»å‹
         /// </summary>
-        /// <param name="table">±íÃû</param>
-        /// <returns>·µ»Ø±íÊı¾İ</returns>
-        /// <exception cref="ArgumentNullException">²ÎÊı²»ÄÜÎª¿Õ</exception>
+        /// <param name="table">æ•°æ®è¡¨åç§°</param>
+        /// <returns>è¿”å›è‡ªå®šä¹‰çš„æ•°æ®ç±»å‹é›†åˆ</returns>
+        /// <exception cref="ArgumentNullException">å‚æ•°ä¸èƒ½ä¸ºç©º</exception>
         public T[] GetTable<T>(string table) where T : class, new()
         {
             return GetTable<T>(table, true);
         }
 
         /// <summary>
-        ///     »ñÈ¡Ö¸¶¨±íµÄËùÓĞ¼ÇÂ¼£¬²¢½«Ã¿Ò»¸ö¼ÇÂ¼°ü×°ÎªÖ¸¶¨ÀàĞÍµÄĞÎÊ½
-        ///     <para>* Ê¹ÓÃ´Ë·½·¨Ö»ÄÜ´ÓCSNDBÖĞ¹ıÈ¥Ö¸¶¨±íµÄÄÚÈİ</para>
+        ///     æ ¹æ®æŒ‡å®šçš„æ•°æ®è¡¨åè·å–ä¸€ä¸ªæ•°æ®é›†åˆï¼Œå¹¶å°†è¿™ä¸ªæ•°æ®é›†åˆä¸­çš„æ¯ä¸€è¡Œè½¬æ¢ä¸ºä¸€ä¸ªè‡ªå®šä¹‰ç±»å‹
         /// </summary>
-        /// <param name="table">±íÃû</param>
-        /// <param name="hasCache">»º´æ±êÊ¶</param>
-        /// <returns>·µ»Ø±íÊı¾İ</returns>
-        /// <exception cref="ArgumentNullException">²ÎÊı²»ÄÜÎª¿Õ</exception>
+        /// <param name="table">æ•°æ®è¡¨åç§°</param>
+        /// <param name="hasCache">æ˜¯å¦ç¼“å­˜æ ‡ç¤º</param>
+        /// <returns>è¿”å›è‡ªå®šä¹‰çš„æ•°æ®ç±»å‹é›†åˆ</returns>
+        /// <exception cref="ArgumentNullException">å‚æ•°ä¸èƒ½ä¸ºç©º</exception>
         public T[] GetTable<T>(string table, bool hasCache) where T : class, new()
         {
             #region Security check & initializtion.
@@ -364,6 +396,42 @@ namespace KJFramework.ApplicationEngine.Proxies
             #endregion
 
             return targets;
+        }
+
+        /// <summary>
+        ///    æ¥æ”¶åˆ°äº†æ¥è‡ªè¿œç¨‹CSNçš„é…ç½®ä¿¡æ¯æ›´æ–°æ¨é€
+        /// </summary>
+        /// <param name="key">KEY</param>
+        /// <param name="value">VALUE</param>
+        public void UpdateConfiguration(string key, string value)
+        {
+            lock (_lockCallbackObj)
+            {
+                Action<string> callback;
+                try { if (_callbacks.TryGetValue(key, out callback)) callback(value); }
+                catch (System.Exception ex) { _tracing.Error(ex, null); }
+            }
+            ConfigurationUpdatedHandler(new LightSingleArgEventArgs<Tuple<string, string>>(new Tuple<string, string>(key, value)));
+        }
+
+        /// <summary>
+        ///    å¦‚æœæ”¶åˆ°äº†æ¥è‡ªCSNçš„é…ç½®ä¿¡æ¯å˜æ›´é€šçŸ¥ï¼Œåˆ™è§¦å‘æ­¤äº‹ä»¶
+        /// </summary>
+        public event EventHandler<LightSingleArgEventArgs<Tuple<string, string>>> ConfigurationUpdated;
+        protected virtual void ConfigurationUpdatedHandler(LightSingleArgEventArgs<Tuple<string, string>> e)
+        {
+            EventHandler<LightSingleArgEventArgs<Tuple<string, string>>> handler = ConfigurationUpdated;
+            if (handler != null) handler(this, e);
+        }
+
+        /// <summary>
+        ///    Asynchronously actives callback method for updating specified configuiration value.
+        /// </summary>
+        /// <param name="sender">event owner</param>
+        /// <param name="e">specified based-on KEY-VALUE style's value pair.</param>
+        private void SyncUpdatingConfig(object sender, LightSingleArgEventArgs<DataRecvEventArgs<string, string>> e)
+        {
+            UpdateConfiguration(e.Target.Key, e.Target.Value);
         }
 
         #endregion

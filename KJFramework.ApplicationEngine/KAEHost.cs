@@ -1,4 +1,5 @@
-﻿using KJFramework.ApplicationEngine.Connectors;
+﻿using KJFramework.ApplicationEngine.Configurations.Settings;
+using KJFramework.ApplicationEngine.Connectors;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Finders;
@@ -6,12 +7,16 @@ using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Messages;
 using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Packages;
+using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
+using KJFramework.Counters;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
+using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Configurations;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction;
@@ -72,8 +77,16 @@ namespace KJFramework.ApplicationEngine
         private readonly IPEndPoint _rrcsAddr;
         private TcpUri _defaultKAENetwork;
         private RRCSConnector _rrcsConnector;
+        private ChannelInternalConfigSettings _settings;
+        private readonly IKAEHostProxy _hostProxy = new KAEHostProxy();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (KAEHost));
         private readonly object _protocolDicLockObj = new object();
+        #region Performance Counters.
+
+        private readonly LightPerfCounter _rspRemainningCounter = new NumberOfItems64PerfCounter("KAE::COMMUNICATION::RSP::REMAINNING", "It used for counting how many RSP messages are waitting for sends to the remoting network resource.");
+        private readonly LightPerfCounter _errorRspCounter = new NumberOfItems64PerfCounter("KAE::COMMUNICATION::RSP::ERROR", "It used for counting how many RSP messages had occured error."); 
+        
+        #endregion
         //caches for network end-points by respective MessageIdentity.
         //1st level of key = MessageIdentity + App Level; second level of key = application's version.
         private IDictionary<string, IDictionary<string, IList<string>>> _caches;
@@ -106,6 +119,18 @@ namespace KJFramework.ApplicationEngine
         /// </exception>
         private IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> Initialize()
         {
+            SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default);
+            SystemWorker.Instance.ConfigurationProxy.ConfigurationUpdated += ConfigurationUpdatedEvent;
+            //does a copy of current AppDomain's global network layer settings for each of installing KPP.
+            _settings = new ChannelInternalConfigSettings
+            {
+                BuffStubPoolSize = ChannelConst.BuffStubPoolSize,
+                MaxMessageDataLength = ChannelConst.MaxMessageDataLength,
+                NamedPipeBuffStubPoolSize = ChannelConst.NamedPipeBuffStubPoolSize,
+                NoBuffStubPoolSize = ChannelConst.NoBuffStubPoolSize,
+                RecvBufferSize = ChannelConst.RecvBufferSize,
+                SegmentSize = ChannelConst.SegmentSize
+            };
             if (!KAEHostNetworkResourceManager.IsInitialized)
             {
                 KAEHostNetworkResourceManager.IntellegenceNewTransaction += IntellegenceNewTransaction;
@@ -133,7 +158,7 @@ namespace KJFramework.ApplicationEngine
                                 tuple.Item2.GetSectionField<string>(0x00, "Version"),
                                 tuple.Item2.GetSectionField<byte>(0x00, "ApplicationLevel")));
                     //assembles a new dynamic object for application.
-                    ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2);
+                    ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2, _settings, _hostProxy);
                     entry = new Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>(tuple.Item1, tuple.Item2, dynamicObject);
                     subDic.Add(appFullKey, entry);
                 }
@@ -275,6 +300,7 @@ namespace KJFramework.ApplicationEngine
          */
         private void HandleBusiness(Tuple<KAENetworkResource, ApplicationLevel> tag, object transaction, MessageIdentity reqMsgIdentity, object reqMsg)
         {
+            _rspRemainningCounter.Increment();
             ApplicationDynamicObject dynamicObj;
             IBusinessPackage package;
             lock (_protocolDicLockObj)
@@ -350,6 +376,8 @@ namespace KJFramework.ApplicationEngine
 
         private void HandleErrorSituation(ProtocolTypes protocol, object transaction, KAEErrorCodes errorCode, string reason)
         {
+            _rspRemainningCounter.Decrement();
+            _errorRspCounter.Increment();
             switch (protocol)
             {
                 case ProtocolTypes.Metadata:
@@ -374,6 +402,7 @@ namespace KJFramework.ApplicationEngine
 
         private void HandleSucceedSituation(ProtocolTypes protocol, object transaction, KAEErrorCodes errorCode, MetadataContainer rspMessage)
         {
+            _rspRemainningCounter.Decrement();
             switch (protocol)
             {
                 case ProtocolTypes.Metadata:
@@ -466,6 +495,15 @@ namespace KJFramework.ApplicationEngine
             Tuple<KAENetworkResource, ApplicationLevel> tag = new Tuple<KAENetworkResource, ApplicationLevel>((KAENetworkResource)agent.Tag, reqMsg.RequestedLevel);
             MessageIdentity reqMsgIdentity = reqMsg.MessageIdentity;
             HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg);
+        }
+
+        //Received a message from remoting CSN.
+        void ConfigurationUpdatedEvent(object sender, LightSingleArgEventArgs<Tuple<string, string>> e)
+        {
+            lock (_protocolDicLockObj)
+                foreach (KeyValuePair<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> pair in _protocolDic)
+                    foreach (KeyValuePair<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>> valuePair in pair.Value)
+                        foreach (KeyValuePair<ApplicationLevel, ApplicationDynamicObject> keyValuePair in valuePair.Value) keyValuePair.Value.UpdateConfiguration(e.Target.Item1, e.Target.Item2);
         }
 
         #endregion

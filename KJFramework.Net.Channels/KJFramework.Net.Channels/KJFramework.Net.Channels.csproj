@@ -59,6 +59,7 @@
     <Compile Include="Caches\SocketIOStub.cs" />
     <Compile Include="ChannelConst.cs" />
     <Compile Include="CommunicationObject.cs" />
+    <Compile Include="Configurations\ChannelInternalConfigSettings.cs" />
     <Compile Include="Configurations\ChannelModelSettingConfigSection.cs" />
     <Compile Include="Configurations\SettingConfiguration.cs" />
     <Compile Include="Disconvery\DiscoveryInputPin.cs" />

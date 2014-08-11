@@ -95,7 +95,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\IRemoteConfigurationProxy.cs" />
     <Compile Include="Proxies\IRemoteDataSyncProxy.cs" />
-    <Compile Include="Proxies\RemoteConfigurationProxy.cs" />
+    <Compile Include="Proxies\KAEHostProxy.cs" />
+    <Compile Include="Proxies\KPPConfigurationProxy.cs" />
     <Compile Include="Proxies\RemoteDataSyncProxy.cs" />
     <Compile Include="Proxies\RemoteLogProxy.cs" />
     <Compile Include="Proxies\SolitaryRemoteConfigurationProxy.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Resources\Packs\KPPResource.cs" />
     <Compile Include="Rings\KAEHostNode.cs" />
     <Compile Include="Rings\KetamaRing.cs" />
+    <Compile Include="Proxies\IKAEHostProxy.cs" />
     <Compile Include="SystemWorker.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -155,7 +157,9 @@
       <Name>KJFramework</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Stubs\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -3,6 +3,7 @@ using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Helpers;
 using KJFramework.ApplicationEngine.Processors;
+using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.ApplicationEngine.Rings;
 using KJFramework.Dynamic.Components;
@@ -13,6 +14,7 @@ using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
 using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Configurations;
 using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
@@ -88,8 +90,10 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         internal long CRC { get { return _structure.GetHeadField<long>("CRC"); } }
 
+        private IKAEHostProxy _proxy;
         private KPPDataStructure _structure;
         private IHostTransportChannel _hostChannel;
+        private ChannelInternalConfigSettings _settings;
         private readonly object _lockObj = new object();
         private IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> _processors;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Application));
@@ -111,6 +115,16 @@ namespace KJFramework.ApplicationEngine
             foreach (KeyValuePair<ProtocolTypes, Dictionary<MessageIdentity, object>> pair in _processors)
                 dic.Add(pair.Key, pair.Value.Keys.ToList());
             return dic;
+        }
+
+        /// <summary>
+        ///    反向更新从CSN推送过来的KEY和VALUE配置信息
+        /// </summary>
+        /// <param name="key">KEY</param>
+        /// <param name="value">VALUE</param>
+        public void UpdateConfiguration(string key, string value)
+        {
+            SystemWorker.Instance.ConfigurationProxy.UpdateConfiguration(key, value);
         }
 
         /// <summary>
@@ -150,9 +164,13 @@ namespace KJFramework.ApplicationEngine
         ///    应用初始化
         /// </summary>
         /// <param name="structure">KPP资源包的数据结构</param>
-        internal void Initialize(KPPDataStructure structure)
+        /// <param name="settings">APP所使用的网络资源设置集</param>
+        /// <param name="proxy">KAE宿主代理器</param>
+        internal void Initialize(KPPDataStructure structure, ChannelInternalConfigSettings settings, IKAEHostProxy proxy)
         {
+            _settings = settings;
             _structure = structure;
+            _proxy = proxy;
             Version = _structure.GetSectionField<string>(0x00, "Version");
             PackageName = _structure.GetSectionField<string>(0x00, "PackName");
             Description = _structure.GetSectionField<string>(0x00, "PackDescription");
@@ -162,6 +180,7 @@ namespace KJFramework.ApplicationEngine
             Status = ApplicationStatus.Initializing;
             try
             {
+                SystemWorker.Instance.InitializeForKPP(PackageName, _proxy, _settings);
                 InnerInitialize();
                 _processors = CollectAbilityProcessors();
                 Status = ApplicationStatus.Initialized;
