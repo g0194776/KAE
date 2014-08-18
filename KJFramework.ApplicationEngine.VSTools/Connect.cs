@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Windows.Forms;
 using Extensibility;
 using EnvDTE;
 using EnvDTE80;
+using Microsoft.VisualStudio.CommandBars;
+
 namespace KJFramework.ApplicationEngine.VSTools
 {
 	/// <summary>The object for implementing an Add-in.</summary>
@@ -20,9 +23,32 @@ namespace KJFramework.ApplicationEngine.VSTools
 		/// <seealso class='IDTExtensibility2' />
 		public void OnConnection(object application, ext_ConnectMode connectMode, object addInInst, ref Array custom)
 		{
+		    MessageBox.Show("Debugging a Simple Add-in");
 			_applicationObject = (DTE2)application;
 			_addInInstance = (AddIn)addInInst;
+            
+            #region 创建添加引用的上下文菜单项
+
+            CommandBarControl control = (CommandBarControl)((CommandBars)_applicationObject.CommandBars)["Context Menus"].Controls["Project and Solution Context Menus"].Control;
+            CommandBarPopup commandBarPopup = (CommandBarPopup)control.Control;
+            CommandBarControl commandBarControl = commandBarPopup.Controls["Project"];
+            CommandBarPopup cp = (CommandBarPopup)commandBarControl.Control;
+            //"References"
+            CommandBarControl newC = cp.Controls.Add(MsoControlType.msoControlButton, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            newC.Enabled = true;
+            newC.Caption = "P&ackage as your KPP";
+            newC.Visible = true;
+            CommandBarButton cmb = (CommandBarButton)newC.Control;
+            cmb.Click += cmb_Click;
+            //cmb.Click += AddReferenceButtonClick;
+
+            #endregion
 		}
+
+        void cmb_Click(CommandBarButton Ctrl, ref bool CancelDefault)
+        {
+            _applicationObject.Solution.SolutionBuild.Build(false);
+        }
 
 		/// <summary>Implements the OnDisconnection method of the IDTExtensibility2 interface. Receives notification that the Add-in is being unloaded.</summary>
 		/// <param term='disconnectMode'>Describes how the Add-in is being unloaded.</param>

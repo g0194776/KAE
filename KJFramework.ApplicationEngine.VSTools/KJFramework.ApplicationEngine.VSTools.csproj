@@ -47,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
@@ -117,6 +118,7 @@
   <ItemGroup>
     <Content Include="..\..\..\Addins\KJFramework.ApplicationEngine.VSTools - For Testing.AddIn">
       <Link>KJFramework.ApplicationEngine.VSTools - For Testing.AddIn</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="KJFramework.ApplicationEngine.VSTools.AddIn" />
   </ItemGroup>
