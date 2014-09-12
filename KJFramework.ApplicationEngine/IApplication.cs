@@ -56,6 +56,11 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         /// <param name="cache">网络信息</param>
         void UpdateNetworkCache(Dictionary<string, List<string>> cache);
+        /// <summary>
+        ///    更新灰度升级策略的源代码
+        /// </summary>
+        /// <param name="code">灰度升级策略的源代码</param>
+        void UpdateGreyPolicy(string code);
 
         #endregion
     }

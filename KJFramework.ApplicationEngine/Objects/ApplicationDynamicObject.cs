@@ -309,6 +309,15 @@ namespace KJFramework.ApplicationEngine.Objects
         }
 
         /// <summary>
+        ///    更新灰度升级策略的源代码
+        /// </summary>
+        /// <param name="code">灰度升级策略的源代码</param>
+        public void UpdateGreyPolicy(string code)
+        {
+            _application.UpdateGreyPolicy(code);
+        }
+
+        /// <summary>
         ///    反向更新从CSN推送过来的KEY和VALUE配置信息
         /// </summary>
         /// <param name="key">KEY</param>

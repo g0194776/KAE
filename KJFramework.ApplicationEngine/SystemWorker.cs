@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using KJFramework.ApplicationEngine.Configurations.Loaders;
 using KJFramework.ApplicationEngine.Configurations.Settings;
+using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Helpers;
@@ -62,6 +63,7 @@ namespace KJFramework.ApplicationEngine
         #region Implementation of ISystemWorker
 
         private IRemoteConfigurationProxy _configurationProxy;
+        private Func<IDictionary<string, string>, ApplicationLevel> _greyPolicy;
 
         /// <summary>
         ///     获取配置信息代理器
@@ -115,7 +117,6 @@ namespace KJFramework.ApplicationEngine
             KJFramework.Configurations.Configurations.RemoteConfigLoader = new RemoteConfigurationLoader(setting);
             //initialize long...long memory buffer for tcp layer.
             ChannelConst.Initialize();
-            CommonCounter.Instance.Initialize();
             _transactionManager = new MessageTransactionManager(new TransactionIdentityComparer());
             _metadataTransactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
             _isInitialized = true;
@@ -146,11 +147,19 @@ namespace KJFramework.ApplicationEngine
             KJFramework.Configurations.Configurations.RemoteConfigLoader = new RemoteConfigurationLoader(RemoteConfigurationSetting.Default);
             //initialize long...long memory buffer for tcp layer.
             ChannelConst.Initialize(settings);
-            CommonCounter.Instance.Initialize();
             _transactionManager = new MessageTransactionManager(new TransactionIdentityComparer());
             _metadataTransactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
             _isInitialized = true;
             IsInSpecifiedKPP = true;
+        }
+
+        /// <summary>
+        ///    为SystemWorker注入已更新的灰度升级策略
+        /// </summary>
+        /// <param name="callback">回调方法</param>
+        internal void UpdateGreyPolicy(Func<IDictionary<string,string>, ApplicationLevel> callback)
+        {
+            _greyPolicy = callback;
         }
 
         /// <summary>

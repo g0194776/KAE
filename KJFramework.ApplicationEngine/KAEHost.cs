@@ -74,8 +74,11 @@ namespace KJFramework.ApplicationEngine
 
         #region Members.
 
+        private string _greyPolicyAddress;
+        private Thread _greyPolicyThread;
         private readonly string _workRoot;
         private readonly IPEndPoint _rrcsAddr;
+        private TimeSpan _greyPolicyInterval;
         private TcpUri _defaultKAENetwork;
         private RRCSConnector _rrcsConnector;
         private ChannelInternalConfigSettings _settings;
@@ -121,6 +124,8 @@ namespace KJFramework.ApplicationEngine
         private IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> Initialize()
         {
             SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default);
+            _greyPolicyAddress = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker","GreyPolicyAddress", address => _greyPolicyAddress = address);
+            _greyPolicyInterval = TimeSpan.Parse(SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "GreyPolicyInternal", interval => _greyPolicyInterval = TimeSpan.Parse(interval)));
             SystemWorker.Instance.ConfigurationProxy.ConfigurationUpdated += ConfigurationUpdatedEvent;
             //does a copy of current AppDomain's global network layer settings for each of installing KPP.
             _settings = new ChannelInternalConfigSettings
@@ -263,8 +268,9 @@ namespace KJFramework.ApplicationEngine
 
             _rrcsConnector = new RRCSConnector(_rrcsAddr, this, _defaultKAENetwork);
             _rrcsConnector.Start();
+            GetGreyPolicyAsync();
             Status = KAEHostStatus.Prepared;
-            Thread.Sleep(0);
+            Thread.CurrentThread.Join();
         }
 
         private void InitializeNetworkProtocolHandler(Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> dic, KeyValuePair<ProtocolTypes, IList<MessageIdentity>> values, ApplicationDynamicObject dynamicObject)
@@ -278,6 +284,45 @@ namespace KJFramework.ApplicationEngine
                 if (secondLevel.ContainsKey(dynamicObject.Level)) throw new DuplicatedApplicationException(string.Format("#Duplicated application attributes! #Protocol: {0}, #MessageIdentity: {1}, #Level: {2}.", values.Key, identity, dynamicObject.Level));
                 secondLevel.Add(dynamicObject.Level, dynamicObject);
             }
+        }
+
+        /// <summary>
+        ///    异步的从指定远程地址上获取灰度升级策略脚本
+        /// </summary>
+        private void GetGreyPolicyAsync()
+        {
+            _greyPolicyThread = new Thread(delegate()
+            {
+                while (true)
+                {
+                    try
+                    {
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_greyPolicyAddress);
+                        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                            {
+                                string code = reader.ReadToEnd();
+                                if (!string.IsNullOrEmpty(code))
+                                {
+                                    lock (_protocolDicLockObj)
+                                        foreach (KeyValuePair<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> pair in _protocolDic)
+                                            foreach (KeyValuePair<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>> valuePair in pair.Value)
+                                                foreach (KeyValuePair<ApplicationLevel, ApplicationDynamicObject> keyValuePair in valuePair.Value) keyValuePair.Value.UpdateGreyPolicy(code);
+                                }
+                            }
+                        }
+                    }
+                    catch { }
+                    Thread.Sleep(_greyPolicyInterval);
+                }
+            })
+            {
+                IsBackground = true,
+                Name = "KAE-HOST_BACKEND_THREAD_GET_GREY_POLICY"
+            };
+            _greyPolicyThread.Start();
         }
 
         /// <summary>

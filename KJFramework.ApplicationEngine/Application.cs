@@ -1,4 +1,5 @@
-﻿using KJFramework.ApplicationEngine.Attributes;
+﻿using System.Runtime.Remoting.Messaging;
+using KJFramework.ApplicationEngine.Attributes;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Helpers;
@@ -7,6 +8,7 @@ using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.ApplicationEngine.Rings;
 using KJFramework.Dynamic.Components;
+using KJFramework.Encrypt;
 using KJFramework.Enums;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
@@ -22,12 +24,14 @@ using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Managers;
+using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PaxScript.Net;
 
 namespace KJFramework.ApplicationEngine
 {
@@ -91,10 +95,12 @@ namespace KJFramework.ApplicationEngine
         internal long CRC { get { return _structure.GetHeadField<long>("CRC"); } }
 
         private IKAEHostProxy _proxy;
+        private string _previousCodeMD5;
         private KPPDataStructure _structure;
         private IHostTransportChannel _hostChannel;
         private ChannelInternalConfigSettings _settings;
         private readonly object _lockObj = new object();
+        private PaxScripter _scripter = new PaxScripter();
         private IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> _processors;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Application));
         private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
@@ -161,12 +167,31 @@ namespace KJFramework.ApplicationEngine
         }
 
         /// <summary>
+        ///    更新灰度升级策略的源代码
+        /// </summary>
+        /// <param name="code">灰度升级策略的源代码</param>
+        public void UpdateGreyPolicy(string code)
+        {
+            string hash = EncryptHashHelper.HashString(code);
+            if (!string.IsNullOrEmpty(_previousCodeMD5) && _previousCodeMD5 == hash) return;
+            try
+            {
+                _scripter.Reset();
+                _scripter.AddModule(PackageName);
+                _scripter.AddCode(PackageName, code);
+                SystemWorker.Instance.UpdateGreyPolicy(dic => (ApplicationLevel)_scripter.Invoke(RunMode.Run, null, "KAE.GreyPolicy", new object[] { dic }));
+            }
+            catch (System.Exception ex) { _tracing.Error(ex); }
+        }
+
+        /// <summary>
         ///    应用初始化
         /// </summary>
         /// <param name="structure">KPP资源包的数据结构</param>
         /// <param name="settings">APP所使用的网络资源设置集</param>
         /// <param name="proxy">KAE宿主代理器</param>
-        internal void Initialize(KPPDataStructure structure, ChannelInternalConfigSettings settings, IKAEHostProxy proxy)
+        /// <param name="greyPolicyCode">灰度升级策略脚本</param>
+        internal void Initialize(KPPDataStructure structure, ChannelInternalConfigSettings settings, IKAEHostProxy proxy, string greyPolicyCode = null)
         {
             _settings = settings;
             _structure = structure;
@@ -181,6 +206,8 @@ namespace KJFramework.ApplicationEngine
             try
             {
                 SystemWorker.Instance.InitializeForKPP(PackageName, _proxy, _settings);
+                if (string.IsNullOrEmpty(greyPolicyCode)) SystemWorker.Instance.UpdateGreyPolicy(arg => ApplicationLevel.Stable);
+                else UpdateGreyPolicy(greyPolicyCode);
                 InnerInitialize();
                 _processors = CollectAbilityProcessors();
                 Status = ApplicationStatus.Initialized;

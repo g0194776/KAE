@@ -35,6 +35,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Depend Files\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="paxscript-net2013">
+      <HintPath>..\Depend Files\paxscript-net2013.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />

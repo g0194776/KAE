@@ -74,6 +74,7 @@
     <Compile Include="ChannelCounter.cs" />
     <Compile Include="Events\SocketSegmentReceiveEventArgs.cs" />
     <Compile Include="Events\NamedPipeSegmentReceiveEventArgs.cs" />
+    <Compile Include="Extends\StringExtends.cs" />
     <Compile Include="Health\AliveCheckTcpConnection.cs" />
     <Compile Include="Identities\ErrorTransactionIdentity.cs" />
     <Compile Include="Identities\MessageIdentity.cs" />

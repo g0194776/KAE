@@ -14,6 +14,8 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Helpers
         #region Members.
 
         private static Database _database;
+        private static readonly object _lockObj = new object();
+        private static readonly IDictionary<long, ApplicationInformation> _information = new Dictionary<long, ApplicationInformation>();
 
         #endregion
 
@@ -36,9 +38,11 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Helpers
         /// <param name="crc">应用的CRC值</param>
         public static IExecuteResult<ApplicationInformation> GetApplicationInformationByCRCAsync(long crc)
         {
+            ApplicationInformation information;
+            lock (_lockObj) if (_information.TryGetValue(crc, out information)) return ExecuteResult<ApplicationInformation>.Succeed(information); ;
             DataTable table = _database.SpExecuteTable("spGetMessageIdentitiesByAppCRC", new[] { "CRC" }, new object[] { crc });
             if (table == null || table.Rows.Count == 0) return ExecuteResult<ApplicationInformation>.Fail((byte)KAEErrorCodes.NullResultWithTargetedAppCRC, string.Empty);
-            ApplicationInformation information = new ApplicationInformation();
+            information = new ApplicationInformation();
             DataRow row = table.Rows[0];
             information.PackageName = Convert.IsDBNull(row["PackageName"]) ? string.Empty : row["PackageName"].ToString();
             information.Description = Convert.IsDBNull(row["Description"]) ? string.Empty:row["Description"].ToString();
@@ -59,6 +63,7 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Helpers
                     information.MessageIdentities.Add(protocol, (tempValue = new List<MessageIdentity>()));
                 tempValue.Add(identity);
             }
+            lock (_lockObj) _information.Add(crc, information);
             return ExecuteResult<ApplicationInformation>.Succeed(information);
         }
 

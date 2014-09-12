@@ -1,9 +1,8 @@
 ﻿/*
-SQLyog Ultimate v11.11 (64 bit)
-MySQL - 5.5.19 : Database - csndb
+SQLyog Ultimate v11.24 (32 bit)
+MySQL - 5.7.3-m13 : Database - csndb
 *********************************************************************
-*/
-
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -13,6 +12,8 @@ MySQL - 5.5.19 : Database - csndb
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`csndb` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+
 USE `csndb`;
 
 /*Table structure for table `ha_configinfo` */
@@ -27,11 +28,11 @@ CREATE TABLE `ha_configinfo` (
   `CreateTime` timestamp NOT NULL DEFAULT '2011-12-12 00:00:00',
   `LastOprTime` timestamp NOT NULL DEFAULT '2011-12-12 00:00:00',
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ha_configinfo` */
 
-insert  into `ha_configinfo`(`Id`,`ServiceName`,`ConfigKey`,`ConfigValue`,`CreateTime`,`LastOprTime`) values (1,'APMS','DatabaseConnection','HOST=127.0.0.1;DATABASE=kae_db;USER Id=root;PASSWORD=123123;CHARSET=utf8;CONVERT Zero DATETIME=TRUE;Allow Zero DATETIME=TRUE;','2011-12-12 00:00:00','2011-12-12 00:00:00');
+insert  into `ha_configinfo`(`Id`,`ServiceName`,`ConfigKey`,`ConfigValue`,`CreateTime`,`LastOprTime`) values (1,'APMS','DatabaseConnection','HOST=127.0.0.1;DATABASE=kae_db;USER Id=root;PASSWORD=123123123;CHARSET=utf8;CONVERT Zero DATETIME=TRUE;Allow Zero DATETIME=TRUE;','2011-12-12 00:00:00','2011-12-12 00:00:00'),(2,'app.test','testkey','testvalue','2011-12-12 00:00:00','2011-12-12 00:00:00'),(3,'KAEWorker','GreyPolicyAddress','http://localhost/code.cs','2011-12-12 00:00:00','2011-12-12 00:00:00'),(4,'KAEWorker','GreyPolicyInternal','00:05:00','2011-12-12 00:00:00','2011-12-12 00:00:00');
 
 /*Table structure for table `ha_partialconfig` */
 

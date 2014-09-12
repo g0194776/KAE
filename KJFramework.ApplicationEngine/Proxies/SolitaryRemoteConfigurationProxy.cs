@@ -124,7 +124,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         {
             if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");
             if (string.IsNullOrEmpty(field)) throw new ArgumentNullException("field");
-            return GetField("CSNDB", "HA_ConfigInfo", role, field);
+            return GetField("CSNDB", "HA_ConfigInfo", role, field, callback);
         }
 
         /// <summary>

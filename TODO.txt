@@ -10,11 +10,11 @@
 
 What's the next:
 ------------------------------------------------
-1. 完成LightPerformanceCounter的编写, 并将此应用于KAEHost内部
-2. 针对RRCS内部通过crc从数据库获取APP信息的场景做进程内缓存
-3. 重写SystemWorker的ConfigurationProxy类，并支持接口传入callback函数
-4. 为CSN增加配置信息变化的Publisher
-5. 重写SystemConnectionPool，为其增加Multiple Socket Connection的支持
+1. 完成LightPerformanceCounter的编写, 并将此应用于KAEHost内部      √
+2. 针对RRCS内部通过crc从数据库获取APP信息的场景做进程内缓存      √
+3. 重写SystemWorker的ConfigurationProxy类，并支持接口传入callback函数      √
+4. 为CSN增加配置信息变化的Publisher      √
+5. 重写SystemConnectionPool，为其增加Multiple Socket Connection的支持      √
 
 
 
@@ -40,7 +40,29 @@ What's the next:
 	
 What's the next:
 ------------------------------------------------
-1. 重写SystemConnectionPool，为其增加Multiple Socket Connection的支持
-2. 开始着手于设计动态负载的分发模块
-3. 完善并走通从APP到KAEHost的Send RSP流程
+1. 重写SystemConnectionPool，为其增加Multiple Socket Connection的支持      √
+2. 开始着手于设计动态负载的分发模块      √
+3. 完善并走通从APP到KAEHost的Send RSP流程      √
 4. 开始开发基于KAE的VS Tools
+
+
+
+
+
+
+
+
+
+9月12日进度
+------------------------------------------------
+1. 重写了SystemConnectionPool，为其增加Multiple Socket Connection的支持
+2. 初步完成了KAE宿主对于获取远程灰度升级策略脚本的支持
+3. 改造SystemWorker让其支持设置灰度升级脚本的功能
+4. 为KAE的CSN配置项加入了灰度升级的配置
+
+
+What's the next:
+------------------------------------------------
+1. KAE的包裹清单(用于一次性打包装配一个崭新的KAE宿主)
+2. SystemWorker支持在创建网络事务的时候传入上下文的资源信息
+2. 开发基于KAE的VS Tools

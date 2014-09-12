@@ -29,35 +29,6 @@ namespace KJFramework.ApplicationEngine.ApplicationTest2
             MemoryAllotter.Instance.Initialize();
             KAEHost host = new KAEHost(Path.GetFullPath("."), new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6611)); 
             host.Start();
-            FieldInfo field = host.GetType().GetField("_hostChannels", BindingFlags.NonPublic | BindingFlags.Instance);
-            List<IHostTransportChannel> channels = (List<IHostTransportChannel>)field.GetValue(host);
-
-
-            MetadataTransactionManager transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
-            ITransportChannel channel = new TcpTransportChannel(new IPEndPoint(IPAddress.Parse("127.0.0.1"), ((TcpHostTransportChannel)channels[1]).Port));
-            channel.Connect();
-            MetadataConnectionAgent agent = new MetadataConnectionAgent(new MessageTransportChannel<MetadataContainer>((IRawTransportChannel)channel, new MetadataProtocolStack()), transactionManager);
-            MessageTransaction<MetadataContainer> transaction = agent.CreateTransaction();
-            transaction.Failed += delegate(object sender, System.EventArgs eventArgs)
-            {
-                
-            };
-            transaction.Timeout += delegate(object sender, System.EventArgs eventArgs)
-            {
-                
-            };
-            transaction.ResponseArrived+=
-                delegate(object sender, LightSingleArgEventArgs<MetadataContainer> eventArgs)
-                {
-                    
-                };
-            MetadataContainer reqMsg = new MetadataContainer();
-            reqMsg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 1, ServiceId = 0, DetailsId = 2 }));
-            reqMsg.SetAttribute(0x0A, new StringValueStored("Hello, KAE"));
-            transaction.SendRequest(reqMsg);
-            Console.WriteLine("Wrote OK...");
-            Console.ReadLine();
-            host.Stop();
         }
     }
 }
