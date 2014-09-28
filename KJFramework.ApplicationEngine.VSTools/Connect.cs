@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Text;
 using System.Windows.Forms;
 using Extensibility;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.CommandBars;
+using Microsoft.VisualStudio.Shell;
+
+using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 namespace KJFramework.ApplicationEngine.VSTools
 {
@@ -14,6 +18,7 @@ namespace KJFramework.ApplicationEngine.VSTools
 		/// <summary>Implements the constructor for the Add-in object. Place your initialization code within this method.</summary>
 		public Connect()
 		{
+            
 		}
 
 		/// <summary>Implements the OnConnection method of the IDTExtensibility2 interface. Receives notification that the Add-in is being loaded.</summary>
@@ -26,7 +31,10 @@ namespace KJFramework.ApplicationEngine.VSTools
 		    MessageBox.Show("Debugging a Simple Add-in");
 			_applicationObject = (DTE2)application;
 			_addInInstance = (AddIn)addInInst;
-            
+            //solution loaded event.
+            var serviceProvider = new ServiceProvider((IServiceProvider)_applicationObject);
+            SolutionEventsListener solutionEventsListener = new SolutionEventsListener(serviceProvider);
+            solutionEventsListener.AfterSolutionLoaded += SolutionEvents_Opened;
             #region 创建添加引用的上下文菜单项
 
             CommandBarControl control = (CommandBarControl)((CommandBars)_applicationObject.CommandBars)["Context Menus"].Controls["Project and Solution Context Menus"].Control;
@@ -45,8 +53,22 @@ namespace KJFramework.ApplicationEngine.VSTools
             #endregion
 		}
 
+        void SolutionEvents_Opened()
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (Project project in _applicationObject.Solution.Projects)
+            {
+                //virtual folder.
+                if (project.Kind != "{66A26720-8FB5-11D2-AA7E-00C04F688DDE}")
+                    builder.AppendLine(project.Name);
+            }
+            MessageBox.Show(builder.ToString());
+        }
+
         void cmb_Click(CommandBarButton Ctrl, ref bool CancelDefault)
         {
+            MessageBox.Show("sdfsfsdf");
+            MessageBox.Show(((Project)((object[])_applicationObject.DTE.ActiveSolutionProjects)[0]).FullName);
             _applicationObject.Solution.SolutionBuild.Build(false);
         }
 
