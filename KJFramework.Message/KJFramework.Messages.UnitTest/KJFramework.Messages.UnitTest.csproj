@@ -38,12 +38,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KJFramework">
-      <HintPath>..\Depend Files\KJFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="KJFramework.IO">
-      <HintPath>..\Depend Files\KJFramework.IO.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -66,6 +60,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KJFramework.Messages\KJFramework.Messages.csproj">
       <Project>{ACA46F02-5B48-4520-8CB2-3CA01F19B498}</Project>
       <Name>KJFramework.Messages</Name>
