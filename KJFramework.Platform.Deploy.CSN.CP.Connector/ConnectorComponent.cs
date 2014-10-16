@@ -67,6 +67,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
 
         protected override void InnerStart()
         {
+            bool boradcastFlag = !string.IsNullOrEmpty(ConfigurationManager.AppSettings["BroadcastSwitch"]) && bool.Parse(ConfigurationManager.AppSettings["BroadcastSwitch"]);
             Console.WriteLine("Initializing network channels......");
             TcpHostTransportChannel hostChannel = new TcpHostTransportChannel(CSNSettingConfigSection.Current.Settings.HostPort);
             bool regist = hostChannel.Regist();
@@ -86,7 +87,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             Console.WriteLine("Initializing database(s)......");
             InitializeDatabases();
             Console.WriteLine("CSN task scheduler started!");
-            CSNBoradcastStart();
+            if (boradcastFlag) CSNBoradcastStart();
             Console.WriteLine("CSN is started sucessfully!");
         }
 
