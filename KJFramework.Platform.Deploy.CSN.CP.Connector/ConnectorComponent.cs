@@ -124,7 +124,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
                 try
                 {
                     ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings[i];
-
+                    if(connectionStringSettings.ConnectionString.Contains("SQLEXPRESS")) continue;
                     Database database = Database.GetDatabase(connectionStringSettings.ConnectionString);
                     Global.DBCacheFactory.RegistDatabase(connectionStringSettings.Name, database);
                     Global.DBCacheFactory.Initialize();
