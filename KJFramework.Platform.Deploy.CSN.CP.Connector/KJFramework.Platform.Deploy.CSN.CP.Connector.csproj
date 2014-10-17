@@ -66,6 +66,10 @@
       <Project>{d5a0178c-16f7-453e-a301-d1d61910d2af}</Project>
       <Name>KJFramework.Basic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Data.Synchronization\KJFramework.Data.Synchronization\KJFramework.Data.Synchronization.csproj">
+      <Project>{9c08ac15-9965-4f6e-bfd8-c37bda1ee845}</Project>
+      <Name>KJFramework.Data.Synchronization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KJFramework.Dynamic\KJFramework.Dynamic\KJFramework.Dynamic.csproj">
       <Project>{47672612-8aa3-4729-a210-4f30e3fb39e4}</Project>
       <Name>KJFramework.Dynamic %28Dynamic Component Layer\KJFramework.Dynamic%29</Name>

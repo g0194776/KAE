@@ -1,6 +1,9 @@
 using System.Net;
 using System.Threading;
 using KJFramework.Basic.Enum;
+using KJFramework.Data.Synchronization;
+using KJFramework.Data.Synchronization.Enums;
+using KJFramework.Data.Synchronization.Factories;
 using KJFramework.Dynamic.Components;
 using KJFramework.IO.Helper;
 using KJFramework.Messages.Helpers;
@@ -53,12 +56,13 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
 
         #region Members
 
+        private Thread _thread;
         private IRequestScheduler<BaseMessage> _requestScheduler;
         private MessageTransactionManager _transactionManager;
         private IProtocolStack<BaseMessage> _protocolStack;
         private DiscoveryOnputPin _outputPin;
         private CommonBoradcastProtocol _sendObj;
-        private Thread _thread;
+        private IDataPublisher<string, string[]> _defaultPublisher; 
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ConnectorComponent));
 
         #endregion
@@ -75,6 +79,13 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             if (!regist) throw new System.Exception("#CSN regist network failed!");
             hostChannel.ChannelCreated += ChannelCreated;
             Console.WriteLine("Regist network node at local tcp port: " + CSNSettingConfigSection.Current.Settings.HostPort);
+            Console.WriteLine("Openning data publisher on local TCP port: " + CSNSettingConfigSection.Current.Settings.PublisherPort);
+            _defaultPublisher = DataPublisherFactory.Instance.Create<string, string[]>("*", new NetworkResource(CSNSettingConfigSection.Current.Settings.PublisherPort));
+            if (_defaultPublisher.Open() != PublisherState.Open)
+            {
+                _tracing.Critical("#CSN couldn't open a defaut remoting server publisher.");
+                throw new System.Exception("#CSN couldn't open a defaut remoting server publisher.");
+            }
             Console.WriteLine("Initializing CSN protocol stack......");
             _protocolStack = new CSNProtocolStack();
             Global.ProtocolStack = (CSNProtocolStack) _protocolStack;
