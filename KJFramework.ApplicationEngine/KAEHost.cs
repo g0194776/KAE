@@ -18,6 +18,7 @@ using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Configurations;
+using KJFramework.Net.Channels.Extends;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction;
@@ -47,9 +48,8 @@ namespace KJFramework.ApplicationEngine
         ///     动态程序域服务，提供了相关的基本操作。
         ///     <para>* 使用此构造将会从配置文件中读取服务相关信息</para>
         /// </summary>
-        /// <param name="rrcsAddr">远程RRCS服务地址</param>
-        public KAEHost(IPEndPoint rrcsAddr)
-            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), rrcsAddr)
+        public KAEHost()
+            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1))
         {
         }
 
@@ -57,17 +57,14 @@ namespace KJFramework.ApplicationEngine
         ///     动态程序域服务，提供了相关的基本操作。
         /// </summary>
         /// <param name="workRoot">工作目录</param>
-        /// <param name="rrcsAddr">远程RRCS服务地址</param>
         /// <exception cref="System.ArgumentNullException">参数错误</exception>
         /// <exception cref="DirectoryNotFoundException">工作目录错误</exception>
         /// <exception cref="ArgumentException">无法找到远程RRCS服务地址</exception>
-        public KAEHost(string workRoot, IPEndPoint rrcsAddr)
+        public KAEHost(string workRoot)
         {
             if (workRoot == null) throw new ArgumentNullException("workRoot");
             if (!Directory.Exists(workRoot)) throw new DirectoryNotFoundException("Current work root don't existed. #dir: " + workRoot);
             _workRoot = workRoot;
-            if (rrcsAddr == null) throw new ArgumentException("#We couldn't find any RRCS remoting address.");
-            _rrcsAddr = rrcsAddr;
         }
 
         #endregion
@@ -77,7 +74,7 @@ namespace KJFramework.ApplicationEngine
         private string _greyPolicyAddress;
         private Thread _greyPolicyThread;
         private readonly string _workRoot;
-        private readonly IPEndPoint _rrcsAddr;
+        private IPEndPoint _rrcsAddr;
         private TimeSpan _greyPolicyInterval;
         private TcpUri _defaultKAENetwork;
         private RRCSConnector _rrcsConnector;
@@ -117,13 +114,13 @@ namespace KJFramework.ApplicationEngine
         /// <summary>
         ///    KAE宿主初始化函数
         /// </summary>
+        /// <param name="workRoot">KAE宿主初始化时搜寻KPP文件的目录地址</param>
         /// <exception cref="DuplicatedApplicationException">
         ///     同时存在多个相同的应用包
         ///     <para>* 对于相同的应用包判断条件为：相同的应用名称+相同的应用版本号+相同的应用等级</para>
         /// </exception>
-        private IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> Initialize()
+        private IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> Initialize(string workRoot)
         {
-            SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default);
             _greyPolicyAddress = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker","GreyPolicyAddress", address => _greyPolicyAddress = address);
             _greyPolicyInterval = TimeSpan.Parse(SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "GreyPolicyInternal", interval => _greyPolicyInterval = TimeSpan.Parse(interval)));
             SystemWorker.Instance.ConfigurationProxy.ConfigurationUpdated += ConfigurationUpdatedEvent;
@@ -143,7 +140,7 @@ namespace KJFramework.ApplicationEngine
                 KAEHostNetworkResourceManager.MetadataNewTransaction += MetadataNewTransaction;
                 KAEHostNetworkResourceManager.Initialize();
             }
-            IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> appMetadata = ApplicationFinder.Search(_workRoot);
+            IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> appMetadata = ApplicationFinder.Search(workRoot);
             if (appMetadata == null || appMetadata.Count == 0) return new Dictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>>();
             //re-composites.
             IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> apps = new Dictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>>();
@@ -179,7 +176,11 @@ namespace KJFramework.ApplicationEngine
         /// <exception cref="DuplicatedApplicationException">KAE应用的版本或者版本冲突异常</exception>
         public void Start()
         {
-            IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> apps = Initialize();
+            SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default);
+            string rrcsAddr = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "RRCS-Address");
+            if (rrcsAddr == null) throw new ArgumentException("#We couldn't find any RRCS address from remoting CSN.");
+            _rrcsAddr = rrcsAddr.ConvertToIPEndPoint();
+            IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> apps = Initialize(_workRoot);
             if (apps == null || apps.Count == 0)
             {
                 _tracing.Critical("#KAE Host running on process id {0} had no prepared application!");

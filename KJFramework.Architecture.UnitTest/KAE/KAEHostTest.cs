@@ -33,7 +33,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             string path = Path.GetDirectoryName(file);
             Assert.IsTrue(Directory.Exists(path));
             Console.WriteLine("Done");
-            KAEHost host = new KAEHost(path, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9999));
+            KAEHost host = new KAEHost(path);
             try
             {
                 host.Start();
@@ -61,7 +61,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             string path = Path.GetDirectoryName(file);
             Assert.IsTrue(Directory.Exists(path));
             Console.WriteLine("Done");
-            KAEHost host = new KAEHost(path, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9999));
+            KAEHost host = new KAEHost(path);
             try
             {
                 host.Start();
@@ -89,7 +89,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             string path = Path.GetDirectoryName(file);
             Assert.IsTrue(Directory.Exists(path));
             Console.WriteLine("Done");
-            KAEHost host = new KAEHost(path, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9999));
+            KAEHost host = new KAEHost(path);
             try
             {
                 host.Start();
