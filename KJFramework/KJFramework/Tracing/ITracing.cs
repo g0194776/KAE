@@ -7,6 +7,7 @@
     {
         void Info(string format, params object[] args);
         void Info(System.Exception ex, string format, params object[] args);
+        void DebugInfo(string format, params object[] args);
         void Warn(string format, params object[] args);
         void Warn(System.Exception ex, string format, params object[] args);
         void Error(System.Exception ex);

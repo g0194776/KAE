@@ -48,8 +48,8 @@ namespace KJFramework.ApplicationEngine
         ///     动态程序域服务，提供了相关的基本操作。
         ///     <para>* 使用此构造将会从配置文件中读取服务相关信息</para>
         /// </summary>
-        public KAEHost()
-            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1))
+        public KAEHost(string installingListFile = null)
+            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), installingListFile)
         {
         }
 
@@ -57,27 +57,35 @@ namespace KJFramework.ApplicationEngine
         ///     动态程序域服务，提供了相关的基本操作。
         /// </summary>
         /// <param name="workRoot">工作目录</param>
+        /// <param name="installingListFile">
+        ///     KPP装配清单文件的地址
+        ///     <para>* 如果该地址为空则表示使用本地已拥有的KPP进行KAE宿主的初始化操作</para>
+        /// </param>
         /// <exception cref="System.ArgumentNullException">参数错误</exception>
         /// <exception cref="DirectoryNotFoundException">工作目录错误</exception>
         /// <exception cref="ArgumentException">无法找到远程RRCS服务地址</exception>
-        public KAEHost(string workRoot)
+        public KAEHost(string workRoot, string installingListFile = null)
         {
             if (workRoot == null) throw new ArgumentNullException("workRoot");
             if (!Directory.Exists(workRoot)) throw new DirectoryNotFoundException("Current work root don't existed. #dir: " + workRoot);
             _workRoot = workRoot;
+            _installingListFile = installingListFile;
+            _usedInstallingListFile = !string.IsNullOrEmpty(installingListFile);
         }
 
         #endregion
 
         #region Members.
 
+        private string _workRoot;
         private string _greyPolicyAddress;
         private Thread _greyPolicyThread;
-        private readonly string _workRoot;
         private IPEndPoint _rrcsAddr;
         private TimeSpan _greyPolicyInterval;
         private TcpUri _defaultKAENetwork;
         private RRCSConnector _rrcsConnector;
+        private readonly bool _usedInstallingListFile;
+        private readonly string _installingListFile;
         private ChannelInternalConfigSettings _settings;
         private readonly IKAEHostProxy _hostProxy = new KAEHostProxy();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (KAEHost));
@@ -121,9 +129,12 @@ namespace KJFramework.ApplicationEngine
         /// </exception>
         private IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> Initialize(string workRoot)
         {
+            _tracing.DebugInfo("\t#Initializing grey policy...");
             _greyPolicyAddress = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker","GreyPolicyAddress", address => _greyPolicyAddress = address);
             _greyPolicyInterval = TimeSpan.Parse(SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "GreyPolicyInternal", interval => _greyPolicyInterval = TimeSpan.Parse(interval)));
+            _tracing.DebugInfo("\t#Hooking remoting configuration proxy's event...");
             SystemWorker.Instance.ConfigurationProxy.ConfigurationUpdated += ConfigurationUpdatedEvent;
+            _tracing.DebugInfo("\t#Initializing default KPP network setting template...");
             //does a copy of current AppDomain's global network layer settings for each of installing KPP.
             _settings = new ChannelInternalConfigSettings
             {
@@ -134,12 +145,14 @@ namespace KJFramework.ApplicationEngine
                 RecvBufferSize = ChannelConst.RecvBufferSize,
                 SegmentSize = ChannelConst.SegmentSize
             };
+            _tracing.DebugInfo("\t#Initializing network resources...");
             if (!KAEHostNetworkResourceManager.IsInitialized)
             {
                 KAEHostNetworkResourceManager.IntellegenceNewTransaction += IntellegenceNewTransaction;
                 KAEHostNetworkResourceManager.MetadataNewTransaction += MetadataNewTransaction;
                 KAEHostNetworkResourceManager.Initialize();
             }
+            _tracing.DebugInfo("\t#Loading KPPs...");
             IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> appMetadata = ApplicationFinder.Search(workRoot);
             if (appMetadata == null || appMetadata.Count == 0) return new Dictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>>();
             //re-composites.
@@ -154,12 +167,14 @@ namespace KJFramework.ApplicationEngine
                     Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject> entry;
                     string appFullKey = string.Format("{0}_{1}", tuple.Item2.GetSectionField<string>(0x00, "Version"), tuple.Item2.GetSectionField<byte>(0x00, "ApplicationLevel"));
                     if (subDic.TryGetValue(appFullKey, out entry))
-                        throw new DuplicatedApplicationException(
-                            string.Format(
-                                "#Duplicated application had been found! Details blow:\r\nApplication Name: {0}\r\nVersion: {1}\r\nLevel: {2}",
+                    {
+                        _tracing.Warn(string.Format(
+                                "#Duplicated application had been found! Details blow:\r\n\tApplication Name: {0}\r\n\tVersion: {1}\r\n\tLevel: {2}",
                                 tuple.Item2.GetSectionField<string>(0x00, "PackName"),
                                 tuple.Item2.GetSectionField<string>(0x00, "Version"),
                                 tuple.Item2.GetSectionField<byte>(0x00, "ApplicationLevel")));
+                        continue;
+                    }
                     //assembles a new dynamic object for application.
                     ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2, _settings, _hostProxy);
                     entry = new Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>(tuple.Item1, tuple.Item2, dynamicObject);
@@ -176,10 +191,17 @@ namespace KJFramework.ApplicationEngine
         /// <exception cref="DuplicatedApplicationException">KAE应用的版本或者版本冲突异常</exception>
         public void Start()
         {
+            _tracing.DebugInfo("#Initializing from remoting CSN...");
             SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default);
+            _tracing.DebugInfo("\t#Analyzing remoting RRCS service address...");
             string rrcsAddr = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "RRCS-Address");
             if (rrcsAddr == null) throw new ArgumentException("#We couldn't find any RRCS address from remoting CSN.");
             _rrcsAddr = rrcsAddr.ConvertToIPEndPoint();
+            _tracing.DebugInfo("#Initializing remoting KIS proxy...");
+            RemotingKISProxy.Initialize(SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "KIS-Address"));
+            //Downloads & Initializes remoting KPPs by an installing list file.
+            if (_usedInstallingListFile) _workRoot = RemotingApplicationProxy.Initialize(_workRoot, _installingListFile);
+            _tracing.DebugInfo("#Initializing KAE hosting...");
             IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> apps = Initialize(_workRoot);
             if (apps == null || apps.Count == 0)
             {
@@ -195,6 +217,7 @@ namespace KJFramework.ApplicationEngine
 
             #region #Step 2, initializes current suported mapping from protocol & message identity & application's level.
 
+            _tracing.DebugInfo("#Preparing Internal Data For Remoting RRCS...");
             /*
              * We had chosen this kind of comminucation cache because that 
              * The RRCS need decides where the right load balancing addresses are.
@@ -267,11 +290,13 @@ namespace KJFramework.ApplicationEngine
 
             #endregion
 
+            _tracing.DebugInfo("#Initializing remoting RRCS connector...");
             _rrcsConnector = new RRCSConnector(_rrcsAddr, this, _defaultKAENetwork);
             _rrcsConnector.Start();
+            _tracing.DebugInfo("#Preparing background job for grey policy...");
             GetGreyPolicyAsync();
+            _tracing.DebugInfo("#KAE hosting has been started!");
             Status = KAEHostStatus.Prepared;
-            Thread.CurrentThread.Join();
         }
 
         private void InitializeNetworkProtocolHandler(Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> dic, KeyValuePair<ProtocolTypes, IList<MessageIdentity>> values, ApplicationDynamicObject dynamicObject)

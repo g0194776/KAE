@@ -4,6 +4,7 @@ namespace KJFramework.Tracing
     {
         public void Info(string format, params object[] args) { Trace(TracingLevel.Info, null, format, args); }
         public void Info(System.Exception ex, string format, params object[] args) { Trace(TracingLevel.Info, ex, format, args); }
+        public void DebugInfo(string format, params object[] args) { Trace(TracingLevel.Debug, null, format, args); }
         public void Warn(string format, params object[] args) { Trace(TracingLevel.Warn, null, format, args); }
         public void Warn(System.Exception ex, string format, params object[] args) { Trace(TracingLevel.Warn, ex, format, args); }
         public void Error(System.Exception ex) {  Error(ex, null); }

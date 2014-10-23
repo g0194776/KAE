@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace KJFramework.Tracing
 {
-    public enum TracingLevel { Info = 0, Warn = 1, Error = 2, Crtitical = 3 }
+    public enum TracingLevel { Info = 0, Warn = 1, Error = 2, Crtitical = 3, Debug = 4 }
 
     public static class TracingSettings
     {

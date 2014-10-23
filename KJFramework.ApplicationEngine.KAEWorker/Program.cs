@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace KJFramework.ApplicationEngine.KAEWorker
 {
@@ -7,7 +6,7 @@ namespace KJFramework.ApplicationEngine.KAEWorker
     {
         static void Main(string[] args)
         {
-            KAEHost host = new KAEHost(Path.GetFullPath("."));
+            KAEHost host = new KAEHost();
             host.Start();
             Console.ReadLine();
         }

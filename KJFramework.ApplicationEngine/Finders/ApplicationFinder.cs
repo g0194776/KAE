@@ -3,7 +3,6 @@ using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.ApplicationEngine.Resources.Packs;
 using KJFramework.Dynamic.Finders;
-using KJFramework.Dynamic.Structs;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,7 @@ namespace KJFramework.ApplicationEngine.Finders
     /// <summary>
     ///    KAE应用寻找器
     /// </summary>
-    internal class ApplicationFinder
+    internal sealed class ApplicationFinder
     {
         #region Members
 

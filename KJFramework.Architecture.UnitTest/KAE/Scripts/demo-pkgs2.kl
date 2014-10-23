@@ -1,0 +1,4 @@
+﻿{packages: [
+			{"package":"test.app0-v1.0.0.0"},
+			{"package":"test.app1-v1.0.0.0"},
+		]}

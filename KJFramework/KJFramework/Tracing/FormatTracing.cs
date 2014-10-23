@@ -1,3 +1,5 @@
+using System;
+
 namespace KJFramework.Tracing
 {
     internal class FormatTracing : NullTracing
@@ -23,21 +25,36 @@ namespace KJFramework.Tracing
         {
             try
             {
+                string message = (args.Length == 0 ? format : string.Format(format ?? string.Empty, args));
+                #region Output message to Console.
+
+                switch (level)
+                {
+                    case TracingLevel.Debug:
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.WriteLine(message);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        break;
+                    case TracingLevel.Warn:
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.WriteLine(message);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        break;
+                    case TracingLevel.Error:
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine(message);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        break;
+                    case TracingLevel.Crtitical:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(message);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        break;
+                }
+
+                #endregion
                 if (level >= TracingSettings.Level)
                 {
-                    string message = string.Empty;
-                    try
-                    {
-                        message = args.Length == 0 ? format : string.Format(format ?? string.Empty, args);
-                    }
-                    catch (System.Exception ex)
-                    {
-                        if (level < TracingLevel.Warn)
-                            level = TracingLevel.Warn;
-                        if (error == null)
-                            error = ex;
-                        message = string.Concat("tracing formatting error: [", args.Length, "] ", format ?? string.Empty);
-                    }
                     TracingManager.AddTraceItem(new TraceItem(_logger, level, error, message));
                     if (TracingManager.NotificationHandler != null) TracingManager.NotificationHandler.Handle(level, error, message, _logger);
                 }

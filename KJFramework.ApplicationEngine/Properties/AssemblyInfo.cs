@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © Lenovo 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: InternalsVisibleTo("KJFramework.ApplicationEngine.KIS")]
 [assembly: InternalsVisibleTo("KJFramework.Architecture.UnitTest")]
 [assembly: InternalsVisibleTo("KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent")]
 
