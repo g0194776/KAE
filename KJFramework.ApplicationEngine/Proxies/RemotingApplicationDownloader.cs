@@ -12,20 +12,20 @@ using Newtonsoft.Json;
 namespace KJFramework.ApplicationEngine.Proxies
 {
     /// <summary>
-    ///    远程KPP查找器，这个类将会被KAE的装配清单功能所使用
+    ///    远程KPP下载器
     /// </summary>
-    internal static class RemotingApplicationProxy
+    internal class RemotingApplicationDownloader : IRemotingApplicationDownloader
     {
         #region Members.
 
-        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(RemotingApplicationProxy));
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(RemotingApplicationDownloader));
 
         #endregion
 
         #region Methods.
 
         /// <summary>
-        ///    使用一个装配清单来获取远程的KPP列表
+        ///    使用一个装配清单来下载远程的KPP列表
         ///     <para>* 这要求装配清单中的每一个完整的APP名称都要由以下格式来组成</para>
         ///     <para>* PackageName-Version</para>
         /// </summary>
@@ -36,7 +36,8 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <exception cref="InstanceNotFoundException">无法从装配清单中解析到任何远程KPP的信息</exception>
         /// <exception cref="FormatException">错误的KPP包名格式</exception>
         /// <exception cref="RemotingException">与远程KIS通信失败</exception>
-        public static string Initialize(string workRoot, string installingListFile)
+        /// <exception cref="JsonReaderException ">错误的JSON格式</exception>
+        public string Download(string workRoot, string installingListFile)
         {
             _tracing.Info("\t#Opened remoting downloading package mode!");
             if (!File.Exists(installingListFile)) throw new FileNotFoundException(string.Format("#Current KAE installing package list file could not be found! {0}", installingListFile));
@@ -57,12 +58,12 @@ namespace KJFramework.ApplicationEngine.Proxies
                 }
                 string[] args = package.Name.Split(new[] { "-" }, StringSplitOptions.RemoveEmptyEntries);
                 if (args.Length != 2) throw new FormatException(string.Format("#Bad format package name: {0}. It MUST be format like that. \"name-version\"", package.Name));
-                PackageInfo packageInfo = RemotingKISProxy.GetReallyRemotingAddress(args[0], args[1]);
+                PackageInfo packageInfo = ((IRemotingKISProxy) KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.KISProxy)).GetReallyRemotingAddress(args[0], args[1]);
                 if (packageInfo == null) throw new RemotingException(string.Format("#Could not get any information from the remoting KIS by given package name: {0}", package.Name));
                 //Just store it under the first level of folder.
                 string tempFileLocation = Path.Combine(storeDir, Path.GetFileName(packageInfo.Url));
                 _tracing.Info("\t\t#Downloading remoting KAE package: {0}...", packageInfo.Url);
-                Download(packageInfo.Url, tempFileLocation);
+                InnerDownload(packageInfo.Url, tempFileLocation);
             }
             return storeDir;
         }
@@ -73,7 +74,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="remotingFilePath">远程文件访问地址</param>
         /// <param name="localPath">本地文件的保存路径</param>
         /// <returns>返回一个HTTP的RSP文件流</returns>
-        public static void Download(string remotingFilePath, string localPath)
+        protected virtual void InnerDownload(string remotingFilePath, string localPath)
         {
             WebClient client = new WebClient();
             try { client.DownloadFile(remotingFilePath, localPath); }

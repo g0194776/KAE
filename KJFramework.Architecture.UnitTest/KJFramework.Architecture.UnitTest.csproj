@@ -59,6 +59,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.mocks">
+      <HintPath>..\packages\NUnit.Mocks.2.6.3\lib\nunit.mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -74,12 +77,14 @@
     <Compile Include="KAE\Applications\TestApplication.cs" />
     <Compile Include="KAE\ApplicationTest.cs" />
     <Compile Include="KAE\CommunicationTest.cs" />
+    <Compile Include="KAE\FakedInternalResourceFactory.cs" />
     <Compile Include="KAE\FileCompressionTest.cs" />
     <Compile Include="KAE\KAEHostTest.cs" />
     <Compile Include="KAE\KPPDataHeadTest.cs" />
     <Compile Include="KAE\KPPResourceTest.cs" />
     <Compile Include="KAE\LocalCSNTest.cs" />
     <Compile Include="KAE\PackageAttributeDataSectionTest.cs" />
+    <Compile Include="KAE\RemotingApplicationDownloaderTestCases.cs" />
     <Compile Include="KJFramework.Data.ObjectDB\OutterUnitTest.cs" />
     <Compile Include="KJFramework.Data.ObjectDB\PageControllerUnitTest.cs" />
     <Compile Include="KJFramework.Data.Synchronization\DataBroadcasterTest.cs" />

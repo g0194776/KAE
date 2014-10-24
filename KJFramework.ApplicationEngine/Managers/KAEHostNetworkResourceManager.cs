@@ -16,6 +16,8 @@ using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
+using KJFramework.Tracing;
+
 using Uri = KJFramework.Net.Channels.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine.Managers
@@ -32,6 +34,7 @@ namespace KJFramework.ApplicationEngine.Managers
         ///    获取一个值，该值表示了当前KAE宿主网络资源管理器是否已经初始化完成
         /// </summary>
         public static bool IsInitialized;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(KAEHostNetworkResourceManager));
         private static readonly IDictionary<ProtocolTypes, Tuple<IHostTransportChannel, Uri>> _resources = new Dictionary<ProtocolTypes, Tuple<IHostTransportChannel, Uri>>();
 
         #endregion
@@ -58,7 +61,7 @@ namespace KJFramework.ApplicationEngine.Managers
                 }
                 hostChannel.Tag = new KAENetworkResource { NetworkUri = uri, Protocol = KAESettings.SupportedProtocols[j] };
                 _resources.Add(KAESettings.SupportedProtocols[j], new Tuple<IHostTransportChannel, Uri>(hostChannel, uri));
-                Console.WriteLine("     #Initialized network resource, P: {0} URL: {1}", KAESettings.SupportedProtocols[j], uri);
+                _tracing.DebugInfo("\t\t#Initialized network resource.\t(P: {0},\tURL: {1})", ConsoleColor.DarkGray, KAESettings.SupportedProtocols[j], uri);
             }
         }
 

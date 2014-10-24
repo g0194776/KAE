@@ -21,17 +21,17 @@ namespace KJFramework.Tracing
 
         #region Methods
 
-        protected override void Trace(TracingLevel level, System.Exception error, string format, params object[] args)
+        protected override void Trace(TracingLevel level, System.Exception error, string format, object[] args, ConsoleColor color = ConsoleColor.Gray)
         {
             try
             {
-                string message = (args.Length == 0 ? format : string.Format(format ?? string.Empty, args));
+                string message = ((args == null ||args.Length == 0) ? format : string.Format(format ?? string.Empty, args));
                 #region Output message to Console.
 
                 switch (level)
                 {
                     case TracingLevel.Debug:
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = color;
                         Console.WriteLine(message);
                         Console.ForegroundColor = ConsoleColor.Gray;
                         break;

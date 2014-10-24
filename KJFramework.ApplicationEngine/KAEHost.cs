@@ -3,6 +3,7 @@ using KJFramework.ApplicationEngine.Connectors;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Extends;
+using KJFramework.ApplicationEngine.Factories;
 using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Messages;
@@ -49,7 +50,16 @@ namespace KJFramework.ApplicationEngine
         ///     <para>* 使用此构造将会从配置文件中读取服务相关信息</para>
         /// </summary>
         public KAEHost(string installingListFile = null)
-            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), installingListFile)
+            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), installingListFile, new DefaultInternalResourceFactory())
+        {
+        }
+
+        /// <summary>
+        ///     动态程序域服务，提供了相关的基本操作。
+        ///     <para>* 使用此构造将会从配置文件中读取服务相关信息</para>
+        /// </summary>
+        internal KAEHost(string installingListFile = null, IInternalResourceFactory resourceFactory = null)
+            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), installingListFile, resourceFactory)
         {
         }
 
@@ -65,12 +75,36 @@ namespace KJFramework.ApplicationEngine
         /// <exception cref="DirectoryNotFoundException">工作目录错误</exception>
         /// <exception cref="ArgumentException">无法找到远程RRCS服务地址</exception>
         public KAEHost(string workRoot, string installingListFile = null)
+            : this(workRoot, installingListFile, new DefaultInternalResourceFactory())
+        {
+        }
+
+        /// <summary>
+        ///     动态程序域服务，提供了相关的基本操作。
+        /// </summary>
+        /// <param name="workRoot">工作目录</param>
+        /// <param name="installingListFile">
+        ///     KPP装配清单文件的地址
+        ///     <para>* 如果该地址为空则表示使用本地已拥有的KPP进行KAE宿主的初始化操作</para>
+        /// </param>
+        /// <param name="resourceFactory">内部资源工厂</param>
+        /// <exception cref="System.ArgumentNullException">参数错误</exception>
+        /// <exception cref="DirectoryNotFoundException">工作目录错误</exception>
+        /// <exception cref="ArgumentException">无法找到远程RRCS服务地址</exception>
+        internal KAEHost(string workRoot, string installingListFile = null, IInternalResourceFactory resourceFactory = null)
         {
             if (workRoot == null) throw new ArgumentNullException("workRoot");
+            if (resourceFactory == null) throw new ArgumentNullException("resourceFactory");
             if (!Directory.Exists(workRoot)) throw new DirectoryNotFoundException("Current work root don't existed. #dir: " + workRoot);
             _workRoot = workRoot;
             _installingListFile = installingListFile;
-            _usedInstallingListFile = !string.IsNullOrEmpty(installingListFile);
+            KAESystemInternalResource.Factory = resourceFactory;
+            if (string.IsNullOrEmpty(_installingListFile))
+            {
+                _tracing.DebugInfo("#Probing whether have a file named \"installing.kl\"...", ConsoleColor.DarkGray);
+                _installingListFile = (File.Exists(Path.Combine(workRoot, "installing.kl")) ? Path.Combine(workRoot, "installing.kl") : null);
+            }
+            _usedInstallingListFile = !string.IsNullOrEmpty(_installingListFile);
         }
 
         #endregion
@@ -197,10 +231,10 @@ namespace KJFramework.ApplicationEngine
             string rrcsAddr = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "RRCS-Address");
             if (rrcsAddr == null) throw new ArgumentException("#We couldn't find any RRCS address from remoting CSN.");
             _rrcsAddr = rrcsAddr.ConvertToIPEndPoint();
-            _tracing.DebugInfo("#Initializing remoting KIS proxy...");
-            RemotingKISProxy.Initialize(SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "KIS-Address"));
+            _tracing.DebugInfo("#Initializing KAE internal system resource factory...");
+            KAESystemInternalResource.Factory.Initialize();
             //Downloads & Initializes remoting KPPs by an installing list file.
-            if (_usedInstallingListFile) _workRoot = RemotingApplicationProxy.Initialize(_workRoot, _installingListFile);
+            if (_usedInstallingListFile) _workRoot = ((IRemotingApplicationDownloader) KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.APPDownloader)).Download(_workRoot, _installingListFile);
             _tracing.DebugInfo("#Initializing KAE hosting...");
             IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> apps = Initialize(_workRoot);
             if (apps == null || apps.Count == 0)
@@ -295,8 +329,8 @@ namespace KJFramework.ApplicationEngine
             _rrcsConnector.Start();
             _tracing.DebugInfo("#Preparing background job for grey policy...");
             GetGreyPolicyAsync();
-            _tracing.DebugInfo("#KAE hosting has been started!");
             Status = KAEHostStatus.Prepared;
+            _tracing.DebugInfo("#KAE hosting has been initialized, STATUS: {0}.", ConsoleColor.DarkGreen, Status);
         }
 
         private void InitializeNetworkProtocolHandler(Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> dic, KeyValuePair<ProtocolTypes, IList<MessageIdentity>> values, ApplicationDynamicObject dynamicObject)

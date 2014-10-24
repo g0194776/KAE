@@ -1,4 +1,6 @@
-﻿namespace KJFramework.Tracing
+﻿using System;
+
+namespace KJFramework.Tracing
 {
     /// <summary>
     ///     日志器接口
@@ -7,7 +9,7 @@
     {
         void Info(string format, params object[] args);
         void Info(System.Exception ex, string format, params object[] args);
-        void DebugInfo(string format, params object[] args);
+        void DebugInfo(string format, ConsoleColor color = ConsoleColor.Gray, params object[] args);
         void Warn(string format, params object[] args);
         void Warn(System.Exception ex, string format, params object[] args);
         void Error(System.Exception ex);

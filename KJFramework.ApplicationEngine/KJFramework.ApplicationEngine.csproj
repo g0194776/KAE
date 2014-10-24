@@ -96,10 +96,15 @@
     <Compile Include="Exceptions\FolderNotFoundException.cs" />
     <Compile Include="Extends\MetadataContainerExtend.cs" />
     <Compile Include="Finders\ApplicationFinder.cs" />
+    <Compile Include="Factories\DefaultInternalResourceFactory.cs" />
+    <Compile Include="Factories\IInternalResourceFactory.cs" />
+    <Compile Include="KAESystemInternalResource.cs" />
     <Compile Include="Objects\Package.cs" />
     <Compile Include="Objects\PackageInfo.cs" />
     <Compile Include="Objects\PackageList.cs" />
-    <Compile Include="Proxies\RemotingApplicationProxy.cs" />
+    <Compile Include="Proxies\IRemotingApplicationDownloader.cs" />
+    <Compile Include="Proxies\IRemotingKISProxy.cs" />
+    <Compile Include="Proxies\RemotingApplicationDownloader.cs" />
     <Compile Include="Helpers\FileCompression.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="Helpers\ResourceBlockExtend.cs" />
