@@ -1,4 +1,5 @@
-﻿using KJFramework.ApplicationEngine.Attributes;
+﻿using System.Configuration;
+using KJFramework.ApplicationEngine.Attributes;
 using KJFramework.Data.Synchronization.EventArgs;
 using KJFramework.EventArgs;
 using KJFramework.Helpers;
@@ -25,6 +26,16 @@ namespace KJFramework.ApplicationEngine.Proxies
     public class SolitaryRemoteConfigurationProxy : IRemoteConfigurationProxy
     {
         #region Constructor
+
+        /// <summary>
+        ///     独立的获取远程配置信息代理器
+        ///     <para>* 使用此构造函数将会默认从本地配置文件中获取到CSN的相关配置</para>
+        /// </summary>
+        /// <exception cref="ArgumentNullException">远程CSN地址不能为空</exception>
+        public SolitaryRemoteConfigurationProxy()
+            : this(ConfigurationManager.AppSettings["CSN"], ConfigurationManager.AppSettings["CSN-Publisher"])
+        {
+        }
 
         /// <summary>
         ///     独立的获取远程配置信息代理器

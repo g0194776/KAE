@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using KJFramework.ApplicationEngine.Configurations.Loaders;
+﻿using KJFramework.ApplicationEngine.Configurations.Loaders;
 using KJFramework.ApplicationEngine.Configurations.Settings;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Helpers;
+using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors.Maps;
 using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.Channels;
@@ -25,6 +23,8 @@ using KJFramework.Net.Transaction.Processors;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
+using System;
+using System.Collections.Generic;
 
 namespace KJFramework.ApplicationEngine
 {
@@ -93,18 +93,16 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         /// <param name="role">服务角色</param>
         /// <param name="setting">远程配置设置</param>
+        /// <param name="configurationProxy">远程配置站访问代理器</param>
         /// <param name="notificationHandler">异常通知处理器</param>
-        /// <param name="csnAddress">远程CSN的IP地址</param>
-        /// <param name="csnPublisherAddress">远程CSN的数据发布者访问地址</param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public void Initialize(string role, RemoteConfigurationSetting setting, ITracingNotificationHandler notificationHandler = null, string csnAddress = null, string csnPublisherAddress = null)
+        public void Initialize(string role, RemoteConfigurationSetting setting, IRemoteConfigurationProxy configurationProxy, ITracingNotificationHandler notificationHandler = null)
         {
             if (IsInitialized) return;
             if (setting == null) setting = RemoteConfigurationSetting.Default;
             if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");
-            if (string.IsNullOrEmpty(csnAddress)) csnAddress = ConfigurationManager.AppSettings["CSN"];
-            if (string.IsNullOrEmpty(csnPublisherAddress)) csnPublisherAddress = ConfigurationManager.AppSettings["CSN-Publisher"];
-            _configurationProxy = new SolitaryRemoteConfigurationProxy(csnAddress, csnPublisherAddress);
+            if (configurationProxy == null) throw new ArgumentNullException("configurationProxy");
+            _configurationProxy = configurationProxy;
             //Regist("LGS", new LGSProtocolStack());
             TracingManager.NotificationHandler = notificationHandler ?? new RemoteLogProxy();
             Role = role;
@@ -113,6 +111,7 @@ namespace KJFramework.ApplicationEngine
             IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityProcessor());
             ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
+            MemoryAllotter.Instance.Initialize();
             //config remote configuration loader.
             KJFramework.Configurations.Configurations.RemoteConfigLoader = new RemoteConfigurationLoader(setting);
             //initialize long...long memory buffer for tcp layer.
@@ -143,6 +142,7 @@ namespace KJFramework.ApplicationEngine
             IntellectTypeProcessorMapping.Instance.Regist(new TransactionIdentityProcessor());
             ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
             ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
+            MemoryAllotter.Instance.Initialize();
             //config remote configuration loader.
             KJFramework.Configurations.Configurations.RemoteConfigLoader = new RemoteConfigurationLoader(RemoteConfigurationSetting.Default);
             //initialize long...long memory buffer for tcp layer.

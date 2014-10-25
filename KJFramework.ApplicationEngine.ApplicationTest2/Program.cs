@@ -1,9 +1,4 @@
-﻿using System.IO;
-using System.Net;
-
-using KJFramework.Messages.Proxies;
-using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
-using KJFramework.Net.Transaction.ValueStored;
+﻿using System;
 
 namespace KJFramework.ApplicationEngine.ApplicationTest2
 {
@@ -11,11 +6,9 @@ namespace KJFramework.ApplicationEngine.ApplicationTest2
     {
         static void Main(string[] args)
         {
-            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
-            ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
-            MemoryAllotter.Instance.Initialize();
-            KAEHost host = new KAEHost(Path.GetFullPath(".")); 
+            KAEHost host = new KAEHost(); 
             host.Start();
+            Console.ReadLine();
         }
     }
 }

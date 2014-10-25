@@ -47,19 +47,16 @@ namespace KJFramework.ApplicationEngine
 
         /// <summary>
         ///     动态程序域服务，提供了相关的基本操作。
-        ///     <para>* 使用此构造将会从配置文件中读取服务相关信息</para>
         /// </summary>
-        public KAEHost(string installingListFile = null)
-            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), installingListFile, new DefaultInternalResourceFactory())
-        {
-        }
-
-        /// <summary>
-        ///     动态程序域服务，提供了相关的基本操作。
-        ///     <para>* 使用此构造将会从配置文件中读取服务相关信息</para>
-        /// </summary>
-        internal KAEHost(string installingListFile = null, IInternalResourceFactory resourceFactory = null)
-            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), installingListFile, resourceFactory)
+        /// <param name="installingListFile">
+        ///     KPP装配清单文件的地址
+        ///     <para>* 如果该地址为空则表示使用本地已拥有的KPP进行KAE宿主的初始化操作</para>
+        /// </param>
+        /// <exception cref="System.ArgumentNullException">参数错误</exception>
+        /// <exception cref="DirectoryNotFoundException">工作目录错误</exception>
+        /// <exception cref="ArgumentException">无法找到远程RRCS服务地址</exception>
+        public KAEHost(string installingListFile)
+            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), installingListFile, new DefaultInternalResourceFactory(), new SolitaryRemoteConfigurationProxy())
         {
         }
 
@@ -75,7 +72,53 @@ namespace KJFramework.ApplicationEngine
         /// <exception cref="DirectoryNotFoundException">工作目录错误</exception>
         /// <exception cref="ArgumentException">无法找到远程RRCS服务地址</exception>
         public KAEHost(string workRoot, string installingListFile = null)
-            : this(workRoot, installingListFile, new DefaultInternalResourceFactory())
+            : this(workRoot, installingListFile, new DefaultInternalResourceFactory(), new SolitaryRemoteConfigurationProxy())
+        {
+        }
+
+        /// <summary>
+        ///     动态程序域服务，提供了相关的基本操作。
+        ///     <para>* 使用此构造将会从配置文件中读取服务相关信息</para>
+        /// </summary>
+        /// <param name="installingListFile">
+        ///     KPP装配清单文件的地址
+        ///     <para>* 如果该地址为空则表示使用本地已拥有的KPP进行KAE宿主的初始化操作</para>
+        /// </param>
+        /// <param name="configurationProxy">远程配置站访问代理器</param>
+        public KAEHost(string installingListFile = null, IRemoteConfigurationProxy configurationProxy = null)
+            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), installingListFile, new DefaultInternalResourceFactory(), configurationProxy)
+        {
+        }
+
+        /// <summary>
+        ///     动态程序域服务，提供了相关的基本操作。
+        ///     <para>* 使用此构造将会从配置文件中读取服务相关信息</para>
+        /// </summary>
+        /// <param name="installingListFile">
+        ///     KPP装配清单文件的地址
+        ///     <para>* 如果该地址为空则表示使用本地已拥有的KPP进行KAE宿主的初始化操作</para>
+        /// </param>
+        /// <param name="resourceFactory">内部资源工厂</param>
+        /// <param name="configurationProxy">远程配置站访问代理器</param>
+        internal KAEHost(string installingListFile = null, IInternalResourceFactory resourceFactory = null, IRemoteConfigurationProxy configurationProxy = null)
+            : this(Process.GetCurrentProcess().MainModule.FileName.Substring(0, Process.GetCurrentProcess().MainModule.FileName.LastIndexOf('\\') + 1), installingListFile, resourceFactory, configurationProxy)
+        {
+        }
+
+        /// <summary>
+        ///     动态程序域服务，提供了相关的基本操作。
+        /// </summary>
+        /// <param name="workRoot">工作目录</param>
+        /// <param name="installingListFile">
+        ///     KPP装配清单文件的地址
+        ///     <para>* 如果该地址为空则表示使用本地已拥有的KPP进行KAE宿主的初始化操作</para>
+        /// </param>
+        /// <param name="configurationProxy">远程配置站访问代理器</param>
+        /// <exception cref="System.ArgumentNullException">参数错误</exception>
+        /// <exception cref="DirectoryNotFoundException">工作目录错误</exception>
+        /// <exception cref="ArgumentException">无法找到远程RRCS服务地址</exception>
+        public KAEHost(string workRoot, string installingListFile = null, IRemoteConfigurationProxy configurationProxy = null)
+            : this(workRoot, installingListFile, new DefaultInternalResourceFactory(), configurationProxy)
         {
         }
 
@@ -88,16 +131,18 @@ namespace KJFramework.ApplicationEngine
         ///     <para>* 如果该地址为空则表示使用本地已拥有的KPP进行KAE宿主的初始化操作</para>
         /// </param>
         /// <param name="resourceFactory">内部资源工厂</param>
+        /// <param name="configurationProxy">远程配置站访问代理器</param>
         /// <exception cref="System.ArgumentNullException">参数错误</exception>
         /// <exception cref="DirectoryNotFoundException">工作目录错误</exception>
         /// <exception cref="ArgumentException">无法找到远程RRCS服务地址</exception>
-        internal KAEHost(string workRoot, string installingListFile = null, IInternalResourceFactory resourceFactory = null)
+        internal KAEHost(string workRoot, string installingListFile = null, IInternalResourceFactory resourceFactory = null, IRemoteConfigurationProxy configurationProxy = null)
         {
             if (workRoot == null) throw new ArgumentNullException("workRoot");
             if (resourceFactory == null) throw new ArgumentNullException("resourceFactory");
             if (!Directory.Exists(workRoot)) throw new DirectoryNotFoundException("Current work root don't existed. #dir: " + workRoot);
             _workRoot = workRoot;
             _installingListFile = installingListFile;
+            _configurationProxy = (configurationProxy ?? new SolitaryRemoteConfigurationProxy());
             KAESystemInternalResource.Factory = resourceFactory;
             if (string.IsNullOrEmpty(_installingListFile))
             {
@@ -121,6 +166,7 @@ namespace KJFramework.ApplicationEngine
         private readonly bool _usedInstallingListFile;
         private readonly string _installingListFile;
         private ChannelInternalConfigSettings _settings;
+        private readonly IRemoteConfigurationProxy _configurationProxy;
         private readonly IKAEHostProxy _hostProxy = new KAEHostProxy();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (KAEHost));
         private readonly object _protocolDicLockObj = new object();
@@ -226,7 +272,7 @@ namespace KJFramework.ApplicationEngine
         public void Start()
         {
             _tracing.DebugInfo("#Initializing from remoting CSN...");
-            SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default);
+            SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default, _configurationProxy);
             _tracing.DebugInfo("\t#Analyzing remoting RRCS service address...");
             string rrcsAddr = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "RRCS-Address");
             if (rrcsAddr == null) throw new ArgumentException("#We couldn't find any RRCS address from remoting CSN.");

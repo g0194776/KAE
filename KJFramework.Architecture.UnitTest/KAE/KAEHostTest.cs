@@ -63,7 +63,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             foreach (string tempFile in Directory.GetFiles(path, "*.kpp")) if (tempFile != file) File.Delete(tempFile);
             Assert.IsTrue(Directory.Exists(path));
             Console.WriteLine("Done");
-            KAEHost host = new KAEHost(path, null, null);
+            KAEHost host = new KAEHost(path, installingListFile: null);
             try
             {
                 host.Start();

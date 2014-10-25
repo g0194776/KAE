@@ -1,6 +1,7 @@
 ﻿using KJFramework.ApplicationEngine.Configurations.Settings;
 using KJFramework.ApplicationEngine.KIS.Formatters;
 using KJFramework.ApplicationEngine.KIS.Handlers;
+using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.Datas;
 using System.Web;
 using System.Web.Http;
@@ -14,7 +15,7 @@ namespace KJFramework.ApplicationEngine.KIS
     {
         protected void Application_Start()
         {
-            SystemWorker.Instance.Initialize("KIS", RemoteConfigurationSetting.Default);
+            SystemWorker.Instance.Initialize("KIS", RemoteConfigurationSetting.Default, new SolitaryRemoteConfigurationProxy());
             Global.Database = new Database(SystemWorker.Instance.ConfigurationProxy.GetField("KIS", "DatabaseConnection"), 120);
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
