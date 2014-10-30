@@ -2,7 +2,6 @@
 using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.ApplicationEngine.Resources.Packs;
-using KJFramework.Dynamic.Finders;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
@@ -14,22 +13,23 @@ namespace KJFramework.ApplicationEngine.Finders
     /// <summary>
     ///    KAE应用寻找器
     /// </summary>
-    internal sealed class ApplicationFinder
+    internal sealed class DefaultApplicationFinder : IApplicationFinder
     {
         #region Members
 
-        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(BasicDynamicDomainComponentFinder));
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DefaultApplicationFinder));
 
         #endregion
 
         #region Implementation of IDisposable
 
         /// <summary>
-        ///     查找一个路径下所有的动态程序域组件
+        ///    从一个指定的路径中寻找合法的KPP包
+        ///     <para>* Dic.Key = PackName</para>
         /// </summary>
-        /// <param name="path">查找路径</param>
-        /// <returns>返回程序域组件入口点信息集合</returns>
-        public static IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> Search(string path)
+        /// <param name="path">寻找的路径</param>
+        /// <returns>返回找到的KPP资源集合</returns>
+        public IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> Search(string path)
         {
             IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> result = new Dictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>>();
             String[] files = Directory.GetFiles(path, "*.kpp", SearchOption.AllDirectories);
@@ -86,10 +86,6 @@ namespace KJFramework.ApplicationEngine.Finders
                 return result;
             }
             return result;
-        }
-
-        public void Dispose()
-        {
         }
 
         #endregion

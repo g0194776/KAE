@@ -210,8 +210,8 @@ namespace KJFramework.ApplicationEngine
         private IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> Initialize(string workRoot)
         {
             _tracing.DebugInfo("\t#Initializing grey policy...");
-            _greyPolicyAddress = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker","GreyPolicyAddress", address => _greyPolicyAddress = address);
-            _greyPolicyInterval = TimeSpan.Parse(SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "GreyPolicyInternal", interval => _greyPolicyInterval = TimeSpan.Parse(interval)));
+            _greyPolicyAddress = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "GreyPolicyAddress", (KAESettings.IsTDDTesting ? (Action<string>)null : (address => _greyPolicyAddress = address)));
+            _greyPolicyInterval = TimeSpan.Parse(SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "GreyPolicyInternal", (KAESettings.IsTDDTesting ? (Action<string>)null : (interval => _greyPolicyInterval = TimeSpan.Parse(interval)))));
             _tracing.DebugInfo("\t#Hooking remoting configuration proxy's event...");
             SystemWorker.Instance.ConfigurationProxy.ConfigurationUpdated += ConfigurationUpdatedEvent;
             _tracing.DebugInfo("\t#Initializing default KPP network setting template...");
@@ -233,7 +233,7 @@ namespace KJFramework.ApplicationEngine
                 KAEHostNetworkResourceManager.Initialize();
             }
             _tracing.DebugInfo("\t#Loading KPPs...");
-            IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> appMetadata = ApplicationFinder.Search(workRoot);
+            IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> appMetadata = ((IApplicationFinder)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.APPFinder)).Search(workRoot);
             if (appMetadata == null || appMetadata.Count == 0) return new Dictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>>();
             //re-composites.
             IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> apps = new Dictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>>();
@@ -285,7 +285,8 @@ namespace KJFramework.ApplicationEngine
             IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> apps = Initialize(_workRoot);
             if (apps == null || apps.Count == 0)
             {
-                _tracing.Critical("#KAE Host running on process id {0} had no prepared application!");
+                Status = KAEHostStatus.Prepared;
+                _tracing.Critical("#KAE Host has started with process id {0} BUT there wasn't any prepared application!");
                 return;
             }
 

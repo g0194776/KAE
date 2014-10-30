@@ -11,6 +11,10 @@ namespace KJFramework.ApplicationEngine
         #region Members.
 
         /// <summary>
+        ///    KAE内部支持TDD测试的全局变量
+        /// </summary>
+        public static bool IsTDDTesting = false;
+        /// <summary>
         ///    KAE内部支持的协议数量
         /// </summary>
         public static readonly byte SupportedProtocolCount = 5;

@@ -28,7 +28,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
                 Assert.IsTrue(Directory.Exists(path));
                 Console.WriteLine("Done");
                 Console.WriteLine("#Target kpp path: " + file);
-                IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> apps = ApplicationFinder.Search(path);
+                IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> apps = ((IApplicationFinder)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.APPFinder)).Search(path);
                 Assert.IsNotNull(apps);
                 Assert.IsTrue(apps.Count > 0);
                 IList<Tuple<ApplicationEntryInfo, KPPDataStructure>> tuples;

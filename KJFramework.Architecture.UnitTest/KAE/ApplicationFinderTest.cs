@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Remoting;
+using KJFramework.ApplicationEngine;
+using KJFramework.ApplicationEngine.Configurations.Settings;
+using KJFramework.ApplicationEngine.Factories;
 using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Resources;
-using KJFramework.Dynamic.Structs;
 using NUnit.Framework;
 
 namespace KJFramework.Architecture.UnitTest.KAE
@@ -12,6 +15,14 @@ namespace KJFramework.Architecture.UnitTest.KAE
     public class ApplicationFinderTest
     {
         #region Methods.
+
+        [SetUp]
+        public void Initialize()
+        {
+            SystemWorker.Instance.Initialize("KAEWroker", RemoteConfigurationSetting.Default, KAEHostTest.BuildConfigurationProxy());
+            KAESystemInternalResource.Factory = new DefaultInternalResourceFactory();
+            KAESystemInternalResource.Factory.Initialize();
+        }
 
         [Test]
         [Description("针对于pck1/test.package.kpp的查找测试")]
@@ -26,7 +37,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
                 Assert.IsTrue(Directory.Exists(path));
                 Console.WriteLine("Done");
                 Console.WriteLine("#Target kpp path: " + file);
-                IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> apps = ApplicationFinder.Search(path);
+                IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> apps = ((IApplicationFinder)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.APPFinder)).Search(path);
                 Assert.IsNotNull(apps);
                 Assert.IsTrue(apps.Count == 1);
                 IList<Tuple<ApplicationEntryInfo, KPPDataStructure>> tuples;

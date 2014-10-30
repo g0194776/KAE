@@ -95,9 +95,10 @@
     <Compile Include="Exceptions\UnSupportedSectionTypeException.cs" />
     <Compile Include="Exceptions\FolderNotFoundException.cs" />
     <Compile Include="Extends\MetadataContainerExtend.cs" />
-    <Compile Include="Finders\ApplicationFinder.cs" />
+    <Compile Include="Finders\DefaultApplicationFinder.cs" />
     <Compile Include="Factories\DefaultInternalResourceFactory.cs" />
     <Compile Include="Factories\IInternalResourceFactory.cs" />
+    <Compile Include="Finders\IApplicationFinder.cs" />
     <Compile Include="KAESystemInternalResource.cs" />
     <Compile Include="Objects\Package.cs" />
     <Compile Include="Objects\PackageInfo.cs" />

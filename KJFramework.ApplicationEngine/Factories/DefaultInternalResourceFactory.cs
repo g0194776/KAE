@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Proxies;
 
 namespace KJFramework.ApplicationEngine.Factories
@@ -22,6 +23,7 @@ namespace KJFramework.ApplicationEngine.Factories
         public void Initialize()
         {
             _resources.Add(KAESystemInternalResource.APPDownloader, new RemotingApplicationDownloader());
+            _resources.Add(KAESystemInternalResource.APPFinder, new DefaultApplicationFinder());
             _resources.Add(KAESystemInternalResource.KISProxy, new RemotingKISProxy(SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "KIS-Address")));
         }
 

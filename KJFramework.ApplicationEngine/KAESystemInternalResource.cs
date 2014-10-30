@@ -18,6 +18,10 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         public static string KISProxy = "KAE.Remoting.KISProxy";
         /// <summary>
+        ///    KAE内部使用的APP查找器
+        /// </summary>
+        public static string APPFinder = "KAE.Finders.Application";
+        /// <summary>
         ///     KAE内部使用的资源工厂
         /// </summary>
         public static IInternalResourceFactory Factory;
