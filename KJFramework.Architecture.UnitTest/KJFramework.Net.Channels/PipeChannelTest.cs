@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+
+using KJFramework.ApplicationEngine;
+using KJFramework.ApplicationEngine.Configurations.Settings;
+using KJFramework.Architecture.UnitTest.KAE;
 using KJFramework.Cache.Containers;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.Channels.Caches;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.HostChannels;
@@ -29,8 +32,7 @@ namespace KJFramework.Net.Channels.UnitTest
         [SetUp]
         public void Initialize()
         {
-           ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
-           ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
+            SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default, KAEHostTest.BuildConfigurationProxy());
         }
 
 

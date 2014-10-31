@@ -1,9 +1,8 @@
 /*
-SQLyog Ultimate v11.11 (64 bit)
-MySQL - 5.5.19 : Database - kae_db
+SQLyog Ultimate v11.24 (32 bit)
+MySQL - 5.7.3-m13 : Database - kae_db
 *********************************************************************
-*/
-
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -79,6 +78,21 @@ CREATE TABLE `message_identities_applications_mapping` (
 /*Data for the table `message_identities_applications_mapping` */
 
 insert  into `message_identities_applications_mapping`(`CRC`,`MessageIdentityId`) values (2325220265,1),(2325220265,2),(2325220265,3);
+
+/* Procedure structure for procedure `spGetKppInfoByNameAndVer` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `spGetKppInfoByNameAndVer` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetKppInfoByNameAndVer`(
+p_Name varchar(256),
+p_Ver varchar(128))
+BEGIN
+	select * from `kae_db`.`kae_applications` a
+	where concat(a.`PackageName`, '-', a.`Version`) = CONCAT(p_Name, p_Ver);
+    END */$$
+DELIMITER ;
 
 /* Procedure structure for procedure `spGetMessageIdentitiesByAppCRC` */
 

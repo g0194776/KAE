@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+
+using KJFramework.ApplicationEngine;
+using KJFramework.ApplicationEngine.Configurations.Settings;
+using KJFramework.Architecture.UnitTest.KAE;
 using KJFramework.Cache.Containers;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
@@ -9,7 +13,6 @@ using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels.Caches;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.HostChannels;
-using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction.ProtocolStack;
 using NUnit.Framework;
 
@@ -18,6 +21,12 @@ namespace KJFramework.Net.Channels.UnitTest
     public class TcpChannelTest
     {
         #region Methods.
+
+        [SetUp]
+        public void Initialize()
+        {
+            SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default, KAEHostTest.BuildConfigurationProxy());
+        }
 
         [Test]
         [Description("正常注册一个TCP管道测试")]
