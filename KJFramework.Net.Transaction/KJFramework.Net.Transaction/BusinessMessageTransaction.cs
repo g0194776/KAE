@@ -174,7 +174,7 @@ namespace KJFramework.Net.Transaction
             try
             {
                 int sendCount = _channel.Send(message);
-                if (sendCount == 0)
+                if (sendCount == -500)
                 {
                     _tracing.Warn(
                         "#Cannot send binary data to remote endpoint, serialized data maybe is null. \r\n#Ref protocol P: {0}, S: {1}, D: {2}\r\n#Ref Instant Message: \r\n{3}",

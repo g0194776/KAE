@@ -312,6 +312,7 @@ namespace KJFramework.Net.Channels
                 {
                     //注意，在这里如果是同步完成的，根据MSDN的解释，将不会触发Completed事件
                     sendCount = args.BytesTransferred;
+                    _tracing.Error("#Socket.SendAsync method synchronously returns a 0.");
                     ChannelConst.NoBuffAsyncStubPool.Giveback(stub);
                 }
                 return sendCount;
