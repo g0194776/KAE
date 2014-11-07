@@ -120,10 +120,16 @@ namespace KJFramework.Net.Channels
         protected void InitializeReceiver()
         {
             if (_receiver != null) return;
+            InitializeSocketSettings(_socket);
             _receiver = new TcpAsynDataRecevier(_socket);
             _receiver.ReceivedData += RecvData;
             _receiver.Disconnected += ReceiverDisconnected;
             _receiver.Start();
+        }
+
+        private void InitializeSocketSettings(Socket socket)
+        {
+            socket.ReceiveBufferSize = 1024*1024*2;
         }
 
         #endregion

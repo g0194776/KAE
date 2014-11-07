@@ -70,8 +70,11 @@
     <Compile Include="Objects\NewProcessorObject.cs" />
     <Compile Include="Objects\ProcessorObject.cs" />
     <Compile Include="Objects\ServiceCoreConfig.cs" />
+    <Compile Include="Pools\ConnectionSet.cs" />
     <Compile Include="Pools\IntellectObjectSystemConnectionPool.cs" />
     <Compile Include="Pools\MetadataSystemConnectionPool.cs" />
+    <Compile Include="Pools\RamdomConnectionSet.cs" />
+    <Compile Include="Pools\SequentialConnectionSet.cs" />
     <Compile Include="Processors\IMessageTransactionProcessor.cs" />
     <Compile Include="ProtocolStack\MetadataProtocolStack.cs" />
     <Compile Include="Schedulers\INewRequestScheduler.cs" />

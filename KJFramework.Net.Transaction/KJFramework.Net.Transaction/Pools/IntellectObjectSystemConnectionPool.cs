@@ -11,7 +11,7 @@ namespace KJFramework.Net.Transaction.Pools
     ///     <para>*key = xxxxxxx(IP):xxxxx(Port)</para>
     ///     <para>*demo = 127.0.0.1:8588</para>
     /// </summary>
-    public class IntellectObjectSystemConnectionPool : ConnectionPool<string, BaseMessage>
+    public class IntellectObjectSystemConnectionPool : ConnectionPool<BaseMessage>
     {
         #region Methods
 
@@ -25,61 +25,20 @@ namespace KJFramework.Net.Transaction.Pools
         /// <returns>如果返回null, 则表示当前无法连接到目标远程终结点地址</returns>
         public IServerConnectionAgent<BaseMessage> GetChannel(string key, string roleId, IProtocolStack<BaseMessage> protocolStack, MessageTransactionManager transactionManager)
         {
-            try
-            {
-                string fullKey = string.Format("{0}#{1}", roleId, key);
-                IServerConnectionAgent<BaseMessage> agent = GetChannel(fullKey);
-                if (agent != null)
-                {
-                    if (agent.GetChannel().IsConnected) return agent;
-                    //remove this disconnected channel and recreate it.
-                    Remove(fullKey);
-                }
-                //create new channel by connection str.
-                int splitOffset = key.LastIndexOf(':');
-                string ip = key.Substring(0, splitOffset);
-                int port = int.Parse(key.Substring(splitOffset + 1, key.Length - (splitOffset + 1)));
-                IPEndPoint iep = new IPEndPoint(IPAddress.Parse(ip), port);
-                agent = IntellectObjectConnectionAgent.Create(iep, protocolStack, transactionManager);
-                if (agent == null) return null;
-                return Add(fullKey, agent) ? agent : null;
-            }
-            catch (System.Exception ex)
-            {
-                _tracing.Error(ex, null);
-                return null;
-            }
+            string fullKey = string.Format("{0}#{1}", roleId, key);
+            return base.GetChannel(key, fullKey, protocolStack, transactionManager);
         }
 
         /// <summary>
-        ///     添加一个新的连接
+        ///    创建一个新的服务器端连接代理器，并将其注册到当前的连接池中
         /// </summary>
-        /// <param name="key">连接标示</param>
-        /// <param name="channel">消息通信信道</param>
-        /// <returns>返回添加后的状态</returns>
-        public override bool Add(string key, IServerConnectionAgent<BaseMessage> channel)
+        /// <param name="iep">要创建连接的远程终结点地址</param>
+        /// <param name="protocolStack">协议栈</param>
+        /// <param name="transactionManager">网络事务管理器</param>
+        /// <returns>返回已经创建好的服务器端连接代理器</returns>
+        protected override IServerConnectionAgent<BaseMessage> CreateAgent(IPEndPoint iep, IProtocolStack<BaseMessage> protocolStack, object transactionManager)
         {
-            if (base.Add(key, channel))
-            {
-                if (CommonCounter.Instance != null) CommonCounter.Instance.TotalOfServiceChannel.Increment();
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        ///     移除具有指定唯一标示的消息通信信道
-        /// </summary>
-        /// <param name="key">连接标示</param>
-        /// <returns>返回移除后的状态</returns>
-        public override bool Remove(string key)
-        {
-            if (base.Remove(key))
-            {
-                if (CommonCounter.Instance != null) CommonCounter.Instance.TotalOfServiceChannel.Decrement();
-                return true;
-            }
-            return false;
+            return IntellectObjectConnectionAgent.Create(iep, protocolStack, (MessageTransactionManager)transactionManager);
         }
 
         #endregion
