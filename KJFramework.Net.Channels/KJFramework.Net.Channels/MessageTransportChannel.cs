@@ -380,7 +380,7 @@ namespace KJFramework.Net.Channels
         public int Send(T obj)
         {
             byte[] data = _protocolStack.ConvertToBytes(obj);
-            if (data == null) return 0;
+            if (data == null) return -500;
             if (data.Length <= ChannelConst.MaxMessageDataLength) return Send(data);
             //need multi messages transport.
             List<byte[]> multiDatas = _protocolStack.ConvertMultiMessage(obj, ChannelConst.MaxMessageDataLength);
