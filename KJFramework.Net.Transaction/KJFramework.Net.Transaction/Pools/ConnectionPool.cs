@@ -2,6 +2,7 @@
 using KJFramework.Net.Channels.Extends;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Agent;
+using KJFramework.Net.Transaction.Enums;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace KJFramework.Net.Transaction.Pools
         ///    <para>* 使用此构造函数将会初始化一个最少1最大3个的连接池配置</para>
         /// </summary>
         protected ConnectionPool()
-            : this(1, 1)
+            : this(Global.MinimumConnectionCount, Global.MaximumConnectionCount)
         {
 
         }
@@ -74,7 +75,9 @@ namespace KJFramework.Net.Transaction.Pools
                     if (!_connections.TryGetValue(key, out connectionSet))
                     {
                         IPEndPoint ipEndPoint = iep.ConvertToIPEndPoint();
-                        connectionSet = new SequentialConnectionSet<TMessage>(_min, _max, new Tuple<IPEndPoint, IProtocolStack<TMessage>, object>(ipEndPoint, protocolStack, transactionManager), CreateAgent);
+                        connectionSet = (Global.ConnectionLoadBalanceStrategy == ConnectionLoadBalanceStrategies.Sequential
+                                                                                                        ? (ConnectionSet<TMessage>) new SequentialConnectionSet<TMessage>(_min, _max, new Tuple<IPEndPoint, IProtocolStack<TMessage>, object>(ipEndPoint, protocolStack, transactionManager), CreateAgent)
+                                                                                                        : new RamdomConnectionSet<TMessage>(_min, _max, new Tuple<IPEndPoint, IProtocolStack<TMessage>, object>(ipEndPoint, protocolStack, transactionManager), CreateAgent));
                         connectionSet.Tag = key;
                         _connections.Add(key, connectionSet);
                     }

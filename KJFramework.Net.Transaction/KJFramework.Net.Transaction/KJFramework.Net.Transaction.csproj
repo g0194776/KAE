@@ -61,6 +61,7 @@
     <Compile Include="Configurations\TransactionSettingConfigSection.cs" />
     <Compile Include="Configurations\SettingConfiguration.cs" />
     <Compile Include="Contexts\BusinessTransactionContext.cs" />
+    <Compile Include="Enums\ConnectionLoadBalanceStrategies.cs" />
     <Compile Include="Enums\QueueSequence.cs" />
     <Compile Include="FailMessageTransaction.cs" />
     <Compile Include="Global.cs" />

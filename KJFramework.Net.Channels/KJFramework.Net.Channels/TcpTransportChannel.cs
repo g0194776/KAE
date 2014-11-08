@@ -129,7 +129,9 @@ namespace KJFramework.Net.Channels
 
         private void InitializeSocketSettings(Socket socket)
         {
-            socket.ReceiveBufferSize = 1024*1024*2;
+            socket.ReceiveBufferSize = 0;
+            socket.SendBufferSize = 0;
+            socket.NoDelay = true;
         }
 
         #endregion

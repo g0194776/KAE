@@ -156,6 +156,8 @@ namespace KJFramework.Net.Transaction.Pools
                     }
                     catch (System.Exception ex) { _tracing.Error(ex, null); }
                 }
+                Interlocked.Exchange(ref _usedBackendThread, 0);
+                _backendThread = null;
             }) { IsBackground = true, Name = "ConnectionSet-Backend-Thread", Priority = ThreadPriority.BelowNormal };
             _backendThread.Start();
         }
