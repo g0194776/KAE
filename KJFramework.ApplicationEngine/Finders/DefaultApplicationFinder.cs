@@ -47,9 +47,12 @@ namespace KJFramework.ApplicationEngine.Finders
                         dataStructure.ReleaseFiles(targetPath);
                         //picks up main file data.
                         string mainFilePath = Path.Combine(targetPath, dataStructure.GetSectionField<string>(0x00, "ApplicationMainFileName"));
+                        //updating combined full path directory.
+                        dataStructure.SetSectionField(0x00, "ApplicationMainFileName", mainFilePath);
                         Assembly assembly = Assembly.Load(File.ReadAllBytes(mainFilePath));
                         Type[] types = assembly.GetTypes();
                         if (types.Length == 0) continue;
+                        Type targetAppType = null;
                         foreach (Type type in types)
                         {
                             try
@@ -57,28 +60,34 @@ namespace KJFramework.ApplicationEngine.Finders
                                 //找到入口点
                                 if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(Application)))
                                 {
-                                    ApplicationEntryInfo info = new ApplicationEntryInfo();
-                                    info.FilePath = Path.GetFullPath(mainFilePath);
-                                    info.FolderPath = Path.GetFullPath(targetPath);
-                                    info.EntryPoint = type.FullName;
-                                    byte[] data = File.ReadAllBytes(file);
-                                    Crc32 crc = new Crc32();
-                                    crc.Reset();
-                                    crc.Update(data);
-                                    info.FileCRC = crc.Value;
-                                    //info.FileCRC = 
-                                    IList<Tuple<ApplicationEntryInfo, KPPDataStructure>> tuple;
-                                    if(!result.TryGetValue(dataStructure.GetSectionField<string>(0x00, "PackName"), out tuple))
-                                    {
-                                        tuple = new List<Tuple<ApplicationEntryInfo, KPPDataStructure>>();
-                                        result.Add(dataStructure.GetSectionField<string>(0x00, "PackName"), tuple);
-                                    }
-                                    tuple.Add(new Tuple<ApplicationEntryInfo, KPPDataStructure>(info, dataStructure));
+                                    targetAppType = type;
+                                    break;
                                 }
                             }
                             catch (ReflectionTypeLoadException) { }
                             catch (System.Exception ex) { _tracing.Error(ex, null); }
                         }
+                        //use default application type when current package had missed the main application class.
+                        targetAppType = targetAppType ?? typeof(Application);
+                        ApplicationEntryInfo info = new ApplicationEntryInfo
+                        {
+                            FilePath = Path.GetFullPath(mainFilePath),
+                            FolderPath = Path.GetFullPath(targetPath),
+                            EntryPoint = targetAppType.FullName
+                        };
+                        byte[] data = File.ReadAllBytes(file);
+                        Crc32 crc = new Crc32();
+                        crc.Reset();
+                        crc.Update(data);
+                        info.FileCRC = crc.Value;
+                        //info.FileCRC = 
+                        IList<Tuple<ApplicationEntryInfo, KPPDataStructure>> tuple;
+                        if (!result.TryGetValue(dataStructure.GetSectionField<string>(0x00, "PackName"), out tuple))
+                        {
+                            tuple = new List<Tuple<ApplicationEntryInfo, KPPDataStructure>>();
+                            result.Add(dataStructure.GetSectionField<string>(0x00, "PackName"), tuple);
+                        }
+                        tuple.Add(new Tuple<ApplicationEntryInfo, KPPDataStructure>(info, dataStructure));
                     }
                     catch (ReflectionTypeLoadException) { }
                     catch (System.Exception ex) { _tracing.Error(ex, null); }

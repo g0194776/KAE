@@ -157,7 +157,10 @@ namespace KJFramework.Net.Transaction
             _response = message;
             if (message == null || Identity.IsOneway) return;
             if (!message.IsAttibuteExsits(0x00)) throw new ArgumentException("#Current RSP message dose not contain any Message-Identity infomation.");
-            MessageIdentity mIdentity = message.GetAttributeAsType<MessageIdentity>(0x00);
+            //Automatically calculate the RSP message's protocol.
+            MessageIdentity mIdentity = _request.GetAttributeAsType<MessageIdentity>(0x00);
+            mIdentity.DetailsId += 1;
+            message.SetAttribute(0x00, new MessageIdentityValueStored(mIdentity));
             TransactionIdentityValueStored valueStored = (TransactionIdentityValueStored) _request.GetAttribute(0x01);
             TransactionIdentity tIdentity;
             if (valueStored != null)

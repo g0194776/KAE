@@ -63,6 +63,20 @@ namespace KJFramework.ApplicationEngine.Resources
         }
 
         /// <summary>
+        ///    在指定编号的数据节中设置具有指定名称字段数据信息
+        /// </summary>
+        /// <typeparam name="T">字段数据信息类型</typeparam>
+        /// <param name="sectionId">数据节编号</param>
+        /// <param name="name">字段名</param>
+        /// <param name="value">字段值</param>
+        /// <returns>返回指定名称所代表的数据信息</returns>
+        /// <exception cref="KeyNotFoundException">指定的KEY不存在</exception>
+        public void SetSectionField<T>(byte sectionId, string name, T value)
+        {
+            _sections[sectionId].SetField(name, value);
+        }
+
+        /// <summary>
         ///    将KPP资源包中的文件释放到指定的目录中
         /// </summary>
         /// <param name="path">释放到的目录</param>

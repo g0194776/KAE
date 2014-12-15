@@ -51,6 +51,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             File.Delete(fileName);
         }
 
+        [Test]
         public string PackTestWithoutDelete()
         {
             DateTime now = DateTime.Now;
@@ -71,6 +72,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             return Path.GetFullPath(fileName);
         }
 
+        [Test]
         public string PackNonCompletedEnvironmentTestWithoutDelete()
         {
             DateTime now = DateTime.Now;

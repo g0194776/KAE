@@ -60,7 +60,6 @@
     <Compile Include="Processors\TestJsonKAEProcessor3.cs" />
     <Compile Include="Processors\TestJsonKAEProcessor2.cs" />
     <Compile Include="Processors\TestJsonKAEProcessor.cs" />
-    <Compile Include="TestApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

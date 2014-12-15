@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Remoting;
 using System.Text;
 using System.Threading;
@@ -178,7 +179,10 @@ namespace KJFramework.ApplicationEngine.Objects
                     WorkProcessingHandler(new LightSingleArgEventArgs<string>(string.Format("Create domain {0} succeed.", _domain.FriendlyName)));
                     _domain.UnhandledException += DomainUnhandledException;
                     WorkProcessingHandler(new LightSingleArgEventArgs<string>("Creating object handle......"));
-                    ObjectHandle cls = _domain.CreateInstanceFrom(_entryInfo.FilePath, _entryInfo.EntryPoint);
+                    //specially path processed for supporting basic Application class.
+                    ObjectHandle cls;
+                    if (_entryInfo.EntryPoint != typeof(Application).FullName) cls = _domain.CreateInstanceFrom(_entryInfo.FilePath, _entryInfo.EntryPoint);
+                    else cls = _domain.CreateInstanceFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "kjframework.applicationengine.dll"), _entryInfo.EntryPoint);
                     if (cls != null)
                     {
                         WorkProcessingHandler(new LightSingleArgEventArgs<string>("Unwrapping......"));

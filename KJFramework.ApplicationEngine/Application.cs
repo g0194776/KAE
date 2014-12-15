@@ -1,4 +1,6 @@
-﻿using System.Runtime.Remoting.Messaging;
+﻿using System.IO;
+using System.Reflection;
+
 using KJFramework.ApplicationEngine.Attributes;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
@@ -24,7 +26,6 @@ using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Managers;
-using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
@@ -38,14 +39,14 @@ namespace KJFramework.ApplicationEngine
     /// <summary>
     ///    KAE应用抽象父类
     /// </summary>
-    public abstract class Application : DynamicDomainComponent, IApplication
+    public class Application : DynamicDomainComponent, IApplication
     {
         #region Constructor.
 
         /// <summary>
         ///    KAE应用抽象父类
         /// </summary>
-        protected Application()
+        public Application()
         {
             Status = ApplicationStatus.Unknown;
         }
@@ -272,9 +273,8 @@ namespace KJFramework.ApplicationEngine
         /// <exception cref="NotSupportedException">不支持的Protocol Type</exception>
         protected virtual IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> CollectAbilityProcessors()
         {
-            IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> dic =
-                new Dictionary<ProtocolTypes, Dictionary<MessageIdentity, object>>();
-            Type[] types = GetType().Assembly.GetTypes();
+            IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> dic = new Dictionary<ProtocolTypes, Dictionary<MessageIdentity, object>>();
+            Type[] types = Assembly.Load(File.ReadAllBytes(_structure.GetSectionField<string>(0x00, "ApplicationMainFileName"))).GetTypes();
             foreach (Type type in types)
             {
                 try
@@ -326,7 +326,10 @@ namespace KJFramework.ApplicationEngine
         /// <summary>
         ///    初始化函数
         /// </summary>
-        protected abstract void InnerInitialize();
+        protected virtual void InnerInitialize()
+        {
+            
+        }
 
         private object AssembleNewTransparencyTransaction(IMessageTransaction<MetadataContainer> preTransaction)
         {

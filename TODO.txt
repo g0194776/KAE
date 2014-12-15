@@ -78,3 +78,16 @@ What's the next:
 4. 为ITracing接口增加了DebugInfo方法，用于打印日志的同时将内容输出到Console控制台上
 5. 增加了KAE信息站的项目(KAE Information Station)
 6. 为KAE信息站规定了第一个用于查询KPP详细信息的HTTP级别RESTful风格接口
+
+
+
+
+
+12月15日进度
+------------------------------------------------
+1. 移除了Application的abstract定义，将其InnerInitialize方法改为virtual的。
+    这样的做法主要是为了让使用者更加轻松，因为如果使用者没有特殊需求的话，他完全可以不用创建一个
+	新的Application派生类而仅仅是为了重写InnerInitialize方法。
+	当然，将Application的abstract定义移除后，内部做了些特殊的支持。当Application Main File内部不包含
+	任何Application后则使用基础类型进行替换。
+2. 
