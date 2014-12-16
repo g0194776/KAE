@@ -107,3 +107,4 @@ What's the next:
 	伪代码看起来如下：
 			IMessageTransactionProxy<T> proxy = SystemWorker.GetTransactionProxy(Protocol.BaseMessage);
 			IMessageTransaction<T> transaction = proxy.Create[Oneway]Transaction(new Protocol(6,6,6), [RESOURCE URL]);
+4. 完成KAE Official Application的搭建
