@@ -90,4 +90,20 @@ What's the next:
 	新的Application派生类而仅仅是为了重写InnerInitialize方法。
 	当然，将Application的abstract定义移除后，内部做了些特殊的支持。当Application Main File内部不包含
 	任何Application后则使用基础类型进行替换。
-2. 
+2. 优化了MetadataMessageTransaction.SendResponse方法，这直接的使得使用者再也不用构造一个MessageIdentity作为
+	RSP消息0x00位置的值了，在内部MetadataMessageTransaction进行了优化，用于自动计算RSP场景下的MessageIdentity
+3. 为KPPDataStructure增加SetSectionField<T>方法
+
+
+
+
+What's the next:
+------------------------------------------------
+1. 在讲一致性圆环的地址信息传入指定的Application后，这个数据应该被SystemWorker所使用到。
+	这就意味着不论是HOST还是APP都应该使用SystemWorker进行指定远程APP的请求发起。而SystemWorker
+	内部使用的网络信息应该是初始化并且注入更新的。
+2. 完善更多的测试用例
+3. 改造SystemWorker内部的实现，将高度组合的方案替换为加工模式。即SystemWorker近用于内部能力和获取已初始化好的TransactionProxy
+	伪代码看起来如下：
+			IMessageTransactionProxy<T> proxy = SystemWorker.GetTransactionProxy(Protocol.BaseMessage);
+			IMessageTransaction<T> transaction = proxy.Create[Oneway]Transaction(new Protocol(6,6,6), [RESOURCE URL]);
