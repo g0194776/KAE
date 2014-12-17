@@ -69,22 +69,6 @@ namespace KJFramework.Net.Transaction
 
         #endregion
 
-        #region Methods
-
-        internal void SetTimeout()
-        {
-            try { TimeoutHandler(null); }
-            catch (System.Exception ex) { _tracing.Error(ex, null); }
-        }
-
-        protected void InnerSetTimeout()
-        {
-            try { TimeoutHandler(null); }
-            catch (System.Exception ex) { _tracing.Error(ex, null); }
-        }
-
-        #endregion
-
         #region Overrides of MessageTransaction<BaseMessage>
 
         /// <summary>

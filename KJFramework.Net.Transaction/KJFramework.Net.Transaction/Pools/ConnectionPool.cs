@@ -64,7 +64,20 @@ namespace KJFramework.Net.Transaction.Pools
         /// <param name="protocolStack">协议栈</param>
         /// <param name="transactionManager">网络事务管理器</param>
         /// <returns>返回一个消息通信信道</returns>
-        public virtual IServerConnectionAgent<TMessage> GetChannel(string iep, string key, IProtocolStack<TMessage> protocolStack, object transactionManager)
+        public virtual IServerConnectionAgent<TMessage> GetChannel(string iep, string key, IProtocolStack protocolStack, object transactionManager)
+        {
+            return GetChannel(iep.ConvertToIPEndPoint(), key, protocolStack, transactionManager);
+        }
+
+        /// <summary>
+        ///     获取具有指定唯一标示的消息通信信道
+        /// </summary>
+        /// <param name="iep">远程终结点地址，如果给予的目标key在当前连接池中并不存在任何连接，则会使用此参数来创建一个连接</param>
+        /// <param name="key">连接标示</param>
+        /// <param name="protocolStack">协议栈</param>
+        /// <param name="transactionManager">网络事务管理器</param>
+        /// <returns>返回一个消息通信信道</returns>
+        public virtual IServerConnectionAgent<TMessage> GetChannel(IPEndPoint iep, string key, IProtocolStack protocolStack, object transactionManager)
         {
             try
             {
@@ -73,8 +86,7 @@ namespace KJFramework.Net.Transaction.Pools
                     ConnectionSet<TMessage> connectionSet;
                     if (!_connections.TryGetValue(key, out connectionSet))
                     {
-                        IPEndPoint ipEndPoint = iep.ConvertToIPEndPoint();
-                        connectionSet = new RamdomConnectionSet<TMessage>(_min, _max, new Tuple<IPEndPoint, IProtocolStack<TMessage>, object> (ipEndPoint, protocolStack, transactionManager), CreateAgent);
+                        connectionSet = new RamdomConnectionSet<TMessage>(_min, _max, new Tuple<IPEndPoint, IProtocolStack, object>(iep, protocolStack, transactionManager), CreateAgent);
                         connectionSet.Tag = key;
                         _connections.Add(key, connectionSet);
                     }
@@ -105,7 +117,7 @@ namespace KJFramework.Net.Transaction.Pools
         /// <param name="protocolStack">协议栈</param>
         /// <param name="transactionManager">网络事务管理器</param>
         /// <returns>返回已经创建好的服务器端连接代理器</returns>
-        protected abstract IServerConnectionAgent<TMessage> CreateAgent(IPEndPoint iep, IProtocolStack<TMessage> protocolStack, object transactionManager);
+        protected abstract IServerConnectionAgent<TMessage> CreateAgent(IPEndPoint iep, IProtocolStack protocolStack, object transactionManager);
 
         #endregion
     }

@@ -50,15 +50,13 @@
     <Compile Include="Agent\MetadataConnectionAgent.cs" />
     <Compile Include="Agent\IConnectionAgent.cs" />
     <Compile Include="Agent\IServerConnectionAgent.cs" />
-    <Compile Include="Clusters\INetworkCluster.cs" />
-    <Compile Include="Clusters\NetworkCluster.cs" />
-    <Compile Include="Clusters\MetaDataNetworkCluster.cs" />
     <Compile Include="Comparers\ProtocolsComparer.cs" />
     <Compile Include="Comparers\ServiceCoreComparer.cs" />
     <Compile Include="Comparers\TransactionIdentityComparer.cs" />
     <Compile Include="Configurations\TransactionSettingConfigSection.cs" />
     <Compile Include="Configurations\SettingConfiguration.cs" />
     <Compile Include="Contexts\BusinessTransactionContext.cs" />
+    <Compile Include="Enums\NetworkCommunicationTypes.cs" />
     <Compile Include="Enums\QueueSequence.cs" />
     <Compile Include="FailMetadataTransaction.cs" />
     <Compile Include="FailMessageTransaction.cs" />

@@ -17,7 +17,7 @@ namespace KJFramework.Net.Channels.OneWay
         ///     输入通道元接口，提供了相关的基本操作。
         /// </summary>
         /// <param name="protocolStack">协议栈</param>
-        public InputChannel(IProtocolStack<T> protocolStack)
+        public InputChannel(IProtocolStack protocolStack)
             : base(protocolStack)
         {
         }
@@ -27,7 +27,7 @@ namespace KJFramework.Net.Channels.OneWay
         /// </summary>
         /// <param name="channel">基于流的通讯信道</param>
         /// <param name="protocolStack">协议栈</param>
-        public InputChannel(IRawTransportChannel channel, IProtocolStack<T> protocolStack)
+        public InputChannel(IRawTransportChannel channel, IProtocolStack protocolStack)
             : base(channel, protocolStack)
         {
         }

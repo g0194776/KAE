@@ -3,15 +3,15 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels.Identities;
+using KJFramework.Tracing;
 
 namespace KJFramework.Net.Transaction
 {
     /// <summary>
     ///     事务管理器，提供了相关的基本操作
     /// </summary>
-    /// <typeparam name="V">事务类型</typeparam>
-    public class TransactionManager<V> : ITransactionManager<V> 
-        where V : ITransaction
+    /// <typeparam name="TMessage">消息事务所承载的消息类型</typeparam>
+    public class TransactionManager<TMessage> : ITransactionManager<TMessage> 
     {
         #region Constructor
 
@@ -27,7 +27,7 @@ namespace KJFramework.Net.Transaction
         {
             if (interval <= 0) throw new ArgumentException("Illegal check time interval!");
             _interval = interval;
-            _transactions = comparer == null ? new ConcurrentDictionary<TransactionIdentity, V>() : new ConcurrentDictionary<TransactionIdentity, V>(comparer); 
+            _transactions = comparer == null ? new ConcurrentDictionary<TransactionIdentity, IMessageTransaction<TMessage>>() : new ConcurrentDictionary<TransactionIdentity, IMessageTransaction<TMessage>>(comparer); 
             _timer = new System.Timers.Timer { Interval = _interval };
             _timer.Elapsed += TimerElapsed;
             _timer.Start();
@@ -37,18 +37,10 @@ namespace KJFramework.Net.Transaction
 
         #region Members
 
-        protected readonly System.Timers.Timer _timer;
-        protected readonly ConcurrentDictionary<TransactionIdentity, V> _transactions;
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #region Implementation of ITransactionManager<K,V>
-
         protected readonly int _interval;
+        protected readonly System.Timers.Timer _timer;
+        protected readonly ConcurrentDictionary<TransactionIdentity, IMessageTransaction<TMessage>> _transactions;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(TransactionManager<TMessage>));
 
         /// <summary>
         ///     获取或设置事务检查的时间间隔
@@ -59,17 +51,39 @@ namespace KJFramework.Net.Transaction
             get { return _interval; }
         }
 
+        #endregion
+
+        #region Methods.
+
         /// <summary>
         ///     管理一个事务
         /// </summary>
         /// <param name="key">事务唯一键值</param>
         /// <param name="transaction">事务</param>
-        /// <exception cref="ArgumentNullException">参数错误</exception>
-        /// <returns>返回添加操作的状态</returns>
-        public virtual bool Add(TransactionIdentity key, V transaction)
+        /// <exception cref="T:System.ArgumentNullException">参数错误</exception>
+        /// <returns>
+        ///     返回添加操作的状态
+        /// </returns>
+        public bool Add(TransactionIdentity key, IMessageTransaction<TMessage> transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return GetTransaction(key) != null ? false : _transactions.TryAdd(key, transaction);
+            IMessageTransaction<TMessage> temp;
+            if ((temp = GetTransaction(key)) != null)
+            {
+                _tracing.Error(
+                    "#Cannot add MessageTransaction to current TransactionManager, because the target identity has been dup. \r\nDetails below:\r\nIdentity: {0}\r\nCreate Time: {1}\r\nRequest: {2}\r\nResponse: {3}",
+                    key,
+                    temp.CreateTime,
+                    (temp.Request == null ? "" : temp.Request.ToString()),
+                    (temp.Response == null ? "" : temp.Response.ToString()));
+                return false;
+            }
+            if (!_transactions.TryAdd(key, transaction))
+            {
+                _tracing.Error("#Add MessageTransaction to current TransactionManager failed. #key: " + key);
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -77,14 +91,11 @@ namespace KJFramework.Net.Transaction
         /// </summary>
         /// <param name="key">事务唯一键值</param>
         /// <returns>事务</returns>
-        public virtual V GetTransaction(TransactionIdentity key)
+        public virtual IMessageTransaction<TMessage> GetTransaction(TransactionIdentity key)
         {
-            V transaction;
-            if (_transactions.TryGetValue(key, out transaction))
-            {
-                return transaction;
-            }
-            return default(V);
+            IMessageTransaction<TMessage> transaction;
+            if (_transactions.TryGetValue(key, out transaction)) return transaction;
+            return default(IMessageTransaction<TMessage>);
         }
 
         /// <summary>
@@ -93,7 +104,7 @@ namespace KJFramework.Net.Transaction
         /// <param name="key">事务唯一键值</param>
         public virtual void Remove(TransactionIdentity key)
         {
-            V transaction;
+            IMessageTransaction<TMessage> transaction;
             _transactions.TryRemove(key, out transaction);
         }
 
@@ -108,7 +119,7 @@ namespace KJFramework.Net.Transaction
         /// </returns>
         public virtual DateTime Renew(TransactionIdentity key, TimeSpan timeSpan)
         {
-            V transaction = GetTransaction(key);
+            IMessageTransaction<TMessage> transaction = GetTransaction(key);
             if (transaction == null) return DateTime.MinValue;
             return transaction.GetLease().Renew(timeSpan);
         }
@@ -118,19 +129,31 @@ namespace KJFramework.Net.Transaction
         /// </summary>
         /// <param name="key">事务唯一键值</param>
         /// <returns>返回获取到的事务</returns>
-        public virtual V GetRemove(TransactionIdentity key)
+        public virtual IMessageTransaction<TMessage> GetRemove(TransactionIdentity key)
         {
-            V transaction;
-            return _transactions.TryRemove(key, out transaction) ? transaction : default(V);
-        }
+            IMessageTransaction<TMessage> transaction;
+            return _transactions.TryRemove(key, out transaction) ? transaction : default(IMessageTransaction<TMessage>);
+        }        
+        
+        /// <summary>
+        ///     激活一个事务，并尝试处理该事务的响应消息流程
+        /// </summary>
+        /// <param name="identity">事务唯一标示</param>
+        /// <param name="response">响应消息</param>
+        public void Active(TransactionIdentity identity, TMessage response)
+        {
+            IMessageTransaction<TMessage> transaction;
+            if (!_transactions.TryRemove(identity, out transaction)) return;
+            transaction.SetResponse(response);
+        } 
 
         /// <summary>
         ///     事务过期事件
         /// </summary>
-        public event EventHandler<LightSingleArgEventArgs<V>> TransactionExpired;
-        protected void TransactionExpiredHandler(LightSingleArgEventArgs<V> e)
+        public event EventHandler<LightSingleArgEventArgs<IMessageTransaction<TMessage>>> TransactionExpired;
+        protected void TransactionExpiredHandler(LightSingleArgEventArgs<IMessageTransaction<TMessage>> e)
         {
-            EventHandler<LightSingleArgEventArgs<V>> handler = TransactionExpired;
+            EventHandler<LightSingleArgEventArgs<IMessageTransaction<TMessage>>> handler = TransactionExpired;
             if (handler != null) handler(this, e);
         }
 
@@ -138,21 +161,26 @@ namespace KJFramework.Net.Transaction
 
         #region Events
 
-        //check time.
+        /// <summary>
+        ///    事务超时计算函数
+        /// </summary>
         protected virtual void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (_transactions.Count == 0) return;
             IList<TransactionIdentity> expireValues = new List<TransactionIdentity>();
             //check dead flag for transaction.
-            foreach (KeyValuePair<TransactionIdentity, V> pair in _transactions)
+            foreach (KeyValuePair<TransactionIdentity, IMessageTransaction<TMessage>> pair in _transactions)
                 if (pair.Value.GetLease().IsDead) expireValues.Add(pair.Key);
             if (expireValues.Count == 0) return;
             //remove expired transactions.
             foreach (TransactionIdentity expireValue in expireValues)
             {
-                V transaction;
+                IMessageTransaction<TMessage> transaction;
                 if (_transactions.TryRemove(expireValue, out transaction))
-                    TransactionExpiredHandler(new LightSingleArgEventArgs<V>(transaction));
+                {
+                    ((MessageTransaction<TMessage>)transaction).SetTimeout();
+                    TransactionExpiredHandler(new LightSingleArgEventArgs<IMessageTransaction<TMessage>>(transaction));
+                }
             }
         }
 

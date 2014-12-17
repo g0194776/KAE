@@ -20,7 +20,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         ///     数据段解析器元接口
         /// </summary>
         /// <param name="protocolStack">协议栈</param>
-        public CSNSegmentDataParser(IProtocolStack<T> protocolStack)
+        public CSNSegmentDataParser(IProtocolStack protocolStack)
         {
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");
             _protocolStack = protocolStack;
@@ -32,7 +32,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 
         private CSNSegmentNode _head;
         private CSNSegmentNode _tail;
-        private readonly IProtocolStack<T> _protocolStack;
+        private readonly IProtocolStack _protocolStack;
 
         #endregion
 
@@ -67,7 +67,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
                 //direct parse.
                 if (nextNode.RemainingSize >= msgSize)
                 {
-                    List<T> list = _protocolStack.Parse(nextNode.Args.Stub.Cache.Segment.Segment.Array, nextNode.Args.Stub.Cache.Segment.UsedOffset, msgSize);
+                    List<T> list = _protocolStack.Parse<T>(nextNode.Args.Stub.Cache.Segment.Segment.Array, nextNode.Args.Stub.Cache.Segment.UsedOffset, msgSize);
                     if (list != null) msgs.AddRange(list);
                     nextNode.Args.Stub.Cache.Segment.UsedBytes += msgSize;
                     CSNChannelCounter.Instance.RateOfDirectParse.Increment();
@@ -142,7 +142,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
                     _head = nextNode = lastRealNode;
                 }
                 //_head = nextNode = ((cloneLastRealNode.RemainingSize == 0 && lastRealNode.Next == null) ? null : lastRealNode);
-                List<T> list1 = _protocolStack.Parse(data);
+                List<T> list1 = _protocolStack.Parse<T>(data);
                 if (list1 != null) msgs.AddRange(list1);
             }
             //publish messages.

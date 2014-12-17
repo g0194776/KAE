@@ -107,7 +107,7 @@ namespace KJFramework.ApplicationEngine.Managers
             KAENetworkResource tag = (KAENetworkResource)hostChannel.Tag;
             if (tag.Protocol == ProtocolTypes.Metadata)
             {
-                IMessageTransportChannel<MetadataContainer> msgChannel = new MessageTransportChannel<MetadataContainer>((IRawTransportChannel)e.Target, (IProtocolStack<MetadataContainer>)NetworkHelper.GetProtocolStack(tag.Protocol));
+                IMessageTransportChannel<MetadataContainer> msgChannel = new MessageTransportChannel<MetadataContainer>((IRawTransportChannel)e.Target, (IProtocolStack)NetworkHelper.GetProtocolStack(tag.Protocol));
                 MetadataConnectionAgent agent = new MetadataConnectionAgent(msgChannel, (MetadataTransactionManager)NetworkHelper.GetTransactionManager(tag.Protocol));
                 agent.Disconnected += AgentDisconnected;
                 agent.NewTransaction += MetadataNewTransactionHandler;
@@ -115,7 +115,7 @@ namespace KJFramework.ApplicationEngine.Managers
             }
             else if (tag.Protocol == ProtocolTypes.Intellegence)
             {
-                IMessageTransportChannel<BaseMessage> msgChannel = new MessageTransportChannel<BaseMessage>((IRawTransportChannel)e.Target, (IProtocolStack<BaseMessage>)NetworkHelper.GetProtocolStack(tag.Protocol));
+                IMessageTransportChannel<BaseMessage> msgChannel = new MessageTransportChannel<BaseMessage>((IRawTransportChannel)e.Target, (IProtocolStack)NetworkHelper.GetProtocolStack(tag.Protocol));
                 IntellectObjectConnectionAgent agent = new IntellectObjectConnectionAgent(msgChannel, (MessageTransactionManager)NetworkHelper.GetTransactionManager(tag.Protocol));
                 agent.Disconnected += AgentDisconnected;
                 agent.NewTransaction += IntellegenceNewTransactionHandler;

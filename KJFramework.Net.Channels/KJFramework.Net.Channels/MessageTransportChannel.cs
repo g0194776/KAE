@@ -31,7 +31,7 @@ namespace KJFramework.Net.Channels
         /// <param name="rawChannel">数据流信道</param>
         /// <param name="protocolStack">协议栈</param>
         /// <exception cref="ArgumentNullException">参数错误</exception>
-        public MessageTransportChannel(IRawTransportChannel rawChannel, IProtocolStack<T> protocolStack)
+        public MessageTransportChannel(IRawTransportChannel rawChannel, IProtocolStack protocolStack)
             : this(rawChannel, protocolStack, new SegmentDataParser<T>(protocolStack))
         {
 
@@ -44,7 +44,7 @@ namespace KJFramework.Net.Channels
         /// <param name="protocolStack">协议栈</param>
         /// <param name="parser">解析器</param>
         /// <exception cref="ArgumentNullException">参数错误</exception>
-        public MessageTransportChannel(IRawTransportChannel rawChannel, IProtocolStack<T> protocolStack, ISegmentDataParser<T> parser)
+        public MessageTransportChannel(IRawTransportChannel rawChannel, IProtocolStack protocolStack, ISegmentDataParser<T> parser)
         {
             if (rawChannel == null) throw new ArgumentNullException("rawChannel");
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");
@@ -84,7 +84,7 @@ namespace KJFramework.Net.Channels
 
         private readonly Guid _key;
         private IRawTransportChannel _rawChannel;
-        private readonly IProtocolStack<T> _protocolStack;
+        private readonly IProtocolStack _protocolStack;
         private IMultiPacketManager<T> _multiPacketManager;
         private EndPoint _localIep;
         private EndPoint _remoteIep;
@@ -374,7 +374,7 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取协议栈
         /// </summary>
-        public IProtocolStack<T> ProtocolStack
+        public IProtocolStack ProtocolStack
         {
             get { return _protocolStack; }
         }
@@ -449,7 +449,7 @@ namespace KJFramework.Net.Channels
 
             if (_rawChannel.Buffer == null)
             {
-                objs = _protocolStack.Parse(e.Target);
+                objs = _protocolStack.Parse<T>(e.Target);
             }
             else
             {
@@ -459,7 +459,7 @@ namespace KJFramework.Net.Channels
                     objs = new List<T>();
                     foreach (var d in data)
                     {
-                        List<T> list = _protocolStack.Parse(d);
+                        List<T> list = _protocolStack.Parse<T>(d);
                         if (list != null && list.Count > 0)
                         {
                             objs.AddRange(list);

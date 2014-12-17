@@ -20,7 +20,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         [SetUp]
         public void Initialize()
         {
-            SystemWorker.Instance.Initialize("KAEWroker", RemoteConfigurationSetting.Default, KAEHostTest.BuildConfigurationProxy());
+            SystemWorker.Initialize("KAEWroker", RemoteConfigurationSetting.Default, KAEHostTest.BuildConfigurationProxy());
             KAESystemInternalResource.Factory = new DefaultInternalResourceFactory();
             KAESystemInternalResource.Factory.Initialize();
         }

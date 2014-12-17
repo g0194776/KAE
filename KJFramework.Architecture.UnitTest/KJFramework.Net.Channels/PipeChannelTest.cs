@@ -32,7 +32,7 @@ namespace KJFramework.Net.Channels.UnitTest
         [SetUp]
         public void Initialize()
         {
-            SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default, KAEHostTest.BuildConfigurationProxy());
+            SystemWorker.Initialize("KAEWorker", RemoteConfigurationSetting.Default, KAEHostTest.BuildConfigurationProxy());
         }
 
 

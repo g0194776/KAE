@@ -15,8 +15,8 @@ namespace KJFramework.ApplicationEngine.KIS
     {
         protected void Application_Start()
         {
-            SystemWorker.Instance.Initialize("KIS", RemoteConfigurationSetting.Default, new SolitaryRemoteConfigurationProxy());
-            Global.Database = new Database(SystemWorker.Instance.ConfigurationProxy.GetField("KIS", "DatabaseConnection"), 120);
+            SystemWorker.Initialize("KIS", RemoteConfigurationSetting.Default, new SolitaryRemoteConfigurationProxy());
+            Global.Database = new Database(SystemWorker.ConfigurationProxy.GetField("KIS", "DatabaseConnection"), 120);
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

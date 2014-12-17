@@ -11,6 +11,16 @@ namespace KJFramework.Net.Transaction
     /// <typeparam name="T">消息父类类型</typeparam>
     public interface IMessageTransaction<T> : ITransaction
     {
+        #region Members.
+
+        /// <summary>
+        ///     获取事务的创建时间
+        /// </summary>
+        DateTime CreateTime { get; }
+        /// <summary>
+        ///     获取成功操作后的请求时间
+        /// </summary>
+        DateTime RequestTime { get; }
         /// <summary>
         ///     获取或设置一个值，该值标示了当前的事务是否需要响应消息
         /// </summary>
@@ -22,10 +32,20 @@ namespace KJFramework.Net.Transaction
         /// <summary>
         ///     获取或设置响应消息
         /// </summary>
-        T Response { get; set; }        /// <summary>
-        ///     »ñÈ¡»òÉèÖÃµ±Ç°ÊÂÎñµÄÎ¨Ò»±êÊ¾
+        T Response { get; set; }       
+        /// <summary>
+        ///    获取当前事务的唯一标识 
         /// </summary>
         TransactionIdentity Identity { get; }
+        /// <summary>
+        ///     获取事务管理器
+        /// </summary>
+        ITransactionManager<T> TransactionManager { get; }
+
+        #endregion
+
+        #region Methods.
+
         /// <summary>
         ///     设置响应消息，并激活处理流程
         /// </summary>
@@ -45,6 +65,11 @@ namespace KJFramework.Net.Transaction
         ///     获取内部的传输信道
         /// </summary>
         IMessageTransportChannel<T> GetChannel();
+
+        #endregion
+
+        #region Events.
+
         /// <summary>
         ///     事物超时事件
         /// </summary>
@@ -57,5 +82,7 @@ namespace KJFramework.Net.Transaction
         ///     响应消息抵达事件
         /// </summary>
         event EventHandler<LightSingleArgEventArgs<T>> ResponseArrived;
+
+        #endregion
     }
 }

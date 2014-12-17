@@ -1,6 +1,5 @@
 ﻿using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction.Contexts;
-using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
 using System;
@@ -46,10 +45,6 @@ namespace KJFramework.Net.Transaction
 
         protected static readonly ITracing _tracing = TracingManager.GetTracing(typeof(BusinessMessageTransaction));
         /// <summary>
-        ///     获取或设置事务管理器
-        /// </summary>
-        public MessageTransactionManager TransactionManager { get; set; }
-        /// <summary>
         ///     获取或设置相关上下文
         /// </summary>
         public BusinessTransactionContext Context { get; set; }
@@ -68,22 +63,6 @@ namespace KJFramework.Net.Transaction
                 RequestTime = DateTime.Now;
                 base.Request = value;
             }
-        }
-
-        #endregion
-
-        #region Methods
-
-        internal void SetTimeout()
-        {
-            try { TimeoutHandler(null); }
-            catch (System.Exception ex) { _tracing.Error(ex, null); }
-        }
-
-        protected void InnerSetTimeout()
-        {
-            try { TimeoutHandler(null); }
-            catch (System.Exception ex) { _tracing.Error(ex, null); }
         }
 
         #endregion

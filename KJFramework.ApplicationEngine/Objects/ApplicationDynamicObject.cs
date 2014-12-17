@@ -151,13 +151,16 @@ namespace KJFramework.ApplicationEngine.Objects
 
         #region Methods.
 
+        [Obsolete("KAE does not support this operation anymore.", true)]
         public void SetTunnelAddresses(Dictionary<string, string> addresses)
         {
-            _application.SetTunnelAddresses(addresses);
+            throw new NotImplementedException();
         }
+
+        [Obsolete("KAE does not support this operation anymore.", true)]
         public T GetTunnel<T>(string componentName) where T : class
         {
-            return _application.GetTunnel<T>(componentName);
+            throw new NotImplementedException();
         }
 
         private void PreInitialize()
@@ -270,9 +273,10 @@ namespace KJFramework.ApplicationEngine.Objects
             _domain = null;
         }
 
+        [Obsolete("KAE does not support this operation anymore.", true)]
         public void UseTunnel<T>(bool metadataExchange = false)
         {
-            _application.UseTunnel<T>(metadataExchange);
+            throw new NotImplementedException();
         }
 
         public void OnLoading()

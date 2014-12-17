@@ -182,7 +182,7 @@ namespace KJFramework.Net.Transaction.Agent
         /// <param name="transactionManager">事务管理器</param>
         /// <returns>如果无法连接到远程地址，则返回null.</returns>
         /// <exception cref="System.ArgumentNullException">非法参数</exception>
-        public static IServerConnectionAgent<BaseMessage> Create(IPEndPoint iep, IProtocolStack<BaseMessage> protocolStack, MessageTransactionManager transactionManager)
+        public static IServerConnectionAgent<BaseMessage> Create(IPEndPoint iep, IProtocolStack protocolStack, MessageTransactionManager transactionManager)
         {
             if (iep == null) throw new ArgumentNullException("iep");
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");

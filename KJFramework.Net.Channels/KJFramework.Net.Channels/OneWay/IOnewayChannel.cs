@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels.Spy;
 using KJFramework.Net.ProtocolStacks;
@@ -27,7 +26,7 @@ namespace KJFramework.Net.Channels.OneWay
         /// <summary>
         ///     获取协议栈
         /// </summary>
-        IProtocolStack<T> ProtocolStack { get; }
+        IProtocolStack ProtocolStack { get; }
         /// <summary>
         ///     连接到远程终结点
         /// </summary>

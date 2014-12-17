@@ -85,10 +85,10 @@ namespace KJFramework.ApplicationEngine.Configurations.Loaders
                 }               
                 StringBuilder builder = new StringBuilder();
                 builder.AppendLine("<configuration>");
-                string sectionsConfig = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig("SECTIONS");
+                string sectionsConfig = SystemWorker.ConfigurationProxy.GetPartialConfig("SECTIONS");
                 if (string.IsNullOrEmpty(sectionsConfig)) throw new KeyNotFoundException("#Sadly, we cannot found \"SECTION\" keyword in remote configuration node.");
                 builder.AppendLine(sectionsConfig);
-                string appsettingConfig = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(SystemWorker.Instance.Role + ":APP-SETTINGS");
+                string appsettingConfig = SystemWorker.ConfigurationProxy.GetPartialConfig(SystemWorker.Role + ":APP-SETTINGS");
                 if (!string.IsNullOrEmpty(appsettingConfig)) builder.AppendLine(appsettingConfig);
                 #region Get CustomerConfig Section Configuration.
 
@@ -96,14 +96,14 @@ namespace KJFramework.ApplicationEngine.Configurations.Loaders
                 string upConfig, upConfigKey;
                 #region Get CustomerConfig.System section configuration *REQUIRE*.
 
-                if (!_setting.IsSpecific_System_Element_Config) upConfig = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(upConfigKey = "CustomerConfig.System");
-                else upConfig = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(upConfigKey = (SystemWorker.Instance.Role + ":CustomerConfig.System"));
+                if (!_setting.IsSpecific_System_Element_Config) upConfig = SystemWorker.ConfigurationProxy.GetPartialConfig(upConfigKey = "CustomerConfig.System");
+                else upConfig = SystemWorker.ConfigurationProxy.GetPartialConfig(upConfigKey = (SystemWorker.Role + ":CustomerConfig.System"));
                 if (string.IsNullOrEmpty(upConfig)) throw new KeyNotFoundException("#Sadly, we cannot found \"" + upConfigKey + "\" keyword in remote configuration node.");
                 builder.AppendLine(upConfig);
 
                 if (_setting.IsSpecific_Customer_Profile_Config)
                 {
-                    upConfig = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(upConfigKey = (SystemWorker.Instance.Role + ":CustomerConfig.Profile"));
+                    upConfig = SystemWorker.ConfigurationProxy.GetPartialConfig(upConfigKey = (SystemWorker.Role + ":CustomerConfig.Profile"));
                     if (string.IsNullOrEmpty(upConfig)) throw new KeyNotFoundException("#Sadly, we cannot found \"" + upConfigKey + "\" keyword in remote configuration node.");
                     builder.AppendLine(upConfig);
                 }
@@ -117,24 +117,24 @@ namespace KJFramework.ApplicationEngine.Configurations.Loaders
                     builder.AppendLine("<KJFramework>");
                     #region Get KJFramework.Net section configuration *REQUIRE*.
 
-                    if (!_setting.IsCustomize_KJFramework_Net_Config) config = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(configKey = "KJFramework.Net");
-                    else config = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(configKey = (SystemWorker.Instance.Role + ":KJFramework.Net"));
+                    if (!_setting.IsCustomize_KJFramework_Net_Config) config = SystemWorker.ConfigurationProxy.GetPartialConfig(configKey = "KJFramework.Net");
+                    else config = SystemWorker.ConfigurationProxy.GetPartialConfig(configKey = (SystemWorker.Role + ":KJFramework.Net"));
                     if (string.IsNullOrEmpty(config)) throw new KeyNotFoundException("#Sadly, we cannot found \"" + configKey + "\" keyword in remote configuration node.");
                     builder.AppendLine(config);
 
                     #endregion
                     #region Get KJFramework.Net.Channels section configuration *REQUIRE*.
 
-                    if (!_setting.IsCustomize_KJFramework_Net_Channels_Config) config = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(configKey = "KJFramework.Net.Channels");
-                    else config = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(configKey = (SystemWorker.Instance.Role + ":KJFramework.Net.Channels"));
+                    if (!_setting.IsCustomize_KJFramework_Net_Channels_Config) config = SystemWorker.ConfigurationProxy.GetPartialConfig(configKey = "KJFramework.Net.Channels");
+                    else config = SystemWorker.ConfigurationProxy.GetPartialConfig(configKey = (SystemWorker.Role + ":KJFramework.Net.Channels"));
                     if (string.IsNullOrEmpty(config)) throw new KeyNotFoundException("#Sadly, we cannot found \"" + configKey + "\" keyword in remote configuration node.");
                     builder.AppendLine(config);
 
                     #endregion
                     #region Get KJFramework.Net.Transaction section configuration *OPTIONAL*.
 
-                    if (!_setting.IsCustomize_KJFramework_Net_Transaction_Config) config = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(configKey = "KJFramework.Net.Transaction");
-                    else config = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(configKey = (SystemWorker.Instance.Role + ":KJFramework.Net.Transaction"));
+                    if (!_setting.IsCustomize_KJFramework_Net_Transaction_Config) config = SystemWorker.ConfigurationProxy.GetPartialConfig(configKey = "KJFramework.Net.Transaction");
+                    else config = SystemWorker.ConfigurationProxy.GetPartialConfig(configKey = (SystemWorker.Role + ":KJFramework.Net.Transaction"));
                     if (!string.IsNullOrEmpty(config)) builder.AppendLine(config);
 
                     #endregion
@@ -142,7 +142,7 @@ namespace KJFramework.ApplicationEngine.Configurations.Loaders
                 }
                 else
                 {
-                    string kjConfig = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig("KJFRAMEWORK-FAMILY");
+                    string kjConfig = SystemWorker.ConfigurationProxy.GetPartialConfig("KJFRAMEWORK-FAMILY");
                     if (string.IsNullOrEmpty(kjConfig)) throw new KeyNotFoundException("#Sadly, we cannot found \"KJFRAMEWORK-FAMILY\" keyword in remote configuration node.");
                     builder.AppendLine(kjConfig);
                 }
@@ -152,8 +152,8 @@ namespace KJFramework.ApplicationEngine.Configurations.Loaders
                 #endregion
                 #region Get Other .NETFRAMEWORK section configuration *OPTIONAL*.
 
-                if (!_setting.IsCustomize_DotNetFramework_Config) upConfig = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(upConfigKey = "Configuration.DotNetFramework");
-                else upConfig = SystemWorker.Instance.ConfigurationProxy.GetPartialConfig(upConfigKey = (SystemWorker.Instance.Role + ":Configuration.DotNetFramework"));
+                if (!_setting.IsCustomize_DotNetFramework_Config) upConfig = SystemWorker.ConfigurationProxy.GetPartialConfig(upConfigKey = "Configuration.DotNetFramework");
+                else upConfig = SystemWorker.ConfigurationProxy.GetPartialConfig(upConfigKey = (SystemWorker.Role + ":Configuration.DotNetFramework"));
                 if (!string.IsNullOrEmpty(upConfig)) builder.AppendLine(upConfig);
 
                 #endregion

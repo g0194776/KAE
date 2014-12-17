@@ -210,10 +210,10 @@ namespace KJFramework.ApplicationEngine
         private IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> Initialize(string workRoot)
         {
             _tracing.DebugInfo("\t#Initializing grey policy...");
-            _greyPolicyAddress = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "GreyPolicyAddress", (KAESettings.IsTDDTesting ? (Action<string>)null : (address => _greyPolicyAddress = address)));
-            _greyPolicyInterval = TimeSpan.Parse(SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "GreyPolicyInternal", (KAESettings.IsTDDTesting ? (Action<string>)null : (interval => _greyPolicyInterval = TimeSpan.Parse(interval)))));
+            _greyPolicyAddress = SystemWorker.ConfigurationProxy.GetField("KAEWorker", "GreyPolicyAddress", (KAESettings.IsTDDTesting ? (Action<string>)null : (address => _greyPolicyAddress = address)));
+            _greyPolicyInterval = TimeSpan.Parse(SystemWorker.ConfigurationProxy.GetField("KAEWorker", "GreyPolicyInternal", (KAESettings.IsTDDTesting ? (Action<string>)null : (interval => _greyPolicyInterval = TimeSpan.Parse(interval)))));
             _tracing.DebugInfo("\t#Hooking remoting configuration proxy's event...");
-            SystemWorker.Instance.ConfigurationProxy.ConfigurationUpdated += ConfigurationUpdatedEvent;
+            SystemWorker.ConfigurationProxy.ConfigurationUpdated += ConfigurationUpdatedEvent;
             _tracing.DebugInfo("\t#Initializing default KPP network setting template...");
             //does a copy of current AppDomain's global network layer settings for each of installing KPP.
             _settings = new ChannelInternalConfigSettings
@@ -272,9 +272,9 @@ namespace KJFramework.ApplicationEngine
         public void Start()
         {
             _tracing.DebugInfo("#Initializing from remoting CSN...");
-            SystemWorker.Instance.Initialize("KAEWorker", RemoteConfigurationSetting.Default, _configurationProxy);
+            SystemWorker.Initialize("KAEWorker", RemoteConfigurationSetting.Default, _configurationProxy);
             _tracing.DebugInfo("\t#Analyzing remoting RRCS service address...");
-            string rrcsAddr = SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "RRCS-Address");
+            string rrcsAddr = SystemWorker.ConfigurationProxy.GetField("KAEWorker", "RRCS-Address");
             if (rrcsAddr == null) throw new ArgumentException("#We couldn't find any RRCS address from remoting CSN.");
             _rrcsAddr = rrcsAddr.ConvertToIPEndPoint();
             _tracing.DebugInfo("#Initializing KAE internal system resource factory...");

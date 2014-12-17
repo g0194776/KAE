@@ -24,7 +24,7 @@ namespace KJFramework.ApplicationEngine.Factories
         {
             _resources.Add(KAESystemInternalResource.APPDownloader, new RemotingApplicationDownloader());
             _resources.Add(KAESystemInternalResource.APPFinder, new DefaultApplicationFinder());
-            _resources.Add(KAESystemInternalResource.KISProxy, new RemotingKISProxy(SystemWorker.Instance.ConfigurationProxy.GetField("KAEWorker", "KIS-Address")));
+            _resources.Add(KAESystemInternalResource.KISProxy, new RemotingKISProxy(SystemWorker.ConfigurationProxy.GetField("KAEWorker", "KIS-Address")));
         }
 
         /// <summary>

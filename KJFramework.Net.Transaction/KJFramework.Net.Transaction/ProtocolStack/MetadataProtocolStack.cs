@@ -1,6 +1,5 @@
 ﻿using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
-using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Objects;
 using KJFramework.Tracing;
 using System;
@@ -11,7 +10,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
     /// <summary>
     ///     服务器端消息协议栈抽象父类
     /// </summary>
-    public class MetadataProtocolStack : ProtocolStack<MetadataContainer>
+    public class MetadataProtocolStack : ProtocolStacks.ProtocolStack
     {
         #region Constructor
 
@@ -50,9 +49,9 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         /// <returns>
         /// 返回能否解析的一个标示
         /// </returns>
-        public override List<MetadataContainer> Parse(byte[] data)
+        public override List<T> Parse<T>(byte[] data)
         {
-            return Parse(data, 0, data.Length);
+            return Parse<T>(data, 0, data.Length);
         }
 
         /// <summary>
@@ -62,9 +61,9 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         /// <returns>
         /// 返回转换后的2进制
         /// </returns>
-        public override byte[] ConvertToBytes(MetadataContainer message)
+        public override byte[] ConvertToBytes(object message)
         {
-            return MetadataObjectEngine.ToBytes(message);
+            return MetadataObjectEngine.ToBytes((MetadataContainer) message);
         }
 
         protected Type GetMessageType(int protocolId, int serviceId, int detailsId)
@@ -94,10 +93,10 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         /// <returns>
         ///     返回能否解析的一个标示
         /// </returns>
-        public override List<MetadataContainer> Parse(byte[] data, int offset, int count)
+        public override List<T> Parse<T>(byte[] data, int offset, int count)
         {
-            int totalLength;          
-            List<MetadataContainer> messages = new List<MetadataContainer>();
+            int totalLength;
+            List<T> messages = new List<T>();
             try
             {
                 while (count > 0)
@@ -135,7 +134,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
                         offset += totalLength;
                         count -= totalLength;
                     }
-                    messages.Add(message);
+                    messages.Add((T) (object)message);
                     if (data.Length - offset < 4) break;
                 }
                 return messages;

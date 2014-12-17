@@ -24,7 +24,7 @@ namespace KJFramework.Net.Channels.OneWay
         ///     单方向信道抽象父类，提供了相关的基本操作
         /// </summary>
         /// <param name="protocolStack">协议栈</param>
-        protected OnewayChannel(IProtocolStack<T> protocolStack)
+        protected OnewayChannel(IProtocolStack protocolStack)
         {
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");
             if (!protocolStack.Initialize()) throw new ArgumentException("Cannot initialize current protocol stack!");
@@ -36,7 +36,7 @@ namespace KJFramework.Net.Channels.OneWay
         /// </summary>
         /// <param name="channel">基于流的通讯信道</param>
         /// <param name="protocolStack">协议栈</param>
-        protected OnewayChannel(IRawTransportChannel channel, IProtocolStack<T> protocolStack)
+        protected OnewayChannel(IRawTransportChannel channel, IProtocolStack protocolStack)
         {
             if (channel == null) throw new ArgumentNullException("channel");
             if (!channel.IsConnected) throw new ArgumentException("Current raw transport channel hsa been disconnected!");
@@ -78,7 +78,7 @@ namespace KJFramework.Net.Channels.OneWay
         protected bool _connected;
         protected readonly DateTime _createTime;
         protected readonly Guid _key;
-        protected readonly IProtocolStack<T> _protocolStack;
+        protected readonly IProtocolStack _protocolStack;
 
         /// <summary>
         ///     获取或设置物理地址
@@ -137,7 +137,7 @@ namespace KJFramework.Net.Channels.OneWay
         /// <summary>
         ///     获取协议栈
         /// </summary>
-        public IProtocolStack<T> ProtocolStack
+        public IProtocolStack ProtocolStack
         {
             get { return _protocolStack; }
         }
@@ -256,7 +256,7 @@ namespace KJFramework.Net.Channels.OneWay
             List<T> objs = null;
             #region parse raw data.
 
-            if (_channel.Buffer == null) objs = _protocolStack.Parse(e.Target);
+            if (_channel.Buffer == null) objs = _protocolStack.Parse<T>(e.Target);
             else
             {
                 List<byte[]> data = _channel.Buffer.Add(e.Target);
@@ -265,7 +265,7 @@ namespace KJFramework.Net.Channels.OneWay
                     objs = new List<T>();
                     foreach (var d in data)
                     {
-                        List<T> list = _protocolStack.Parse(d);
+                        List<T> list = _protocolStack.Parse<T>(d);
                         if (list != null && list.Count > 0)
                         {
                             objs.AddRange(list);

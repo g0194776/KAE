@@ -25,7 +25,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default
         private static bool _initialize;
         internal static IFixedCacheContainer<RequestServiceMessage> FixedRequestMessage;
         internal static IFixedCacheContainer<RequestCenterWaitObject> FixedRequestWaitObject;
-        internal static IProtocolStack<Message> ProtocolStack = new ServiceModelProtocolStack();
+        internal static IProtocolStack ProtocolStack = new ServiceModelProtocolStack();
 
         #endregion
 

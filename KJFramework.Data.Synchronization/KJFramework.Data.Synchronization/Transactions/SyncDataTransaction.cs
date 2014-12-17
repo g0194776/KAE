@@ -53,18 +53,6 @@ namespace KJFramework.Data.Synchronization.Transactions
 
         #endregion
 
-        #region Methods
-
-        /// <summary>
-        ///     设置当前事物为已经超时的状态
-        /// </summary>
-        public void SetTimeout()
-        {
-            InnerSetTimeout();
-        }
-
-        #endregion
-
         #region Overrides of MessageTransaction<BaseMessage>
 
         /// <summary>

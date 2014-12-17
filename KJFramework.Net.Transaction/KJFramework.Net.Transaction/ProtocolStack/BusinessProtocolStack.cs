@@ -1,6 +1,5 @@
 ﻿using KJFramework.Helpers;
 using KJFramework.Messages.Engine;
-using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.Objects;
@@ -14,7 +13,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
     /// <summary>
     ///     服务器端消息协议栈抽象父类
     /// </summary>
-    public class BusinessProtocolStack : ProtocolStack<BaseMessage>
+    public class BusinessProtocolStack : ProtocolStacks.ProtocolStack
     {
         #region Constructor
 
@@ -55,11 +54,11 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         /// <returns>
         /// 返回能否解析的一个标示
         /// </returns>
-        public override List<BaseMessage> Parse(byte[] data)
+        public override List<T> Parse<T>(byte[] data)
         {
             int offset = 0;
             int totalLength;
-            List<BaseMessage> messages = new List<BaseMessage>();
+            List<T> messages = new List<T>();
             try
             {
                 while (offset < data.Length)
@@ -99,7 +98,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
                         _tracing.Error(ex, "#Parse message failed.");
                         continue;
                     }
-                    messages.Add(message);
+                    messages.Add((T) (object)message);
                     if (data.Length - offset < 4) break;
                 }
                 return messages;
@@ -118,10 +117,11 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         /// <returns>
         /// 返回转换后的2进制
         /// </returns>
-        public override byte[] ConvertToBytes(BaseMessage message)
+        public override byte[] ConvertToBytes(object message)
         {
-            message.Bind();
-            return message.Body;
+            BaseMessage msg = (BaseMessage) message;
+            msg.Bind();
+            return msg.Body;
         }
 
         protected Type GetMessageType(int protocolId, int serviceId, int detailsId)
@@ -153,7 +153,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
         /// <returns>
         ///     返回能否解析的一个标示
         /// </returns>
-        public override List<BaseMessage> Parse(byte[] data, int offset, int count)
+        public override List<T> Parse<T>(byte[] data, int offset, int count)
         {
             if (data.Length - offset < count)
             {
@@ -172,7 +172,7 @@ namespace KJFramework.Net.Transaction.ProtocolStack
             try
             {
                 BaseMessage baseMessage = IntellectObjectEngine.GetObject<BaseMessage>(messageType, data, offset, count);
-                return baseMessage != null ? new List<BaseMessage> { baseMessage } : null;
+                return baseMessage != null ? new List<T> { (T) (object)baseMessage } : null;
             }
             catch (System.Exception ex)
             {

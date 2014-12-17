@@ -17,7 +17,7 @@ namespace KJFramework.Net.Transaction.Pools
         ///    支持随机算法的连接容器
         /// </summary>
         /// <typeparam name="T">存放的连接类型</typeparam>
-        public RamdomConnectionSet(int min, int max, Tuple<IPEndPoint, IProtocolStack<T>, object> tuple, Func<IPEndPoint, IProtocolStack<T>, object, IServerConnectionAgent<T>> createFunc)
+        public RamdomConnectionSet(int min, int max, Tuple<IPEndPoint, IProtocolStack, object> tuple, Func<IPEndPoint, IProtocolStack, object, IServerConnectionAgent<T>> createFunc)
             : base(min, max, tuple, createFunc)
         {
         }

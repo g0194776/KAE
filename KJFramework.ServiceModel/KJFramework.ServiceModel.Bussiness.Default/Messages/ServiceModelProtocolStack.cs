@@ -11,7 +11,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Messages
     /// <summary>
     ///     CONNECT.框架协议栈
     /// </summary>
-    public class ServiceModelProtocolStack : ProtocolStack<Message>
+    public class ServiceModelProtocolStack : ProtocolStack
     {
         #region Constructor
 
@@ -53,13 +53,13 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Messages
         /// <returns>
         /// 返回能否解析的一个标示
         /// </returns>
-        public override List<Message> Parse(byte[] data)
+        public override List<T> Parse<T>(byte[] data)
         {
             if (data == null) throw new System.Exception("Parse Data is null!");
             int readCount = 0;
             int offset = 0;
             int count = data.Length;
-            List<Message> retList = new List<Message>();
+            List<T> retList = new List<T>();
             while (readCount < count)
             {
                 int objsize;
@@ -81,7 +81,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Messages
                     {
                         var msg = IntellectObjectEngine.GetObject<Message>(type, data, offset, objsize);
                         if (msg != null)
-                            retList.Add(msg);
+                            retList.Add((T) (object)msg);
                         offset += objsize;
                         readCount += objsize;
                     }
@@ -102,11 +102,11 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Messages
         /// <param name="offset">可用偏移量</param>
         /// <param name="count">可用长度</param>
         /// <returns>返回能否解析的一个标示</returns>
-        public override List<Message> Parse(byte[] data, int offset, int count)
+        public override List<T> Parse<T>(byte[] data, int offset, int count)
         {
             if (data == null) throw new System.Exception("Parse Data is null!");
             int readCount = 0;
-            List<Message> retList = new List<Message>();
+            List<T> retList = new List<T>();
             while (readCount < count)
             {
                 int objsize;
@@ -128,7 +128,7 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Messages
                     {
                         var msg = IntellectObjectEngine.GetObject<Message>(type, data, offset, objsize);
                         if (msg != null)
-                            retList.Add(msg);
+                            retList.Add((T) (object)msg);
                         offset += objsize;
                         readCount += objsize;
                     }
@@ -149,8 +149,9 @@ namespace KJFramework.ServiceModel.Bussiness.Default.Messages
         /// <returns>
         ///     返回转换后的2进制
         /// </returns>
-        public override byte[] ConvertToBytes(Message message)
+        public override byte[] ConvertToBytes(object msg)
         {
+            Message message = (Message) msg;
             message.Bind();
             return message.IsBind ? message.Body : null;
         }

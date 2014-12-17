@@ -1,8 +1,6 @@
 using KJFramework.Dynamic.Tables;
 using KJFramework.Dynamic.Visitors;
 using KJFramework.Enums;
-using KJFramework.ServiceModel.Bussiness.Default.Services;
-using KJFramework.ServiceModel.Elements;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
@@ -39,7 +37,6 @@ namespace KJFramework.Dynamic.Components
         protected IDomainObjectVisitRuleTable _ruleTable;
         protected bool _isUseTunnel;
         protected string _tunnelAddress;
-        private ServiceHost _tunnelHost;
         private IComponentTunnelVisitor _tunnelVisitor;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DynamicDomainComponent));
 
@@ -170,12 +167,11 @@ namespace KJFramework.Dynamic.Components
         /// <exception cref="ArgumentNullException">参数错误</exception>
         /// <exception cref="System.Exception">无法找到当前组件的通讯隧道地址，或者创建隧道失败</exception>
         /// <returns>返回指定组件的通讯隧道</returns>
+        [Obsolete("KJFramework.Dynamic does not support it anymore.", true)]
         public T GetTunnel<T>(string componentName)
             where T : class
         {
-            if (componentName == null) throw new ArgumentNullException("componentName");
-            if (_tunnelVisitor == null) throw new System.Exception("无法获取一个组件的隧道，因为还没有为当前组件创建一个组件访问器!");
-            return _tunnelVisitor.GetTunnel<T>(componentName);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -203,14 +199,6 @@ namespace KJFramework.Dynamic.Components
         {
             try
             {
-                //关闭通讯隧道
-                if (_tunnelHost != null)
-                {
-                    _tunnelHost.Opened -= TunnelHostOpened;
-                    _tunnelHost.Closed -= TunnelHostClosed;
-                    _tunnelHost.Close();
-                    _tunnelHost = null;
-                }
                 InnerStop();
             }
             catch (System.Exception ex)
@@ -230,22 +218,10 @@ namespace KJFramework.Dynamic.Components
         ///     <para>* 默认为不开放元数据</para>
         /// </param>
         /// <exception cref="System.Exception">开启失败</exception>
+        [Obsolete("KJFramework.Dynamic does not support it anymore.", true)]
         public void UseTunnel<T>(bool metadataExchange = false)
         {
-            _isUseTunnel = true;
-            try
-            {
-                _tunnelAddress = string.Format("PIPE://./{0}.{1}", DateTime.Now.Ticks, _pluginInfo.ServiceName);
-                _tunnelHost = new ServiceHost(typeof(T), new PipeBinding(_tunnelAddress)) { IsSupportExchange = metadataExchange };
-                _tunnelHost.Opened += TunnelHostOpened;
-                _tunnelHost.Closed += TunnelHostClosed;
-                _tunnelHost.Open();
-            }
-            catch (System.Exception ex)
-            {
-                _tracing.Error(ex, null);
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>

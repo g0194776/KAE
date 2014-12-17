@@ -74,6 +74,10 @@ namespace KJFramework.Net.Transaction
         ///     获取成功操作后的应答时间
         /// </summary>
         public DateTime ResponseTime { get; protected set; }
+        /// <summary>
+        ///     获取或设置事务管理器
+        /// </summary>
+        public ITransactionManager<T> TransactionManager { get; set; }
 
         #endregion
 
@@ -139,6 +143,12 @@ namespace KJFramework.Net.Transaction
         public IMessageTransportChannel<T> GetChannel()
         {
             return _channel;
+        }
+
+        internal void SetTimeout()
+        {
+            try { TimeoutHandler(null); }
+            catch (System.Exception ex) { _tracing.Error(ex, null); }
         }
 
         /// <summary>

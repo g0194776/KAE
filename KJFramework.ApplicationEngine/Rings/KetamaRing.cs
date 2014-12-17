@@ -58,10 +58,15 @@ namespace KJFramework.ApplicationEngine.Rings
         public KAEHostNode GetWorkerNode(string k)
         {
             byte[] digest = ComputeMd5(k);
-            return GetNodeInner(Hash(digest, 0));
+            return GetWorkerNode(Hash(digest, 0));
         }
 
-        private KAEHostNode GetNodeInner(long hash)
+        public KAEHostNode GetWorkerNode()
+        {
+            return GetWorkerNode(DateTime.Now.Ticks);
+        }
+
+        public KAEHostNode GetWorkerNode(long hash)
         {
             if (_ketamaNodes.Count == 0) return null;
             int near;

@@ -1,6 +1,5 @@
 ﻿using KJFramework.ApplicationEngine.Eums;
 using KJFramework.Data.Synchronization;
-using KJFramework.Data.Synchronization.Enums;
 using KJFramework.Data.Synchronization.EventArgs;
 using KJFramework.Data.Synchronization.Factories;
 using KJFramework.EventArgs;

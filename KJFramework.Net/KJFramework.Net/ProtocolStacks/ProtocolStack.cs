@@ -6,8 +6,7 @@ namespace KJFramework.Net.ProtocolStacks
     /// <summary>
     ///   协议栈抽象父类，提供了相关的基本操作。
     /// </summary>
-    /// <typeparam name="T">协议栈中父类消息的类型。</typeparam>
-    public abstract class ProtocolStack<T> : IProtocolStack<T>
+    public abstract class ProtocolStack : IProtocolStack
     {
         #region Implementation of IProtocolStack<T>
 
@@ -22,7 +21,7 @@ namespace KJFramework.Net.ProtocolStacks
         /// </summary>
         /// <param name="data">元数据</param>
         /// <returns>返回能否解析的一个标示</returns>
-        public abstract List<T> Parse(byte[] data);
+        public abstract List<T> Parse<T>(byte[] data);
         /// <summary>
         ///     解析元数据
         /// </summary>
@@ -30,20 +29,20 @@ namespace KJFramework.Net.ProtocolStacks
         /// <param name="offset">可用偏移量</param>
         /// <param name="count">可用长度</param>
         /// <returns>返回能否解析的一个标示</returns>
-        public abstract List<T> Parse(byte[] data, int offset, int count);
+        public abstract List<T> Parse<T>(byte[] data, int offset, int count);
         /// <summary>
         ///     将一个消息转换为2进制形式
         /// </summary>
         /// <param name="message">需要转换的消息</param>
         /// <returns>返回转换后的2进制</returns>
-        public abstract byte[] ConvertToBytes(T message);
+        public abstract byte[] ConvertToBytes(object message);
         /// <summary>
         ///     将一个消息转换为多个分包二进制数据
         /// </summary>
         /// <param name="message">消息</param>
         /// <param name="maxSize">封包片最大容量</param>
         /// <returns>返回转换后的2进制集合</returns>
-        public virtual List<byte[]> ConvertMultiMessage(T message, int maxSize)
+        public virtual List<byte[]> ConvertMultiMessage(object message, int maxSize)
         {
             return null;
         }

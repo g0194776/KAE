@@ -150,10 +150,6 @@
       <Project>{33fe11d3-2810-4432-b64c-b16935bb47cd}</Project>
       <Name>KJFramework.Net.Channels</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Net.Cloud\KJFramework.Net.Cloud\KJFramework.Net.Cloud.csproj">
-      <Project>{ae41152b-69da-4f04-bbd9-4e3927ea9552}</Project>
-      <Name>KJFramework.Net.Cloud</Name>
-    </ProjectReference>
     <ProjectReference Include="..\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
       <Project>{658c4853-7022-4c2f-bb82-7261dbdae55d}</Project>
       <Name>KJFramework.Net.Transaction</Name>
@@ -161,22 +157,6 @@
     <ProjectReference Include="..\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
       <Project>{35fd171e-de60-4e34-9a35-e33c3ba8c02f}</Project>
       <Name>KJFramework.Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.ServiceModel\KJFramework.ServiceModel.Bussiness.Default\KJFramework.ServiceModel.Bussiness.Default.csproj">
-      <Project>{0bce2886-4fb3-4b9f-924a-0a7975ef701a}</Project>
-      <Name>KJFramework.ServiceModel.Bussiness.Default</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.ServiceModel\KJFramework.ServiceModel.Bussiness.VSPlugin\KJFramework.ServiceModel.Bussiness.VSPlugin.csproj">
-      <Project>{fb681a2f-f2fb-4085-b1d0-d0b39d29677a}</Project>
-      <Name>KJFramework.ServiceModel.Bussiness.VSPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.ServiceModel\KJFramework.ServiceModel.Core\KJFramework.ServiceModel.Core.csproj">
-      <Project>{2495424e-1415-478e-b9e5-4674be08cae8}</Project>
-      <Name>KJFramework.ServiceModel.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.ServiceModel\KJFramework.ServiceModel\KJFramework.ServiceModel.csproj">
-      <Project>{67114374-9743-4e0e-8368-6117e6c62184}</Project>
-      <Name>KJFramework.ServiceModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\KJFramework.Test.LoadRunner\KJFramework.Test.LoadRunner.csproj">
       <Project>{7647a48c-0a33-4210-9eb5-6d5e485ecc81}</Project>

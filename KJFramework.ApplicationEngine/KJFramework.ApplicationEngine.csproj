@@ -71,6 +71,8 @@
     <Compile Include="Application.cs" />
     <Compile Include="Attributes\CodeItemAttribute.cs" />
     <Compile Include="Attributes\KAEProcessorPropertiesAttribute.cs" />
+    <Compile Include="Clusters\INetworkCluster.cs" />
+    <Compile Include="Clusters\NetworkCluster.cs" />
     <Compile Include="Configurations\DeployConfigSection.cs" />
     <Compile Include="Configurations\DeploySettingConfiguration.cs" />
     <Compile Include="Configurations\Loaders\RemoteConfigurationLoader.cs" />
@@ -103,8 +105,14 @@
     <Compile Include="Objects\Package.cs" />
     <Compile Include="Objects\PackageInfo.cs" />
     <Compile Include="Objects\PackageList.cs" />
+    <Compile Include="ProtocolStackContainer.cs" />
+    <Compile Include="Proxies\BusinessMessageTransactionProxy.cs" />
+    <Compile Include="Proxies\IMessageTransactionProxy.cs" />
+    <Compile Include="IProtocolStackContainer.cs" />
     <Compile Include="Proxies\IRemotingApplicationDownloader.cs" />
     <Compile Include="Proxies\IRemotingKISProxy.cs" />
+    <Compile Include="Proxies\MessageTransactionProxy.cs" />
+    <Compile Include="Proxies\MetadataMessageTransactionProxy.cs" />
     <Compile Include="Proxies\RemotingApplicationDownloader.cs" />
     <Compile Include="Helpers\FileCompression.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
@@ -136,6 +144,7 @@
     <Compile Include="Proxies\RemotingKISProxy.cs" />
     <Compile Include="Proxies\SolitaryRemoteConfigurationProxy.cs" />
     <Compile Include="Resources\KAENetworkResource.cs" />
+    <Compile Include="Resources\KAEResourceUri.cs" />
     <Compile Include="Resources\KPPDataStructure.cs" />
     <Compile Include="Resources\Packs\IKPPDataResource.cs" />
     <Compile Include="Resources\Packs\KPPDataHead.cs" />

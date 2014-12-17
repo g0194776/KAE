@@ -108,3 +108,37 @@ What's the next:
 			IMessageTransactionProxy<T> proxy = SystemWorker.GetTransactionProxy(Protocol.BaseMessage);
 			IMessageTransaction<T> transaction = proxy.Create[Oneway]Transaction(new Protocol(6,6,6), [RESOURCE URL]);
 4. 完成KAE Official Application的搭建
+
+
+
+
+
+
+12月17日进度
+------------------------------------------------
+1. 改造SystemWorker内部的实现，将高度组合的方案替换为加工模式。即SystemWorker仅用于内部能力和获取已初始化好的TransactionProxy
+	伪代码看起来如下：
+			IMessageTransactionProxy<T> proxy = SystemWorker.GetTransactionProxy(Protocol.BaseMessage);
+			IMessageTransaction<T> transaction = proxy.Create[Oneway]Transaction(new Protocol(6,6,6), [RESOURCE URL]);
+2. 将KatamaRing应用于SystemWorker中。现在我们已经将SystemWorker变为纯静态的类型，并且在KAE应用内部的Processor中可以使用SystemWorker
+	来发起一个向远程APP的请求了
+3. 抽象了IProtocolStackContainer, 用于内部管理已注册的网络协议栈
+4. 移除了KAE Application内部对于DynamicDomainComponent中一些无用处方法的依赖
+5. 从KAE的分支中移除了KJFramework.ServiceModel项目，这个项目本身就是WCF的学习作品，以后也不会再有升级打算了
+6. 从KAE的分支中移除了KJFramework.Net.Cloud项目，这个项目的概念已经不适用于KAE了
+7. 提供新的KAEResourceUri类型，这个类型将会被用于KAE判断路由灰度策略，这个Uri是可以让使用者来填写的
+8. 为KatamaRing提供了更好的外部暴露方法
+9. 完全重写了NetworkCluster的实现
+10. 翻新了FailMessageTransaction的内部实现，剔除无用的代码
+11. 深度重构了TransactionManager
+12. 深度重构了ConnectionPool
+13. 深度重构了网络协议栈的概念(Protocol Stack)，现在，网络协议栈不再是泛型的类型了
+14. 剔除了KJFramework.Dynamic项目中Visitor的技术方案，用于让KJFramework.Dynamic更专注于动态组件技术
+15. 全局解决方案的适应性修改
+
+
+
+What's the next:
+------------------------------------------------
+1. 完善更多的测试用例
+2. 完成KAE Official Application的搭建

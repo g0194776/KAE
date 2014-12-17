@@ -59,7 +59,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
 
         private IRequestScheduler<BaseMessage> _requestScheduler;
         private MessageTransactionManager _transactionManager;
-        private IProtocolStack<BaseMessage> _protocolStack;
+        private IProtocolStack _protocolStack;
         private DiscoveryOnputPin _outputPin;
         private CommonBoradcastProtocol _sendObj;
         private Thread _thread;

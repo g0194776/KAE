@@ -48,7 +48,7 @@ namespace KJFramework.Net.Transaction
         #region Members
 
         private readonly string _iep;
-        private static ITracing _tracing = TracingManager.GetTracing(typeof(FailMessageTransaction));
+        private static ITracing _tracing = TracingManager.GetTracing(typeof(FailMetadataTransaction));
 
         #endregion
 

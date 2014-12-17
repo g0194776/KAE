@@ -26,6 +26,7 @@ using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Managers;
+using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
@@ -106,7 +107,6 @@ namespace KJFramework.ApplicationEngine
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Application));
         private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
         private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
-        private IDictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>> _rings = new Dictionary<MessageIdentity, IDictionary<ApplicationLevel, KetamaRing>>();
 
         #endregion
 
@@ -131,7 +131,7 @@ namespace KJFramework.ApplicationEngine
         /// <param name="value">VALUE</param>
         public void UpdateConfiguration(string key, string value)
         {
-            SystemWorker.Instance.ConfigurationProxy.UpdateConfiguration(key, value);
+            SystemWorker.ConfigurationProxy.UpdateConfiguration(key, value);
         }
 
         /// <summary>
@@ -140,31 +140,7 @@ namespace KJFramework.ApplicationEngine
         /// <param name="cache">网络信息</param>
         public void UpdateNetworkCache(Dictionary<string, List<string>> cache)
         {
-            foreach (KeyValuePair<string, List<string>> pair in cache)
-            {
-                string[] contents = pair.Key.Split(new[] {"_"}, StringSplitOptions.RemoveEmptyEntries);
-                string[] ids = contents[0].Replace("(", "").Replace(")", "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                ApplicationLevel level;
-                if (!Enum.TryParse(contents[2], out level))
-                {
-                    _tracing.Error("#Couldn't parse targeted value to the Application Level. Value: {0}." + contents[2]);
-                    continue;
-                }
-                MessageIdentity identity = new MessageIdentity
-                {
-                    ProtocolId = byte.Parse(ids[0]),
-                    ServiceId = byte.Parse(ids[1]),
-                    DetailsId = byte.Parse(ids[2])
-                };
-                //prepares kathma ring.
-                KetamaRing ring = new KetamaRing(pair.Value.Select(v => new KAEHostNode(v)).ToList());
-                lock (_lockObj)
-                {
-                    IDictionary<ApplicationLevel, KetamaRing> tempDic;
-                    if (!_rings.TryGetValue(identity, out tempDic)) _rings.Add(identity, (tempDic = new Dictionary<ApplicationLevel, KetamaRing>()));
-                    tempDic[level] = ring;
-                }
-            }
+            SystemWorker.UpdateNetworkCache(cache);
         }
 
         /// <summary>
@@ -180,7 +156,7 @@ namespace KJFramework.ApplicationEngine
                 _scripter.Reset();
                 _scripter.AddModule(PackageName);
                 _scripter.AddCode(PackageName, code);
-                SystemWorker.Instance.UpdateGreyPolicy(dic => (ApplicationLevel)_scripter.Invoke(RunMode.Run, null, "KAE.GreyPolicy", new object[] { dic }));
+                SystemWorker.UpdateGreyPolicy(dic => (ApplicationLevel)_scripter.Invoke(RunMode.Run, null, "KAE.GreyPolicy", new object[] { dic }));
             }
             catch (System.Exception ex) { _tracing.Error(ex); }
         }
@@ -206,8 +182,8 @@ namespace KJFramework.ApplicationEngine
             Status = ApplicationStatus.Initializing;
             try
             {
-                SystemWorker.Instance.InitializeForKPP(PackageName, _proxy, _settings);
-                if (string.IsNullOrEmpty(greyPolicyCode)) SystemWorker.Instance.UpdateGreyPolicy(arg => ApplicationLevel.Stable);
+                SystemWorker.InitializeForKPP(PackageName, _proxy, _settings);
+                if (string.IsNullOrEmpty(greyPolicyCode)) SystemWorker.UpdateGreyPolicy(arg => ApplicationLevel.Stable);
                 else UpdateGreyPolicy(greyPolicyCode);
                 InnerInitialize();
                 _processors = CollectAbilityProcessors();

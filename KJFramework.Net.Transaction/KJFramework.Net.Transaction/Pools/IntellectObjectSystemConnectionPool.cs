@@ -23,7 +23,7 @@ namespace KJFramework.Net.Transaction.Pools
         /// <param name="protocolStack">连接所承载的协议栈</param>
         /// <param name="transactionManager">事务管理器</param>
         /// <returns>如果返回null, 则表示当前无法连接到目标远程终结点地址</returns>
-        public IServerConnectionAgent<BaseMessage> GetChannel(string key, string roleId, IProtocolStack<BaseMessage> protocolStack, MessageTransactionManager transactionManager)
+        public IServerConnectionAgent<BaseMessage> GetChannel(string key, string roleId, IProtocolStack protocolStack, MessageTransactionManager transactionManager)
         {
             string fullKey = string.Format("{0}#{1}", roleId, key);
             return base.GetChannel(key, fullKey, protocolStack, transactionManager);
@@ -36,7 +36,7 @@ namespace KJFramework.Net.Transaction.Pools
         /// <param name="protocolStack">协议栈</param>
         /// <param name="transactionManager">网络事务管理器</param>
         /// <returns>返回已经创建好的服务器端连接代理器</returns>
-        protected override IServerConnectionAgent<BaseMessage> CreateAgent(IPEndPoint iep, IProtocolStack<BaseMessage> protocolStack, object transactionManager)
+        protected override IServerConnectionAgent<BaseMessage> CreateAgent(IPEndPoint iep, IProtocolStack protocolStack, object transactionManager)
         {
             return IntellectObjectConnectionAgent.Create(iep, protocolStack, (MessageTransactionManager)transactionManager);
         }

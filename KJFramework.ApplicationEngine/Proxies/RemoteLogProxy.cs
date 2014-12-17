@@ -28,21 +28,21 @@ namespace KJFramework.ApplicationEngine.Proxies
         {
             if (!SystemWorker.IsInitialized) return;
             if (level == TracingLevel.Info) return;
-            BusinessMessageTransaction lgsTransaction = SystemWorker.Instance.CreateOnewayTransaction("LGS");
-            if (lgsTransaction == null || lgsTransaction is FailMessageTransaction)
-            {
-                _tracing.LogFileOnly(TracingLevel.Error, "#Cannot connect to remote {0} service currently.", "LGS");
-                return;
-            }
-            string detail = string.Empty;
-            while (ex != null && ex.InnerException != null) ex = ex.InnerException;
-            if (ex != null) detail = "#" + ex.Message;
+            //BusinessMessageTransaction lgsTransaction = SystemWorker.CreateOnewayTransaction("LGS");
+            //if (lgsTransaction == null || lgsTransaction is FailMessageTransaction)
+            //{
+            //    _tracing.LogFileOnly(TracingLevel.Error, "#Cannot connect to remote {0} service currently.", "LGS");
+            //    return;
+            //}
+            //string detail = string.Empty;
+            //while (ex != null && ex.InnerException != null) ex = ex.InnerException;
+            //if (ex != null) detail = "#" + ex.Message;
             //CreateLogRequestMessage requestMessage = new CreateLogRequestMessage
             //{
             //    ProcessLevel = Convert.ToByte((int)level),
             //    ClassName = loggerType,
             //    ProcessInfo = message,
-            //    ServiceName = SystemWorker.Instance.Role,
+            //    ServiceName = SystemWorker.Role,
             //    ProcessDetail = detail,
             //    CreateTime = DateTime.Now,
             //    ProcessTrace = ex.StackTrace

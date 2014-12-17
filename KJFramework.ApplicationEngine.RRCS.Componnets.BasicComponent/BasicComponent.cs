@@ -58,8 +58,8 @@ namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
         protected override void InnerOnLoading()
         {
             //initializes something before actual business starting.
-            SystemWorker.Instance.Initialize("RRCS", RemoteConfigurationSetting.Default, new SolitaryRemoteConfigurationProxy());
-            string connectionStr = SystemWorker.Instance.ConfigurationProxy.GetField("APMS", "DatabaseConnection");
+            SystemWorker.Initialize("RRCS", RemoteConfigurationSetting.Default, new SolitaryRemoteConfigurationProxy());
+            string connectionStr = SystemWorker.ConfigurationProxy.GetField("APMS", "DatabaseConnection");
             ApplicationHelper.Initialize(new Database(connectionStr, 120));
             _scheduler.Regist(new Protocols {ProtocolId = 0xFC, ServiceId = 0, DetailsId = 0}, new RegisterProcessor());
         }

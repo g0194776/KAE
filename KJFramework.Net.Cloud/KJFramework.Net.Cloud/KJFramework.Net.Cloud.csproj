@@ -128,18 +128,6 @@
       <Project>{35FD171E-DE60-4E34-9A35-E33C3BA8C02F}</Project>
       <Name>KJFramework.Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\KJFramework.ServiceModel\KJFramework.ServiceModel.Bussiness.Default\KJFramework.ServiceModel.Bussiness.Default.csproj">
-      <Project>{0BCE2886-4FB3-4B9F-924A-0A7975EF701A}</Project>
-      <Name>KJFramework.ServiceModel.Bussiness.Default</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\KJFramework.ServiceModel\KJFramework.ServiceModel.Core\KJFramework.ServiceModel.Core.csproj">
-      <Project>{2495424E-1415-478E-B9E5-4674BE08CAE8}</Project>
-      <Name>KJFramework.ServiceModel.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\KJFramework.ServiceModel\KJFramework.ServiceModel\KJFramework.ServiceModel.csproj">
-      <Project>{67114374-9743-4E0E-8368-6117E6C62184}</Project>
-      <Name>KJFramework.ServiceModel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
       <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
       <Name>KJFramework</Name>

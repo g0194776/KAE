@@ -15,7 +15,7 @@ namespace KJFramework.Net.Channels
         /// <summary>
         ///     获取协议栈
         /// </summary>
-        IProtocolStack<T> ProtocolStack { get; }
+        IProtocolStack ProtocolStack { get; }
         /// <summary>
         ///     获取或设置封包片消息管理器
         /// </summary>

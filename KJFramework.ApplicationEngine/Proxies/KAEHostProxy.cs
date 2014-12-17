@@ -16,7 +16,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         public string GetField(string role, string field)
         {
-            return SystemWorker.Instance.ConfigurationProxy.GetField(role, field);
+            return SystemWorker.ConfigurationProxy.GetField(role, field);
         }
     }
 }

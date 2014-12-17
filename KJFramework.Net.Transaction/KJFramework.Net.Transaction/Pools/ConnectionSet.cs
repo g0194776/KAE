@@ -24,7 +24,7 @@ namespace KJFramework.Net.Transaction.Pools
         /// <param name="max">当前池中每个KEY所需要承载的最大的连接数</param>
         /// <param name="tuple">连接容器的上下文对象信息</param>
         /// <param name="createFunc">创建一个新连接代理的函数委托</param>
-        protected ConnectionSet(int min, int max, Tuple<IPEndPoint, IProtocolStack<T>, object> tuple, Func<IPEndPoint, IProtocolStack<T>, object, IServerConnectionAgent<T>> createFunc)
+        protected ConnectionSet(int min, int max, Tuple<IPEndPoint, IProtocolStack, object> tuple, Func<IPEndPoint, IProtocolStack, object, IServerConnectionAgent<T>> createFunc)
         {
             _min = min;
             _max = max;
@@ -41,9 +41,9 @@ namespace KJFramework.Net.Transaction.Pools
         private Thread _backendThread;
         protected int _usedBackendThread = 0;
         protected readonly object _lockObj = new object();
-        protected readonly Tuple<IPEndPoint, IProtocolStack<T>, object> _tuple;
+        protected readonly Tuple<IPEndPoint, IProtocolStack, object> _tuple;
         protected static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ConnectionSet<T>));
-        protected readonly Func<IPEndPoint, IProtocolStack<T>, object, IServerConnectionAgent<T>> _createFunc;
+        protected readonly Func<IPEndPoint, IProtocolStack, object, IServerConnectionAgent<T>> _createFunc;
         protected readonly IList<IServerConnectionAgent<T>> _connections = new List<IServerConnectionAgent<T>>();
 
         /// <summary>

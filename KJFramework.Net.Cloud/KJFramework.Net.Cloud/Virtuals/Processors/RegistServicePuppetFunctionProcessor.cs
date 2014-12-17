@@ -1,5 +1,4 @@
 using System;
-using KJFramework.ServiceModel.Elements;
 
 namespace KJFramework.Net.Cloud.Virtuals.Processors
 {

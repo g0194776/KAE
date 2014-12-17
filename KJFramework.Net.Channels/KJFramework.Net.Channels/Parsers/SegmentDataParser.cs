@@ -19,7 +19,7 @@ namespace KJFramework.Net.Channels.Parsers
         ///     数据段解析器元接口
         /// </summary>
         /// <param name="protocolStack">协议栈</param>
-        public SegmentDataParser(IProtocolStack<T> protocolStack)
+        public SegmentDataParser(IProtocolStack protocolStack)
         {
             if (protocolStack == null) throw new ArgumentNullException("protocolStack");
             _protocolStack = protocolStack;
@@ -31,7 +31,7 @@ namespace KJFramework.Net.Channels.Parsers
 
         private SegmentNode _head;
         private SegmentNode _tail;
-        private readonly IProtocolStack<T> _protocolStack;
+        private readonly IProtocolStack _protocolStack;
 
         #endregion
 
@@ -66,7 +66,7 @@ namespace KJFramework.Net.Channels.Parsers
                 //direct parse.
                 if (nextNode.RemainingSize >= msgSize)
                 {
-                    List<T> list = _protocolStack.Parse(nextNode.Args.GetStub().Segment.Segment.Array, nextNode.Args.GetStub().Segment.UsedOffset, msgSize);
+                    List<T> list = _protocolStack.Parse<T>(nextNode.Args.GetStub().Segment.Segment.Array, nextNode.Args.GetStub().Segment.UsedOffset, msgSize);
                     if (list != null) msgs.AddRange(list);
                     nextNode.Args.GetStub().Segment.UsedBytes += msgSize;
                     ChannelCounter.Instance.RateOfDirectParse.Increment();
@@ -139,7 +139,7 @@ namespace KJFramework.Net.Channels.Parsers
                     _head = nextNode = lastRealNode;
                 }
                 //_head = nextNode = ((cloneLastRealNode.RemainingSize == 0 && lastRealNode.Next == null) ? null : lastRealNode);
-                List<T> list1 = _protocolStack.Parse(data);
+                List<T> list1 = _protocolStack.Parse<T>(data);
                 if (list1 != null) msgs.AddRange(list1);
             }
             //publish messages.

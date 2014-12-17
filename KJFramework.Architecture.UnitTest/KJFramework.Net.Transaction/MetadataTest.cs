@@ -40,7 +40,7 @@ namespace KJFramework.Net.Transaction.UnitTest
             Assert.IsNotNull(totalData);
             Assert.IsTrue(totalData.Length == 16);
 
-            List<MetadataContainer> list = protocolStack.Parse(totalData);
+            List<MetadataContainer> list = protocolStack.Parse<MetadataContainer>(totalData);
             Assert.IsNotNull(list);
             Assert.IsTrue(list.Count == 1);
             Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().DetailsId == 1);
@@ -70,7 +70,7 @@ namespace KJFramework.Net.Transaction.UnitTest
             Assert.IsNotNull(totalData);
             Assert.IsTrue(totalData.Length == 37);
 
-            List<MetadataContainer> list = protocolStack.Parse(totalData, 10, data1.Length);
+            List<MetadataContainer> list = protocolStack.Parse<MetadataContainer>(totalData, 10, data1.Length);
             Assert.IsNotNull(list);
             Assert.IsTrue(list.Count == 1);
             Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().DetailsId == 1);
@@ -111,7 +111,7 @@ namespace KJFramework.Net.Transaction.UnitTest
             Assert.IsNotNull(totalData);
             Assert.IsTrue(totalData.Length == 33);
 
-            List<MetadataContainer> list = protocolStack.Parse(totalData, 10, data1.Length);
+            List<MetadataContainer> list = protocolStack.Parse<MetadataContainer>(totalData, 10, data1.Length);
             Assert.IsNotNull(list);
             Assert.IsTrue(list.Count == 1);
             Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().DetailsId == 1);
@@ -163,8 +163,8 @@ namespace KJFramework.Net.Transaction.UnitTest
             System.Buffer.BlockCopy(data3,0,totalData,data1.Length+data2.Length,data3.Length);
             Assert.IsNotNull(totalData);
             Assert.IsTrue(totalData.Length == 48);
-          
-            List<MetadataContainer> list = protocolStack.Parse(totalData);
+
+            List<MetadataContainer> list = protocolStack.Parse<MetadataContainer>(totalData);
             Assert.IsNotNull(list);
             Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().DetailsId == 1 );
             Assert.IsTrue(list[0].GetAttribute(0x00).GetValue<MessageIdentity>().ProtocolId == 2 );
