@@ -174,6 +174,7 @@ namespace KJFramework.ApplicationEngine.Proxies
 
             CSNBusinessMessageTransaction transaction = _transactionManager.Create(IdentityHelper.Create(_channel.LocalEndPoint, TransportChannelTypes.TCP), _channel);
             if (transaction == null) throw new System.Exception("Cannot create a CSN message transaction!");
+            transaction.GetLease().Change(DateTime.Now.AddSeconds(30));
             AutoResetEvent autoResetEvent = new AutoResetEvent(false);
             transaction.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<BaseMessage> e)
             {
@@ -254,6 +255,7 @@ namespace KJFramework.ApplicationEngine.Proxies
             requestMessage.Key = configKey;
             CSNBusinessMessageTransaction transaction = _transactionManager.Create(IdentityHelper.Create(_channel.LocalEndPoint, TransportChannelTypes.TCP), _channel);
             if (transaction == null) throw new System.Exception("Cannot create a CSN message transaction!");
+            transaction.GetLease().Change(DateTime.Now.AddSeconds(30));
             AutoResetEvent autoResetEvent = new AutoResetEvent(false);
             transaction.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<BaseMessage> e)
             {

@@ -42,7 +42,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector.Processors
             catch (System.Exception ex)
             {
                 _tracing.Error(ex, null);
-                transaction.SendResponse(new CSNGetDataTableResponseMessage { LastError = "Can not get data table config infomation, because there has some errors happened." });
+                transaction.SendResponse(new CSNGetKeyDataResponseMessage { LastError = "Can not get data table config infomation, because there has some errors happened." });
             }
         }
     }

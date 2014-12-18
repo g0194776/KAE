@@ -142,3 +142,22 @@ What's the next:
 ------------------------------------------------
 1. 完善更多的测试用例
 2. 完成KAE Official Application的搭建
+
+
+
+
+
+12月18日进度
+------------------------------------------------
+#Updated local CSN database.
+#Completely removed tunnel conception from "KJFramework.Dynamic" project.
+#Added a new tunnel property to KAE's application class.
+#Adjusted the calling position of InitializeCore method in SystemWorker.
+#Added a new transfer field(Transaction Expire Time) for all kinds of network transaction.
+#The business message transaction can automatically calculate "MessageIdentity.DetailId" in the "SendResponse" method now.
+
+
+What's the next:
+------------------------------------------------
+1. 完善更多的测试用例
+2. 完成KAE Official Application的搭建

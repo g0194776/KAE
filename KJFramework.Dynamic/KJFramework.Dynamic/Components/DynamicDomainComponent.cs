@@ -1,9 +1,7 @@
 using KJFramework.Dynamic.Tables;
-using KJFramework.Dynamic.Visitors;
 using KJFramework.Enums;
 using KJFramework.Tracing;
 using System;
-using System.Collections.Generic;
 
 namespace KJFramework.Dynamic.Components
 {
@@ -35,9 +33,6 @@ namespace KJFramework.Dynamic.Components
         protected PluginTypes _pluginType;
         protected PluginInfomation _pluginInfo;
         protected IDomainObjectVisitRuleTable _ruleTable;
-        protected bool _isUseTunnel;
-        protected string _tunnelAddress;
-        private IComponentTunnelVisitor _tunnelVisitor;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(DynamicDomainComponent));
 
         /// <summary>
@@ -122,45 +117,6 @@ namespace KJFramework.Dynamic.Components
         }
 
         /// <summary>
-        ///     获取一个值，该值表示了当前是否开启了组件通讯隧道技术
-        /// </summary>
-        public bool IsUseTunnel
-        {
-            get { return _isUseTunnel; }
-            internal set { _isUseTunnel = value; }
-        }
-
-        /// <summary>
-        ///     获取此组件通讯隧道的地址
-        ///     <para>* 仅当该组件的IsUseTunnel = true时才有意义</para>
-        /// </summary>
-        /// <exception cref="NotSupportedException">不支持该功能</exception>
-        /// <returns>返回隧道地址</returns>
-        public string GetTunnelAddress()
-        {
-            if (!_isUseTunnel)
-                throw new NotSupportedException("#Cannot get tunnel address, beacuse this component don't use this feature. #name: " + _pluginInfo.ServiceName);
-            return _tunnelAddress;
-        }
-
-        /// <summary>
-        ///     获取组件访问器
-        /// </summary>
-        public IComponentTunnelVisitor TunnelVisitor
-        {
-            get { return _tunnelVisitor; }
-        }
-
-        /// <summary>
-        ///     设置所有可联系组件的隧道地址
-        /// </summary>
-        /// <param name="addresses">隧道地址</param>
-        public void SetTunnelAddresses(Dictionary<string, string> addresses)
-        {
-            _tunnelVisitor = new ComponentTunnelVisitor(addresses);
-        }
-
-        /// <summary>
         ///     获取指定组件的通讯隧道
         /// </summary>
         /// <param name="componentName">组件名称</param>
@@ -210,21 +166,6 @@ namespace KJFramework.Dynamic.Components
         }
 
         /// <summary>
-        ///     使用组件隧道技术
-        ///     <para>* 调用此方法， 将会开启该组件的通讯隧道功能，使得此组件可以被其他组件访问</para>
-        /// </summary>
-        /// <param name="metadataExchange">
-        ///     元数据开放标示
-        ///     <para>* 默认为不开放元数据</para>
-        /// </param>
-        /// <exception cref="System.Exception">开启失败</exception>
-        [Obsolete("KJFramework.Dynamic does not support it anymore.", true)]
-        public void UseTunnel<T>(bool metadataExchange = false)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         ///     获取程序域对象访问规则表
         /// </summary>
         internal IDomainObjectVisitRuleTable RuleTable
@@ -253,24 +194,6 @@ namespace KJFramework.Dynamic.Components
         /// </summary>
         /// <returns>返回健康状况</returns>
         protected abstract HealthStatus InnerCheckHealth();
-
-        #endregion
-
-        #region Events
-
-        private void TunnelHostClosed(object sender, System.EventArgs e)
-        {
-            #if(DEBUG)
-            Console.WriteLine("#Component tunnel closed: " + _tunnelAddress);
-            #endif
-        }
-
-        private void TunnelHostOpened(object sender, System.EventArgs e)
-        {
-            #if(DEBUG)
-            Console.WriteLine("#Component tunnel opened: " + _tunnelAddress);
-            #endif
-        }
 
         #endregion
     }

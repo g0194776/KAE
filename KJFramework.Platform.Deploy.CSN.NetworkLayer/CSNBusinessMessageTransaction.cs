@@ -136,6 +136,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
             if (message == null) return;
             message.TransactionIdentity = Identity;
             message.TransactionIdentity.IsRequest = true;
+            message.ExpireTime = _lease.ExpireTime;
             _request = message;
             if (!_channel.IsConnected)
             {

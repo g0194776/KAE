@@ -81,6 +81,7 @@ namespace KJFramework.Net.Transaction.Agent
                     Identity = identity,
                     Request = message
                 };
+                transaction.GetLease().Change(message.ExpireTime);
                 NewTransactionHandler(new LightSingleArgEventArgs<IMessageTransaction<BaseMessage>>(transaction));
             }
         }

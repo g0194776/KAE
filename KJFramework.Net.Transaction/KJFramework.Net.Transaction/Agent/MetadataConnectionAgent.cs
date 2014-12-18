@@ -82,6 +82,7 @@ namespace KJFramework.Net.Transaction.Agent
                     Identity = identity,
                     Request = message
                 };
+                transaction.GetLease().Change(message.GetAttributeAsType<DateTime>(0x02));
                 NewTransactionHandler(new LightSingleArgEventArgs<IMessageTransaction<MetadataContainer>>(transaction));
             }
         }

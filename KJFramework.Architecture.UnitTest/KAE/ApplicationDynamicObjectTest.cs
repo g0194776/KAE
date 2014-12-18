@@ -29,6 +29,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         public void ConstructTest()
         {
             KPPResourceTest resource = new KPPResourceTest();
+
             Console.Write("#Packing package...");
             string file = resource.PackTestWithoutDelete();
             string path = Path.GetDirectoryName(file);

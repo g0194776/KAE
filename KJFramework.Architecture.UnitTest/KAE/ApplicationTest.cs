@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using KJFramework.ApplicationEngine;
+using KJFramework.ApplicationEngine.Configurations.Settings;
 using KJFramework.ApplicationEngine.Eums;
+using KJFramework.ApplicationEngine.Factories;
 using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Objects;
+using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Architecture.UnitTest.KAE.Applications;
-using KJFramework.Net;
 using KJFramework.Net.Channels.Identities;
 using NUnit.Framework;
 
@@ -16,6 +18,14 @@ namespace KJFramework.Architecture.UnitTest.KAE
 {
     public class ApplicationTest
     {
+        [SetUp]
+        public void Initialize()
+        {
+            SystemWorker.Initialize("KAEWorker", RemoteConfigurationSetting.Default, new SolitaryRemoteConfigurationProxy());
+            KAESystemInternalResource.Factory = new DefaultInternalResourceFactory();
+            KAESystemInternalResource.Factory.Initialize();
+        }
+
         [Test]
         public TestApplication InitializeTest()
         {
@@ -41,7 +51,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
                 Assert.IsTrue(application.Status == ApplicationStatus.Unknown);
                 application.Initialize(tuple.Item2, null, null);
                 Assert.IsTrue(application.PackageName == "test.package");
-                Assert.IsTrue(application.Version == "1.0.0");
+                Assert.IsTrue(application.Version == "2.0.0");
                 Assert.IsTrue(application.Description == "test package description.");
                 Assert.IsTrue(application.GlobalUniqueId == tuple.Item2.GetSectionField<Guid>(0x00, "GlobalUniqueIdentity"));
                 Assert.IsTrue(application.Status == ApplicationStatus.Initialized);
@@ -62,10 +72,11 @@ namespace KJFramework.Architecture.UnitTest.KAE
         {
             TestApplication app = InitializeTest();
             Assert.IsNotNull(app);
+            app.OnLoading();
             app.Start();
             Assert.IsTrue(app.Status == ApplicationStatus.Running);
-            Assert.IsTrue(!string.IsNullOrEmpty(app.GetTunnelAddress()));
-            Console.WriteLine("Tunnel Address: " + app.GetTunnelAddress());
+            Assert.IsTrue(!string.IsNullOrEmpty(app.TunnelAddress));
+            Console.WriteLine("Tunnel Address: " + app.TunnelAddress);
         }
 
         [Test]
@@ -73,10 +84,11 @@ namespace KJFramework.Architecture.UnitTest.KAE
         {
             TestApplication app = InitializeTest();
             Assert.IsNotNull(app);
+            app.OnLoading();
             app.Start();
             Assert.IsTrue(app.Status == ApplicationStatus.Running);
-            Assert.IsTrue(!string.IsNullOrEmpty(app.GetTunnelAddress()));
-            Console.WriteLine("Tunnel Address: " + app.GetTunnelAddress());
+            Assert.IsTrue(!string.IsNullOrEmpty(app.TunnelAddress));
+            Console.WriteLine("Tunnel Address: " + app.TunnelAddress);
             app.Stop();
             Assert.IsTrue(app.Status == ApplicationStatus.Stopped);
         }
@@ -88,18 +100,9 @@ namespace KJFramework.Architecture.UnitTest.KAE
             Assert.IsNotNull(app);
             app.Start();
             Assert.IsTrue(app.Status == ApplicationStatus.Running);
-            Assert.IsTrue(!string.IsNullOrEmpty(app.GetTunnelAddress()));
-            Console.WriteLine("Tunnel Address: " + app.GetTunnelAddress());
             IDictionary<ProtocolTypes, IList<MessageIdentity>> protocols = app.AcquireSupportedProtocols();
             Assert.IsNotNull(protocols);
-            Assert.IsTrue(protocols.Count == 1);
-            Assert.IsTrue(protocols.ContainsKey(ProtocolTypes.Json));
-            IList<MessageIdentity> identities = protocols[ProtocolTypes.Json];
-            Assert.IsNotNull(identities);
-            Assert.IsTrue(identities.Count == 1);
-            Assert.IsTrue(identities[0].ProtocolId == 1);
-            Assert.IsTrue(identities[0].ServiceId == 0);
-            Assert.IsTrue(identities[0].DetailsId == 2);
+            Assert.IsTrue(protocols.Count > 0);
         }
     }
 }

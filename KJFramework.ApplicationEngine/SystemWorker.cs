@@ -90,9 +90,9 @@ namespace KJFramework.ApplicationEngine
             _configurationProxy = configurationProxy;
             //Regist("LGS", new LGSProtocolStack());
             TracingManager.NotificationHandler = notificationHandler ?? new RemoteLogProxy();
-            InitializeCore(role);
             //config remote configuration loader.
             KJFramework.Configurations.Configurations.RemoteConfigLoader = new RemoteConfigurationLoader(setting);
+            InitializeCore(role);
             //initialize long...long memory buffer for tcp layer.
             ChannelConst.Initialize();
             _isInitialized = true;
@@ -113,9 +113,9 @@ namespace KJFramework.ApplicationEngine
             _configurationProxy = new KPPConfigurationProxy(proxy);
             //Regist("LGS", new LGSProtocolStack());
             TracingManager.NotificationHandler = new RemoteLogProxy();
-            InitializeCore(role);
             //config remote configuration loader.
             KJFramework.Configurations.Configurations.RemoteConfigLoader = new RemoteConfigurationLoader(RemoteConfigurationSetting.Default);
+            InitializeCore(role);
             //initialize long...long memory buffer for tcp layer.
             ChannelConst.Initialize(settings);
             _isInitialized = true;

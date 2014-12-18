@@ -11,7 +11,6 @@ using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Dynamic;
 using KJFramework.Dynamic.Components;
-using KJFramework.Dynamic.Visitors;
 using KJFramework.Enums;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
@@ -129,39 +128,27 @@ namespace KJFramework.ApplicationEngine.Objects
         {
             get { return _application.PluginInfo; }
         }
-        public bool IsUseTunnel
-        {
-            get { return _application.IsUseTunnel; }
-        }
-        public string GetTunnelAddress()
-        {
-            return _application.GetTunnelAddress();
-        }
         public bool IsCompletedEnvironment
         {
             get { return _application.IsCompletedEnvironment; }
         }
 
-        [Obsolete("#Sadly, We had not supported this function.", true)]
-        public IComponentTunnelVisitor TunnelVisitor { get; private set; }
+        /// <summary>
+        ///    获取内部所使用的隧道连接地址
+        /// </summary>
+        public string TunnelAddress {
+            get
+            {
+                return _application.TunnelAddress;
+            }
+        }
+
         [Obsolete("#Sadly, We had not supported this property.", true)]
         public IDynamicDomainService OwnService { get; set; }
 
         #endregion
 
         #region Methods.
-
-        [Obsolete("KAE does not support this operation anymore.", true)]
-        public void SetTunnelAddresses(Dictionary<string, string> addresses)
-        {
-            throw new NotImplementedException();
-        }
-
-        [Obsolete("KAE does not support this operation anymore.", true)]
-        public T GetTunnel<T>(string componentName) where T : class
-        {
-            throw new NotImplementedException();
-        }
 
         private void PreInitialize()
         {
@@ -191,7 +178,6 @@ namespace KJFramework.ApplicationEngine.Objects
                         WorkProcessingHandler(new LightSingleArgEventArgs<string>("Unwrapping......"));
                         Application app = (Application)cls.Unwrap();
                         _application = app;
-                        _application.IsUseTunnel = true;
                         WorkProcessingHandler(new LightSingleArgEventArgs<string>("Trying to renew application life......"));
                         ReLease(new TimeSpan(365, 0, 0, 0));
                         WorkProcessingHandler(new LightSingleArgEventArgs<string>("Calling OnLoading method......"));
@@ -227,7 +213,7 @@ namespace KJFramework.ApplicationEngine.Objects
         /// <exception cref="CannotConnectToTunnelException">无法建立正常的隧道连接</exception>
         private void InitializeTunnel()
         {
-            PipeUri uri = new PipeUri(GetTunnelAddress());
+            PipeUri uri = new PipeUri(TunnelAddress);
             ITransportChannel channel = new PipeTransportChannel(uri);
             channel.Connect();
             if (!channel.IsConnected) throw new CannotConnectToTunnelException("#Couldn't connect to specified remote tunnel address: " + uri);
@@ -271,12 +257,6 @@ namespace KJFramework.ApplicationEngine.Objects
                 catch (System.Exception ex) { if (!(ex is ThreadAbortException)) _tracing.Error(ex, null); }
             }
             _domain = null;
-        }
-
-        [Obsolete("KAE does not support this operation anymore.", true)]
-        public void UseTunnel<T>(bool metadataExchange = false)
-        {
-            throw new NotImplementedException();
         }
 
         public void OnLoading()

@@ -41,6 +41,10 @@ namespace KJFramework.ApplicationEngine
         ///    获取一个值，该值标示了当前KPP包裹是否包含了一个完整的运行环境所需要的所有依赖文件
         /// </summary>
         bool IsCompletedEnvironment { get; }
+        /// <summary>
+        ///    获取内部所使用的隧道连接地址
+        /// </summary>
+        string TunnelAddress { get; }
 
         #endregion
 

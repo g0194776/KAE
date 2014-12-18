@@ -1,5 +1,3 @@
-using System.Configuration;
-using KJFramework.Dynamic.Configurations;
 using KJFramework.Dynamic.Extends;
 using KJFramework.Dynamic.Finders;
 using KJFramework.Dynamic.Loaders;
@@ -11,6 +9,7 @@ using KJFramework.Tracing;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -193,7 +192,6 @@ namespace KJFramework.Dynamic.Components
             IList<DynamicDomainObject> dynamicObjs = Initialize();
             if (dynamicObjs == null || dynamicObjs.Count <= 0)
                 throw new System.Exception("You *MUST* have one component at least for current dynamic service!!!");
-            Dictionary<string, string> tunnelAddresses = new Dictionary<string, string>();
             //一个一个的启动
             foreach (DynamicDomainObject dynamicObject in dynamicObjs)
             {
@@ -204,8 +202,6 @@ namespace KJFramework.Dynamic.Components
                         throw new System.Exception("#Dynamic domain component start failed. #entry: " + dynamicObject.EntryInfo.EntryPoint);
                     if (!_dynamicObjects.TryAdd(dynamicObject.Component.Name, dynamicObject))
                         throw new System.Exception(string.Format("#Cannot add a dynamic object {0} to collection", dynamicObject.EntryInfo.EntryPoint));
-                    if (dynamicObject.Component.IsUseTunnel)
-                        tunnelAddresses.Add(dynamicObject.Component.Name, dynamicObject.Component.GetTunnelAddress());
                     dynamicObject.Exited += DomainObjectExited;
                     WorkingProcessHandler(new LightSingleArgEventArgs<string>("#Dynamic domain object : " + dynamicObject.EntryInfo.EntryPoint + " has been worked."));
                 }
@@ -215,9 +211,6 @@ namespace KJFramework.Dynamic.Components
                     WorkingProcessHandler(new LightSingleArgEventArgs<string>("#Dynamic domain object : " + dynamicObject.EntryInfo.EntryPoint + " cannot be work."));
                 }
             }
-            //通知隧道地址
-            foreach (DynamicDomainObject dynamicDomainObject in _dynamicObjects.Values)
-                dynamicDomainObject.Component.SetTunnelAddresses(tunnelAddresses);
             //注册服务
             DynamicDomainServiceRegistation.Instance.Regist(this);
             StartWorkHandler(null);

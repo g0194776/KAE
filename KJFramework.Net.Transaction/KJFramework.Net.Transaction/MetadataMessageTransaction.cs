@@ -1,5 +1,6 @@
 ﻿using System;
 using KJFramework.Messages.Contracts;
+using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Managers;
@@ -91,6 +92,7 @@ namespace KJFramework.Net.Transaction
             if (message == null) return;
             Identity.IsRequest = true;
             message.SetAttribute(0x01, new TransactionIdentityValueStored(Identity));
+            message.SetAttribute(0x02, new DateTimeValueStored(_lease.ExpireTime));
             _request = message;
             if (!_channel.IsConnected)
             {

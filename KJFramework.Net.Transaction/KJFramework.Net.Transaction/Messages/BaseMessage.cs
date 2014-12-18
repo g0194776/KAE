@@ -1,4 +1,6 @@
-﻿using KJFramework.Messages.Attributes;
+﻿using System;
+
+using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels.Identities;
 
@@ -22,6 +24,11 @@ namespace KJFramework.Net.Transaction.Messages
         /// </summary>
         [IntellectProperty(1)]
         public TransactionIdentity TransactionIdentity { get; set; }
+        /// <summary>
+        ///    获取或设置当前网络事务的过期时间
+        /// </summary>
+        [IntellectProperty(2)]
+        public DateTime ExpireTime { get; set; }
 
         #endregion
     }

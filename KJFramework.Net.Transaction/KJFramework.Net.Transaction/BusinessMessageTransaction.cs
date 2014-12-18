@@ -1,4 +1,5 @@
 ﻿using KJFramework.Net.Channels;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Contexts;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
@@ -89,6 +90,7 @@ namespace KJFramework.Net.Transaction
             if (message == null) return;
             message.TransactionIdentity = Identity;
             message.TransactionIdentity.IsRequest = true;
+            message.ExpireTime = _lease.ExpireTime;
             _request = message;
             if (!_channel.IsConnected)
             {
@@ -142,7 +144,11 @@ namespace KJFramework.Net.Transaction
             {
                 message.TransactionIdentity = Identity;
                 message.TransactionIdentity.IsRequest = false;
-            } 
+            }
+            //Automatically calculate the RSP message's protocol.
+            MessageIdentity messageIdentity = _request.MessageIdentity;
+            messageIdentity.DetailsId += 1;
+            message.MessageIdentity = messageIdentity;
             if (!_channel.IsConnected)
             {
                 _tracing.Warn("Cannot send a response message to {0}, because target msg channel has been disconnected.", _channel.RemoteEndPoint);

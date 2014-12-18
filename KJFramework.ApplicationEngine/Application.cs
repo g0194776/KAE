@@ -8,7 +8,6 @@ using KJFramework.ApplicationEngine.Helpers;
 using KJFramework.ApplicationEngine.Processors;
 using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
-using KJFramework.ApplicationEngine.Rings;
 using KJFramework.Dynamic.Components;
 using KJFramework.Encrypt;
 using KJFramework.Enums;
@@ -26,7 +25,6 @@ using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Managers;
-using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
@@ -90,6 +88,11 @@ namespace KJFramework.ApplicationEngine
         ///    获取一个值，该值标示了当前KPP包裹是否包含了一个完整的运行环境所需要的所有依赖文件
         /// </summary>
         public bool IsCompletedEnvironment { get; private set; }
+
+        /// <summary>
+        ///    获取内部所使用的隧道连接地址
+        /// </summary>
+        public string TunnelAddress { get; private set; }
 
         /// <summary>
         ///    获取应用kpp文件的CRC
@@ -214,7 +217,7 @@ namespace KJFramework.ApplicationEngine
                     _hostChannel.UnRegist();
                     _hostChannel = null;
                 }
-                _tunnelAddress = null;
+                TunnelAddress = null;
             }
             catch (System.Exception ex) { _tracing.Error(ex); }
             finally { Status = ApplicationStatus.Stopped; }
@@ -231,8 +234,7 @@ namespace KJFramework.ApplicationEngine
             _hostChannel = new PipeHostTransportChannel(new PipeUri(url), 254);
             if (!_hostChannel.Regist()) throw new AllocResourceFailedException("#Sadly, We couldn't alloc current network resource. #Resource: " + url);
             _hostChannel.ChannelCreated += ChannelCreated;
-            _isUseTunnel = true;
-            _tunnelAddress = url;
+            TunnelAddress = url;
             Status = ApplicationStatus.Loaded; 
         }
 
