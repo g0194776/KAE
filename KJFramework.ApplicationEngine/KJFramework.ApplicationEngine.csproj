@@ -79,6 +79,7 @@
     <Compile Include="Configurations\Settings\RemoteConfigurationSetting.cs" />
     <Compile Include="Connectors\RRCSConnector.cs" />
     <Compile Include="Entities\ApplicationInformation.cs" />
+    <Compile Include="Eums\ApplicationCategory.cs" />
     <Compile Include="Eums\ApplicationLevel.cs" />
     <Compile Include="Eums\ApplicationStatus.cs" />
     <Compile Include="Eums\BusinessPackageStates.cs" />

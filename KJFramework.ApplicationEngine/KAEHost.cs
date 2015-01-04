@@ -637,7 +637,7 @@ namespace KJFramework.ApplicationEngine
              * We always makes a checking on the Metadata protocol network communication. 
              * Because all of ours internal system communications are constructed by this kind of MSG protocol.
              */
-            if (reqMsgIdentity.ProtocolId >= 0xFD) HandleSystemCommand(transaction);
+            if (reqMsgIdentity.ProtocolId >= 0xFC) HandleSystemCommand(transaction);
             //sends it to the appropriate application.
             else HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg);
         }

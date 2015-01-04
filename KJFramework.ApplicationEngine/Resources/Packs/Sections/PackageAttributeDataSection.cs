@@ -48,6 +48,7 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             _keys.Add("SectionLength", typeof(int));
             _keys.Add("ApplicationLevel", typeof(byte));
             _keys.Add("ApplicationPriority", typeof(byte));
+            _keys.Add("ApplicationCategory", typeof(byte));
             _keys.Add("IsCompletedEnvironment", typeof(bool));
         }
 
@@ -136,6 +137,8 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             stream.WriteByte(GetFieldSafety<byte>("ApplicationLevel"));
             //application priority.
             stream.WriteByte(GetFieldSafety<byte>("ApplicationPriority"));
+            //application category.
+            stream.WriteByte(GetFieldSafety<byte>("ApplicationCategory"));
             //Is completed environment.
             stream.WriteByte((GetFieldSafety<bool>("IsCompletedEnvironment") ? (byte) 0x01 : (byte) 0x00));
             //global unique identity.
@@ -228,6 +231,9 @@ namespace KJFramework.ApplicationEngine.Resources.Packs.Sections
             //application priority.
             byte applicationPriority = (byte)stream.ReadByte();
             SetField("ApplicationPriority", applicationPriority);
+            //application category.
+            byte applicationCategory = (byte)stream.ReadByte();
+            SetField("ApplicationCategory", applicationCategory);
             //Is completed environment.
             byte isCompletedEnvironment = (byte)stream.ReadByte();
             SetField("IsCompletedEnvironment", isCompletedEnvironment == 0x01);
