@@ -48,7 +48,7 @@ namespace KJFramework.Dynamic.Finders
                             try
                             {
                                 //找到入口点
-                                if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(DynamicDomainComponent)))
+                                if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(DynamicDomainComponent)) && type.FullName != "KJFramework.ApplicationEngine.Application")
                                 {
                                     DomainComponentEntryInfo info = new DomainComponentEntryInfo();
                                     info.FilePath = file;

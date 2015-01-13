@@ -70,12 +70,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Apps\635542548065074019.kpp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Apps\special2.kpp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.ApplicationEngine.ApplicationTest\KJFramework.ApplicationEngine.ApplicationTest.csproj">

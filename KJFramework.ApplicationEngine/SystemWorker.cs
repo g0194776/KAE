@@ -139,8 +139,8 @@ namespace KJFramework.ApplicationEngine
             _protocolStackContainer = new ProtocolStackContainer();
             _baseMessageConnectionPool = new IntellectObjectSystemConnectionPool();
             _metadataConnectionPool = new MetadataSystemConnectionPool();
-            _clsuter = new NetworkCluster<BaseMessage>(_transactionManager, _baseMessageConnectionPool);
-            _metadataCluster = new NetworkCluster<MetadataContainer>(_metadataTransactionManager, _metadataConnectionPool);
+            _clsuter = new NetworkCluster<BaseMessage>(_transactionManager, _baseMessageConnectionPool, ProtocolTypes.Intellegence);
+            _metadataCluster = new NetworkCluster<MetadataContainer>(_metadataTransactionManager, _metadataConnectionPool, ProtocolTypes.Metadata);
             _baseMessageTransactionProxy = new BusinessMessageTransactionProxy(_protocolStackContainer, _clsuter, _transactionManager);
             _metadataMessageTransactionProxy = new MetadataMessageTransactionProxy(_protocolStackContainer, _metadataCluster, _metadataTransactionManager);
         }
@@ -194,7 +194,6 @@ namespace KJFramework.ApplicationEngine
         /// <param name="cache">网络信息</param>
         public static void UpdateNetworkCache(Dictionary<string, List<string>> cache)
         {
-            //TODO: 这里应该按照协议消息的类型进行分组，然后分别更新到对应的cluster，而不是每个cluster都更新一份
             _clsuter.UpdateCache(cache);
             _metadataCluster.UpdateCache(cache);
         }

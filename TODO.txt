@@ -161,3 +161,15 @@ What's the next:
 ------------------------------------------------
 1. 完善更多的测试用例
 2. 完成KAE Official Application的搭建
+
+
+
+
+
+
+
+2015-1-13进度
+------------------------------------------------
+1. 现在KAEHost在接收到RRCS返回的一致性圆环信息后将会按照支持的网络协议进行拆分并分别在不同的NetworkCluster中生效
+2. 修改了DynamicDomainComponentFinder中查找KAE Application的BUG
+3. 做了一些适应性的修改

@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("KJFramework.ApplicationEngine.KIS")]
 [assembly: InternalsVisibleTo("KJFramework.Architecture.UnitTest")]
 [assembly: InternalsVisibleTo("KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent")]
+[assembly: InternalsVisibleTo("KJFramework.ApplicationEngine.ApplicationTest2")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

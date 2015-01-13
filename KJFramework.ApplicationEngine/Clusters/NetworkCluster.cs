@@ -25,17 +25,19 @@ namespace KJFramework.ApplicationEngine.Clusters
         /// </summary>
         /// <param name="transactionManager">网络事务管理器</param>
         /// <param name="connectionPool">内部连接池</param>
-        /// <param name="addresses">地址集</param>
-        public NetworkCluster(ITransactionManager<TMessage> transactionManager, ConnectionPool<TMessage> connectionPool)
+        /// <param name="protocolType">协议类型</param>
+        public NetworkCluster(ITransactionManager<TMessage> transactionManager, ConnectionPool<TMessage> connectionPool, ProtocolTypes protocolType)
         {
             _transactionManager = transactionManager;
             _connectionPool = connectionPool;
+            _protocolType = protocolType;
         }
 
         #endregion
 
         #region Members.
 
+        private readonly ProtocolTypes _protocolType;
         protected readonly object _lockObj = new object();
         protected readonly ConnectionPool<TMessage> _connectionPool;
         protected readonly ITransactionManager<TMessage> _transactionManager;
@@ -59,11 +61,18 @@ namespace KJFramework.ApplicationEngine.Clusters
                     string[] contents = pair.Key.Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries);
                     string[] ids = contents[0].Replace("(", "").Replace(")", "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                     ApplicationLevel level;
+                    ProtocolTypes protocolType;
                     if (!Enum.TryParse(contents[2], out level))
                     {
                         _tracing.Error("#Couldn't parse targeted value to the Application Level. Value: {0}." + contents[2]);
                         continue;
                     }
+                    if (!Enum.TryParse(contents[1], out protocolType))
+                    {
+                        _tracing.Error("#Couldn't parse targeted value to the Protocol Type. Value: {0}." + contents[2]);
+                        continue;
+                    }
+                    if (protocolType != _protocolType) continue;
                     Protocols identity = new Protocols
                     {
                         ProtocolId = byte.Parse(ids[0]),
