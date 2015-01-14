@@ -1,7 +1,10 @@
 ﻿using KJFramework.ApplicationEngine.Attributes;
+using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Processors;
 using KJFramework.Messages.Contracts;
+using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Transaction;
+using KJFramework.Tracing;
 
 namespace KJFramework.ApplicationEngine.Apps.Configuration.Processors
 {
@@ -20,6 +23,12 @@ namespace KJFramework.ApplicationEngine.Apps.Configuration.Processors
             : base(application)
         {
         }
+
+        #endregion
+
+        #region Members.
+
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(GetPartialConfigProcessor));
 
         #endregion
 
@@ -46,7 +55,27 @@ namespace KJFramework.ApplicationEngine.Apps.Configuration.Processors
         /// <param name="package">消息事务</param>
         protected override void InnerProcess(IMessageTransaction<MetadataContainer> package)
         {
-            throw new System.NotImplementedException();
+            MetadataContainer reqMessage = package.Request;
+            MetadataContainer rspMessage = new MetadataContainer();
+            string key = reqMessage.GetAttributeAsType<string>(0x0A);
+            if (string.IsNullOrEmpty(key))
+            {
+                rspMessage.SetAttribute(0x0A, new ByteValueStored((byte)KAEErrorCodes.IllegalArgument));
+                rspMessage.SetAttribute(0x0B, new StringValueStored("#Key cannot be null."));
+                return;
+            }
+            try
+            {
+                rspMessage.SetAttribute(0x0C, new StringValueStored(ConfigurationDataBuilder.GetPartialConfig(key)));
+                rspMessage.SetAttribute(0x0A, new ByteValueStored((byte)KAEErrorCodes.OK));
+            }
+            catch (System.Exception ex)
+            {
+                _tracing.Error(ex);
+                rspMessage.SetAttribute(0x0A, new ByteValueStored((byte)KAEErrorCodes.Unknown));
+                rspMessage.SetAttribute(0x0B, new StringValueStored(ex.Message));
+            }
+            package.SendResponse(rspMessage);
         }
 
         #endregion

@@ -61,6 +61,18 @@ namespace KJFramework.ApplicationEngine.Apps.Configuration
             return data;
         }
 
+        /// <summary>
+        ///    根据一个配置节的名称获取配置节信息
+        /// </summary>
+        /// <param name="key">配置节名称</param>
+        /// <returns>返回整体配置节信息</returns>
+        public static string GetPartialConfig(string key)
+        {
+            DataTable dataTable = Global.Database.SpExecuteTable("USP_GetPartialConfig", new[] { "ConfigKey" }, new object[] { key });
+            if (dataTable == null || dataTable.Rows.Count == 0) return null;
+            return dataTable.Rows[0]["ConfigValue"].ToString();
+        }
+
         #endregion
     }
 }

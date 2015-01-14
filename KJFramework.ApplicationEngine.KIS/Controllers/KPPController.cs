@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Web.Http;
 
 using KJFramework.ApplicationEngine.KIS.Models;

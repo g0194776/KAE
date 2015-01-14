@@ -87,6 +87,7 @@ namespace KJFramework.ApplicationEngine.Apps.Configuration.Processors
             try
             {
                 rspMessage.SetAttribute(0x0C, new ResourceBlockArrayStored(ConfigurationDataBuilder.GetKeyValueConfigurations(databaseName, tableName, serviceName)));
+                rspMessage.SetAttribute(0x0A, new ByteValueStored((byte)KAEErrorCodes.OK));
             }
             catch (System.Exception ex)
             {
