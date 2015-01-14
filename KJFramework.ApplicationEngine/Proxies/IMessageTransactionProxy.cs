@@ -28,7 +28,6 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// </param>
         /// <returns>返回新的事务</returns>
         IMessageTransaction<TMessage> CreateTransaction(Protocols target, KAEResourceUri resourceUri, NetworkCommunicationTypes communicationType = NetworkCommunicationTypes.Dulplex, string protocolSelf = null);
-
         /// <summary>
         ///     创建一个新的网络事务
         /// </summary>

@@ -153,6 +153,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Applications", "Syst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.ApplicationEngine.Apps.DistributedLock", "KJFramework.ApplicationEngine.Apps.DistributedLock\KJFramework.ApplicationEngine.Apps.DistributedLock.csproj", "{AFA4994E-4130-4877-9007-32691AC8C797}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.ApplicationEngine.Apps.Configuration", "KJFramework.ApplicationEngine.Apps.Configuration\KJFramework.ApplicationEngine.Apps.Configuration.csproj", "{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -639,6 +641,18 @@ Global
 		{AFA4994E-4130-4877-9007-32691AC8C797}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AFA4994E-4130-4877-9007-32691AC8C797}.Release|x64.ActiveCfg = Release|Any CPU
 		{AFA4994E-4130-4877-9007-32691AC8C797}.Release|x86.ActiveCfg = Release|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Release|x64.ActiveCfg = Release|Any CPU
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -708,6 +722,7 @@ Global
 		{B6E2CC57-ED6C-4FB4-B3B1-32DA72944A58} = {85A59268-A68A-4798-AC7B-73DCE2C81E2F}
 		{05940C51-1537-4639-A15F-ABD24CD66755} = {3BB13ECB-28BA-4D58-9406-3C6BCDE8CB27}
 		{AFA4994E-4130-4877-9007-32691AC8C797} = {05940C51-1537-4639-A15F-ABD24CD66755}
+		{69BD1E36-8A00-46D6-8572-C11BF9B40B9C} = {05940C51-1537-4639-A15F-ABD24CD66755}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KJFramework.vsmdi

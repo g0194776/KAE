@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AFA4994E-4130-4877-9007-32691AC8C797}</ProjectGuid>
+    <ProjectGuid>{69BD1E36-8A00-46D6-8572-C11BF9B40B9C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KJFramework.ApplicationEngine.Apps.DistributedLock</RootNamespace>
-    <AssemblyName>KJFramework.ApplicationEngine.Apps.DistributedLock</AssemblyName>
+    <RootNamespace>KJFramework.ApplicationEngine.Apps.Configuration</RootNamespace>
+    <AssemblyName>KJFramework.ApplicationEngine.Apps.Configuration</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,14 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DistributedLockApplication.cs" />
-    <Compile Include="IDistributedLock.cs" />
-    <Compile Include="LockingManager.cs" />
-    <Compile Include="Processors\HoldLockHeartbeatMessageProcessor .cs" />
-    <Compile Include="Processors\ReleaseLockMessageProcessor.cs" />
-    <Compile Include="Processors\GetLockMessageProcessor.cs" />
+    <Compile Include="ConfigurationDataBuilder.cs" />
+    <Compile Include="CSNApplication.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="Processors\GetDataTableProcessor.cs" />
+    <Compile Include="Processors\GetKeyDataProcessor.cs" />
+    <Compile Include="Processors\GetPartialConfigProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.ApplicationEngine\KJFramework.ApplicationEngine.csproj">
       <Project>{0a0e8766-fad6-4e67-acec-8d76abfa7822}</Project>
@@ -63,6 +64,10 @@
     <ProjectReference Include="..\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
       <Project>{658C4853-7022-4C2F-BB82-7261DBDAE55D}</Project>
       <Name>KJFramework.Net.Transaction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
+      <Name>KJFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

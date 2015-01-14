@@ -10,6 +10,7 @@
         CommunicaitonFailedWithAPMS = 0x02,
         NullResultWithTargetedAppCRC = 0x03,
         IllegalSupportedInformation = 0x04,
+        IllegalArgument = 0xF9,
         TunnelCommunicationTimeout = 0xFA,
         TunnelCommunicationFailed = 0xFB,
         NotSupportedApplicationLevel = 0xFC,
