@@ -86,6 +86,7 @@ namespace KJFramework.Net.Transaction.Clusters
                 errMsg = "#No address can be matched.";
                 return null;
             }
+            balanceFlag = Math.Abs(balanceFlag);
             ServiceCoreConfig coreConfig = GetConfig(configs, _maxRanges[roleId], balanceFlag);
             IServerConnectionAgent<MetadataContainer> agent = _connectionPool.GetChannel(coreConfig.Address, roleId, protocolStack, _transactionManager);
             errMsg = agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + coreConfig.Address;
@@ -110,6 +111,7 @@ namespace KJFramework.Net.Transaction.Clusters
                 errMsg = "#No address can be matched.";
                 return null;
             }
+            balanceFlag = Math.Abs(balanceFlag);
             ServiceCoreConfig coreConfig = GetConfig(configs, _maxRanges[roleId], balanceFlag);
             IServerConnectionAgent<MetadataContainer> agent = _connectionPool.GetChannel(coreConfig.Address, roleId, protocolStack, _transactionManager);
             errMsg = agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + coreConfig.Address;
@@ -138,6 +140,7 @@ namespace KJFramework.Net.Transaction.Clusters
             byte[] source = _md5.ComputeHash(Encoding.UTF8.GetBytes(balanceFlag));
             long flag;
             unsafe { fixed (byte* pByte = source) flag = *(long*) (pByte + 4); }
+            flag = Math.Abs(flag);
             ServiceCoreConfig coreConfig = GetConfig(configs, _maxRanges[roleId], flag);
             IServerConnectionAgent<MetadataContainer> agent = _connectionPool.GetChannel(coreConfig.Address, roleId, protocolStack, _transactionManager);
             errMsg = agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + coreConfig.Address;
