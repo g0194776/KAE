@@ -218,6 +218,7 @@ namespace KJFramework.Data.Synchronization
         public bool Broadcast(TK key, TV value)
         {
             if (key == null) throw new ArgumentNullException("key");
+            if (!IsConnected) return false;
             bool result = false;
             AutoResetEvent are = new AutoResetEvent(false);
             BroadcastRequestMessage request = new BroadcastRequestMessage
@@ -257,6 +258,12 @@ namespace KJFramework.Data.Synchronization
         public void BroadcastAsync(TK key, TV value, Action<bool> callback)
         {
             if (key == null) throw new ArgumentNullException("key");
+            if (callback == null) throw new ArgumentNullException("callback");
+            if (!IsConnected)
+            {
+                callback(false);
+                return;
+            }
             BroadcastRequestMessage request = new BroadcastRequestMessage
             {
                 Catalog = _catalog,
@@ -267,10 +274,10 @@ namespace KJFramework.Data.Synchronization
             trans.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<BaseMessage> e)
             {
                 BroadcastResponseMessage rsp = (BroadcastResponseMessage)e.Target;
-                if (callback != null) callback(rsp.ErrorId == 0);
+                callback(rsp.ErrorId == 0);
             };
-            trans.Failed += delegate { if (callback != null) callback(false); };
-            trans.Timeout += delegate { if (callback != null) callback(false); };
+            trans.Failed += delegate { callback(false); };
+            trans.Timeout += delegate { callback(false); };
             trans.SendRequest(request);
         }
 
