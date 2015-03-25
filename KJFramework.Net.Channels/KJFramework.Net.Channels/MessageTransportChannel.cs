@@ -87,6 +87,7 @@ namespace KJFramework.Net.Channels
         private EndPoint _localIep;
         private EndPoint _remoteIep;
         private ISegmentDataParser<T> _parser;
+        private readonly object _releaseResourceLockObj = new object();
 
         #endregion
 
@@ -139,15 +140,34 @@ namespace KJFramework.Net.Channels
         /// </summary>
         public void Close()
         {
-            if (_rawChannel != null)
+            lock (_releaseResourceLockObj)
             {
-                _rawChannel.Close();
-                _rawChannel = null;
-            }
-            if (_multiPacketManager != null)
-            {
-                _multiPacketManager.Dispose();
-                _multiPacketManager = null;
+                if (_rawChannel != null)
+                {
+                    _rawChannel.Buffer = null;
+                    _rawChannel.ReceivedData -= RawReceivedData;
+                    _rawChannel.Opened -= Opened;
+                    _rawChannel.Opening -= Opening;
+                    _rawChannel.Closed -= Closed;
+                    _rawChannel.Closing -= Closing;
+                    _rawChannel.Faulted -= Faulted;
+                    _rawChannel.Disconnected -= Disconnected;
+                    _rawChannel.Connected -= Connected;
+                    _rawChannel.ReceivedDataSegment -= ReceivedDataSegment;
+                    _rawChannel.Dispose();
+                    _rawChannel = null;
+                }
+                if (_multiPacketManager != null)
+                {
+                    _multiPacketManager.Dispose();
+                    _multiPacketManager = null;
+                }
+                if (_parser != null)
+                {
+                    _parser.ParseSucceed -= SegmentParseSucceed;
+                    _parser.Dispose();
+                    _parser = null;
+                }
             }
         }
 
@@ -170,10 +190,13 @@ namespace KJFramework.Net.Channels
         /// <returns>返回异步结果</returns>
         public IAsyncResult BeginClose(AsyncCallback callback, object state)
         {
-            if (_multiPacketManager != null)
+            lock (_releaseResourceLockObj)
             {
-                _multiPacketManager.Dispose();
-                _multiPacketManager = null;
+                if (_multiPacketManager != null)
+                {
+                    _multiPacketManager.Dispose();
+                    _multiPacketManager = null;
+                }
             }
             return _rawChannel.BeginClose(callback, state);
         }
@@ -449,33 +472,9 @@ namespace KJFramework.Net.Channels
         //raw channel disconnected.
         void RawChannelDisconnected(object sender, System.EventArgs e)
         {
-            if (_rawChannel != null)
-            {
-                _rawChannel.Buffer = null;
-                _rawChannel.ReceivedData -= RawReceivedData;
-                _rawChannel.Opened -= Opened;
-                _rawChannel.Opening -= Opening;
-                _rawChannel.Closed -= Closed;
-                _rawChannel.Closing -= Closing;
-                _rawChannel.Faulted -= Faulted;
-                _rawChannel.Disconnected -= Disconnected;
-                _rawChannel.Connected -= Connected;
-                _rawChannel.ReceivedDataSegment -= ReceivedDataSegment;
-                _rawChannel.Dispose();
-                _rawChannel = null;
-            }
-            if (_multiPacketManager != null)
-            {
-                _multiPacketManager.Dispose();
-                _multiPacketManager = null;
-            }
-            if (_parser != null)
-            {
-                _parser.ParseSucceed -= SegmentParseSucceed;
-                _parser.Dispose();
-                _parser = null;
-            }
+            Close();
             DisconnectedHandler(null);
+            
         }
 
         void ReceivedDataSegment(object sender, SegmentReceiveEventArgs e)
