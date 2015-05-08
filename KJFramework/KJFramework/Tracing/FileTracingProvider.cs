@@ -44,15 +44,22 @@ namespace KJFramework.Tracing
 
         protected override void Write(string text)
         {
-            if (!Directory.Exists(_dir))
-                Directory.CreateDirectory(_dir);
-
-            string name = Path.Combine(_dir, DateTime.UtcNow.ToString("yyyyMMddHH") + ".log");
-            using (FileStream file = File.Open(name, FileMode.Append, FileAccess.Write, FileShare.Read))
-            using (StreamWriter writer = new StreamWriter(file, Encoding.UTF8))
+            try
             {
-                writer.AutoFlush = true;
-                writer.Write(text);
+                if (!Directory.Exists(_dir))
+                    Directory.CreateDirectory(_dir);
+
+                string name = Path.Combine(_dir, DateTime.UtcNow.ToString("yyyyMMddHH") + ".log");
+                using (FileStream file = File.Open(name, FileMode.Append, FileAccess.Write, FileShare.Read))
+                using (StreamWriter writer = new StreamWriter(file, Encoding.UTF8))
+                {
+                    writer.AutoFlush = true;
+                    writer.Write(text);
+                }
+            }
+            catch 
+            {
+                /*do nothing while multiple processes are using SAME log file*/
             }
         }
 
