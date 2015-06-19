@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Rings;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
@@ -42,7 +43,15 @@ namespace KJFramework.ApplicationEngine.Clusters
         protected readonly ConnectionPool<TMessage> _connectionPool;
         protected readonly ITransactionManager<TMessage> _transactionManager;
         protected static readonly ITracing _tracing = TracingManager.GetTracing(typeof(NetworkCluster<TMessage>));
-        protected readonly Dictionary<Protocols, IDictionary<ApplicationLevel, KetamaRing>> _addresses = new Dictionary<Protocols, IDictionary<ApplicationLevel, KetamaRing>>();
+        protected readonly Dictionary<Protocols, IDictionary<ApplicationLevel, IDictionary<ProtocolTypes, KetamaRing>>> _addresses = new Dictionary<Protocols, IDictionary<ApplicationLevel, IDictionary<ProtocolTypes, KetamaRing>>>();
+
+        /// <summary>
+        ///     获取所支持的网络协议类型
+        /// </summary>
+        public ProtocolTypes ProtocolType
+        {
+            get { return _protocolType; }
+        }
 
         #endregion
 
@@ -51,43 +60,26 @@ namespace KJFramework.ApplicationEngine.Clusters
         /// <summary>
         ///    更新网络缓存信息
         /// </summary>
-        /// <param name="cache">网络信息</param>
-        public void UpdateCache(Dictionary<string, List<string>> cache)
+        /// <param name="level">应用等级</param>
+        /// <param name="cache">远程目标终结点信息列表</param>
+        /// <param name="identity">通信协议</param>
+        public void UpdateCache(MessageIdentity identity, ApplicationLevel level, IList<string> cache)
         {
+            Protocols protocol = new Protocols
+            {
+                ProtocolId = identity.ProtocolId,
+                ServiceId = identity.ServiceId,
+                DetailsId = identity.DetailsId
+            };
+            //prepares kathma ring.
+            KetamaRing ring = new KetamaRing(cache.Select(v => new KAEHostNode(v)).ToList());
             lock (_lockObj)
             {
-                foreach (KeyValuePair<string, List<string>> pair in cache)
-                {
-                    string[] contents = pair.Key.Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries);
-                    string[] ids = contents[0].Replace("(", "").Replace(")", "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    ApplicationLevel level;
-                    ProtocolTypes protocolType;
-                    if (!Enum.TryParse(contents[2], out level))
-                    {
-                        _tracing.Error("#Couldn't parse targeted value to the Application Level. Value: {0}." + contents[2]);
-                        continue;
-                    }
-                    if (!Enum.TryParse(contents[1], out protocolType))
-                    {
-                        _tracing.Error("#Couldn't parse targeted value to the Protocol Type. Value: {0}." + contents[2]);
-                        continue;
-                    }
-                    if (protocolType != _protocolType) continue;
-                    Protocols identity = new Protocols
-                    {
-                        ProtocolId = byte.Parse(ids[0]),
-                        ServiceId = byte.Parse(ids[1]),
-                        DetailsId = byte.Parse(ids[2])
-                    };
-                    //prepares kathma ring.
-                    KetamaRing ring = new KetamaRing(pair.Value.Select(v => new KAEHostNode(v)).ToList());
-                    lock (_lockObj)
-                    {
-                        IDictionary<ApplicationLevel, KetamaRing> tempDic;
-                        if (!_addresses.TryGetValue(identity, out tempDic)) _addresses.Add(identity, (tempDic = new Dictionary<ApplicationLevel, KetamaRing>()));
-                        tempDic[level] = ring;
-                    }
-                }
+                IDictionary<ProtocolTypes, KetamaRing> thirdDic;
+                IDictionary<ApplicationLevel, IDictionary<ProtocolTypes, KetamaRing>> tempDic;
+                if (!_addresses.TryGetValue(protocol, out tempDic)) _addresses.Add(protocol, (tempDic = new Dictionary<ApplicationLevel, IDictionary<ProtocolTypes, KetamaRing>>()));;
+                if (!tempDic.TryGetValue(level, out thirdDic)) tempDic.Add(level, (thirdDic = new Dictionary<ProtocolTypes, KetamaRing>()));
+                thirdDic[_protocolType] = ring;
             }
         }
 
@@ -104,16 +96,20 @@ namespace KJFramework.ApplicationEngine.Clusters
         {
             lock (_lockObj)
             {
-                IDictionary<ApplicationLevel, KetamaRing> firstLevel;
+                IDictionary<ApplicationLevel, IDictionary<ProtocolTypes, KetamaRing>> firstLevel;
                 if (_addresses.TryGetValue(target, out firstLevel))
                 {
-                    KetamaRing ring;
-                    if (firstLevel.TryGetValue(level, out ring))
+                    IDictionary<ProtocolTypes, KetamaRing> secondLevel;
+                    if (firstLevel.TryGetValue(level, out secondLevel))
                     {
-                        KAEHostNode node = ring.GetWorkerNode();
-                        IServerConnectionAgent<TMessage> agent = _connectionPool.GetChannel(node.EndPoint, node.RawAddress, protocolStack, _transactionManager);
-                        errMsg = (agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + node.RawAddress);
-                        return agent;
+                        KetamaRing ring;
+                        if (secondLevel.TryGetValue(_protocolType, out ring))
+                        {
+                            KAEHostNode node = ring.GetWorkerNode();
+                            IServerConnectionAgent<TMessage> agent = _connectionPool.GetChannel(node.EndPoint, node.RawAddress, protocolStack, _transactionManager);
+                            errMsg = (agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + node.RawAddress);
+                            return agent;
+                        }
                     }
                 }
                 errMsg = string.Format("#Couldn't find any remoting address which it can access it. #Protocol: {0}, #Level: {1}", target, level);
@@ -135,16 +131,20 @@ namespace KJFramework.ApplicationEngine.Clusters
         {
             lock (_lockObj)
             {
-                IDictionary<ApplicationLevel, KetamaRing> firstLevel;
+                IDictionary<ApplicationLevel, IDictionary<ProtocolTypes, KetamaRing>> firstLevel;
                 if (_addresses.TryGetValue(target, out firstLevel))
                 {
-                    KetamaRing ring;
-                    if (firstLevel.TryGetValue(level, out ring))
+                    IDictionary<ProtocolTypes, KetamaRing> secondLevel;
+                    if (firstLevel.TryGetValue(level, out secondLevel))
                     {
-                        KAEHostNode node = ring.GetWorkerNode(balanceFlag);
-                        IServerConnectionAgent<TMessage> agent = _connectionPool.GetChannel(node.EndPoint, node.RawAddress, protocolStack, _transactionManager);
-                        errMsg = (agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + node.RawAddress);
-                        return agent;
+                        KetamaRing ring;
+                        if (secondLevel.TryGetValue(_protocolType, out ring))
+                        {
+                            KAEHostNode node = ring.GetWorkerNode(balanceFlag);
+                            IServerConnectionAgent<TMessage> agent = _connectionPool.GetChannel(node.EndPoint, node.RawAddress, protocolStack, _transactionManager);
+                            errMsg = (agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + node.RawAddress);
+                            return agent;
+                        }
                     }
                 }
                 errMsg = string.Format("#Couldn't find any remoting address which it can access it. #Protocol: {0}, #Level: {1}", target, level);

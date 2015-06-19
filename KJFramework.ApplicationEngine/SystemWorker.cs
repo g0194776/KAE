@@ -32,6 +32,7 @@ namespace KJFramework.ApplicationEngine
         #region Members
 
         private static bool _isInitialized;
+        private static IKAEHostProxy _hostProxy;
         private static INetworkCluster<BaseMessage> _clsuter;
         private static INetworkCluster<MetadataContainer> _metadataCluster;
         private static IProtocolStackContainer _protocolStackContainer;
@@ -47,6 +48,7 @@ namespace KJFramework.ApplicationEngine
 
         #region Implementation of ISystemWorker
 
+        private static Guid _appUniqueId;
         private static IRemoteConfigurationProxy _configurationProxy;
         private static Func<IDictionary<string, string>, ApplicationLevel> _greyPolicy;
 
@@ -105,11 +107,14 @@ namespace KJFramework.ApplicationEngine
         /// <param name="role">服务角色</param>
         /// <param name="proxy">KAE宿主代理器</param>
         /// <param name="settings">KJFramework网络层设置集</param>
+        /// <param name="appUniqueId">APP唯一编号</param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        internal static void InitializeForKPP(string role, IKAEHostProxy proxy, ChannelInternalConfigSettings settings)
+        internal static void InitializeForKPP(string role, IKAEHostProxy proxy, ChannelInternalConfigSettings settings, Guid appUniqueId)
         {
             if (IsInitialized) return;
             if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");
+            _hostProxy = proxy;
+            _appUniqueId = appUniqueId;
             _configurationProxy = new KPPConfigurationProxy(proxy);
             //Regist("LGS", new LGSProtocolStack());
             TracingManager.NotificationHandler = new RemoteLogProxy();
@@ -141,8 +146,8 @@ namespace KJFramework.ApplicationEngine
             _metadataConnectionPool = new MetadataSystemConnectionPool();
             _clsuter = new NetworkCluster<BaseMessage>(_transactionManager, _baseMessageConnectionPool, ProtocolTypes.Intellegence);
             _metadataCluster = new NetworkCluster<MetadataContainer>(_metadataTransactionManager, _metadataConnectionPool, ProtocolTypes.Metadata);
-            _baseMessageTransactionProxy = new BusinessMessageTransactionProxy(_protocolStackContainer, _clsuter, _transactionManager);
-            _metadataMessageTransactionProxy = new MetadataMessageTransactionProxy(_protocolStackContainer, _metadataCluster, _metadataTransactionManager);
+            _baseMessageTransactionProxy = new BusinessMessageTransactionProxy(_protocolStackContainer, _clsuter, _transactionManager, _hostProxy, _appUniqueId);
+            _metadataMessageTransactionProxy = new MetadataMessageTransactionProxy(_protocolStackContainer, _metadataCluster, _metadataTransactionManager, _hostProxy, _appUniqueId);
         }
 
         /// <summary>
@@ -191,11 +196,14 @@ namespace KJFramework.ApplicationEngine
         /// <summary>
         ///    更新网络缓存信息
         /// </summary>
-        /// <param name="cache">网络信息</param>
-        public static void UpdateNetworkCache(Dictionary<string, List<string>> cache)
+        /// <param name="level">应用等级</param>
+        /// <param name="cache">远程目标终结点信息列表</param>
+        /// <param name="identity">通信协议</param>
+        /// <param name="protocolTypes">协议类型</param>
+        public static void UpdateCache(MessageIdentity identity, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache)
         {
-            _clsuter.UpdateCache(cache);
-            _metadataCluster.UpdateCache(cache);
+            if (protocolTypes == ProtocolTypes.Metadata) _metadataCluster.UpdateCache(identity, level, cache);
+            else if (protocolTypes == ProtocolTypes.Intellegence) _clsuter.UpdateCache(identity, level, cache);
         }
 
         #endregion

@@ -290,10 +290,13 @@ namespace KJFramework.ApplicationEngine.Objects
         /// <summary>
         ///    更新网络缓存信息
         /// </summary>
-        /// <param name="cache">网络信息</param>
-        public void UpdateNetworkCache(Dictionary<string, List<string>> cache)
+        /// <param name="level">应用等级</param>
+        /// <param name="cache">远程目标终结点信息列表</param>
+        /// <param name="identity">通信协议</param>
+        /// <param name="protocolTypes">协议类型</param>
+        public void UpdateCache(MessageIdentity identity, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache)
         {
-            _application.UpdateNetworkCache(cache);
+            _application.UpdateCache(identity, protocolTypes, level, cache);
         }
 
         /// <summary>

@@ -1,5 +1,11 @@
-﻿using KJFramework.ApplicationEngine.Configurations.Settings;
-using KJFramework.ApplicationEngine.Connectors;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using KJFramework.ApplicationEngine.Configurations.Settings;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Extends;
@@ -19,7 +25,6 @@ using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Configurations;
-using KJFramework.Net.Channels.Extends;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction;
@@ -27,13 +32,6 @@ using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading;
 using Uri = KJFramework.Net.Channels.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine
@@ -159,27 +157,27 @@ namespace KJFramework.ApplicationEngine
         private string _workRoot;
         private string _greyPolicyAddress;
         private Thread _greyPolicyThread;
-        private IPEndPoint _rrcsAddr;
         private TimeSpan _greyPolicyInterval;
         private TcpUri _defaultKAENetwork;
-        private RRCSConnector _rrcsConnector;
         private readonly bool _usedInstallingListFile;
         private readonly string _installingListFile;
         private ChannelInternalConfigSettings _settings;
+        private readonly object _appDicLockObj = new object();
+        private readonly object _protocolDicLockObj = new object();
         private readonly IRemoteConfigurationProxy _configurationProxy;
         private readonly IKAEHostProxy _hostProxy = new KAEHostProxy();
-        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (KAEHost));
-        private readonly object _protocolDicLockObj = new object();
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(KAEHost));
+
         #region Performance Counters.
 
         private readonly LightPerfCounter _rspRemainningCounter = new NumberOfItems64PerfCounter("KAE::COMMUNICATION::RSP::REMAINNING", "It used for counting how many RSP messages are waitting for sends to the remoting network resource.");
         private readonly LightPerfCounter _errorRspCounter = new NumberOfItems64PerfCounter("KAE::COMMUNICATION::RSP::ERROR", "It used for counting how many RSP messages had occured error."); 
         
         #endregion
+
+        private readonly IDictionary<Guid, ApplicationDynamicObject> _activeApps = new Dictionary<Guid, ApplicationDynamicObject>();
         //caches for network end-points by respective MessageIdentity.
         //1st level of key = MessageIdentity + App Level; second level of key = application's version.
-        private IDictionary<string, IDictionary<string, IList<string>>> _caches;
-        private Dictionary<long, Dictionary<ProtocolTypes, IList<string>>> _preparedNetworkCache;
         private IDictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> _protocolDic;
 
         /// <summary>
@@ -259,6 +257,7 @@ namespace KJFramework.ApplicationEngine
                     ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2, _settings, _hostProxy);
                     entry = new Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>(tuple.Item1, tuple.Item2, dynamicObject);
                     subDic.Add(appFullKey, entry);
+                    _activeApps[dynamicObject.GlobalUniqueId] = dynamicObject;
                 }
             }
             return apps;
@@ -273,10 +272,6 @@ namespace KJFramework.ApplicationEngine
         {
             _tracing.DebugInfo("#Initializing from remoting CSN...");
             SystemWorker.Initialize("KAEWorker", RemoteConfigurationSetting.Default, _configurationProxy);
-            _tracing.DebugInfo("\t#Analyzing remoting RRCS service address...");
-            string rrcsAddr = SystemWorker.ConfigurationProxy.GetField("KAEWorker", "RRCS-Address");
-            if (rrcsAddr == null) throw new ArgumentException("#We couldn't find any RRCS address from remoting CSN.");
-            _rrcsAddr = rrcsAddr.ConvertToIPEndPoint();
             _tracing.DebugInfo("#Initializing KAE internal system resource factory...");
             KAESystemInternalResource.Factory.Initialize();
             //Downloads & Initializes remoting KPPs by an installing list file.
@@ -299,36 +294,14 @@ namespace KJFramework.ApplicationEngine
             #region #Step 2, initializes current suported mapping from protocol & message identity & application's level.
 
             _tracing.DebugInfo("#Preparing Internal Data For Remoting RRCS...");
-            /*
-             * We had chosen this kind of comminucation cache because that 
-             * The RRCS need decides where the right load balancing addresses are.
-             * So, we splicted those of remoting information into different parts which grouped by the applications' version.
-             * 
-             * P:1,S:2,D:3_Stable
-             *      --- 1.1.0
-             *          --- tcp://192.168.1.1:8000
-             *          --- tcp://192.168.1.2:8000
-             *          --- tcp://192.168.1.3:8000
-             *          --- tcp://192.168.1.4:8000
-             *          --- tcp://192.168.1.5:8000
-             *          --- http://192.168.1.1:9000
-             *      --- 1.2.0
-             *          --- tcp://192.168.1.1:8000
-             *          --- tcp://192.168.1.2:8000
-             *          --- tcp://192.168.1.3:8000
-             *          --- tcp://192.168.1.4:8000
-             *          --- tcp://192.168.1.5:8000
-             *          --- http://192.168.1.1:9000
-             */
-            _preparedNetworkCache = new Dictionary<long, Dictionary<ProtocolTypes, IList<string>>>();
+
+            IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister) KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
             List<Tuple<ApplicationLevel, IList<ProtocolTypes>>> networkResources = new List<Tuple<ApplicationLevel, IList<ProtocolTypes>>>();
-            IDictionary<string, IDictionary<string, IList<string>>> caches = new Dictionary<string, IDictionary<string, IList<string>>>();
             Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> protocolDic = new Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>>();
             foreach (KeyValuePair<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> pair in apps)
             {
                 foreach (KeyValuePair<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>> subPair in pair.Value)
                 {
-                    Dictionary<ProtocolTypes, Uri> tmpDic = new Dictionary<ProtocolTypes, Uri>();
                     IDictionary<ProtocolTypes, IList<MessageIdentity>> supportedProtocols = subPair.Value.Item3.AcquireSupportedProtocols();
                     //appending wanted network resources.
                     networkResources.Add(new Tuple<ApplicationLevel, IList<ProtocolTypes>>(subPair.Value.Item3.Level, supportedProtocols.Keys.ToList()));
@@ -337,47 +310,20 @@ namespace KJFramework.ApplicationEngine
                         InitializeNetworkProtocolHandler(protocolDic, innerPair, subPair.Value.Item3);
                         Uri networkUri = KAEHostNetworkResourceManager.GetResourceUri(innerPair.Key);
                         if (networkUri == null) throw new AllocResourceFailedException("#There wasn't any network resource can be supported. #Protocol: " + innerPair.Key);
-                        tmpDic.Add(innerPair.Key, networkUri);
-                        foreach (MessageIdentity messageIdentity in innerPair.Value)
-                        {
-                            string identity = string.Format("MSG-IDENTITY: {0}, {1}, {2}; APP-LEVEL: {3};", messageIdentity.ProtocolId, messageIdentity.ServiceId, messageIdentity.DetailsId, subPair.Value.Item3.Level);
-                            IDictionary<string, IList<string>> versions;
-                            if (!caches.TryGetValue(identity, out versions)) caches.Add(identity, (versions = new Dictionary<string, IList<string>>()));
-                            versions.Add(subPair.Value.Item3.Version, new List<string>());
-                            IList<string> endpoints;
-                            if (!versions.TryGetValue(subPair.Value.Item3.Version, out endpoints)) versions.Add(subPair.Value.Item3.Version, (endpoints = new List<string>()));
-                            endpoints.Add(networkUri.ToString());
-                        }
+                        //registers network protocol to remoting service.
+                        foreach (MessageIdentity identity in innerPair.Value)
+                            protocolRegister.Register(identity, innerPair.Key, subPair.Value.Item3.Level, networkUri);
                     }
-                    #region Collects KAE Host information.
-
-                    //collects current KAE host resources.
-                    Dictionary<ProtocolTypes, IList<string>> preparedFirstLevel;
-                    if (!_preparedNetworkCache.TryGetValue(subPair.Value.Item3.CRC, out preparedFirstLevel))
-                        _preparedNetworkCache.Add(subPair.Value.Item3.CRC, (preparedFirstLevel = new Dictionary<ProtocolTypes, IList<string>>()));
-                    IList<string> preparedSecLevel;
-                    foreach (KeyValuePair<ProtocolTypes, Uri> collectPair in tmpDic)
-                    {
-                        if (!preparedFirstLevel.TryGetValue(collectPair.Key, out preparedSecLevel))
-                            preparedFirstLevel.Add(collectPair.Key, (preparedSecLevel = new List<string>()));
-                        if (!preparedSecLevel.Contains(collectPair.Value.ToString())) preparedSecLevel.Add(collectPair.Value.ToString());
-                    }
-
-                    #endregion
                 }
             }
             _protocolDic = protocolDic;
-            _caches = caches;
 
             #endregion
 
-            _tracing.DebugInfo("#Initializing remoting RRCS connector...");
-            _rrcsConnector = new RRCSConnector(_rrcsAddr, this, _defaultKAENetwork);
-            _rrcsConnector.Start();
             _tracing.DebugInfo("#Preparing background job for grey policy...");
             GetGreyPolicyAsync();
             Status = KAEHostStatus.Prepared;
-            _tracing.DebugInfo("#KAE hosting has been initialized, STATUS: {0}.", ConsoleColor.DarkGreen, Status);
+            _tracing.DebugInfo("#KAE host has been initialized, STATUS: {0}.", ConsoleColor.DarkGreen, Status);
         }
 
         private void InitializeNetworkProtocolHandler(Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> dic, KeyValuePair<ProtocolTypes, IList<MessageIdentity>> values, ApplicationDynamicObject dynamicObject)
@@ -413,10 +359,8 @@ namespace KJFramework.ApplicationEngine
                                 string code = reader.ReadToEnd();
                                 if (!string.IsNullOrEmpty(code))
                                 {
-                                    lock (_protocolDicLockObj)
-                                        foreach (KeyValuePair<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> pair in _protocolDic)
-                                            foreach (KeyValuePair<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>> valuePair in pair.Value)
-                                                foreach (KeyValuePair<ApplicationLevel, ApplicationDynamicObject> keyValuePair in valuePair.Value) keyValuePair.Value.UpdateGreyPolicy(code);
+                                    lock (_appDicLockObj)
+                                        foreach (KeyValuePair<Guid, ApplicationDynamicObject> pair in _activeApps) pair.Value.UpdateGreyPolicy(code);
                                 }
                             }
                         }
@@ -581,40 +525,16 @@ namespace KJFramework.ApplicationEngine
         }
 
         /// <summary>
-        ///     Gets local supported network communication protocols.
+        ///    更新网络缓存信息
         /// </summary>
-        /// <returns>returns a dictionary that which contains a group of local supported commmunications end-points.</returns>
-        internal Dictionary<long, Dictionary<ProtocolTypes, IList<string>>> GetNetworkCache()
+        /// <param name="level">应用等级</param>
+        /// <param name="cache">远程目标终结点信息列表</param>
+        /// <param name="identity">通信协议</param>
+        /// <param name="protocolTypes">协议类型</param>
+        internal void UpdateCache(MessageIdentity identity, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache)
         {
-            return _preparedNetworkCache;
-        }
-
-        /*  [RSP MESSAGE]
-         *  ===========================================
-         *      0x00 - Message Identity
-         *      0x01 - Transaction Identity
-         *      0x0A - Error Id
-         *      0x0B - Error Reason
-         *      0x0C - Remoting cached End-Points resource blocks (ARRAY)
-         *      -------- Internal resource block's structure --------
-         *          0x00 - application's level.
-         *          0x01 - application's version.
-         *          0x02 - targeted application's network resource uri (STRING)
-         *          0x01 - targeted application supported all network abilities  (ARRAY)
-         *          -------- Internal resource block's structure --------
-         *              0x00 - Message Identity
-         *              0x01 - Supported Protocol
-         */
-        /// <summary>
-        ///     Update local supported caches.
-        /// </summary>
-        /// <param name="cache">end-points that which it need to be updating.</param>
-        internal void UpdateNetworkCache(Dictionary<string, List<string>> cache)
-        {
-            lock (_protocolDicLockObj)
-                foreach (KeyValuePair<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> pair in _protocolDic)
-                    foreach (KeyValuePair<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>> valuePair in pair.Value)
-                        foreach (KeyValuePair<ApplicationLevel, ApplicationDynamicObject> keyValuePair in valuePair.Value) keyValuePair.Value.UpdateNetworkCache(cache);
+            lock (_appDicLockObj)
+                foreach (KeyValuePair<Guid, ApplicationDynamicObject> pair in _activeApps) pair.Value.UpdateCache(identity, protocolTypes, level, cache);
         }
 
         private void HandleSystemCommand(IMessageTransaction<MetadataContainer> transaction)

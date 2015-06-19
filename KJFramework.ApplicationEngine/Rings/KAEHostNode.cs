@@ -18,8 +18,7 @@ namespace KJFramework.ApplicationEngine.Rings
         public KAEHostNode(string address)
         {
             RawAddress = address;
-            string newAddress = address.Substring(address.LastIndexOf("://") + 3);
-            string[] contents = newAddress.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] contents = address.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
             EndPoint = new IPEndPoint(IPAddress.Parse(contents[0]), int.Parse(contents[1]));
         }
 

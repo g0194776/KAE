@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using KJFramework.ApplicationEngine.Eums;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Objects;
@@ -12,13 +13,24 @@ namespace KJFramework.ApplicationEngine.Clusters
     /// </summary>
     public interface INetworkCluster<TMessage>
     {
+        #region Members.
+
+        /// <summary>
+        ///     获取所支持的网络协议类型
+        /// </summary>
+        ProtocolTypes ProtocolType { get; }
+
+        #endregion
+
         #region Methods.
 
         /// <summary>
         ///    更新网络缓存信息
         /// </summary>
-        /// <param name="cache">网络信息</param>
-        void UpdateCache(Dictionary<string, List<string>> cache);
+        /// <param name="level">应用等级</param>
+        /// <param name="cache">远程目标终结点信息列表</param>
+        /// <param name="identity">通信协议</param>
+        void UpdateCache(MessageIdentity identity, ApplicationLevel level,  IList<string> cache);
         /// <summary>
         ///     根据当前负载器规则获取一个通信信道
         /// </summary>

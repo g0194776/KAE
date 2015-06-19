@@ -173,3 +173,15 @@ What's the next:
 1. 现在KAEHost在接收到RRCS返回的一致性圆环信息后将会按照支持的网络协议进行拆分并分别在不同的NetworkCluster中生效
 2. 修改了DynamicDomainComponentFinder中查找KAE Application的BUG
 3. 做了一些适应性的修改
+
+
+
+
+
+
+2015-6-19进度
+------------------------------------------------
+1. 创建IIRemoteProtocolRegister接口，用于接入ZooKeeper
+2. KAE 目前已经更改基于RRCS的方案，新的方案是弃用掉RRCS并将KAE HOST直接与ZooKeeper进行通信
+3. 在KAE软负载期间弃用KAE APP版本号的概念，转而使用基于P/S/D以及应用等级和协议类型这5个字段组成的字符串进行负载
+4. 软负载圆环目前除了按照应用等级之外，还会按照业务协议以及通信协议类型来区分。也就是说一个负载圆环需要具备3单独的条件。

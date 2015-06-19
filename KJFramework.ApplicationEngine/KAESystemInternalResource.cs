@@ -22,6 +22,10 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         public static string APPFinder = "KAE.Finders.Application";
         /// <summary>
+        ///     KAE内部使用的远程协议注册器
+        /// </summary>
+        public static string ProtocolRegister = "KAE.Remoting.ProtocolRegister";
+        /// <summary>
         ///     KAE内部使用的资源工厂
         /// </summary>
         public static IInternalResourceFactory Factory;

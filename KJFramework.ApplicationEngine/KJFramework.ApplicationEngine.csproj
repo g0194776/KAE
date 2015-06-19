@@ -54,6 +54,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Depend Files\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="paxscript-net2013">
       <HintPath>..\Depend Files\paxscript-net2013.dll</HintPath>
@@ -66,6 +69,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="ZooKeeperNet">
+      <HintPath>..\packages\ZooKeeper.Net.3.4.6.2\lib\net40\ZooKeeperNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
@@ -77,7 +83,6 @@
     <Compile Include="Configurations\DeploySettingConfiguration.cs" />
     <Compile Include="Configurations\Loaders\RemoteConfigurationLoader.cs" />
     <Compile Include="Configurations\Settings\RemoteConfigurationSetting.cs" />
-    <Compile Include="Connectors\RRCSConnector.cs" />
     <Compile Include="Entities\ApplicationInformation.cs" />
     <Compile Include="Eums\ApplicationCategory.cs" />
     <Compile Include="Eums\ApplicationLevel.cs" />
@@ -110,8 +115,10 @@
     <Compile Include="Proxies\BusinessMessageTransactionProxy.cs" />
     <Compile Include="Proxies\IMessageTransactionProxy.cs" />
     <Compile Include="IProtocolStackContainer.cs" />
+    <Compile Include="Proxies\IProtocolResource.cs" />
     <Compile Include="Proxies\IRemotingApplicationDownloader.cs" />
     <Compile Include="Proxies\IRemotingKISProxy.cs" />
+    <Compile Include="Proxies\IRemotingProtocolRegister.cs" />
     <Compile Include="Proxies\MessageTransactionProxy.cs" />
     <Compile Include="Proxies\MetadataMessageTransactionProxy.cs" />
     <Compile Include="Proxies\RemotingApplicationDownloader.cs" />
@@ -144,6 +151,7 @@
     <Compile Include="Proxies\RemoteLogProxy.cs" />
     <Compile Include="Proxies\RemotingKISProxy.cs" />
     <Compile Include="Proxies\SolitaryRemoteConfigurationProxy.cs" />
+    <Compile Include="Proxies\ZooKeeperProtocolRegister.cs" />
     <Compile Include="Resources\KAENetworkResource.cs" />
     <Compile Include="Resources\KAEResourceUri.cs" />
     <Compile Include="Resources\KPPDataStructure.cs" />
@@ -204,6 +212,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Stubs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

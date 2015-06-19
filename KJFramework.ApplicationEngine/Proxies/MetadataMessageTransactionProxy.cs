@@ -1,4 +1,5 @@
-﻿using KJFramework.ApplicationEngine.Clusters;
+﻿using System;
+using KJFramework.ApplicationEngine.Clusters;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Transaction;
@@ -17,8 +18,11 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// </summary>
         /// <param name="container">网络协议栈容器</param>
         /// <param name="cluster">网络负载器</param>
-        public MetadataMessageTransactionProxy(IProtocolStackContainer container, INetworkCluster<MetadataContainer> cluster, ITransactionManager<MetadataContainer> transactionManager)
-            : base(container, cluster, transactionManager)
+        /// <param name="transactionManager">事务管理器</param>
+        /// <param name="hostProxy">KAE宿主透明代理</param>
+        /// <param name="appUniqueId">应用唯一编号</param>
+        public MetadataMessageTransactionProxy(IProtocolStackContainer container, INetworkCluster<MetadataContainer> cluster, ITransactionManager<MetadataContainer> transactionManager, IKAEHostProxy hostProxy, Guid appUniqueId)
+            : base(container, cluster, transactionManager, hostProxy, appUniqueId)
         {
         }
 

@@ -5,6 +5,7 @@ using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Enums;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Enums;
@@ -27,21 +28,31 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="container">网络协议栈容器</param>
         /// <param name="cluster">网络负载器</param>
         /// <param name="transactionManager">事务管理器</param>
-        protected MessageTransactionProxy(IProtocolStackContainer container, INetworkCluster<TMessage> cluster, ITransactionManager<TMessage> transactionManager)
+        /// <param name="hostProxy">KAE宿主透明代理</param>
+        /// <param name="appUniqueId">应用唯一编号</param>
+        protected MessageTransactionProxy(IProtocolStackContainer container, INetworkCluster<TMessage> cluster, ITransactionManager<TMessage> transactionManager, IKAEHostProxy hostProxy, Guid appUniqueId)
         {
             _container = container;
             _cluster = cluster;
             _transactionManager = transactionManager;
+            _hostProxy = hostProxy;
+            _appUniqueId = appUniqueId;
         }
 
         #endregion
 
         #region Members.
 
+        private readonly Guid _appUniqueId;
+        private readonly IKAEHostProxy _hostProxy;
+        private readonly object _lockObj = new object();
         protected readonly IProtocolStackContainer _container;
         protected readonly INetworkCluster<TMessage> _cluster;
+        private readonly object _protectiveLockObj = new object();
         protected Func<IDictionary<string, string>, ApplicationLevel> _callback;
+        private readonly TimeSpan _protectiveTimeSpan = new TimeSpan(0, 0, 10);
         protected readonly ITransactionManager<TMessage> _transactionManager;
+        private readonly IDictionary<string, DateTime> _protectiveCheckingTimeSpan = new Dictionary<string, DateTime>(); 
 
         #endregion
 
@@ -80,7 +91,16 @@ namespace KJFramework.ApplicationEngine.Proxies
             string errMsg;
             ApplicationLevel level = (resourceUri == null ? ApplicationLevel.Stable : _callback(resourceUri));
             IServerConnectionAgent<TMessage> agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), out errMsg);
-            if(agent == null) return new FailMessageTransaction<TMessage>(errMsg);
+            if (agent == null)
+            {
+                lock (_lockObj)
+                {
+                    //try to obtains agent object again for ensuring that the newest remoting addresses can be appliy in the multiple threading env.
+                    agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), out errMsg);
+                    if (agent == null && !GetMissedRemoteAddresses(target, level)) return new FailMessageTransaction<TMessage>(errMsg);
+                    agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), out errMsg);
+                }
+            }
             MessageTransaction<TMessage> transaction = NewTransaction(new Lease(DateTime.Now.Add(maximumRspTime)), agent.GetChannel());
             transaction.TransactionManager = _transactionManager;
             transaction.Identity = (communicationType == NetworkCommunicationTypes.Dulplex ? IdentityHelper.Create(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP) : IdentityHelper.CreateOneway(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP));
@@ -122,7 +142,16 @@ namespace KJFramework.ApplicationEngine.Proxies
             string errMsg;
             ApplicationLevel level = (resourceUri == null ? ApplicationLevel.Stable : _callback(resourceUri));
             IServerConnectionAgent<TMessage> agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), balanceFlag, out errMsg);
-            if (agent == null) return new FailMessageTransaction<TMessage>(errMsg);
+            if (agent == null)
+            {
+                lock (_lockObj)
+                {
+                    //try to obtains agent object again for ensuring that the newest remoting addresses can be appliy in the multiple threading env.
+                    agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), balanceFlag, out errMsg);
+                    if (agent == null && !GetMissedRemoteAddresses(target, level)) return new FailMessageTransaction<TMessage>(errMsg);
+                    agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), balanceFlag, out errMsg);
+                }
+            }
             MessageTransaction<TMessage> transaction = NewTransaction(new Lease(DateTime.Now.Add(maximumRspTime)), agent.GetChannel());
             transaction.TransactionManager = _transactionManager;
             transaction.Identity = (communicationType == NetworkCommunicationTypes.Dulplex ? IdentityHelper.Create(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP) : IdentityHelper.CreateOneway(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP));
@@ -206,6 +235,35 @@ namespace KJFramework.ApplicationEngine.Proxies
         public void UpdateGreyPolicy(Func<IDictionary<string, string>, ApplicationLevel> callback)
         {
             _callback = callback;
+        }
+
+        private bool GetMissedRemoteAddresses(Protocols protocol, ApplicationLevel level)
+        {
+            if (CheckProtect(protocol, level, _cluster.ProtocolType)) return false;
+            if (_hostProxy == null) return false;
+            IList<string> addresses = _hostProxy.GetRemoteAddresses(_appUniqueId, protocol, _cluster.ProtocolType, level);
+            if (addresses == null || addresses.Count == 0) return false;
+            _cluster.UpdateCache(new MessageIdentity{ProtocolId = (byte) protocol.ProtocolId, ServiceId = (byte) protocol.ServiceId, DetailsId = (byte) protocol.DetailsId}, level, addresses);
+            return true;
+        }
+
+        //avoids for obtaining non-existed remote address frequently under big overloads.
+        //return true when the targeted condition had reached.
+        private bool CheckProtect(Protocols protocol, ApplicationLevel level, ProtocolTypes protocolType)
+        {
+            lock (_protectiveLockObj)
+            {
+                string key = string.Format("{0}-{1}-{2}_{3}_{4}", protocol.ProtocolId, protocol.ServiceId, protocol.DetailsId, level, protocolType);
+                DateTime time;
+                if (!_protectiveCheckingTimeSpan.TryGetValue(key, out time))
+                {
+                    _protectiveCheckingTimeSpan[key] = DateTime.Now;
+                    return false;
+                }
+                if ((DateTime.Now - time) <= _protectiveTimeSpan) return true;
+                _protectiveCheckingTimeSpan[key] = DateTime.Now;
+                return false;
+            }
         }
 
         /// <summary>

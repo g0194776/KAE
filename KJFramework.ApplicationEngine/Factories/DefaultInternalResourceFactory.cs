@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Proxies;
 
@@ -25,6 +26,7 @@ namespace KJFramework.ApplicationEngine.Factories
             _resources.Add(KAESystemInternalResource.APPDownloader, new RemotingApplicationDownloader());
             _resources.Add(KAESystemInternalResource.APPFinder, new DefaultApplicationFinder());
             _resources.Add(KAESystemInternalResource.KISProxy, new RemotingKISProxy(SystemWorker.ConfigurationProxy.GetField("KAEWorker", "KIS-Address")));
+            _resources.Add(KAESystemInternalResource.ProtocolRegister, new ZooKeeperProtocolRegister(SystemWorker.ConfigurationProxy.GetField("KAEWorker", "ZooKeeperAddresses"), TimeSpan.Parse(SystemWorker.ConfigurationProxy.GetField("KAEWorker", "ZooKeeper-SessionTimeout"))));
         }
 
         /// <summary>
@@ -35,7 +37,7 @@ namespace KJFramework.ApplicationEngine.Factories
         public object GetResource(string fullname)
         {
             object obj;
-            return (this._resources.TryGetValue(fullname, out obj) ? obj : null);
+            return (_resources.TryGetValue(fullname, out obj) ? obj : null);
         }
 
         #endregion
