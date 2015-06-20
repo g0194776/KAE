@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.Dynamic.Components;
 using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Transaction.Objects;
 
 namespace KJFramework.ApplicationEngine
 {
@@ -60,9 +61,9 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         /// <param name="level">应用等级</param>
         /// <param name="cache">远程目标终结点信息列表</param>
-        /// <param name="identity">通信协议</param>
+        /// <param name="protocol">通信协议</param>
         /// <param name="protocolTypes">协议类型</param>
-        void UpdateCache(MessageIdentity identity, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache);
+        void UpdateCache(Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache);
         /// <summary>
         ///    更新灰度升级策略的源代码
         /// </summary>

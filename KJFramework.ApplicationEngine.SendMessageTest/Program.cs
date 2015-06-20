@@ -53,7 +53,7 @@ namespace KJFramework.ApplicationEngine.SendMessageTest
                     };
                 MetadataContainer reqMsg = new MetadataContainer();
                 reqMsg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 1, ServiceId = 0, DetailsId = 2 }));
-                reqMsg.SetAttribute(0x02, new ByteValueStored((byte)ApplicationLevel.Stable));
+                reqMsg.SetAttribute(0x05, new ByteValueStored((byte)ApplicationLevel.Stable));
                 reqMsg.SetAttribute(0x0A, new StringValueStored("Hello, KAE"));
                 transaction.SendRequest(reqMsg);
             }

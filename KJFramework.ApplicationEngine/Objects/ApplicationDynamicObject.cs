@@ -22,6 +22,7 @@ using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Managers;
+using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Tracing;
 using ILease = System.Runtime.Remoting.Lifetime.ILease;
@@ -292,11 +293,11 @@ namespace KJFramework.ApplicationEngine.Objects
         /// </summary>
         /// <param name="level">应用等级</param>
         /// <param name="cache">远程目标终结点信息列表</param>
-        /// <param name="identity">通信协议</param>
+        /// <param name="protocol">通信协议</param>
         /// <param name="protocolTypes">协议类型</param>
-        public void UpdateCache(MessageIdentity identity, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache)
+        public void UpdateCache(Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache)
         {
-            _application.UpdateCache(identity, protocolTypes, level, cache);
+            _application.UpdateCache(protocol, protocolTypes, level, cache);
         }
 
         /// <summary>

@@ -5,7 +5,6 @@ using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Enums;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Enums;
@@ -90,15 +89,17 @@ namespace KJFramework.ApplicationEngine.Proxies
         {
             string errMsg;
             ApplicationLevel level = (resourceUri == null ? ApplicationLevel.Stable : _callback(resourceUri));
-            IServerConnectionAgent<TMessage> agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), out errMsg);
+            IServerConnectionAgent<TMessage> agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), out errMsg);
             if (agent == null)
             {
                 lock (_lockObj)
                 {
                     //try to obtains agent object again for ensuring that the newest remoting addresses can be appliy in the multiple threading env.
-                    agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), out errMsg);
+                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), out errMsg);
                     if (agent == null && !GetMissedRemoteAddresses(target, level)) return new FailMessageTransaction<TMessage>(errMsg);
-                    agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), out errMsg);
+                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), out errMsg);
+                    //check returned value again for avoiding couldnt connect to the remote address now.
+                    if (agent == null) return new FailMessageTransaction<TMessage>(errMsg);
                 }
             }
             MessageTransaction<TMessage> transaction = NewTransaction(new Lease(DateTime.Now.Add(maximumRspTime)), agent.GetChannel());
@@ -141,15 +142,17 @@ namespace KJFramework.ApplicationEngine.Proxies
         {
             string errMsg;
             ApplicationLevel level = (resourceUri == null ? ApplicationLevel.Stable : _callback(resourceUri));
-            IServerConnectionAgent<TMessage> agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), balanceFlag, out errMsg);
+            IServerConnectionAgent<TMessage> agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), balanceFlag, out errMsg);
             if (agent == null)
             {
                 lock (_lockObj)
                 {
                     //try to obtains agent object again for ensuring that the newest remoting addresses can be appliy in the multiple threading env.
-                    agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), balanceFlag, out errMsg);
+                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), balanceFlag, out errMsg);
                     if (agent == null && !GetMissedRemoteAddresses(target, level)) return new FailMessageTransaction<TMessage>(errMsg);
-                    agent = _cluster.GetChannel(target, level, _container.GetProtocolStack(protocolSelf ?? "METADATA"), balanceFlag, out errMsg);
+                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), balanceFlag, out errMsg);
+                    //check returned value again for avoiding couldnt connect to the remote address now.
+                    if (agent == null) return new FailMessageTransaction<TMessage>(errMsg);
                 }
             }
             MessageTransaction<TMessage> transaction = NewTransaction(new Lease(DateTime.Now.Add(maximumRspTime)), agent.GetChannel());
@@ -243,7 +246,7 @@ namespace KJFramework.ApplicationEngine.Proxies
             if (_hostProxy == null) return false;
             IList<string> addresses = _hostProxy.GetRemoteAddresses(_appUniqueId, protocol, _cluster.ProtocolType, level);
             if (addresses == null || addresses.Count == 0) return false;
-            _cluster.UpdateCache(new MessageIdentity{ProtocolId = (byte) protocol.ProtocolId, ServiceId = (byte) protocol.ServiceId, DetailsId = (byte) protocol.DetailsId}, level, addresses);
+            _cluster.UpdateCache(protocol, level, addresses);
             return true;
         }
 

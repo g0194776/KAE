@@ -30,6 +30,7 @@ using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Messages;
+using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using Uri = KJFramework.Net.Channels.Uri.Uri;
@@ -296,6 +297,7 @@ namespace KJFramework.ApplicationEngine
             _tracing.DebugInfo("#Preparing Internal Data For Remoting RRCS...");
 
             IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister) KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
+            protocolRegister.ChildrenChanged += RemoteResourceChanged;
             List<Tuple<ApplicationLevel, IList<ProtocolTypes>>> networkResources = new List<Tuple<ApplicationLevel, IList<ProtocolTypes>>>();
             Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> protocolDic = new Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>>();
             foreach (KeyValuePair<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> pair in apps)
@@ -529,12 +531,12 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         /// <param name="level">应用等级</param>
         /// <param name="cache">远程目标终结点信息列表</param>
-        /// <param name="identity">通信协议</param>
+        /// <param name="protocol">通信协议</param>
         /// <param name="protocolTypes">协议类型</param>
-        internal void UpdateCache(MessageIdentity identity, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache)
+        internal void UpdateCache(Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache)
         {
             lock (_appDicLockObj)
-                foreach (KeyValuePair<Guid, ApplicationDynamicObject> pair in _activeApps) pair.Value.UpdateCache(identity, protocolTypes, level, cache);
+                foreach (KeyValuePair<Guid, ApplicationDynamicObject> pair in _activeApps) pair.Value.UpdateCache(protocol, protocolTypes, level, cache);
         }
 
         private void HandleSystemCommand(IMessageTransaction<MetadataContainer> transaction)
@@ -551,7 +553,7 @@ namespace KJFramework.ApplicationEngine
             MetadataConnectionAgent agent = (MetadataConnectionAgent)sender;
             IMessageTransaction<MetadataContainer> transaction = e.Target;
             MetadataContainer reqMsg = transaction.Request;
-            Tuple<KAENetworkResource, ApplicationLevel> tag = new Tuple<KAENetworkResource, ApplicationLevel>((KAENetworkResource)agent.Tag, (ApplicationLevel)reqMsg.GetAttributeAsType<byte>(0x02));
+            Tuple<KAENetworkResource, ApplicationLevel> tag = new Tuple<KAENetworkResource, ApplicationLevel>((KAENetworkResource)agent.Tag, (reqMsg.IsAttibuteExsits(0x05) ? (ApplicationLevel)reqMsg.GetAttributeAsType<byte>(0x05) : ApplicationLevel.Stable));
             MessageIdentity reqMsgIdentity = reqMsg.GetAttributeAsType<MessageIdentity>(0x00);
             /*
              * We always makes a checking on the Metadata protocol network communication. 
@@ -579,6 +581,13 @@ namespace KJFramework.ApplicationEngine
                 foreach (KeyValuePair<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> pair in _protocolDic)
                     foreach (KeyValuePair<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>> valuePair in pair.Value)
                         foreach (KeyValuePair<ApplicationLevel, ApplicationDynamicObject> keyValuePair in valuePair.Value) keyValuePair.Value.UpdateConfiguration(e.Target.Item1, e.Target.Item2);
+        }
+
+        //sent from ZooKeeper that it indicates the remote network resource had been changed.
+        void RemoteResourceChanged(object sender, LightSingleArgEventArgs<IProtocolResource> e)
+        {
+            IList<string> result = e.Target.GetResult();
+            UpdateCache(e.Target.Protocol, e.Target.ProtocolTypes, e.Target.Level, (List<string>) result);
         }
 
         #endregion

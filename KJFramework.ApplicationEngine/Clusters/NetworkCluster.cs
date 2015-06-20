@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Rings;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
@@ -62,17 +61,11 @@ namespace KJFramework.ApplicationEngine.Clusters
         /// </summary>
         /// <param name="level">应用等级</param>
         /// <param name="cache">远程目标终结点信息列表</param>
-        /// <param name="identity">通信协议</param>
-        public void UpdateCache(MessageIdentity identity, ApplicationLevel level, IList<string> cache)
+        /// <param name="protocol">通信协议</param>
+        public void UpdateCache(Protocols protocol, ApplicationLevel level, IList<string> cache)
         {
-            Protocols protocol = new Protocols
-            {
-                ProtocolId = identity.ProtocolId,
-                ServiceId = identity.ServiceId,
-                DetailsId = identity.DetailsId
-            };
             //prepares kathma ring.
-            KetamaRing ring = new KetamaRing(cache.Select(v => new KAEHostNode(v)).ToList());
+            KetamaRing ring = ((cache == null || cache.Count == 0) ? null : new KetamaRing(cache.Select(v => new KAEHostNode(v)).ToList()));
             lock (_lockObj)
             {
                 IDictionary<ProtocolTypes, KetamaRing> thirdDic;
@@ -105,6 +98,11 @@ namespace KJFramework.ApplicationEngine.Clusters
                         KetamaRing ring;
                         if (secondLevel.TryGetValue(_protocolType, out ring))
                         {
+                            if (ring == null)
+                            {
+                                errMsg = string.Format("#Sadly, We have no more network information about what you gave of protocol: {0}-{1}-{2}, Maybe it was been removed or there wasn't any available network resources.", target.ProtocolId, target.ServiceId, target.DetailsId);
+                                return null;
+                            }
                             KAEHostNode node = ring.GetWorkerNode();
                             IServerConnectionAgent<TMessage> agent = _connectionPool.GetChannel(node.EndPoint, node.RawAddress, protocolStack, _transactionManager);
                             errMsg = (agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + node.RawAddress);
@@ -140,6 +138,11 @@ namespace KJFramework.ApplicationEngine.Clusters
                         KetamaRing ring;
                         if (secondLevel.TryGetValue(_protocolType, out ring))
                         {
+                            if (ring == null)
+                            {
+                                errMsg = string.Format("#Sadly, We have no more network information about what you gave of protocol: {0}-{1}-{2}, Maybe it was been removed or there wasn't any available network resources.", target.ProtocolId, target.ServiceId, target.DetailsId);
+                                return null;
+                            }
                             KAEHostNode node = ring.GetWorkerNode(balanceFlag);
                             IServerConnectionAgent<TMessage> agent = _connectionPool.GetChannel(node.EndPoint, node.RawAddress, protocolStack, _transactionManager);
                             errMsg = (agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + node.RawAddress);

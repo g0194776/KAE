@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using KJFramework.ApplicationEngine.Eums;
 using KJFramework.Net.ProtocolStacks;
+using KJFramework.Net.Transaction.ProtocolStack;
 
 namespace KJFramework.ApplicationEngine
 {
@@ -11,6 +13,8 @@ namespace KJFramework.ApplicationEngine
     {
         #region Members.
 
+        private IProtocolStack _intellectProtocolStack = new BusinessProtocolStack();
+        private IProtocolStack _metadataProtocolStack = new MetadataProtocolStack();
         private readonly Dictionary<string, IProtocolStack>  _protocolStacks = new Dictionary<string, IProtocolStack>();
 
         #endregion
@@ -38,6 +42,22 @@ namespace KJFramework.ApplicationEngine
             if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");
             IProtocolStack protocolStack;
             return (_protocolStacks.TryGetValue(role, out protocolStack) ? protocolStack : null);
+        }
+
+        /// <summary>
+        ///    获取默认支持的协议栈
+        /// </summary>
+        /// <param name="protocolType">
+        ///     协议类型
+        ///     <para>* 默认只会支持Metadata和Intellect这两种协议栈</para>
+        /// </param>
+        /// <returns>返回默认的协议栈</returns>
+        /// <exception cref="NotSupportedException">当前传入的协议不被支持</exception>
+        public IProtocolStack GetDefaultProtocolStack(ProtocolTypes protocolType)
+        {
+            if (protocolType == ProtocolTypes.Metadata) return _metadataProtocolStack;
+            if (protocolType == ProtocolTypes.Intellegence) return _intellectProtocolStack;
+            throw new NotSupportedException("#Current type of protocol you passed had not supported yet.");
         }
 
         #endregion

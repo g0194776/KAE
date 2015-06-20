@@ -1,7 +1,9 @@
-﻿using KJFramework.ApplicationEngine.Eums;
+﻿using System;
+using KJFramework.ApplicationEngine.Eums;
+using KJFramework.EventArgs;
 using KJFramework.Net.Channels.Identities;
-using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction.Objects;
+using Uri = KJFramework.Net.Channels.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine.Proxies
 {
@@ -28,6 +30,15 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="protocolTypes">协议类型</param>
         /// <returns>返回远程目标可访问资源</returns>
         IProtocolResource GetProtocolResource(Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level);
+
+        #endregion
+
+        #region Events.
+
+        /// <summary>
+        ///    远程资源列表变更事件
+        /// </summary>
+        event EventHandler<LightSingleArgEventArgs<IProtocolResource>> ChildrenChanged;
 
         #endregion
     }

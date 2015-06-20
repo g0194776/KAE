@@ -1,5 +1,6 @@
 ﻿using System;
 using KJFramework.ApplicationEngine.Eums;
+using KJFramework.EventArgs;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Objects;
 using ZooKeeperNet;
@@ -60,7 +61,10 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <returns>返回远程目标可访问资源</returns>
         public IProtocolResource GetProtocolResource(Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level)
         {
-            throw new NotImplementedException();
+            string path = string.Format("/{0}-{1}-{2}-{3}-{4}", protocol.ProtocolId, protocol.ServiceId, protocol.DetailsId, protocolTypes, level);
+            IProtocolResource resource = new ProtocolResource(_client, path, protocol, protocolTypes, level);
+            resource.ChildrenChanged += delegate(object sender, System.EventArgs args) { OnChildrenChanged(new LightSingleArgEventArgs<IProtocolResource>((IProtocolResource) sender));};
+            return resource;
         }
 
         private void AddPath(string path, CreateMode mode)
@@ -68,6 +72,20 @@ namespace KJFramework.ApplicationEngine.Proxies
             if (_client.Exists(path, false) != null) return;
             try { _client.Create(path, null, Ids.OPEN_ACL_UNSAFE, mode); }
             catch (KeeperException.NodeExistsException) { }
+        }
+
+        #endregion
+
+        #region Events.
+
+        /// <summary>
+        ///    远程资源列表变更事件
+        /// </summary>
+        public event EventHandler<LightSingleArgEventArgs<IProtocolResource>> ChildrenChanged;
+        protected virtual void OnChildrenChanged(LightSingleArgEventArgs<IProtocolResource> e)
+        {
+            EventHandler<LightSingleArgEventArgs<IProtocolResource>> handler = ChildrenChanged;
+            if (handler != null) handler(this, e);
         }
 
         #endregion

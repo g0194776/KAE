@@ -1,7 +1,14 @@
 ﻿using KJFramework.ApplicationEngine.Attributes;
+using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Processors;
+using KJFramework.ApplicationEngine.Proxies;
+using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
+using KJFramework.Messages.ValueStored;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
+using KJFramework.Net.Transaction.Objects;
+using KJFramework.Net.Transaction.ValueStored;
 
 namespace KJFramework.ApplicationEngine.ApplicationTest.Processors
 {
@@ -15,8 +22,17 @@ namespace KJFramework.ApplicationEngine.ApplicationTest.Processors
 
         protected override void InnerProcess(IMessageTransaction<MetadataContainer> package)
         {
-            MetadataContainer rspMsg = new MetadataContainer();
-            package.SendResponse(rspMsg);
+            IMessageTransactionProxy<MetadataContainer> transactionProxy = SystemWorker.GetTransactionProxy<MetadataContainer>(ProtocolTypes.Metadata);
+            IMessageTransaction<MetadataContainer> transaction = transactionProxy.CreateTransaction(new Protocols {ProtocolId = 1, ServiceId = 0, DetailsId = 3}, null);
+            transaction.ResponseArrived += delegate(object sender, LightSingleArgEventArgs<MetadataContainer> e)
+            {
+                package.SendResponse(e.Target);
+            };
+            MetadataContainer reqMsg = new MetadataContainer();
+            reqMsg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 1, ServiceId = 0, DetailsId = 3 }));
+            reqMsg.SetAttribute(0x05, new ByteValueStored((byte)ApplicationLevel.Stable));
+            reqMsg.SetAttribute(0x0A, new StringValueStored("Hello, KAE APP"));
+            transaction.SendRequest(reqMsg);
         }
     }
 }

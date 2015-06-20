@@ -29,8 +29,8 @@ namespace KJFramework.ApplicationEngine.Clusters
         /// </summary>
         /// <param name="level">应用等级</param>
         /// <param name="cache">远程目标终结点信息列表</param>
-        /// <param name="identity">通信协议</param>
-        void UpdateCache(MessageIdentity identity, ApplicationLevel level,  IList<string> cache);
+        /// <param name="protocol">通信协议</param>
+        void UpdateCache(Protocols protocol, ApplicationLevel level, IList<string> cache);
         /// <summary>
         ///     根据当前负载器规则获取一个通信信道
         /// </summary>

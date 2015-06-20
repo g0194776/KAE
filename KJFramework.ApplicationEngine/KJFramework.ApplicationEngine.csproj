@@ -11,6 +11,8 @@
     <AssemblyName>KJFramework.ApplicationEngine</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -121,6 +123,7 @@
     <Compile Include="Proxies\IRemotingProtocolRegister.cs" />
     <Compile Include="Proxies\MessageTransactionProxy.cs" />
     <Compile Include="Proxies\MetadataMessageTransactionProxy.cs" />
+    <Compile Include="Proxies\ProtocolResource.cs" />
     <Compile Include="Proxies\RemotingApplicationDownloader.cs" />
     <Compile Include="Helpers\FileCompression.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
@@ -163,6 +166,7 @@
     <Compile Include="Rings\KetamaRing.cs" />
     <Compile Include="Proxies\IKAEHostProxy.cs" />
     <Compile Include="SystemWorker.cs" />
+    <Compile Include="ZooKeeperWatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
@@ -217,6 +221,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

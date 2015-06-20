@@ -185,3 +185,19 @@ What's the next:
 2. KAE 目前已经更改基于RRCS的方案，新的方案是弃用掉RRCS并将KAE HOST直接与ZooKeeper进行通信
 3. 在KAE软负载期间弃用KAE APP版本号的概念，转而使用基于P/S/D以及应用等级和协议类型这5个字段组成的字符串进行负载
 4. 软负载圆环目前除了按照应用等级之外，还会按照业务协议以及通信协议类型来区分。也就是说一个负载圆环需要具备3单独的条件。
+
+
+
+
+
+
+
+2015-6-20进度
+------------------------------------------------
+1. 将通信时传递的、期望请求的APP类型下放到0x05字段进行存放，同时修改了KAEHost用于支持当此字段不传递的时候默认使用Stable版本的KAE APP
+2. 统一了Protocols和MessageIdentity类型的使用场景, Protocols主要用于内部传递而MessageIdentity主要用于网络通信上使用
+3. 为NetworkCluster加入特殊逻辑，当能用PROTOCOL换出一致性HASH圆环，并且该圆环是空的时候则会进行特殊的错误提示
+4. 为协议栈容器(IProtocolStackContainer)加入获取所支持的默认网络协议栈方法
+5. 提供ProtocolResurce的默认实现，并且加入数据变更的通知事件
+6. 为远程协议资源管理器加入数据变更通知事件
+7. 移除了MetadataTransaction.SendResponse中的一个BUG

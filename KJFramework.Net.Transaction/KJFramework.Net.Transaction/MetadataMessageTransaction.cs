@@ -142,7 +142,6 @@ namespace KJFramework.Net.Transaction
         {
             _response = message;
             if (message == null || Identity.IsOneway) return;
-            if (!message.IsAttibuteExsits(0x00)) throw new ArgumentException("#Current RSP message dose not contain any Message-Identity infomation.");
             //Automatically calculate the RSP message's protocol.
             MessageIdentity mIdentity = _request.GetAttributeAsType<MessageIdentity>(0x00);
             mIdentity.DetailsId += 1;
