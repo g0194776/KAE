@@ -63,6 +63,7 @@ namespace KJFramework.Data.Synchronization.Transactions
         {
             if (message == null) return;
             Identity.IsRequest = true;
+            if (_fixedMsgIdentity) message.SetAttribute(0x00, new MessageIdentityValueStored(_msgIdentity));
             message.SetAttribute(0x01, new TransactionIdentityValueStored(Identity));
             _request = message;
             if (!_channel.IsConnected)

@@ -201,3 +201,13 @@ What's the next:
 5. 提供ProtocolResurce的默认实现，并且加入数据变更的通知事件
 6. 为远程协议资源管理器加入数据变更通知事件
 7. 移除了MetadataTransaction.SendResponse中的一个BUG
+
+
+
+
+
+
+2015-6-21进度
+------------------------------------------------
+1. 优化MessageTransactionProxy内部逻辑。以后只要使用MessageTransactionProxy创建出来的网络事务均不需要再在网络的REQ消息中
+手动的添加MessageIdentity字段。这个字段将会在Transaction.SendRequest时自动附加上去！

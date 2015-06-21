@@ -86,6 +86,8 @@ namespace KJFramework.Net.Transaction
         protected T _request;
         protected T _response;
         protected bool _needResponse;
+        protected bool _fixedMsgIdentity;
+        protected MessageIdentity _msgIdentity;
         protected readonly IMessageTransportChannel<T> _channel;
 
         /// <summary>
@@ -143,6 +145,12 @@ namespace KJFramework.Net.Transaction
         public IMessageTransportChannel<T> GetChannel()
         {
             return _channel;
+        }
+
+        internal void SetMessageIdentity(MessageIdentity msgIdentity)
+        {
+            _fixedMsgIdentity = true;
+            _msgIdentity = msgIdentity;
         }
 
         internal void SetTimeout()

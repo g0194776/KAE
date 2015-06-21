@@ -5,6 +5,7 @@ using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Enums;
+using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Enums;
@@ -103,6 +104,7 @@ namespace KJFramework.ApplicationEngine.Proxies
                 }
             }
             MessageTransaction<TMessage> transaction = NewTransaction(new Lease(DateTime.Now.Add(maximumRspTime)), agent.GetChannel());
+            transaction.SetMessageIdentity(new MessageIdentity{ProtocolId = (byte) target.ProtocolId, ServiceId = (byte) target.ServiceId, DetailsId = (byte) target.DetailsId});
             transaction.TransactionManager = _transactionManager;
             transaction.Identity = (communicationType == NetworkCommunicationTypes.Dulplex ? IdentityHelper.Create(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP) : IdentityHelper.CreateOneway(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP));
             return (_transactionManager.Add(transaction.Identity, transaction) ? transaction : null);
@@ -156,6 +158,7 @@ namespace KJFramework.ApplicationEngine.Proxies
                 }
             }
             MessageTransaction<TMessage> transaction = NewTransaction(new Lease(DateTime.Now.Add(maximumRspTime)), agent.GetChannel());
+            transaction.SetMessageIdentity(new MessageIdentity { ProtocolId = (byte)target.ProtocolId, ServiceId = (byte)target.ServiceId, DetailsId = (byte)target.DetailsId });
             transaction.TransactionManager = _transactionManager;
             transaction.Identity = (communicationType == NetworkCommunicationTypes.Dulplex ? IdentityHelper.Create(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP) : IdentityHelper.CreateOneway(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP));
             return (_transactionManager.Add(transaction.Identity, transaction) ? transaction : null);

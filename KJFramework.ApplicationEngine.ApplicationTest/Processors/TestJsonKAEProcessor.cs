@@ -5,10 +5,8 @@ using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Objects;
-using KJFramework.Net.Transaction.ValueStored;
 
 namespace KJFramework.ApplicationEngine.ApplicationTest.Processors
 {
@@ -29,7 +27,6 @@ namespace KJFramework.ApplicationEngine.ApplicationTest.Processors
                 package.SendResponse(e.Target);
             };
             MetadataContainer reqMsg = new MetadataContainer();
-            reqMsg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 1, ServiceId = 0, DetailsId = 3 }));
             reqMsg.SetAttribute(0x05, new ByteValueStored((byte)ApplicationLevel.Stable));
             reqMsg.SetAttribute(0x0A, new StringValueStored("Hello, KAE APP"));
             transaction.SendRequest(reqMsg);

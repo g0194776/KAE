@@ -88,6 +88,7 @@ namespace KJFramework.Net.Transaction
         public override void SendRequest(BaseMessage message)
         {
             if (message == null) return;
+            if (_fixedMsgIdentity) message.MessageIdentity = _msgIdentity;
             message.TransactionIdentity = Identity;
             message.TransactionIdentity.IsRequest = true;
             message.ExpireTime = _lease.ExpireTime;

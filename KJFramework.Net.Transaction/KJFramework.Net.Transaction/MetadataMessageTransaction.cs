@@ -91,6 +91,7 @@ namespace KJFramework.Net.Transaction
         {
             if (message == null) return;
             Identity.IsRequest = true;
+            if (_fixedMsgIdentity) message.SetAttribute(0x00, new MessageIdentityValueStored(_msgIdentity));
             message.SetAttribute(0x01, new TransactionIdentityValueStored(Identity));
             message.SetAttribute(0x02, new DateTimeValueStored(_lease.ExpireTime));
             _request = message;
