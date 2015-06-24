@@ -11,6 +11,7 @@ using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Extends;
 using KJFramework.ApplicationEngine.Factories;
 using KJFramework.ApplicationEngine.Finders;
+using KJFramework.ApplicationEngine.Loggers;
 using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Messages;
 using KJFramework.ApplicationEngine.Objects;
@@ -40,7 +41,7 @@ namespace KJFramework.ApplicationEngine
     /// <summary>
     ///    KAE宿主
     /// </summary>
-    public class KAEHost : IKAEHost
+    public sealed class KAEHost : IKAEHost
     {
         #region Constructor
 
@@ -163,8 +164,6 @@ namespace KJFramework.ApplicationEngine
         private readonly bool _usedInstallingListFile;
         private readonly string _installingListFile;
         private ChannelInternalConfigSettings _settings;
-        private readonly object _appDicLockObj = new object();
-        private readonly object _protocolDicLockObj = new object();
         private readonly IRemoteConfigurationProxy _configurationProxy;
         private readonly IKAEHostProxy _hostProxy = new KAEHostProxy();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(KAEHost));
@@ -176,7 +175,10 @@ namespace KJFramework.ApplicationEngine
         
         #endregion
 
-        private readonly IDictionary<Guid, ApplicationDynamicObject> _activeApps = new Dictionary<Guid, ApplicationDynamicObject>();
+        private readonly object _protocolDicLockObj = new object();
+        private readonly object _activedAppsLockObj = new object();
+        private readonly IKAEStateLogger _stateLogger = new KAEStateLogger(_tracing);
+        private readonly IDictionary<Guid, ApplicationDynamicObject> _activedApps = new Dictionary<Guid, ApplicationDynamicObject>();
         //caches for network end-points by respective MessageIdentity.
         //1st level of key = MessageIdentity + App Level; second level of key = application's version.
         private IDictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> _protocolDic;
@@ -232,7 +234,8 @@ namespace KJFramework.ApplicationEngine
                 KAEHostNetworkResourceManager.Initialize();
             }
             _tracing.DebugInfo("\t#Loading KPPs...");
-            IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> appMetadata = ((IApplicationFinder)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.APPFinder)).Search(workRoot);
+            //probing apps from specified file path: $WORK-PATHH\install-apps\
+            IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> appMetadata = ((IApplicationFinder)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.APPFinder)).Search(Path.Combine(workRoot, "install-apps"));
             if (appMetadata == null || appMetadata.Count == 0) return new Dictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>>();
             //re-composites.
             IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> apps = new Dictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>>();
@@ -258,7 +261,7 @@ namespace KJFramework.ApplicationEngine
                     ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2, _settings, _hostProxy);
                     entry = new Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>(tuple.Item1, tuple.Item2, dynamicObject);
                     subDic.Add(appFullKey, entry);
-                    _activeApps[dynamicObject.GlobalUniqueId] = dynamicObject;
+                    lock (_activedAppsLockObj) _activedApps[dynamicObject.GlobalUniqueId] = dynamicObject;
                 }
             }
             return apps;
@@ -294,7 +297,7 @@ namespace KJFramework.ApplicationEngine
 
             #region #Step 2, initializes current suported mapping from protocol & message identity & application's level.
 
-            _tracing.DebugInfo("#Preparing Internal Data For Remoting RRCS...");
+            _tracing.DebugInfo("#Preparing to registers APP business information to remote server...");
 
             IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister) KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
             protocolRegister.ChildrenChanged += RemoteResourceChanged;
@@ -326,6 +329,37 @@ namespace KJFramework.ApplicationEngine
             GetGreyPolicyAsync();
             Status = KAEHostStatus.Prepared;
             _tracing.DebugInfo("#KAE host has been initialized, STATUS: {0}.", ConsoleColor.DarkGreen, Status);
+        }
+
+        /// <summary>
+        ///     下架一个指定的KAE APP
+        /// </summary>
+        /// <param name="uniqueId">KAE APP唯一编号</param>
+        internal void UninstallApp(Guid uniqueId)
+        {
+            _stateLogger.Log(string.Format("#Begin uninstalling KAE app: {0}", uniqueId));
+            lock (_activedAppsLockObj)
+            {
+                ApplicationDynamicObject app;
+                if (!_activedApps.TryGetValue(uniqueId, out app)) return;
+                _stateLogger.Log(string.Format("#Begin stopping targeted KAE app for uninstalling: {0}", uniqueId));
+                app.Stop();
+                _stateLogger.Log(string.Format("#End stopping targeted KAE app for uninstalling: {0}", uniqueId));
+                _activedApps.Remove(uniqueId);
+            }
+            _stateLogger.Log(string.Format("#End uninstalling KAE app: {0}", uniqueId));
+        }
+
+        /// <summary>
+        ///     尝试上架一个指定的KAE APP
+        /// </summary>
+        /// <param name="uniqueId">KAE APP唯一编号</param>
+        /// <param name="reason">上架失败的原因</param>
+        /// <returns>返回上架后的状态</returns>
+        internal bool TryInstallApp(Guid uniqueId, out string reason)
+        {
+            reason = null;
+            return false;
         }
 
         private void InitializeNetworkProtocolHandler(Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> dic, KeyValuePair<ProtocolTypes, IList<MessageIdentity>> values, ApplicationDynamicObject dynamicObject)
@@ -361,8 +395,8 @@ namespace KJFramework.ApplicationEngine
                                 string code = reader.ReadToEnd();
                                 if (!string.IsNullOrEmpty(code))
                                 {
-                                    lock (_appDicLockObj)
-                                        foreach (KeyValuePair<Guid, ApplicationDynamicObject> pair in _activeApps) pair.Value.UpdateGreyPolicy(code);
+                                    lock (_activedAppsLockObj)
+                                        foreach (KeyValuePair<Guid, ApplicationDynamicObject> pair in _activedApps) pair.Value.UpdateGreyPolicy(code);
                                 }
                             }
                         }
@@ -535,8 +569,8 @@ namespace KJFramework.ApplicationEngine
         /// <param name="protocolTypes">协议类型</param>
         internal void UpdateCache(Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache)
         {
-            lock (_appDicLockObj)
-                foreach (KeyValuePair<Guid, ApplicationDynamicObject> pair in _activeApps) pair.Value.UpdateCache(protocol, protocolTypes, level, cache);
+            lock (_activedAppsLockObj)
+                foreach (KeyValuePair<Guid, ApplicationDynamicObject> pair in _activedApps) pair.Value.UpdateCache(protocol, protocolTypes, level, cache);
         }
 
         private void HandleSystemCommand(IMessageTransaction<MetadataContainer> transaction)

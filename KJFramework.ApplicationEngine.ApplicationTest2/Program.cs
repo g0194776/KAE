@@ -12,7 +12,7 @@ namespace KJFramework.ApplicationEngine.ApplicationTest2
             /*
              * KAE Testing Processing Preparation.
              */
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Apps");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "install-apps\\test1");
             if (Directory.Exists(path)) Directory.Delete(path, true);
             Directory.CreateDirectory(path);
             PackTestWithoutDelete(path);

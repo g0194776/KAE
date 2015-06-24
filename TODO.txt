@@ -211,3 +211,14 @@ What's the next:
 ------------------------------------------------
 1. 优化MessageTransactionProxy内部逻辑。以后只要使用MessageTransactionProxy创建出来的网络事务均不需要再在网络的REQ消息中
 手动的添加MessageIdentity字段。这个字段将会在Transaction.SendRequest时自动附加上去！
+
+
+
+
+
+2015-6-22进度
+------------------------------------------------
+1. 重新梳理了KAE APP的存放路径。需要上架的APP将会存放在install-apps目录中，而临时文件将会存放在temp-files目录中
+2. 为DefaultApplicationFinder提取出单一APP的解析实现方法，为后续的APP在线下载和安装做准备
+3. 加入KAE状态记录器对象，用于记录最后N条KAE宿主的日志信息，将会被用在今后状态跟踪和平台监控上
+4. 为KAE宿主初步实现了下架KAE APP的方法

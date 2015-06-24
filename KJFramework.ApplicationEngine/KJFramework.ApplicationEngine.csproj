@@ -109,6 +109,8 @@
     <Compile Include="Factories\DefaultInternalResourceFactory.cs" />
     <Compile Include="Factories\IInternalResourceFactory.cs" />
     <Compile Include="Finders\IApplicationFinder.cs" />
+    <Compile Include="Loggers\KAEStateLogger.cs" />
+    <Compile Include="Loggers\IKAEStateLogger.cs" />
     <Compile Include="KAESystemInternalResource.cs" />
     <Compile Include="Objects\Package.cs" />
     <Compile Include="Objects\PackageInfo.cs" />
