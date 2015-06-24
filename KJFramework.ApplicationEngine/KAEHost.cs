@@ -165,7 +165,7 @@ namespace KJFramework.ApplicationEngine
         private readonly string _installingListFile;
         private ChannelInternalConfigSettings _settings;
         private readonly IRemoteConfigurationProxy _configurationProxy;
-        private readonly IKAEHostProxy _hostProxy = new KAEHostProxy();
+        private readonly IKAEResourceProxy _hostProxy = new KAEHostResourceProxy();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(KAEHost));
 
         #region Performance Counters.
@@ -563,14 +563,23 @@ namespace KJFramework.ApplicationEngine
         /// <summary>
         ///    更新网络缓存信息
         /// </summary>
-        /// <param name="level">应用等级</param>
-        /// <param name="cache">远程目标终结点信息列表</param>
-        /// <param name="protocol">通信协议</param>
-        /// <param name="protocolTypes">协议类型</param>
-        internal void UpdateCache(Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache)
+        internal void UpdateCache(IProtocolResource resource)
         {
+            List<string> result = (List<string>) resource.GetResult();
+            IEnumerable<Guid> apps = resource.GetInterestedApps();
             lock (_activedAppsLockObj)
-                foreach (KeyValuePair<Guid, ApplicationDynamicObject> pair in _activedApps) pair.Value.UpdateCache(protocol, protocolTypes, level, cache);
+            {
+                foreach (Guid uniqueId in apps)
+                {
+                    ApplicationDynamicObject app;
+                    if (!_activedApps.TryGetValue(uniqueId, out app))
+                    {
+                        resource.UnRegisterInterestedApp(uniqueId);
+                        continue;
+                    }
+                    app.UpdateCache(resource.Protocol, resource.ProtocolTypes, resource.Level, result);
+                }
+            }
         }
 
         private void HandleSystemCommand(IMessageTransaction<MetadataContainer> transaction)
@@ -620,8 +629,7 @@ namespace KJFramework.ApplicationEngine
         //sent from ZooKeeper that it indicates the remote network resource had been changed.
         void RemoteResourceChanged(object sender, LightSingleArgEventArgs<IProtocolResource> e)
         {
-            IList<string> result = e.Target.GetResult();
-            UpdateCache(e.Target.Protocol, e.Target.ProtocolTypes, e.Target.Level, (List<string>) result);
+            UpdateCache(e.Target);
         }
 
         #endregion

@@ -17,7 +17,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         ///    转为KPP准备的内部配置获取代理器
         /// </summary>
         /// <param name="proxy">KAE宿主代理器</param>
-        public KPPConfigurationProxy(IKAEHostProxy proxy)
+        public KPPConfigurationProxy(IKAEResourceProxy proxy)
         {
             _proxy = proxy;
         }
@@ -26,7 +26,7 @@ namespace KJFramework.ApplicationEngine.Proxies
 
         #region Members.
 
-        private readonly IKAEHostProxy _proxy;
+        private readonly IKAEResourceProxy _proxy;
         private object _lockCallbackObj = new object();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (KPPConfigurationProxy));
         private readonly Dictionary<string, Action<string>> _callbacks = new Dictionary<string, Action<string>>();

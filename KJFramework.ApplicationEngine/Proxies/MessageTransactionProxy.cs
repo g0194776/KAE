@@ -30,7 +30,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="transactionManager">事务管理器</param>
         /// <param name="hostProxy">KAE宿主透明代理</param>
         /// <param name="appUniqueId">应用唯一编号</param>
-        protected MessageTransactionProxy(IProtocolStackContainer container, INetworkCluster<TMessage> cluster, ITransactionManager<TMessage> transactionManager, IKAEHostProxy hostProxy, Guid appUniqueId)
+        protected MessageTransactionProxy(IProtocolStackContainer container, INetworkCluster<TMessage> cluster, ITransactionManager<TMessage> transactionManager, IKAEResourceProxy hostProxy, Guid appUniqueId)
         {
             _container = container;
             _cluster = cluster;
@@ -44,7 +44,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         #region Members.
 
         private readonly Guid _appUniqueId;
-        private readonly IKAEHostProxy _hostProxy;
+        private readonly IKAEResourceProxy _hostProxy;
         private readonly object _lockObj = new object();
         protected readonly IProtocolStackContainer _container;
         protected readonly INetworkCluster<TMessage> _cluster;

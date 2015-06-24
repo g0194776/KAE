@@ -45,7 +45,7 @@ namespace KJFramework.ApplicationEngine.Objects
         /// <param name="proxy">KAE宿主代理器</param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         /// <exception cref="CannotConnectToTunnelException">无法建立正常的隧道连接</exception>
-        public ApplicationDynamicObject(ApplicationEntryInfo info, KPPDataStructure structure, ChannelInternalConfigSettings settings, IKAEHostProxy proxy)
+        public ApplicationDynamicObject(ApplicationEntryInfo info, KPPDataStructure structure, ChannelInternalConfigSettings settings, IKAEResourceProxy proxy)
         {
             if (info == null) throw new ArgumentNullException("info");
             if (structure == null) throw new ArgumentNullException("structure");
@@ -71,7 +71,7 @@ namespace KJFramework.ApplicationEngine.Objects
 
         private Application _application;
         protected AppDomain _domain;
-        private readonly IKAEHostProxy _proxy;
+        private readonly IKAEResourceProxy _proxy;
         private readonly KPPDataStructure _structure;
         private readonly ApplicationEntryInfo _entryInfo;
         private readonly ChannelInternalConfigSettings _settings;

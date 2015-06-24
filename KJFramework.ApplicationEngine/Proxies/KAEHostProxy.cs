@@ -8,7 +8,7 @@ namespace KJFramework.ApplicationEngine.Proxies
     /// <summary>
     ///    KAE宿主于内部所有已上架APP的代理器
     /// </summary>
-    internal class KAEHostProxy : MarshalByRefObject, IKAEHostProxy
+    internal class KAEHostResourceProxy : MarshalByRefObject, IKAEResourceProxy
     {
         #region Methods.
 
@@ -33,7 +33,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="protocolTypes">通信协议类型</param>
         /// <returns>返回远程目标可访问地址的集合, 如果返回null, 则证明不存在指定条件的远程目标</returns>
         public IList<string> GetRemoteAddresses(Guid appUniqueId, Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level)
-        {            
+        {
             IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
             IProtocolResource protocolResource = protocolRegister.GetProtocolResource(protocol, protocolTypes, level);
             protocolResource.RegisterInterestedApp(appUniqueId);

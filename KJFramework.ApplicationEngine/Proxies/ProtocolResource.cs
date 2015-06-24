@@ -18,8 +18,9 @@ namespace KJFramework.ApplicationEngine.Proxies
         private readonly ZooKeeper _client;
         private readonly Protocols _protocol;
         private readonly ApplicationLevel _level;
-        private readonly IList<Guid> _interestedApps; 
         private readonly ProtocolTypes _protocolTypes;
+        private readonly object _lockObj = new object();
+        private readonly IList<Guid> _interestedApps = new List<Guid>();
 
         #endregion
 
@@ -40,7 +41,6 @@ namespace KJFramework.ApplicationEngine.Proxies
             _protocol = protocol;
             _protocolTypes = protocolTypes;
             _level = level;
-            _interestedApps = new List<Guid>();
         }
 
         #endregion
@@ -98,7 +98,16 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="appUniqueId">KAE APP唯一编号</param>
         public void RegisterInterestedApp(Guid appUniqueId)
         {
-            _interestedApps.Add(appUniqueId);
+            lock (_lockObj) _interestedApps.Add(appUniqueId);
+        }
+
+        /// <summary>
+        ///     减少一个对当前业务协议感兴趣的KAE APP信息订阅者
+        /// </summary>
+        /// <param name="appUniqueId">KAE APP唯一编号</param>
+        public void UnRegisterInterestedApp(Guid appUniqueId)
+        {
+            lock (_lockObj) _interestedApps.Remove(appUniqueId);
         }
 
         /// <summary>
@@ -107,7 +116,10 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <returns>返回内部包含的数据</returns>
         public IEnumerable<Guid> GetInterestedApps()
         {
-            return _interestedApps;
+            lock (_lockObj) 
+            {
+                return _interestedApps.ToList();
+            }
         }
 
         #endregion

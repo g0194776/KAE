@@ -21,7 +21,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="transactionManager">事务管理器</param>
         /// <param name="hostProxy">KAE宿主透明代理</param>
         /// <param name="appUniqueId">应用唯一编号</param>
-        public BusinessMessageTransactionProxy(IProtocolStackContainer container, INetworkCluster<BaseMessage> cluster, ITransactionManager<BaseMessage> transactionManager, IKAEHostProxy hostProxy, Guid appUniqueId)
+        public BusinessMessageTransactionProxy(IProtocolStackContainer container, INetworkCluster<BaseMessage> cluster, ITransactionManager<BaseMessage> transactionManager, IKAEResourceProxy hostProxy, Guid appUniqueId)
             : base(container, cluster, transactionManager, hostProxy, appUniqueId)
         {
         }

@@ -33,7 +33,7 @@ namespace KJFramework.ApplicationEngine
         #region Members
 
         private static bool _isInitialized;
-        private static IKAEHostProxy _hostProxy;
+        private static IKAEResourceProxy _hostProxy;
         private static INetworkCluster<BaseMessage> _clsuter;
         private static INetworkCluster<MetadataContainer> _metadataCluster;
         private static IProtocolStackContainer _protocolStackContainer;
@@ -83,14 +83,16 @@ namespace KJFramework.ApplicationEngine
         /// <param name="setting">远程配置设置</param>
         /// <param name="configurationProxy">远程配置站访问代理器</param>
         /// <param name="notificationHandler">异常通知处理器</param>
+        /// <param name="proxy">KAE资源代理器</param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public static void Initialize(string role, RemoteConfigurationSetting setting, IRemoteConfigurationProxy configurationProxy, ITracingNotificationHandler notificationHandler = null)
+        public static void Initialize(string role, RemoteConfigurationSetting setting, IRemoteConfigurationProxy configurationProxy, ITracingNotificationHandler notificationHandler = null, IKAEResourceProxy proxy = null)
         {
             if (IsInitialized) return;
             if (setting == null) setting = RemoteConfigurationSetting.Default;
             if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");
             if (configurationProxy == null) throw new ArgumentNullException("configurationProxy");
             _configurationProxy = configurationProxy;
+            _hostProxy = proxy;
             //Regist("LGS", new LGSProtocolStack());
             TracingManager.NotificationHandler = notificationHandler ?? new RemoteLogProxy();
             //config remote configuration loader.
@@ -106,11 +108,11 @@ namespace KJFramework.ApplicationEngine
         ///     为KPP专门设计的初始化SystemWorker的函数
         /// </summary>
         /// <param name="role">服务角色</param>
-        /// <param name="proxy">KAE宿主代理器</param>
+        /// <param name="proxy">KAE资源代理器</param>
         /// <param name="settings">KJFramework网络层设置集</param>
         /// <param name="appUniqueId">APP唯一编号</param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        internal static void InitializeForKPP(string role, IKAEHostProxy proxy, ChannelInternalConfigSettings settings, Guid appUniqueId)
+        internal static void InitializeForKPP(string role, IKAEResourceProxy proxy, ChannelInternalConfigSettings settings, Guid appUniqueId)
         {
             if (IsInitialized) return;
             if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");

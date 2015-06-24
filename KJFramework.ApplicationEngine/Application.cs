@@ -100,7 +100,7 @@ namespace KJFramework.ApplicationEngine
         /// </summary>
         internal long CRC { get { return _structure.GetHeadField<long>("CRC"); } }
 
-        private IKAEHostProxy _proxy;
+        private IKAEResourceProxy _proxy;
         private string _previousCodeMD5;
         private KPPDataStructure _structure;
         private IHostTransportChannel _hostChannel;
@@ -175,7 +175,7 @@ namespace KJFramework.ApplicationEngine
         /// <param name="settings">APP所使用的网络资源设置集</param>
         /// <param name="proxy">KAE宿主代理器</param>
         /// <param name="greyPolicyCode">灰度升级策略脚本</param>
-        internal void Initialize(KPPDataStructure structure, ChannelInternalConfigSettings settings, IKAEHostProxy proxy, string greyPolicyCode = null)
+        internal void Initialize(KPPDataStructure structure, ChannelInternalConfigSettings settings, IKAEResourceProxy proxy, string greyPolicyCode = null)
         {
             _settings = settings;
             _structure = structure;

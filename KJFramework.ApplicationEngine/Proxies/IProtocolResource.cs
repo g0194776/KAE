@@ -47,6 +47,11 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="appUniqueId">KAE APP唯一编号</param>
         void RegisterInterestedApp(Guid appUniqueId);
         /// <summary>
+        ///     减少一个对当前业务协议感兴趣的KAE APP信息订阅者
+        /// </summary>
+        /// <param name="appUniqueId">KAE APP唯一编号</param>
+        void UnRegisterInterestedApp(Guid appUniqueId);
+        /// <summary>
         ///    获取一个对当前远程资源感兴趣的KAE APP唯一编号列表
         /// </summary>
         /// <returns>返回内部包含的数据</returns>

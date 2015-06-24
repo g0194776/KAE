@@ -8,7 +8,7 @@ namespace KJFramework.ApplicationEngine.Proxies
     /// <summary>
     ///    KAE宿主于内部所有已上架APP的代理器
     /// </summary>
-    internal interface IKAEHostProxy
+    public interface IKAEResourceProxy
     {
         /// <summary>
         ///     根据一个角色名和一个配置项的KEY名称来获取一个配置信息

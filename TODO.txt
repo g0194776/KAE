@@ -222,3 +222,7 @@ What's the next:
 2. 为DefaultApplicationFinder提取出单一APP的解析实现方法，为后续的APP在线下载和安装做准备
 3. 加入KAE状态记录器对象，用于记录最后N条KAE宿主的日志信息，将会被用在今后状态跟踪和平台监控上
 4. 为KAE宿主初步实现了下架KAE APP的方法
+5.现在当KAE APP通信地址有变更时，我们仅会通知KAE宿主中那些对这个变更感兴趣的KAE APP，而不是全局把所有的KAE APP都广播了
+6. 重命名IKAEHostProxy为IKAEResourceProxy
+7. 为IProtocolResource提供反注册方法(Unregister)
+8. 在SystemWorker的初始化方法中提供传入IKAEResourceProxy的支持，为后续KAE Client的支持做准备
