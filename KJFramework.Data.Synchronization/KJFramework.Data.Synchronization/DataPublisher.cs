@@ -318,11 +318,18 @@ namespace KJFramework.Data.Synchronization
                 //broadcast it for each subscriber.
                 lock (_lockSubObj)
                 {
+                    List<Guid> errorSubscribers = new List<Guid>();
                     foreach (ILocalDataSubscriber subscriber in _subscribers.Values)
                     {
                         try { subscriber.Send(_catalog, broadcastRequest.GetAttributeAsType<byte[]>(0x0B), broadcastRequest.GetAttributeAsType<byte[]>(0x0C)); }
-                        catch (System.Exception ex) { _tracing.Error(ex, null); }
+                        catch (System.Exception ex)
+                        {
+                            _tracing.Error(ex, null);
+                            errorSubscribers.Add(subscriber.Id);
+                        }
                     }
+                    if (errorSubscribers.Count > 0)
+                        foreach (Guid id in errorSubscribers) _subscribers.Remove(id);
                 }
             }
 

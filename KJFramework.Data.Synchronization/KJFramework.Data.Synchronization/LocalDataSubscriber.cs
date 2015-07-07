@@ -1,4 +1,4 @@
-using System.Net;
+using System;
 using KJFramework.Data.Synchronization.Enums;
 using KJFramework.Data.Synchronization.Policies;
 using KJFramework.Data.Synchronization.Transactions;
@@ -7,7 +7,6 @@ using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Helpers;
-using System;
 using KJFramework.Net.Transaction.ValueStored;
 
 namespace KJFramework.Data.Synchronization
@@ -101,9 +100,12 @@ namespace KJFramework.Data.Synchronization
         {
             if(_state != SubscriberState.Disconnected)
             {
-                _channel.Disconnected -= ChannelDisconnected;
-                _channel.Close();
-                _channel = null;
+                if (_channel != null)
+                {
+                    _channel.Disconnected -= ChannelDisconnected;
+                    _channel.Close();
+                    _channel = null;
+                }
                 _state = SubscriberState.Disconnected;
             }
         }
@@ -121,13 +123,12 @@ namespace KJFramework.Data.Synchronization
             if (string.IsNullOrEmpty(catalog)) throw new ArgumentNullException("catalog");
             if (key == null) throw new ArgumentNullException("key");
             //channel disconnected.
-            if(!_channel.IsConnected)
+            if(_channel == null || !_channel.IsConnected)
             {
                 Close();
                 return false;
             }
-            MetadataContainer container = (MetadataContainer) new MetadataContainer()
-                .SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity
+            MetadataContainer container = (MetadataContainer) new MetadataContainer().SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity
                     {
                         ProtocolId = 2,
                         ServiceId = 0,
