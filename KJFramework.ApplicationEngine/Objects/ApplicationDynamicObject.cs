@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
+using KJFramework.ApplicationEngine.Extends;
+using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Packages;
 using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
@@ -14,6 +16,9 @@ using KJFramework.Dynamic.Components;
 using KJFramework.Enums;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
+using KJFramework.Messages.Engine;
+using KJFramework.Messages.Types;
+using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Configurations;
 using KJFramework.Net.Channels.Identities;
@@ -24,8 +29,10 @@ using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.ProtocolStack;
+using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using ILease = System.Runtime.Remoting.Lifetime.ILease;
+using Uri = KJFramework.Net.Channels.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine.Objects
 {
@@ -43,17 +50,21 @@ namespace KJFramework.ApplicationEngine.Objects
         /// <param name="structure">KPP应用资源包的数据结构</param>
         /// <param name="settings">每个APP所使用的网络资源配置集</param>
         /// <param name="proxy">KAE宿主代理器</param>
+        /// <param name="handleSucceedSituation">业务处理成功场景下的系统回调函数</param>
+        /// <param name="handleErrorSituation">业务处理失败场景下的系统回调函数</param>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         /// <exception cref="CannotConnectToTunnelException">无法建立正常的隧道连接</exception>
-        public ApplicationDynamicObject(ApplicationEntryInfo info, KPPDataStructure structure, ChannelInternalConfigSettings settings, IKAEResourceProxy proxy)
+        public ApplicationDynamicObject(ApplicationEntryInfo info, KPPDataStructure structure, ChannelInternalConfigSettings settings, IKAEResourceProxy proxy, Action<ProtocolTypes, object, KAEErrorCodes, MetadataContainer> handleSucceedSituation, Action<ProtocolTypes, object, KAEErrorCodes, string> handleErrorSituation)
         {
             if (info == null) throw new ArgumentNullException("info");
             if (structure == null) throw new ArgumentNullException("structure");
             if (settings == null) throw new ArgumentNullException("settings");
+            _proxy = proxy;
             _entryInfo = info;
             _settings = settings;
-            _proxy = proxy;
             _structure = structure;
+            _handleErrorSituation = handleErrorSituation;
+            _handleSucceedSituation = handleSucceedSituation;
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("#NEW COMPONENT...");
             builder.AppendLine("   PATH: " + info.FolderPath);
@@ -62,6 +73,7 @@ namespace KJFramework.ApplicationEngine.Objects
             builder.AppendLine("   CRC: " + info.FileCRC);
             WorkProcessingHandler(new LightSingleArgEventArgs<string>(builder.ToString()));
             PreInitialize();
+            InitializeProtocols();
             InitializeTunnel();
         }
 
@@ -69,6 +81,7 @@ namespace KJFramework.ApplicationEngine.Objects
 
         #region Members.
 
+        private int _unRspCount;
         private Application _application;
         protected AppDomain _domain;
         private readonly IKAEResourceProxy _proxy;
@@ -76,59 +89,114 @@ namespace KJFramework.ApplicationEngine.Objects
         private readonly ApplicationEntryInfo _entryInfo;
         private readonly ChannelInternalConfigSettings _settings;
         private IServerConnectionAgent<MetadataContainer> _agent;
+        private readonly Action<ProtocolTypes, object, KAEErrorCodes, string> _handleErrorSituation;
         private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
-        private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(ApplicationDynamicObject));
+        private readonly Action<ProtocolTypes, object, KAEErrorCodes, MetadataContainer> _handleSucceedSituation;
+        private IDictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, int>>> _protocolDic;
+        private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
 
+        /// <summary>
+        ///    获取应用版本
+        /// </summary>
         public string Version
         {
             get { return _application.Version; }
         }
+
+        /// <summary>
+        ///    获取应用描述
+        /// </summary>
         public string Description
         {
             get { return _application.Description; }
         }
+
+        /// <summary>
+        ///    获取应用包名
+        /// </summary>
         public string PackageName
         {
             get { return _application.PackageName; }
         }
+
+        /// <summary>
+        ///    获取应用的全局唯一编号
+        /// </summary>
         public Guid GlobalUniqueId
         {
             get { return _application.GlobalUniqueId; }
         }
+
+        /// <summary>
+        ///    获取应用当前的状态
+        /// </summary>
         public ApplicationStatus Status
         {
             get { return _application.Status; }
         }
+
+        /// <summary>
+        ///     获取名称
+        /// </summary>
         public string Name
         {
             get { return _application.Name; }
         }
+
+        /// <summary>
+        ///    获取应用等级
+        /// </summary>
         public ApplicationLevel Level
         {
             get { return _application.Level; }
         }
+
+        /// <summary>
+        ///    获取应用kpp文件的CRC
+        /// </summary>
         public long CRC
         {
             get { return _application.CRC; }
         }
+
+        /// <summary>
+        ///     检查当前组件的健康状况
+        /// </summary>
+        /// <returns>返回健康状况</returns>
         public HealthStatus CheckHealth()
         {
             return _application.CheckHealth();
         }
+
+        /// <summary>
+        ///     获取唯一标示
+        /// </summary>
         public Guid Id
         {
             get { return _application.Id; }
         }
+
+        /// <summary>
+        ///      获取或设置可用标示
+        /// </summary>
         public bool Enable
         {
             get { return _application.Enable; }
             set { _application.Enable = value; }
         }
+
+        /// <summary>
+        ///     获取或设置插件信息
+        /// </summary>
         public PluginInfomation PluginInfo
         {
             get { return _application.PluginInfo; }
         }
+
+        /// <summary>
+        ///    获取一个值，该值标示了当前KPP包裹是否包含了一个完整的运行环境所需要的所有依赖文件
+        /// </summary>
         public bool IsCompletedEnvironment
         {
             get { return _application.IsCompletedEnvironment; }
@@ -137,7 +205,8 @@ namespace KJFramework.ApplicationEngine.Objects
         /// <summary>
         ///    获取内部所使用的隧道连接地址
         /// </summary>
-        public string TunnelAddress {
+        public string TunnelAddress 
+        {
             get
             {
                 return _application.TunnelAddress;
@@ -146,6 +215,17 @@ namespace KJFramework.ApplicationEngine.Objects
 
         [Obsolete("#Sadly, We had not supported this property.", true)]
         public IDynamicDomainService OwnService { get; set; }
+
+        /// <summary>
+        ///     获取一个值，该值标示了当前KPP中未返回RSP应答的业务数
+        /// </summary>
+        public int UnRspCount
+        {
+            get
+            {
+                return _unRspCount;
+            }
+        }
 
         #endregion
 
@@ -192,6 +272,36 @@ namespace KJFramework.ApplicationEngine.Objects
             {
                 _tracing.Error(ex);
                 throw;
+            }
+        }
+
+        private void InitializeProtocols()
+        {
+            IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
+            Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, int>>> protocolDic = new Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, int>>>();
+            IDictionary<ProtocolTypes, IList<MessageIdentity>> supportedProtocols = AcquireSupportedProtocols();
+            foreach (KeyValuePair<ProtocolTypes, IList<MessageIdentity>> innerPair in supportedProtocols)
+            {
+                InitializeNetworkProtocolHandler(protocolDic, innerPair);
+                Uri networkUri = KAEHostNetworkResourceManager.GetResourceUri(innerPair.Key);
+                if (networkUri == null) throw new AllocResourceFailedException("#There wasn't any network resource can be supported. #Protocol: " + innerPair.Key);
+                //registers network protocol to remoting service.
+                foreach (MessageIdentity identity in innerPair.Value)
+                    protocolRegister.Register(identity, innerPair.Key, Level, networkUri, GlobalUniqueId);
+            }
+            Interlocked.Exchange(ref _protocolDic, protocolDic);
+        }
+
+        private void InitializeNetworkProtocolHandler(Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, int>>> dic, KeyValuePair<ProtocolTypes, IList<MessageIdentity>> values)
+        {
+            IDictionary<MessageIdentity, IDictionary<ApplicationLevel, int>> firstLevel;
+            if (!dic.TryGetValue(values.Key, out firstLevel)) dic.Add(values.Key, (firstLevel = new Dictionary<MessageIdentity, IDictionary<ApplicationLevel, int>>()));
+            foreach (MessageIdentity identity in values.Value)
+            {
+                IDictionary<ApplicationLevel, int> secondLevel;
+                if (!firstLevel.TryGetValue(identity, out secondLevel)) firstLevel.Add(identity, (secondLevel = new Dictionary<ApplicationLevel, int>()));
+                if (secondLevel.ContainsKey(Level)) throw new DuplicatedApplicationException(string.Format("#Duplicated application attributes! #Protocol: {0}, #MessageIdentity: {1}, #Level: {2}.", values.Key, identity, Level));
+                secondLevel.Add(Level, 0);
             }
         }
 
@@ -317,6 +427,89 @@ namespace KJFramework.ApplicationEngine.Objects
         public void UpdateConfiguration(string key, string value)
         {
             _application.UpdateConfiguration(key, value);
+        }
+
+        internal void HandleBusiness(Tuple<KAENetworkResource, ApplicationLevel> tag, object transaction, MessageIdentity reqMsgIdentity, object reqMsg)
+        {
+            //Targeted network protocol CANNOT be support.
+            IDictionary<MessageIdentity, IDictionary<ApplicationLevel, int>> dic;
+            if (!_protocolDic.TryGetValue(tag.Item1.Protocol, out dic))
+            {
+                _handleErrorSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.NotSupportedNetworkType, "#We'd not supported current network type yet!");
+                return;
+            }
+            //Targeted MessageIdentity CANNOT be support.
+            IDictionary<ApplicationLevel, int> subDic;
+            if (!dic.TryGetValue(reqMsgIdentity, out subDic))
+            {
+                _handleErrorSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.NotSupportedMessageIdentity, "#We'd not supported current MessageIdentity yet!");
+                return;
+            }
+            int tmpValue;
+            //Targeted application's level CANNOT be support.
+            if (!subDic.TryGetValue(tag.Item2, out tmpValue))
+            {
+                _handleErrorSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.NotSupportedApplicationLevel, "#We'd not supported current application's level yet!");
+                return;
+            }
+            Interlocked.Increment(ref _unRspCount);
+            //acquires a business package for getting the return value from targeted application.
+            BusinessPackage package = (BusinessPackage)CreateBusinessPackage();
+            package.Transaction.Failed += delegate
+            {
+                Interlocked.Decrement(ref _unRspCount);
+                _handleErrorSituation(ProtocolTypes.Metadata, transaction, KAEErrorCodes.TunnelCommunicationFailed, "#Occured failed while communicating with the targeted application.");
+            };
+            package.Transaction.Timeout += delegate
+            {
+                Interlocked.Decrement(ref _unRspCount);
+                _handleErrorSituation(ProtocolTypes.Metadata, transaction, KAEErrorCodes.TunnelCommunicationTimeout, "#Occured timeout while communicating with the targeted application.");
+            };
+            package.Transaction.ResponseArrived += delegate(object o, LightSingleArgEventArgs<MetadataContainer> args)
+            {
+                Interlocked.Decrement(ref _unRspCount);
+                package.State = BusinessPackageStates.ReceivedDeliveryResponse;
+                //error situation.
+                if (args.Target.GetAttributeByIdSafety<byte>(0x0A) != 0x00)
+                    _handleErrorSituation(ProtocolTypes.Metadata, transaction, (KAEErrorCodes)args.Target.GetAttributeAsType<byte>(0x0A), args.Target.GetAttributeAsType<string>(0x0B));
+                else _handleSucceedSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.OK, args.Target);
+            };
+            package.Transaction.SendRequest(CreateTunnelMessage(tag.Item1.Protocol, reqMsg));
+            package.State = BusinessPackageStates.Delivered;
+        }
+
+        /*
+         * Application's tunnel MSG construction.
+         * REQ Message:
+         *      0x00 - MessageIdentity
+         *      0x01 - TransactionIdentity
+         *      0x0A - Protocol Type
+         *      0x0B - Specified REQ Message Structure
+         * RSP Message:
+         *      0x00 - MessageIdentity
+         *      0x01 - TransactionIdentity
+         *      0x0A - Error Id
+         *      0x0B - Error Reason
+         *      0x0C - Specified Value
+         */
+        private MetadataContainer CreateTunnelMessage(ProtocolTypes protocol, object content)
+        {
+            MetadataContainer msg = new MetadataContainer();
+            //RESEND_REQUEST_MESSAGE
+            msg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 0xFE, ServiceId = 0x04 }));
+            msg.SetAttribute(0x0A, new ByteValueStored((byte)protocol));
+            switch (protocol)
+            {
+                case ProtocolTypes.Metadata:
+                    msg.SetAttribute(0x0B, new ResourceBlockStored((ResourceBlock)content));
+                    break;
+                case ProtocolTypes.Intellegence:
+                    msg.SetAttribute(0x0B, new IntellectObjectValueStored(IntellectObjectEngine.ToBytes((IIntellectObject)content)));
+                    break;
+                default:
+                    throw new NotSupportedException(string.Format("#We've not supported current protocol: {0}!", protocol));
+            }
+            return msg;
         }
 
         #endregion

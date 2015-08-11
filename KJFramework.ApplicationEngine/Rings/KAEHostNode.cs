@@ -7,7 +7,7 @@ namespace KJFramework.ApplicationEngine.Rings
     /// <summary>
     ///    KAE宿主的网络节点对象
     /// </summary>
-    internal sealed class KAEHostNode
+    public class KAEHostNode
     {
         #region Constructor
 

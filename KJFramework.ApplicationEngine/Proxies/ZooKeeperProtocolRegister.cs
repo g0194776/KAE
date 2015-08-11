@@ -40,15 +40,16 @@ namespace KJFramework.ApplicationEngine.Proxies
         ///     将一个业务的通信协议与远程可访问地址注册到服务器上
         /// </summary>
         /// <param name="identity">业务协议编号</param>
+        /// <param name="protocolTypes">通信协议类型</param>
         /// <param name="level">KAE应用等级</param>
         /// <param name="resourceUri">远程可访问的资源地址</param>
-        /// <param name="protocolTypes">通信协议类型</param>
-        public void Register(MessageIdentity identity, ProtocolTypes protocolTypes, ApplicationLevel level, Uri resourceUri)
+        /// <param name="kppUniqueId">KPP全局唯一编号</param>
+        public void Register(MessageIdentity identity, ProtocolTypes protocolTypes, ApplicationLevel level, Uri resourceUri, Guid kppUniqueId)
         {
             if(resourceUri == null) throw new ArgumentNullException("resourceUri");
             string path = string.Format("/{0}-{1}-{2}-{3}-{4}", identity.ProtocolId, identity.ServiceId, identity.DetailsId, protocolTypes, level);
             AddPath(path, CreateMode.Persistent);
-            path += ("/" + resourceUri.Address);
+            path += string.Format("/{0};{1}", resourceUri.Address, kppUniqueId);
             AddPath(path, CreateMode.Ephemeral);
         }
 

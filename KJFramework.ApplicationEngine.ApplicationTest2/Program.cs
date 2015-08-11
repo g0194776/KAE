@@ -26,7 +26,7 @@ namespace KJFramework.ApplicationEngine.ApplicationTest2
         {
             DateTime now = DateTime.Now;
             string fileName = Path.Combine(destPath, DateTime.Now.Ticks + ".kpp");
-            Guid guid = Guid.NewGuid();
+            Guid guid = Guid.Parse("6567846e-71a8-40ae-9b2b-37882bcc6ba1");
             KPPDataHead head = new KPPDataHead();
             PackageAttributeDataSection section = new PackageAttributeDataSection();
             section.SetField("PackName", "test.package");

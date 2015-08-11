@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using KJFramework.ApplicationEngine.Eums;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.ApplicationEngine.Rings;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Objects;
@@ -38,9 +38,10 @@ namespace KJFramework.ApplicationEngine.Clusters
         /// <param name="level">KAE应用等级</param>
         /// <param name="protocolStack">协议栈</param>
         /// <param name="errMsg">错误信息</param>
+        /// <param name="selectedRingNode">已选中的一致性HASH圆环节点</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        IServerConnectionAgent<TMessage> GetChannel(Protocols target, ApplicationLevel level, IProtocolStack protocolStack, out string errMsg);
+        IServerConnectionAgent<TMessage> GetChannel(Protocols target, ApplicationLevel level, IProtocolStack protocolStack, out string errMsg, out KAERingNode selectedRingNode);
         /// <summary>
         ///     根据当前负载器规则获取一个通信信道
         /// </summary>
@@ -49,9 +50,10 @@ namespace KJFramework.ApplicationEngine.Clusters
         /// <param name="protocolStack">协议栈</param>
         /// <param name="balanceFlag">负载位</param>
         /// <param name="errMsg">错误信息</param>
+        /// <param name="selectedRingNode">已选中的一致性HASH圆环节点</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        IServerConnectionAgent<TMessage> GetChannel(Protocols target, ApplicationLevel level, IProtocolStack protocolStack, long balanceFlag, out string errMsg);
+        IServerConnectionAgent<TMessage> GetChannel(Protocols target, ApplicationLevel level, IProtocolStack protocolStack, long balanceFlag, out string errMsg, out KAERingNode selectedRingNode);
 
         #endregion
     }

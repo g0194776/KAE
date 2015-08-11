@@ -56,7 +56,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
                     NoBuffStubPoolSize = ChannelConst.NoBuffStubPoolSize,
                     RecvBufferSize = ChannelConst.RecvBufferSize,
                     SegmentSize = ChannelConst.SegmentSize
-                }, null);
+                }, null, null, null);
             }
             finally
             {
@@ -95,7 +95,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
                     NoBuffStubPoolSize = ChannelConst.NoBuffStubPoolSize,
                     RecvBufferSize = ChannelConst.RecvBufferSize,
                     SegmentSize = ChannelConst.SegmentSize
-                }, null);
+                }, null, null, null);
                 dynamicObject.Start();
             }
             finally

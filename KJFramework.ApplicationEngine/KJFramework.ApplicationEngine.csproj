@@ -81,6 +81,7 @@
     <Compile Include="Attributes\KAEProcessorPropertiesAttribute.cs" />
     <Compile Include="Clusters\INetworkCluster.cs" />
     <Compile Include="Clusters\NetworkCluster.cs" />
+    <Compile Include="Commands\IKAESystemCommand.cs" />
     <Compile Include="Configurations\DeployConfigSection.cs" />
     <Compile Include="Configurations\DeploySettingConfiguration.cs" />
     <Compile Include="Configurations\Loaders\RemoteConfigurationLoader.cs" />
@@ -112,6 +113,8 @@
     <Compile Include="Loggers\KAEStateLogger.cs" />
     <Compile Include="Loggers\IKAEStateLogger.cs" />
     <Compile Include="KAESystemInternalResource.cs" />
+    <Compile Include="Managers\IKAEHostAppManager.cs" />
+    <Compile Include="Managers\KAEHostAppManager.cs" />
     <Compile Include="Objects\Package.cs" />
     <Compile Include="Objects\PackageInfo.cs" />
     <Compile Include="Objects\PackageList.cs" />
@@ -165,6 +168,7 @@
     <Compile Include="Resources\Packs\Sections\PackageAttributeDataSection.cs" />
     <Compile Include="Resources\Packs\KPPResource.cs" />
     <Compile Include="Rings\KAEHostNode.cs" />
+    <Compile Include="Rings\KAERingNode.cs" />
     <Compile Include="Rings\KetamaRing.cs" />
     <Compile Include="Proxies\IKAEHostProxy.cs" />
     <Compile Include="SystemWorker.cs" />

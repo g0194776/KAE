@@ -226,3 +226,20 @@ What's the next:
 6. 重命名IKAEHostProxy为IKAEResourceProxy
 7. 为IProtocolResource提供反注册方法(Unregister)
 8. 在SystemWorker的初始化方法中提供传入IKAEResourceProxy的支持，为后续KAE Client的支持做准备
+
+
+
+
+
+
+2015-8-11进度
+------------------------------------------------
+1. 深度重构了KAEHost内部的逻辑
+		#将4层结构的DIC放到ApplicationDynamicObject中去
+		#将KPP内部结构初始化的工作移到ApplicationDynamicObject中去
+2. 在KAE网络层基础信令中加入KPP的全局唯一ID字段，用于减轻KAEHost内部的复杂逻辑
+	这里等于用网络传输的基础数据加了16个字节的代价来优化内部处理结构]
+	当然，在ZooKeeper中的节点名称以及一致性HASH圆环中也有这个值的加入细节改动
+3. 引入KAE System Command接口，开始为后续KAEHost支持执行远程的系统命令做准备
+4. 加入KAEHostAppManager类，用于支持在多线程的环境中提供KAE宿主内部APP的管理和功能调用工作
+	

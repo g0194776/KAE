@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using KJFramework.ApplicationEngine.Clusters;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Resources;
+using KJFramework.ApplicationEngine.Rings;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Channels.Identities;
@@ -90,15 +91,16 @@ namespace KJFramework.ApplicationEngine.Proxies
         {
             string errMsg;
             ApplicationLevel level = (resourceUri == null ? ApplicationLevel.Stable : _callback(resourceUri));
-            IServerConnectionAgent<TMessage> agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), out errMsg);
+            KAERingNode ringNode;
+            IServerConnectionAgent<TMessage> agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), out errMsg, out ringNode);
             if (agent == null)
             {
                 lock (_lockObj)
                 {
                     //try to obtains agent object again for ensuring that the newest remoting addresses can be appliy in the multiple threading env.
-                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), out errMsg);
+                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), out errMsg, out ringNode);
                     if (agent == null && !GetMissedRemoteAddresses(target, level)) return new FailMessageTransaction<TMessage>(errMsg);
-                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), out errMsg);
+                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), out errMsg, out ringNode);
                     //check returned value again for avoiding couldnt connect to the remote address now.
                     if (agent == null) return new FailMessageTransaction<TMessage>(errMsg);
                 }
@@ -107,6 +109,7 @@ namespace KJFramework.ApplicationEngine.Proxies
             transaction.SetMessageIdentity(new MessageIdentity{ProtocolId = (byte) target.ProtocolId, ServiceId = (byte) target.ServiceId, DetailsId = (byte) target.DetailsId});
             transaction.TransactionManager = _transactionManager;
             transaction.Identity = (communicationType == NetworkCommunicationTypes.Dulplex ? IdentityHelper.Create(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP) : IdentityHelper.CreateOneway(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP));
+            transaction.KPPUniqueId = ringNode.KPPUniqueId;
             return (_transactionManager.Add(transaction.Identity, transaction) ? transaction : null);
         }
 
@@ -144,15 +147,16 @@ namespace KJFramework.ApplicationEngine.Proxies
         {
             string errMsg;
             ApplicationLevel level = (resourceUri == null ? ApplicationLevel.Stable : _callback(resourceUri));
-            IServerConnectionAgent<TMessage> agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), balanceFlag, out errMsg);
+            KAERingNode ringNode;
+            IServerConnectionAgent<TMessage> agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), balanceFlag, out errMsg, out ringNode);
             if (agent == null)
             {
                 lock (_lockObj)
                 {
                     //try to obtains agent object again for ensuring that the newest remoting addresses can be appliy in the multiple threading env.
-                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), balanceFlag, out errMsg);
+                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), balanceFlag, out errMsg, out ringNode);
                     if (agent == null && !GetMissedRemoteAddresses(target, level)) return new FailMessageTransaction<TMessage>(errMsg);
-                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), balanceFlag, out errMsg);
+                    agent = _cluster.GetChannel(target, level, _container.GetDefaultProtocolStack(_cluster.ProtocolType), balanceFlag, out errMsg, out ringNode);
                     //check returned value again for avoiding couldnt connect to the remote address now.
                     if (agent == null) return new FailMessageTransaction<TMessage>(errMsg);
                 }
@@ -161,6 +165,7 @@ namespace KJFramework.ApplicationEngine.Proxies
             transaction.SetMessageIdentity(new MessageIdentity { ProtocolId = (byte)target.ProtocolId, ServiceId = (byte)target.ServiceId, DetailsId = (byte)target.DetailsId });
             transaction.TransactionManager = _transactionManager;
             transaction.Identity = (communicationType == NetworkCommunicationTypes.Dulplex ? IdentityHelper.Create(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP) : IdentityHelper.CreateOneway(agent.GetChannel().LocalEndPoint, TransportChannelTypes.TCP));
+            transaction.KPPUniqueId = ringNode.KPPUniqueId;
             return (_transactionManager.Add(transaction.Identity, transaction) ? transaction : null);
         }
 

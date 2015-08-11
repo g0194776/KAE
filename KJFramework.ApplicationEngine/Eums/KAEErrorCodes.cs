@@ -16,6 +16,7 @@
         NotSupportedApplicationLevel = 0xFC,
         NotSupportedMessageIdentity = 0xFD,
         NotSupportedNetworkType = 0xFE,
+        SpecifiedKPPNotFound = 0xE9,
         Unknown = 0xFF
     }
 }

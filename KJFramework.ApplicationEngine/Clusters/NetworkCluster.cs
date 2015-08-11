@@ -65,7 +65,7 @@ namespace KJFramework.ApplicationEngine.Clusters
         public void UpdateCache(Protocols protocol, ApplicationLevel level, IList<string> cache)
         {
             //prepares kathma ring.
-            KetamaRing ring = ((cache == null || cache.Count == 0) ? null : new KetamaRing(cache.Select(v => new KAEHostNode(v)).ToList()));
+            KetamaRing ring = ((cache == null || cache.Count == 0) ? null : new KetamaRing(cache.Select(v => new KAERingNode(v)).ToList()));
             lock (_lockObj)
             {
                 IDictionary<ProtocolTypes, KetamaRing> thirdDic;
@@ -83,9 +83,10 @@ namespace KJFramework.ApplicationEngine.Clusters
         /// <param name="level">KAE应用等级</param>
         /// <param name="protocolStack">协议栈</param>
         /// <param name="errMsg">错误信息</param>
+        /// <param name="selectedRingNode">已选中的一致性HASH圆环节点</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public IServerConnectionAgent<TMessage> GetChannel(Protocols target, ApplicationLevel level, IProtocolStack protocolStack, out string errMsg)
+        public IServerConnectionAgent<TMessage> GetChannel(Protocols target, ApplicationLevel level, IProtocolStack protocolStack, out string errMsg, out KAERingNode selectedRingNode)
         {
             lock (_lockObj)
             {
@@ -101,16 +102,19 @@ namespace KJFramework.ApplicationEngine.Clusters
                             if (ring == null)
                             {
                                 errMsg = string.Format("#Sadly, We have no more network information about what you gave of protocol: {0}-{1}-{2}, Maybe it was been removed or there wasn't any available network resources.", target.ProtocolId, target.ServiceId, target.DetailsId);
+                                selectedRingNode = null;
                                 return null;
                             }
-                            KAEHostNode node = ring.GetWorkerNode();
+                            KAERingNode node = ring.GetWorkerNode();
                             IServerConnectionAgent<TMessage> agent = _connectionPool.GetChannel(node.EndPoint, node.RawAddress, protocolStack, _transactionManager);
                             errMsg = (agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + node.RawAddress);
+                            selectedRingNode = node;
                             return agent;
                         }
                     }
                 }
                 errMsg = string.Format("#Couldn't find any remoting address which it can access it. #Protocol: {0}, #Level: {1}", target, level);
+                selectedRingNode = null;
                 return null;
             }
         }
@@ -123,9 +127,10 @@ namespace KJFramework.ApplicationEngine.Clusters
         /// <param name="protocolStack">协议栈</param>
         /// <param name="balanceFlag">负载位</param>
         /// <param name="errMsg">错误信息</param>
+        /// <param name="selectedRingNode">已选中的一致性HASH圆环节点</param>
         /// <returns>如果指定条件的通信信道不存在，则会创建它并返回</returns>
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
-        public IServerConnectionAgent<TMessage> GetChannel(Protocols target, ApplicationLevel level, IProtocolStack protocolStack, long balanceFlag, out string errMsg)
+        public IServerConnectionAgent<TMessage> GetChannel(Protocols target, ApplicationLevel level, IProtocolStack protocolStack, long balanceFlag, out string errMsg, out KAERingNode selectedRingNode)
         {
             lock (_lockObj)
             {
@@ -141,16 +146,19 @@ namespace KJFramework.ApplicationEngine.Clusters
                             if (ring == null)
                             {
                                 errMsg = string.Format("#Sadly, We have no more network information about what you gave of protocol: {0}-{1}-{2}, Maybe it was been removed or there wasn't any available network resources.", target.ProtocolId, target.ServiceId, target.DetailsId);
+                                selectedRingNode = null;
                                 return null;
                             }
-                            KAEHostNode node = ring.GetWorkerNode(balanceFlag);
+                            KAERingNode node = ring.GetWorkerNode(balanceFlag);
                             IServerConnectionAgent<TMessage> agent = _connectionPool.GetChannel(node.EndPoint, node.RawAddress, protocolStack, _transactionManager);
                             errMsg = (agent != null ? string.Empty : "#Sadly, We cannot connect to remote endpoint: " + node.RawAddress);
+                            selectedRingNode = node;
                             return agent;
                         }
                     }
                 }
                 errMsg = string.Format("#Couldn't find any remoting address which it can access it. #Protocol: {0}, #Level: {1}", target, level);
+                selectedRingNode = null;
                 return null;
             }
         }

@@ -51,6 +51,7 @@ namespace KJFramework.ApplicationEngine.SendMessageTest
                         Console.WriteLine("Received RSP:");
                         Console.WriteLine(eventArgs.Target);
                     };
+                transaction.KPPUniqueId = Guid.Parse("6567846e-71a8-40ae-9b2b-37882bcc6ba1");
                 MetadataContainer reqMsg = new MetadataContainer();
                 reqMsg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 1, ServiceId = 0, DetailsId = 2 }));
                 reqMsg.SetAttribute(0x05, new ByteValueStored((byte)ApplicationLevel.Stable));

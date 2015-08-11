@@ -92,6 +92,7 @@ namespace KJFramework.Net.Transaction
             message.TransactionIdentity = Identity;
             message.TransactionIdentity.IsRequest = true;
             message.ExpireTime = _lease.ExpireTime;
+            message.KPPUniqueId = KPPUniqueId;
             _request = message;
             if (!_channel.IsConnected)
             {

@@ -29,6 +29,12 @@ namespace KJFramework.Net.Transaction.Messages
         /// </summary>
         [IntellectProperty(2)]
         public DateTime ExpireTime { get; set; }
+        /// <summary>
+        ///    获取或设置KPP的唯一ID
+        ///     <para>* 如果当前事务当前不属于KAE范畴则此值为NULL</para>
+        /// </summary>
+        [IntellectProperty(3)]
+        public Guid KPPUniqueId { get; set; }
 
         #endregion
     }

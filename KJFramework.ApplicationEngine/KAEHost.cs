@@ -2,27 +2,22 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using KJFramework.ApplicationEngine.Configurations.Settings;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
-using KJFramework.ApplicationEngine.Extends;
 using KJFramework.ApplicationEngine.Factories;
 using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Loggers;
 using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Messages;
 using KJFramework.ApplicationEngine.Objects;
-using KJFramework.ApplicationEngine.Packages;
 using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Counters;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
-using KJFramework.Messages.Engine;
-using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
 using KJFramework.Net.Channels;
 using KJFramework.Net.Channels.Configurations;
@@ -31,10 +26,8 @@ using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Messages;
-using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
-using Uri = KJFramework.Net.Channels.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine
 {
@@ -167,6 +160,7 @@ namespace KJFramework.ApplicationEngine
         private readonly IRemoteConfigurationProxy _configurationProxy;
         private readonly IKAEResourceProxy _hostProxy = new KAEHostResourceProxy();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(KAEHost));
+        private readonly IKAEHostAppManager _hostedAppManager = new KAEHostAppManager();
 
         #region Performance Counters.
 
@@ -175,13 +169,7 @@ namespace KJFramework.ApplicationEngine
         
         #endregion
 
-        private readonly object _protocolDicLockObj = new object();
-        private readonly object _activedAppsLockObj = new object();
         private readonly IKAEStateLogger _stateLogger = new KAEStateLogger(_tracing);
-        private readonly IDictionary<Guid, ApplicationDynamicObject> _activedApps = new Dictionary<Guid, ApplicationDynamicObject>();
-        //caches for network end-points by respective MessageIdentity.
-        //1st level of key = MessageIdentity + App Level; second level of key = application's version.
-        private IDictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> _protocolDic;
 
         /// <summary>
         ///    获取内部运行的应用数量
@@ -258,10 +246,10 @@ namespace KJFramework.ApplicationEngine
                         continue;
                     }
                     //assembles a new dynamic object for application.
-                    ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2, _settings, _hostProxy);
+                    ApplicationDynamicObject dynamicObject = new ApplicationDynamicObject(tuple.Item1, tuple.Item2, _settings, _hostProxy, HandleSucceedSituation, HandleErrorSituation);
                     entry = new Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>(tuple.Item1, tuple.Item2, dynamicObject);
                     subDic.Add(appFullKey, entry);
-                    lock (_activedAppsLockObj) _activedApps[dynamicObject.GlobalUniqueId] = dynamicObject;
+                    _hostedAppManager.RegisterApp(dynamicObject);
                 }
             }
             return apps;
@@ -295,33 +283,12 @@ namespace KJFramework.ApplicationEngine
 
             #endregion
 
-            #region #Step 2, initializes current suported mapping from protocol & message identity & application's level.
+            #region #Step 2, Registering to remote ZooKeeper for listening notifications.
 
             _tracing.DebugInfo("#Preparing to registers APP business information to remote server...");
 
             IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister) KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
             protocolRegister.ChildrenChanged += RemoteResourceChanged;
-            List<Tuple<ApplicationLevel, IList<ProtocolTypes>>> networkResources = new List<Tuple<ApplicationLevel, IList<ProtocolTypes>>>();
-            Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> protocolDic = new Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>>();
-            foreach (KeyValuePair<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> pair in apps)
-            {
-                foreach (KeyValuePair<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>> subPair in pair.Value)
-                {
-                    IDictionary<ProtocolTypes, IList<MessageIdentity>> supportedProtocols = subPair.Value.Item3.AcquireSupportedProtocols();
-                    //appending wanted network resources.
-                    networkResources.Add(new Tuple<ApplicationLevel, IList<ProtocolTypes>>(subPair.Value.Item3.Level, supportedProtocols.Keys.ToList()));
-                    foreach (KeyValuePair<ProtocolTypes, IList<MessageIdentity>> innerPair in supportedProtocols)
-                    {
-                        InitializeNetworkProtocolHandler(protocolDic, innerPair, subPair.Value.Item3);
-                        Uri networkUri = KAEHostNetworkResourceManager.GetResourceUri(innerPair.Key);
-                        if (networkUri == null) throw new AllocResourceFailedException("#There wasn't any network resource can be supported. #Protocol: " + innerPair.Key);
-                        //registers network protocol to remoting service.
-                        foreach (MessageIdentity identity in innerPair.Value)
-                            protocolRegister.Register(identity, innerPair.Key, subPair.Value.Item3.Level, networkUri);
-                    }
-                }
-            }
-            _protocolDic = protocolDic;
 
             #endregion
 
@@ -335,19 +302,24 @@ namespace KJFramework.ApplicationEngine
         ///     下架一个指定的KAE APP
         /// </summary>
         /// <param name="uniqueId">KAE APP唯一编号</param>
-        internal void UninstallApp(Guid uniqueId)
+        /// <param name="reason">错误原因</param>
+        internal bool UninstallApp(Guid uniqueId, out string reason)
         {
             _stateLogger.Log(string.Format("#Begin uninstalling KAE app: {0}", uniqueId));
-            lock (_activedAppsLockObj)
+            ApplicationDynamicObject app = _hostedAppManager.GetApp(uniqueId);
+            if (app == null)
             {
-                ApplicationDynamicObject app;
-                if (!_activedApps.TryGetValue(uniqueId, out app)) return;
-                _stateLogger.Log(string.Format("#Begin stopping targeted KAE app for uninstalling: {0}", uniqueId));
-                app.Stop();
-                _stateLogger.Log(string.Format("#End stopping targeted KAE app for uninstalling: {0}", uniqueId));
-                _activedApps.Remove(uniqueId);
+                reason = "#Wasn't able to found specified KPP unique id: " + uniqueId;
+                _stateLogger.Log(reason);
+                return false;
             }
+            _stateLogger.Log(string.Format("#Begin stopping targeted KAE app for uninstalling: {0}", uniqueId));
+            app.Stop();
+            _stateLogger.Log(string.Format("#End stopping targeted KAE app for uninstalling: {0}", uniqueId));
+            _hostedAppManager.Remove(uniqueId);
             _stateLogger.Log(string.Format("#End uninstalling KAE app: {0}", uniqueId));
+            reason = null;
+            return true;
         }
 
         /// <summary>
@@ -360,19 +332,6 @@ namespace KJFramework.ApplicationEngine
         {
             reason = null;
             return false;
-        }
-
-        private void InitializeNetworkProtocolHandler(Dictionary<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> dic, KeyValuePair<ProtocolTypes, IList<MessageIdentity>> values, ApplicationDynamicObject dynamicObject)
-        {
-            IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>> firstLevel;
-            if (!dic.TryGetValue(values.Key, out firstLevel)) dic.Add(values.Key, (firstLevel = new Dictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>()));
-            foreach (MessageIdentity identity in values.Value)
-            {
-                IDictionary<ApplicationLevel, ApplicationDynamicObject> secondLevel;
-                if (!firstLevel.TryGetValue(identity, out secondLevel)) firstLevel.Add(identity, (secondLevel = new Dictionary<ApplicationLevel, ApplicationDynamicObject>()));
-                if (secondLevel.ContainsKey(dynamicObject.Level)) throw new DuplicatedApplicationException(string.Format("#Duplicated application attributes! #Protocol: {0}, #MessageIdentity: {1}, #Level: {2}.", values.Key, identity, dynamicObject.Level));
-                secondLevel.Add(dynamicObject.Level, dynamicObject);
-            }
         }
 
         /// <summary>
@@ -393,11 +352,7 @@ namespace KJFramework.ApplicationEngine
                             using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                             {
                                 string code = reader.ReadToEnd();
-                                if (!string.IsNullOrEmpty(code))
-                                {
-                                    lock (_activedAppsLockObj)
-                                        foreach (KeyValuePair<Guid, ApplicationDynamicObject> pair in _activedApps) pair.Value.UpdateGreyPolicy(code);
-                                }
+                                if (!string.IsNullOrEmpty(code)) _hostedAppManager.UpdateGreyPolicy(code);
                             }
                         }
                     }
@@ -431,82 +386,16 @@ namespace KJFramework.ApplicationEngine
          *      ...
          *      Other Business Fields
          */
-        private void HandleBusiness(Tuple<KAENetworkResource, ApplicationLevel> tag, object transaction, MessageIdentity reqMsgIdentity, object reqMsg)
+        private void HandleBusiness(Tuple<KAENetworkResource, ApplicationLevel> tag, object transaction, MessageIdentity reqMsgIdentity, object reqMsg, Guid kppUniqueId)
         {
             _rspRemainningCounter.Increment();
-            ApplicationDynamicObject dynamicObj;
-            BusinessPackage package;
-            lock (_protocolDicLockObj)
+            ApplicationDynamicObject app = _hostedAppManager.GetApp(kppUniqueId);
+            if (app == null)
             {
-                //Targeted network protocol CANNOT be support.
-                IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>> dic;
-                if (!_protocolDic.TryGetValue(tag.Item1.Protocol, out dic))
-                {
-                    HandleErrorSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.NotSupportedNetworkType, "#We'd not supported current network type yet!");
-                    return;
-                }
-                //Targeted MessageIdentity CANNOT be support.
-                IDictionary<ApplicationLevel, ApplicationDynamicObject> subDic;
-                if (!dic.TryGetValue(reqMsgIdentity, out subDic))
-                {
-                    HandleErrorSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.NotSupportedMessageIdentity, "#We'd not supported current MessageIdentity yet!");
-                    return;
-                }
-                //Targeted application's level CANNOT be support.
-                if (!subDic.TryGetValue(tag.Item2, out dynamicObj))
-                {
-                    HandleErrorSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.NotSupportedApplicationLevel, "#We'd not supported current application's level yet!");
-                    return;
-                }
-                //acquires a business package for getting the return value from targeted application.
-                package = (BusinessPackage) dynamicObj.CreateBusinessPackage();
+                HandleErrorSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.SpecifiedKPPNotFound, "#Specified KPP's unique ID had not found!");
+                return;
             }
-            package.Transaction.Failed += delegate { HandleErrorSituation(ProtocolTypes.Metadata, transaction, KAEErrorCodes.TunnelCommunicationFailed, "#Occured failed while communicating with the targeted application."); };
-            package.Transaction.Timeout += delegate { HandleErrorSituation(ProtocolTypes.Metadata, transaction, KAEErrorCodes.TunnelCommunicationTimeout, "#Occured timeout while communicating with the targeted application."); };
-            package.Transaction.ResponseArrived += delegate(object o, LightSingleArgEventArgs<MetadataContainer> args)
-            {
-                package.State = BusinessPackageStates.ReceivedDeliveryResponse;
-                //error situation.
-                if (args.Target.GetAttributeByIdSafety<byte>(0x0A) != 0x00)
-                    HandleErrorSituation(ProtocolTypes.Metadata, transaction, (KAEErrorCodes)args.Target.GetAttributeAsType<byte>(0x0A), args.Target.GetAttributeAsType<string>(0x0B));
-                else HandleSucceedSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.OK, args.Target);
-            };
-            package.Transaction.SendRequest(CreateTunnelMessage(tag.Item1.Protocol, reqMsg));
-            package.State = BusinessPackageStates.Delivered;
-        }
-
-        /*
-         * Application's tunnel MSG construction.
-         * REQ Message:
-         *      0x00 - MessageIdentity
-         *      0x01 - TransactionIdentity
-         *      0x0A - Protocol Type
-         *      0x0B - Specified REQ Message Structure
-         * RSP Message:
-         *      0x00 - MessageIdentity
-         *      0x01 - TransactionIdentity
-         *      0x0A - Error Id
-         *      0x0B - Error Reason
-         *      0x0C - Specified Value
-         */
-        private MetadataContainer CreateTunnelMessage(ProtocolTypes protocol, object content)
-        {
-            MetadataContainer msg = new MetadataContainer();
-            //RESEND_REQUEST_MESSAGE
-            msg.SetAttribute(0x00, new MessageIdentityValueStored(new MessageIdentity { ProtocolId = 0xFE, ServiceId = 0x04 }));
-            msg.SetAttribute(0x0A, new ByteValueStored((byte)protocol));
-            switch (protocol)
-            {
-                case ProtocolTypes.Metadata:
-                    msg.SetAttribute(0x0B, new ResourceBlockStored((ResourceBlock)content));
-                    break;
-                case ProtocolTypes.Intellegence:
-                    msg.SetAttribute(0x0B, new IntellectObjectValueStored(IntellectObjectEngine.ToBytes((IIntellectObject)content)));
-                    break;
-                default:
-                    throw new NotSupportedException(string.Format("#We've not supported current protocol: {0}!", protocol));
-            }
-            return msg;
+            app.HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg);
         }
 
         private void HandleErrorSituation(ProtocolTypes protocol, object transaction, KAEErrorCodes errorCode, string reason)
@@ -560,28 +449,6 @@ namespace KJFramework.ApplicationEngine
             }
         }
 
-        /// <summary>
-        ///    更新网络缓存信息
-        /// </summary>
-        internal void UpdateCache(IProtocolResource resource)
-        {
-            List<string> result = (List<string>) resource.GetResult();
-            IEnumerable<Guid> apps = resource.GetInterestedApps();
-            lock (_activedAppsLockObj)
-            {
-                foreach (Guid uniqueId in apps)
-                {
-                    ApplicationDynamicObject app;
-                    if (!_activedApps.TryGetValue(uniqueId, out app))
-                    {
-                        resource.UnRegisterInterestedApp(uniqueId);
-                        continue;
-                    }
-                    app.UpdateCache(resource.Protocol, resource.ProtocolTypes, resource.Level, result);
-                }
-            }
-        }
-
         private void HandleSystemCommand(IMessageTransaction<MetadataContainer> transaction)
         {
             throw new NotImplementedException();
@@ -598,13 +465,14 @@ namespace KJFramework.ApplicationEngine
             MetadataContainer reqMsg = transaction.Request;
             Tuple<KAENetworkResource, ApplicationLevel> tag = new Tuple<KAENetworkResource, ApplicationLevel>((KAENetworkResource)agent.Tag, (reqMsg.IsAttibuteExsits(0x05) ? (ApplicationLevel)reqMsg.GetAttributeAsType<byte>(0x05) : ApplicationLevel.Stable));
             MessageIdentity reqMsgIdentity = reqMsg.GetAttributeAsType<MessageIdentity>(0x00);
+            Guid uniqueId = reqMsg.GetAttributeAsType<Guid>(0x03);
             /*
              * We always makes a checking on the Metadata protocol network communication. 
              * Because all of ours internal system communications are constructed by this kind of MSG protocol.
              */
             if (reqMsgIdentity.ProtocolId >= 0xFC) HandleSystemCommand(transaction);
             //sends it to the appropriate application.
-            else HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg);
+            else HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg, uniqueId);
         }
 
         void IntellegenceNewTransaction(object sender, LightSingleArgEventArgs<IMessageTransaction<BaseMessage>> e)
@@ -614,22 +482,27 @@ namespace KJFramework.ApplicationEngine
             KAERequestMessage reqMsg = (KAERequestMessage)transaction.Request;
             Tuple<KAENetworkResource, ApplicationLevel> tag = new Tuple<KAENetworkResource, ApplicationLevel>((KAENetworkResource)agent.Tag, reqMsg.RequestedLevel);
             MessageIdentity reqMsgIdentity = reqMsg.MessageIdentity;
-            HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg);
+            HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg, reqMsg.KPPUniqueId);
         }
 
         //Received a message from remoting CSN.
         void ConfigurationUpdatedEvent(object sender, LightSingleArgEventArgs<Tuple<string, string>> e)
         {
-            lock (_protocolDicLockObj)
-                foreach (KeyValuePair<ProtocolTypes, IDictionary<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>>> pair in _protocolDic)
-                    foreach (KeyValuePair<MessageIdentity, IDictionary<ApplicationLevel, ApplicationDynamicObject>> valuePair in pair.Value)
-                        foreach (KeyValuePair<ApplicationLevel, ApplicationDynamicObject> keyValuePair in valuePair.Value) keyValuePair.Value.UpdateConfiguration(e.Target.Item1, e.Target.Item2);
+            _hostedAppManager.UpdateConfiguration(e.Target.Item1, e.Target.Item2);
         }
 
         //sent from ZooKeeper that it indicates the remote network resource had been changed.
         void RemoteResourceChanged(object sender, LightSingleArgEventArgs<IProtocolResource> e)
         {
-            UpdateCache(e.Target);
+            IProtocolResource resource = e.Target;
+            List<string> result = (List<string>)resource.GetResult();
+            IEnumerable<Guid> apps = resource.GetInterestedApps();
+            foreach (Guid uniqueId in apps)
+            {
+                ApplicationDynamicObject app = _hostedAppManager.GetApp(uniqueId);
+                if (app == null) resource.UnRegisterInterestedApp(uniqueId);
+                else app.UpdateCache(resource.Protocol, resource.ProtocolTypes, resource.Level, result);
+            }
         }
 
         #endregion

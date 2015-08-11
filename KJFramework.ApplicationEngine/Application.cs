@@ -105,7 +105,6 @@ namespace KJFramework.ApplicationEngine
         private KPPDataStructure _structure;
         private IHostTransportChannel _hostChannel;
         private ChannelInternalConfigSettings _settings;
-        private readonly object _lockObj = new object();
         private PaxScripter _scripter = new PaxScripter();
         private IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> _processors;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Application));

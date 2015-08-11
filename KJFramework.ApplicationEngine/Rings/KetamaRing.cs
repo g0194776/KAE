@@ -15,19 +15,19 @@ namespace KJFramework.ApplicationEngine.Rings
 
         private int numReps = 160;
         private readonly long[] _keys;
-        private readonly Dictionary<long, KAEHostNode> _ketamaNodes;
+        private readonly Dictionary<long, KAERingNode> _ketamaNodes;
 
         #endregion
 
         #region Constructor.
 
-        public KetamaRing(List<KAEHostNode> nodes)
+        public KetamaRing(List<KAERingNode> nodes)
         {
-            _ketamaNodes = new Dictionary<long, KAEHostNode>();
+            _ketamaNodes = new Dictionary<long, KAERingNode>();
             //对所有节点，生成nCopies个虚拟结点
             for (int j = 0; j < nodes.Count; j++)
             {
-                KAEHostNode node = nodes[j];
+                KAERingNode node = nodes[j];
                 //每四个虚拟结点为一组
                 for (int i = 0; i < numReps / 4; i++)
                 {
@@ -55,18 +55,18 @@ namespace KJFramework.ApplicationEngine.Rings
 
         #region Methods.
 
-        public KAEHostNode GetWorkerNode(string k)
+        public KAERingNode GetWorkerNode(string k)
         {
             byte[] digest = ComputeMd5(k);
             return GetWorkerNode(Hash(digest, 0));
         }
 
-        public KAEHostNode GetWorkerNode()
+        public KAERingNode GetWorkerNode()
         {
             return GetWorkerNode(DateTime.Now.Ticks);
         }
 
-        public KAEHostNode GetWorkerNode(long hash)
+        public KAERingNode GetWorkerNode(long hash)
         {
             if (_ketamaNodes.Count == 0) return null;
             int near;

@@ -78,6 +78,11 @@ namespace KJFramework.Net.Transaction
         ///     获取或设置事务管理器
         /// </summary>
         public ITransactionManager<T> TransactionManager { get; set; }
+        /// <summary>
+        ///     获取或设置KPP的唯一ID
+        ///     <para>* 如果当前事务当前不属于KAE范畴则此值为NULL</para>
+        /// </summary>
+        public Guid KPPUniqueId { get; set; }
 
         #endregion
 
