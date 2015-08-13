@@ -1,6 +1,4 @@
-﻿using KJFramework.Dynamic.Components;
-
-namespace KJFramework.ApplicationEngine
+﻿namespace KJFramework.ApplicationEngine
 {
     /// <summary>
     ///    KAE宿主接口
@@ -17,6 +15,10 @@ namespace KJFramework.ApplicationEngine
         ///    获取工作目录
         /// </summary>
         string WorkRoot { get; }
+        /// <summary>
+        ///    获取当前KAE宿主实例的唯一名称
+        /// </summary>
+        string UniqueName { get; }
 
         #endregion
 

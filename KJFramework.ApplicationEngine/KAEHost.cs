@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
+using KJFramework.ApplicationEngine.Commands;
 using KJFramework.ApplicationEngine.Configurations.Settings;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
@@ -179,10 +180,41 @@ namespace KJFramework.ApplicationEngine
         ///    获取工作目录
         /// </summary>
         public string WorkRoot { get; private set; }
+
+        /// <summary>
+        ///    获取当前KAE宿主实例的唯一名称
+        /// </summary>
+        public string UniqueName {
+            get
+            {
+                return Dns.GetHostName();
+            }
+        }
+
         /// <summary>
         ///    获取KAE宿主当前状态
         /// </summary>0
         public KAEHostStatus Status { get; private set; }
+        /// <summary>
+        ///    获取KAE宿主对于KPP实例的配置信息
+        /// </summary>
+        internal ChannelInternalConfigSettings ChannelInternalConfigSettings
+        {
+            get
+            {
+                return _settings;
+            }
+        }
+        /// <summary>
+        ///     获取KAE宿主的资源代理器
+        /// </summary>
+        internal IKAEResourceProxy ResourceProxy
+        {
+            get
+            {
+                return _hostProxy;
+            }
+        }
 
         #endregion
 
@@ -214,13 +246,6 @@ namespace KJFramework.ApplicationEngine
                 RecvBufferSize = ChannelConst.RecvBufferSize,
                 SegmentSize = ChannelConst.SegmentSize
             };
-            _tracing.DebugInfo("\t#Initializing network resources...");
-            if (!KAEHostNetworkResourceManager.IsInitialized)
-            {
-                KAEHostNetworkResourceManager.IntellegenceNewTransaction += IntellegenceNewTransaction;
-                KAEHostNetworkResourceManager.MetadataNewTransaction += MetadataNewTransaction;
-                KAEHostNetworkResourceManager.Initialize();
-            }
             _tracing.DebugInfo("\t#Loading KPPs...");
             //probing apps from specified file path: $WORK-PATHH\install-apps\
             IDictionary<string, IList<Tuple<ApplicationEntryInfo, KPPDataStructure>>> appMetadata = ((IApplicationFinder)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.APPFinder)).Search(Path.Combine(workRoot, "install-apps"));
@@ -266,8 +291,20 @@ namespace KJFramework.ApplicationEngine
             SystemWorker.Initialize("KAEWorker", RemoteConfigurationSetting.Default, _configurationProxy);
             _tracing.DebugInfo("#Initializing KAE internal system resource factory...");
             KAESystemInternalResource.Factory.Initialize();
+            _tracing.DebugInfo("\t#Initializing network resources...");
+            if (!KAEHostNetworkResourceManager.IsInitialized)
+            {
+                KAEHostNetworkResourceManager.IntellegenceNewTransaction += IntellegenceNewTransaction;
+                KAEHostNetworkResourceManager.MetadataNewTransaction += MetadataNewTransaction;
+                KAEHostNetworkResourceManager.Initialize();
+            }
+            _defaultKAENetwork = (TcpUri)KAEHostNetworkResourceManager.GetResourceUri(ProtocolTypes.INTERNAL_SPECIAL_RESOURCE);
+            _tracing.DebugInfo("#Register itself as an resouce to remote ZooKeeper...");
+            IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
+            protocolRegister.Initialize(UniqueName, _defaultKAENetwork);
+            protocolRegister.ChildrenChanged += RemoteResourceChanged;
             //Downloads & Initializes remoting KPPs by an installing list file.
-            if (_usedInstallingListFile) _workRoot = ((IRemotingApplicationDownloader) KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.APPDownloader)).Download(_workRoot, _installingListFile);
+            if (_usedInstallingListFile) _workRoot = ((IRemotingApplicationDownloader)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.APPDownloader)).DownloadFromList(_workRoot, _installingListFile);
             _tracing.DebugInfo("#Initializing KAE hosting...");
             IDictionary<string, IDictionary<string, Tuple<ApplicationEntryInfo, KPPDataStructure, ApplicationDynamicObject>>> apps = Initialize(_workRoot);
             if (apps == null || apps.Count == 0)
@@ -277,61 +314,12 @@ namespace KJFramework.ApplicationEngine
                 return;
             }
 
-            #region #Step 1, Build default network.
-
-            _defaultKAENetwork = (TcpUri) KAEHostNetworkResourceManager.GetResourceUri(ProtocolTypes.INTERNAL_SPECIAL_RESOURCE);
-
-            #endregion
-
-            #region #Step 2, Registering to remote ZooKeeper for listening notifications.
-
-            _tracing.DebugInfo("#Preparing to registers APP business information to remote server...");
-
-            IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister) KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
-            protocolRegister.ChildrenChanged += RemoteResourceChanged;
-
-            #endregion
-
+            _tracing.DebugInfo("#Initializing KAE hosting command executor...");
+            KAECommandsExector.Initialize();
             _tracing.DebugInfo("#Preparing background job for grey policy...");
             GetGreyPolicyAsync();
             Status = KAEHostStatus.Prepared;
             _tracing.DebugInfo("#KAE host has been initialized, STATUS: {0}.", ConsoleColor.DarkGreen, Status);
-        }
-
-        /// <summary>
-        ///     下架一个指定的KAE APP
-        /// </summary>
-        /// <param name="uniqueId">KAE APP唯一编号</param>
-        /// <param name="reason">错误原因</param>
-        internal bool UninstallApp(Guid uniqueId, out string reason)
-        {
-            _stateLogger.Log(string.Format("#Begin uninstalling KAE app: {0}", uniqueId));
-            ApplicationDynamicObject app = _hostedAppManager.GetApp(uniqueId);
-            if (app == null)
-            {
-                reason = "#Wasn't able to found specified KPP unique id: " + uniqueId;
-                _stateLogger.Log(reason);
-                return false;
-            }
-            _stateLogger.Log(string.Format("#Begin stopping targeted KAE app for uninstalling: {0}", uniqueId));
-            app.Stop();
-            _stateLogger.Log(string.Format("#End stopping targeted KAE app for uninstalling: {0}", uniqueId));
-            _hostedAppManager.Remove(uniqueId);
-            _stateLogger.Log(string.Format("#End uninstalling KAE app: {0}", uniqueId));
-            reason = null;
-            return true;
-        }
-
-        /// <summary>
-        ///     尝试上架一个指定的KAE APP
-        /// </summary>
-        /// <param name="uniqueId">KAE APP唯一编号</param>
-        /// <param name="reason">上架失败的原因</param>
-        /// <returns>返回上架后的状态</returns>
-        internal bool TryInstallApp(Guid uniqueId, out string reason)
-        {
-            reason = null;
-            return false;
         }
 
         /// <summary>
@@ -398,7 +386,7 @@ namespace KJFramework.ApplicationEngine
             app.HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg);
         }
 
-        private void HandleErrorSituation(ProtocolTypes protocol, object transaction, KAEErrorCodes errorCode, string reason)
+        internal void HandleErrorSituation(ProtocolTypes protocol, object transaction, KAEErrorCodes errorCode, string reason)
         {
             _rspRemainningCounter.Decrement();
             _errorRspCounter.Increment();
@@ -424,7 +412,7 @@ namespace KJFramework.ApplicationEngine
             }
         }
 
-        private void HandleSucceedSituation(ProtocolTypes protocol, object transaction, KAEErrorCodes errorCode, MetadataContainer rspMessage)
+        internal void HandleSucceedSituation(ProtocolTypes protocol, object transaction, KAEErrorCodes errorCode, MetadataContainer rspMessage)
         {
             _rspRemainningCounter.Decrement();
             switch (protocol)

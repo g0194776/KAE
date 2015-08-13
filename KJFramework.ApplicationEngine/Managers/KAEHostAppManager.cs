@@ -19,12 +19,30 @@ namespace KJFramework.ApplicationEngine.Managers
         #region Methods.
 
         /// <summary>
+        ///     检查指定的APP唯一编号是否已经被注册到当前的KAE宿主中
+        /// </summary>
+        /// <param name="guid">APP唯一编号</param>
+        /// <returns>返回检查后的状态</returns>
+        public bool Exists(Guid guid)
+        {
+            lock (_activedAppsLockObj)
+            {
+                return _activedApps.ContainsKey(guid);
+            }
+        }
+
+        /// <summary>
         ///     注册一个APP实例到当前的管理器中
         /// </summary>
         /// <param name="app">APP实例</param>
-        public void RegisterApp(ApplicationDynamicObject app)
+        public bool RegisterApp(ApplicationDynamicObject app)
         {
-            lock (_activedAppsLockObj) _activedApps[app.GlobalUniqueId] = app;
+            lock (_activedAppsLockObj)
+            {
+                if (_activedApps.ContainsKey(app.GlobalUniqueId)) return false;
+                _activedApps[app.GlobalUniqueId] = app;
+                return true;
+            }
         }
 
         /// <summary>

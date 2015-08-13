@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction.Objects;
 using ZooKeeperNet;
 using Uri = KJFramework.Net.Channels.Uri.Uri;
@@ -11,7 +14,7 @@ namespace KJFramework.ApplicationEngine.Proxies
     /// <summary>
     ///     远程协议注册器
     /// </summary>
-    internal class ZooKeeperProtocolRegister : IRemotingProtocolRegister
+    internal sealed class ZooKeeperProtocolRegister : IRemotingProtocolRegister
     {
         #region Constructor.
 
@@ -31,10 +34,49 @@ namespace KJFramework.ApplicationEngine.Proxies
         #region Members.
 
         private readonly ZooKeeper _client;
+        private string _basePath;
+        private string _protocolPath;
 
         #endregion
 
         #region Methods.
+
+        /// <summary>
+        ///     初始化
+        /// </summary>
+        public void Initialize(string hostName, TcpUri basicCommunicationAddress)
+        {
+            _basePath = SystemWorker.ConfigurationProxy.GetField("KAEWorker", "ZooKeeperBasePath");
+            if (_client.Exists(_basePath, false) == null)
+            {
+                try { _client.Create(_basePath, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent); }
+                catch (System.Exception) { }
+            }
+            //hosting node.
+            string hostingPath = Path.Combine(_basePath, "hosting");
+            hostingPath = hostingPath.Replace("\\", "/");
+            if (_client.Exists(hostingPath, false) == null)
+            {
+                try { _client.Create(hostingPath, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent); }
+                catch (System.Exception) { }
+            }
+            //protocols node.
+           _protocolPath = Path.Combine(_basePath, "protocols");
+           _protocolPath = _protocolPath.Replace("\\", "/");
+           if (_client.Exists(_protocolPath, false) == null)
+            {
+                try { _client.Create(_protocolPath, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent); }
+                catch (System.Exception) { }
+            }
+            //create resource node.
+            string resourcePath = Path.Combine(_basePath, "hosting/", hostName);
+            resourcePath = resourcePath.Replace("\\", "/");
+            if (_client.Exists(resourcePath, false) == null)
+            {
+                try { _client.Create(resourcePath, Encoding.UTF8.GetBytes(basicCommunicationAddress.ToString()), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral); }
+                catch (System.Exception) { }
+            }
+        }
 
         /// <summary>
         ///     将一个业务的通信协议与远程可访问地址注册到服务器上
@@ -47,7 +89,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         public void Register(MessageIdentity identity, ProtocolTypes protocolTypes, ApplicationLevel level, Uri resourceUri, Guid kppUniqueId)
         {
             if(resourceUri == null) throw new ArgumentNullException("resourceUri");
-            string path = string.Format("/{0}-{1}-{2}-{3}-{4}", identity.ProtocolId, identity.ServiceId, identity.DetailsId, protocolTypes, level);
+            string path = string.Format("{0}/{1}-{2}-{3}-{4}-{5}", _protocolPath, identity.ProtocolId, identity.ServiceId, identity.DetailsId, protocolTypes, level);
             AddPath(path, CreateMode.Persistent);
             path += string.Format("/{0};{1}", resourceUri.Address, kppUniqueId);
             AddPath(path, CreateMode.Ephemeral);
@@ -62,7 +104,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <returns>返回远程目标可访问资源</returns>
         public IProtocolResource GetProtocolResource(Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level)
         {
-            string path = string.Format("/{0}-{1}-{2}-{3}-{4}", protocol.ProtocolId, protocol.ServiceId, protocol.DetailsId, protocolTypes, level);
+            string path = string.Format("{0}/{1}-{2}-{3}-{4}-{5}", _protocolPath, protocol.ProtocolId, protocol.ServiceId, protocol.DetailsId, protocolTypes, level);
             IProtocolResource resource = new ProtocolResource(_client, path, protocol, protocolTypes, level);
             resource.ChildrenChanged += delegate(object sender, System.EventArgs args) { OnChildrenChanged(new LightSingleArgEventArgs<IProtocolResource>((IProtocolResource) sender));};
             return resource;
@@ -83,7 +125,8 @@ namespace KJFramework.ApplicationEngine.Proxies
         ///    远程资源列表变更事件
         /// </summary>
         public event EventHandler<LightSingleArgEventArgs<IProtocolResource>> ChildrenChanged;
-        protected virtual void OnChildrenChanged(LightSingleArgEventArgs<IProtocolResource> e)
+
+        private void OnChildrenChanged(LightSingleArgEventArgs<IProtocolResource> e)
         {
             EventHandler<LightSingleArgEventArgs<IProtocolResource>> handler = ChildrenChanged;
             if (handler != null) handler(this, e);

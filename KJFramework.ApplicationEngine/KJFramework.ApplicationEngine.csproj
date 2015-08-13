@@ -82,6 +82,9 @@
     <Compile Include="Clusters\INetworkCluster.cs" />
     <Compile Include="Clusters\NetworkCluster.cs" />
     <Compile Include="Commands\IKAESystemCommand.cs" />
+    <Compile Include="Commands\KAECommandsExector.cs" />
+    <Compile Include="Commands\InstallKPPCommand.cs" />
+    <Compile Include="Commands\UninstallKPPCommand.cs" />
     <Compile Include="Configurations\DeployConfigSection.cs" />
     <Compile Include="Configurations\DeploySettingConfiguration.cs" />
     <Compile Include="Configurations\Loaders\RemoteConfigurationLoader.cs" />

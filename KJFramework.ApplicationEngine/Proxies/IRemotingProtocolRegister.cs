@@ -2,6 +2,7 @@
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction.Objects;
 using Uri = KJFramework.Net.Channels.Uri.Uri;
 
@@ -14,6 +15,12 @@ namespace KJFramework.ApplicationEngine.Proxies
     {
         #region Methods.
 
+        /// <summary>
+        ///     初始化
+        /// </summary>
+        /// <param name="hostName">KAE宿主实例所部署的主机名</param>
+        /// <param name="defaultKAENetwork">KAE宿主的本地化通信资源</param>
+        void Initialize(string hostName, TcpUri defaultKAENetwork);
         /// <summary>
         ///     将一个业务的通信协议与远程可访问地址注册到服务器上
         /// </summary>

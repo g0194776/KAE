@@ -133,7 +133,11 @@ namespace KJFramework.ApplicationEngine.Objects
         /// </summary>
         public ApplicationStatus Status
         {
-            get { return _application.Status; }
+            get
+            {
+                if (_domain == null || _application == null) return ApplicationStatus.Stopped;
+                return _application.Status;
+            }
         }
 
         /// <summary>

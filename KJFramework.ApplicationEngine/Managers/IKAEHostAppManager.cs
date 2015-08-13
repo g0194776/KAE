@@ -11,10 +11,16 @@ namespace KJFramework.ApplicationEngine.Managers
         #region Methods.
 
         /// <summary>
+        ///     检查指定的APP唯一编号是否已经被注册到当前的KAE宿主中
+        /// </summary>
+        /// <param name="guid">APP唯一编号</param>
+        /// <returns>返回检查后的状态</returns>
+        bool Exists(Guid guid);
+        /// <summary>
         ///     注册一个APP实例到当前的管理器中
         /// </summary>
         /// <param name="app">APP实例</param>
-        void RegisterApp(ApplicationDynamicObject app);
+        bool RegisterApp(ApplicationDynamicObject app);
         /// <summary>
         ///     根据APP的UniqueId来获取一个内部所持有的APP实例
         /// </summary>

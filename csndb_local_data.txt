@@ -1,8 +1,9 @@
 ﻿/*
 SQLyog Ultimate v11.24 (32 bit)
-MySQL - 5.7.3-m13 : Database - csndb
+MySQL - 5.6.21-log : Database - csndb
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -28,11 +29,11 @@ CREATE TABLE `ha_configinfo` (
   `CreateTime` timestamp NOT NULL DEFAULT '2011-12-12 00:00:00',
   `LastOprTime` timestamp NOT NULL DEFAULT '2011-12-12 00:00:00',
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ha_configinfo` */
 
-insert  into `ha_configinfo`(`Id`,`ServiceName`,`ConfigKey`,`ConfigValue`,`CreateTime`,`LastOprTime`) values (1,'APMS','DatabaseConnection','HOST=127.0.0.1;DATABASE=kae_db;USER Id=root;PASSWORD=123123123;CHARSET=utf8;CONVERT Zero DATETIME=TRUE;Allow Zero DATETIME=TRUE;','2011-12-12 00:00:00','2011-12-12 00:00:00'),(2,'app.test','testkey','testvalue','2011-12-12 00:00:00','2011-12-12 00:00:00'),(3,'KAEWorker','GreyPolicyAddress','http://localhost/code.cs','2011-12-12 00:00:00','2011-12-12 00:00:00'),(4,'KAEWorker','GreyPolicyInternal','00:05:00','2011-12-12 00:00:00','2011-12-12 00:00:00'),(5,'KAEWorker','RRCS-Address','127.0.0.1:6611','2011-12-12 00:00:00','2011-12-12 00:00:00'),(6,'KAEWorker','KIS-Address','http://www.kae.com/','2011-12-12 00:00:00','2011-12-12 00:00:00'),(7,'KIS','DatabaseConnection','HOST=127.0.0.1;DATABASE=kae_db;USER Id=root;PASSWORD=123123123;CHARSET=utf8;CONVERT Zero DATETIME=TRUE;Allow Zero DATETIME=TRUE;','2011-12-12 00:00:00','2011-12-12 00:00:00'),(8,'KAEWorker','ZooKeeperAddresses','10.201.40.212:2181','2011-12-12 00:00:00','2011-12-12 00:00:00'),(9,'KAEWorker','ZooKeeper-SessionTimeout','00:05:00','2011-12-12 00:00:00','2011-12-12 00:00:00');
+insert  into `ha_configinfo`(`Id`,`ServiceName`,`ConfigKey`,`ConfigValue`,`CreateTime`,`LastOprTime`) values (1,'APMS','DatabaseConnection','HOST=127.0.0.1;DATABASE=kae_db;USER Id=root;PASSWORD=123123123;CHARSET=utf8;CONVERT Zero DATETIME=TRUE;Allow Zero DATETIME=TRUE;','2011-12-12 00:00:00','2011-12-12 00:00:00'),(2,'app.test','testkey','testvalue','2011-12-12 00:00:00','2011-12-12 00:00:00'),(3,'KAEWorker','GreyPolicyAddress','http://localhost/code.cs','2011-12-12 00:00:00','2011-12-12 00:00:00'),(4,'KAEWorker','GreyPolicyInternal','00:05:00','2011-12-12 00:00:00','2011-12-12 00:00:00'),(5,'KAEWorker','RRCS-Address','127.0.0.1:6611','2011-12-12 00:00:00','2011-12-12 00:00:00'),(6,'KAEWorker','KIS-Address','http://www.kae.com/','2011-12-12 00:00:00','2011-12-12 00:00:00'),(7,'KIS','DatabaseConnection','HOST=127.0.0.1;DATABASE=kae_db;USER Id=root;PASSWORD=123123123;CHARSET=utf8;CONVERT Zero DATETIME=TRUE;Allow Zero DATETIME=TRUE;','2011-12-12 00:00:00','2011-12-12 00:00:00'),(8,'KAEWorker','ZooKeeperAddresses','10.201.40.212:2181','2011-12-12 00:00:00','2011-12-12 00:00:00'),(9,'KAEWorker','ZooKeeper-SessionTimeout','00:05:00','2011-12-12 00:00:00','2011-12-12 00:00:00'),(10,'KAEWorker','ZooKeeperBasePath','/kae','2011-12-12 00:00:00','2011-12-12 00:00:00');
 
 /*Table structure for table `ha_partialconfig` */
 
