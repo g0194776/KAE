@@ -51,6 +51,10 @@
         /// </summary>
         KPPAlreadyInstalled = 0xEC,
         /// <summary>
+        ///     不被支持的KAE系统命令
+        /// </summary>
+        NotSupportedCommand = 0xEF,
+        /// <summary>
         ///    未知系统错误
         /// </summary>
         Unknown = 0xFF

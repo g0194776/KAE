@@ -242,4 +242,26 @@ What's the next:
 	当然，在ZooKeeper中的节点名称以及一致性HASH圆环中也有这个值的加入细节改动
 3. 引入KAE System Command接口，开始为后续KAEHost支持执行远程的系统命令做准备
 4. 加入KAEHostAppManager类，用于支持在多线程的环境中提供KAE宿主内部APP的管理和功能调用工作
+
+
+
+
+
+
+2015-8-13进度
+------------------------------------------------
+1. 为KAE宿主加入了KAECommandsExecutor类，用于执行系统命令
+2. 为KAE宿主初步实现了安装KPP以及卸载KPP的方法
+3. 重新梳理KAE宿主所使用到的ZooKeeper路径，统一规划到/kae目录下，并下设/protocols和/hosting子目录
+4. 在KAE宿主初始化时会将自己机器的名称加入到远程ZooKeeper的/kae/hosting子目录下，用于今后VS插件以及监控平台的发现以及后续通信
+5. RemotingApplicationDownloader向外部暴露下载单一文件的方法供KAE系统命令使用
+6. 改变KAEHostAppManager类执行策略，想外开放新的Exists方法用于检查指定KPP是否已经被上架
+7. 加入部分新的KAE错误码
 	
+
+
+
+
+
+2015-8-14进度
+------------------------------------------------

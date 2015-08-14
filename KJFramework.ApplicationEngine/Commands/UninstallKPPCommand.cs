@@ -3,6 +3,7 @@ using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Loggers;
 using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Objects;
+using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Results;
@@ -42,9 +43,12 @@ namespace KJFramework.ApplicationEngine.Commands
         public IExecuteResult Execute(MetadataContainer msg, KAEHost host, IKAEHostAppManager hostedAppManager, IKAEStateLogger stateLogger)
         {
             Guid kppUniqueId = msg.GetAttributeAsType<Guid>(0x03);
-            if(kppUniqueId == Guid.Empty) return ExecuteResult.Fail((byte) KAEErrorCodes.IllegalArgument, string.Empty);
+            if (kppUniqueId == Guid.Empty) return ExecuteResult.Fail((byte)KAEErrorCodes.IllegalArgument, string.Empty);
+            IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
             ApplicationDynamicObject app = hostedAppManager.GetApp(kppUniqueId);
-            if (app == null) return ExecuteResult.Fail((byte) KAEErrorCodes.SpecifiedKPPNotFound, string.Empty);
+            if (app == null) return ExecuteResult.Fail((byte)KAEErrorCodes.SpecifiedKPPNotFound, string.Empty);
+            stateLogger.Log(string.Format("#[Uninstalling KPP] Removing communication protocols to the remote ZooKeeper,  #KAE application: {0}, Internal un-rsp count: {1}", kppUniqueId, app.UnRspCount));
+            protocolRegister.UnRegister(app);
             stateLogger.Log(string.Format("#[Uninstalling KPP] Try uninstalling targeted KAE application: {0}, Internal un-rsp count: {1}", kppUniqueId, app.UnRspCount));
             hostedAppManager.Remove(kppUniqueId);
             app.Stop();

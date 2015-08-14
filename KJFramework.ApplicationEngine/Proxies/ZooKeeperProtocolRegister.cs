@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using KJFramework.ApplicationEngine.Eums;
+using KJFramework.ApplicationEngine.Managers;
+using KJFramework.ApplicationEngine.Objects;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction.Objects;
+using KJFramework.Tracing;
 using ZooKeeperNet;
 using Uri = KJFramework.Net.Channels.Uri.Uri;
 
@@ -33,9 +38,10 @@ namespace KJFramework.ApplicationEngine.Proxies
 
         #region Members.
 
-        private readonly ZooKeeper _client;
         private string _basePath;
         private string _protocolPath;
+        private readonly ZooKeeper _client;
+        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (ZooKeeperProtocolRegister));
 
         #endregion
 
@@ -79,6 +85,33 @@ namespace KJFramework.ApplicationEngine.Proxies
         }
 
         /// <summary>
+        ///     从远程服务器中上架指定的KPP实例并添加所有相关的网络协议
+        /// </summary>
+        /// <param name="app">待下架的KPP实例</param>
+        public void Register(ApplicationDynamicObject app)
+        {
+            string uniqueId = app.GlobalUniqueId.ToString();
+            IDictionary<ProtocolTypes, IList<MessageIdentity>> protocols = app.AcquireSupportedProtocols();
+            if (protocols == null || protocols.Count == 0) return;
+            foreach (KeyValuePair<ProtocolTypes, IList<MessageIdentity>> pair in protocols)
+            {
+                if (pair.Value == null || pair.Value.Count == 0) continue;
+                Uri networkUri = KAEHostNetworkResourceManager.GetResourceUri(pair.Key);
+                foreach (MessageIdentity identity in pair.Value)
+                {
+                    try
+                    {
+                        string path = string.Format("{0}/{1}-{2}-{3}-{4}-{5}", _protocolPath, identity.ProtocolId, identity.ServiceId, identity.DetailsId, pair.Key, app.Level);
+                        if (_client.Exists(path, false) == null) AddPath(path, CreateMode.Persistent);
+                        string subPath = string.Format("{0}/{1};{2}", path, networkUri.Address, uniqueId);
+                        AddPath(subPath, CreateMode.Ephemeral);
+                    }
+                    catch (System.Exception ex) { _tracing.Error(ex, null); }
+                }
+            }
+        }
+
+        /// <summary>
         ///     将一个业务的通信协议与远程可访问地址注册到服务器上
         /// </summary>
         /// <param name="identity">业务协议编号</param>
@@ -93,6 +126,38 @@ namespace KJFramework.ApplicationEngine.Proxies
             AddPath(path, CreateMode.Persistent);
             path += string.Format("/{0};{1}", resourceUri.Address, kppUniqueId);
             AddPath(path, CreateMode.Ephemeral);
+        }
+
+        /// <summary>
+        ///     从远程服务器中下架指定的KPP实例并抹除所有相关的网络协议
+        /// </summary>
+        /// <param name="app">待下架的KPP实例</param>
+        public void UnRegister(ApplicationDynamicObject app)
+        {
+            string uniqueId = app.GlobalUniqueId.ToString();
+            IDictionary<ProtocolTypes, IList<MessageIdentity>> protocols = app.AcquireSupportedProtocols();
+            if (protocols == null || protocols.Count == 0) return;
+            foreach (KeyValuePair<ProtocolTypes, IList<MessageIdentity>> pair in protocols)
+            {
+                if(pair.Value == null || pair.Value.Count == 0) continue;
+                foreach (MessageIdentity identity in pair.Value)
+                {
+                    try
+                    {
+                        string path = string.Format("{0}/{1}-{2}-{3}-{4}-{5}", _protocolPath, identity.ProtocolId, identity.ServiceId, identity.DetailsId, pair.Key, app.Level);
+                        if (_client.Exists(path, false) == null) continue;
+                        IList<string> children = _client.GetChildren(path, false).ToList();
+                        if (children.Count == 0) continue;
+                        foreach (string subPath in children)
+                        {
+                            if (!subPath.Contains(uniqueId)) continue;
+                            try { _client.Delete(subPath, 0); }
+                            catch (System.Exception ex) { _tracing.Error(ex, null); }
+                        }
+                    }
+                    catch (System.Exception ex) { _tracing.Error(ex, null); }
+                }
+            }
         }
 
         /// <summary>

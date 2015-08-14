@@ -28,6 +28,7 @@ using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.ValueStored;
+using KJFramework.Results;
 using KJFramework.Tracing;
 
 namespace KJFramework.ApplicationEngine
@@ -170,6 +171,7 @@ namespace KJFramework.ApplicationEngine
         
         #endregion
 
+        private readonly object _commandExecLockObj = new object();
         private readonly IKAEStateLogger _stateLogger = new KAEStateLogger(_tracing);
 
         /// <summary>
@@ -439,7 +441,17 @@ namespace KJFramework.ApplicationEngine
 
         private void HandleSystemCommand(IMessageTransaction<MetadataContainer> transaction)
         {
-            throw new NotImplementedException();
+            //KAE hosting will ensures that it always executes ONLY ONE command each time.
+            lock (_commandExecLockObj)
+            {
+                MetadataContainer request = transaction.Request;
+                IExecuteResult result = KAECommandsExector.Execute(request, this, _hostedAppManager, _stateLogger);
+                MetadataContainer rspMsg = new MetadataContainer();
+                rspMsg.SetAttribute(0x0A, new ByteValueStored(result.ErrorId));
+                if (result.ErrorId != (byte)KAEErrorCodes.OK)
+                    rspMsg.SetAttribute(0x0B, new StringValueStored(result.GetResult<string>()));
+                transaction.SendResponse(rspMsg);
+            }
         }
 
         #endregion

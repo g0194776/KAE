@@ -16,11 +16,17 @@ namespace KJFramework.ApplicationEngine.ApplicationTest2
             if (Directory.Exists(path)) Directory.Delete(path, true);
             Directory.CreateDirectory(path);
             PackTestWithoutDelete(path);
+            /*
+             * KAE CSN App.
+             */
+            path = Path.Combine(Directory.GetCurrentDirectory(), "install-apps\\Apps.Configuration");
+            if (Directory.Exists(path)) Directory.Delete(path, true);
+            Directory.CreateDirectory(path);
+            PackTestWithoutDeleteForCSN(path);
             KAEHost host = new KAEHost(installingListFile: null, configurationProxy: null); 
             host.Start();
             Console.ReadLine();
         }
-
 
         public static void PackTestWithoutDelete(string destPath)
         {
@@ -38,6 +44,24 @@ namespace KJFramework.ApplicationEngine.ApplicationTest2
             section.SetField("GlobalUniqueIdentity", guid);
             section.SetField("IsCompletedEnvironment", false);
             KPPResource.Pack(@"..\..\..\KJFramework.ApplicationEngine.ApplicationTest\bin\Debug\", fileName, head, false, section);
+        }
+
+        public static void PackTestWithoutDeleteForCSN(string destPath)
+        {
+            DateTime now = DateTime.Now;
+            string fileName = Path.Combine(destPath, DateTime.Now.Ticks + ".kpp");
+            Guid guid = Guid.Parse("2367846e-71a8-40ae-9b2b-37882bcc6ba1");
+            KPPDataHead head = new KPPDataHead();
+            PackageAttributeDataSection section = new PackageAttributeDataSection();
+            section.SetField("PackName", "KJFramework.ApplicationEngine.Apps.Configuration");
+            section.SetField("PackDescription", "\"Apps.Configuration\" which indicated the whole layer of dynamic configuration management.");
+            section.SetField("EnvironmentFlag", (byte)0x01);
+            section.SetField("Version", "0.0.1");
+            section.SetField("PackTime", now);
+            section.SetField("ApplicationMainFileName", "KJFramework.ApplicationEngine.Apps.Configuration.dll");
+            section.SetField("GlobalUniqueIdentity", guid);
+            section.SetField("IsCompletedEnvironment", false);
+            KPPResource.Pack(@"..\..\..\KJFramework.ApplicationEngine.Apps.Configuration\bin\Debug\", fileName, head, false, section);
         }
     }
 }

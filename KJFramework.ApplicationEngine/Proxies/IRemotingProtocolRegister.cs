@@ -1,5 +1,6 @@
 ﻿using System;
 using KJFramework.ApplicationEngine.Eums;
+using KJFramework.ApplicationEngine.Objects;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Channels.Uri;
@@ -22,6 +23,11 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="defaultKAENetwork">KAE宿主的本地化通信资源</param>
         void Initialize(string hostName, TcpUri defaultKAENetwork);
         /// <summary>
+        ///     从远程服务器中上架指定的KPP实例并添加所有相关的网络协议
+        /// </summary>
+        /// <param name="app">待下架的KPP实例</param>
+        void Register(ApplicationDynamicObject app);
+        /// <summary>
         ///     将一个业务的通信协议与远程可访问地址注册到服务器上
         /// </summary>
         /// <param name="identity">业务协议编号</param>
@@ -30,6 +36,11 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <param name="resourceUri">远程可访问的资源地址</param>
         /// <param name="kppUniqueId">KPP全局唯一编号</param>
         void Register(MessageIdentity identity, ProtocolTypes protocolTypes, ApplicationLevel level, Uri resourceUri, Guid kppUniqueId);
+        /// <summary>
+        ///     从远程服务器中下架指定的KPP实例并抹除所有相关的网络协议
+        /// </summary>
+        /// <param name="app">待下架的KPP实例</param>
+        void UnRegister(ApplicationDynamicObject app);
         /// <summary>
         ///    根据一组参数获取相应的远程目标资源
         /// </summary>
