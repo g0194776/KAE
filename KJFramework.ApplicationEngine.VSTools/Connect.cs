@@ -69,7 +69,7 @@ namespace KJFramework.ApplicationEngine.VSTools
         {
             MessageBox.Show("sdfsfsdf");
             MessageBox.Show(((Project)((object[])_applicationObject.DTE.ActiveSolutionProjects)[0]).FullName);
-            _applicationObject.Solution.SolutionBuild.Build(false);
+            _applicationObject.Solution.SolutionBuild.Build(true);
         }
 
 		/// <summary>Implements the OnDisconnection method of the IDTExtensibility2 interface. Receives notification that the Add-in is being unloaded.</summary>
