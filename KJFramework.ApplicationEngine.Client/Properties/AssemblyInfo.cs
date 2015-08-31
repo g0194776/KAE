@@ -5,19 +5,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("KJFramework.ApplicationEngine")]
+[assembly: AssemblyTitle("KJFramework.ApplicationEngine.Client")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Lenovo")]
-[assembly: AssemblyProduct("KJFramework.ApplicationEngine")]
-[assembly: AssemblyCopyright("Copyright © Lenovo 2014")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("KJFramework.ApplicationEngine.Client")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleTo("KJFramework.ApplicationEngine.KIS")]
-[assembly: InternalsVisibleTo("KJFramework.Architecture.UnitTest")]
-[assembly: InternalsVisibleTo("KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent")]
-[assembly: InternalsVisibleTo("KJFramework.ApplicationEngine.ApplicationTest2")]
-[assembly: InternalsVisibleTo("KJFramework.ApplicationEngine.Client")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -25,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6db0f594-858b-4f3d-9640-a7152a6c9770")]
+[assembly: Guid("195fe9dc-2b9b-4bc2-b62f-4d6d261bcb30")]
 
 // Version information for an assembly consists of the following four values:
 //
