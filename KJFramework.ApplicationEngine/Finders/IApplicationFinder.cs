@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Resources;
-using KJFramework.Exception;
+using KJFramework.Exceptions;
 
 namespace KJFramework.ApplicationEngine.Finders
 {

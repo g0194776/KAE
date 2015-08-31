@@ -1,5 +1,5 @@
 ﻿using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
-using KJFramework.Net.Channels;
+using KJFramework.Net;
 using KJFramework.Net.Transaction.ValueStored;
 
 namespace KJFramework.Data.Synchronization

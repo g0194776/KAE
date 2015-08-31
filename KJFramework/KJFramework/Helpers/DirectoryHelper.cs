@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using KJFramework.Exception;
+using KJFramework.Exceptions;
 
 namespace KJFramework.Helpers
 {

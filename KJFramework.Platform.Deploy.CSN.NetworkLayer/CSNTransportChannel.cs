@@ -3,8 +3,9 @@ using System.Net;
 using System.Net.Sockets;
 using KJFramework.Buffers;
 using KJFramework.EventArgs;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Enums;
+using KJFramework.Net;
+using KJFramework.Net.Enums;
+using Uri = KJFramework.Net.Uri.Uri;
 
 namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 {
@@ -27,7 +28,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         #region Implementation of ITransportChannel
 
         protected IPEndPoint _address;
-        protected Net.Channels.Uri.Uri _logicalAddress;
+        protected Uri _logicalAddress;
         protected bool _connected;
         protected bool _supportSegment;
         protected IByteArrayBuffer _buffer;
@@ -138,7 +139,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         /// <summary>
         ///     获取或设置逻辑地址
         /// </summary>
-        public Net.Channels.Uri.Uri LogicalAddress
+        public Uri LogicalAddress
         {
             get { return _logicalAddress; }
             set { _logicalAddress = value; }

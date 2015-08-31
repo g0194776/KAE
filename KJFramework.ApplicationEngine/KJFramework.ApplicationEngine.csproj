@@ -82,6 +82,8 @@
     <Compile Include="Clusters\INetworkCluster.cs" />
     <Compile Include="Clusters\NetworkCluster.cs" />
     <Compile Include="Commands\IKAESystemCommand.cs" />
+    <Compile Include="Commands\RetrieveKPPInfoCommand.cs" />
+    <Compile Include="Commands\UpgradeKPPCommand.cs" />
     <Compile Include="Commands\KAECommandsExector.cs" />
     <Compile Include="Commands\InstallKPPCommand.cs" />
     <Compile Include="Commands\UninstallKPPCommand.cs" />
@@ -178,10 +180,6 @@
     <Compile Include="ZooKeeperWatcher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
-      <Project>{6f85c222-1cd2-44d4-8d06-22f557d4cf04}</Project>
-      <Name>KJFramework.Cache</Name>
-    </ProjectReference>
     <ProjectReference Include="..\KJFramework.Data.Synchronization\KJFramework.Data.Synchronization\KJFramework.Data.Synchronization.csproj">
       <Project>{9c08ac15-9965-4f6e-bfd8-c37bda1ee845}</Project>
       <Name>KJFramework.Data.Synchronization</Name>
@@ -193,10 +191,6 @@
     <ProjectReference Include="..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
       <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
       <Name>KJFramework.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
-      <Project>{33fe11d3-2810-4432-b64c-b16935bb47cd}</Project>
-      <Name>KJFramework.Net.Channels</Name>
     </ProjectReference>
     <ProjectReference Include="..\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
       <Project>{658c4853-7022-4c2f-bb82-7261dbdae55d}</Project>

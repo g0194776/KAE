@@ -7,8 +7,9 @@ using KJFramework.ApplicationEngine.Factories;
 using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Resources;
+using KJFramework.Net;
 using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Configurations;
+using KJFramework.Net.Configurations;
 using NUnit.Framework;
 
 namespace KJFramework.Architecture.UnitTest.KAE

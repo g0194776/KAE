@@ -8,9 +8,6 @@ using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors.Maps;
 using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Configurations;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Managers;
@@ -22,6 +19,9 @@ using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
+using KJFramework.Net;
+using KJFramework.Net.Configurations;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.ApplicationEngine
 {

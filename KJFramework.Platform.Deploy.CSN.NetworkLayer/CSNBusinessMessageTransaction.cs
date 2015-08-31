@@ -1,10 +1,10 @@
-﻿using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
-using KJFramework.Net.Transaction;
+﻿using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Contexts;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;
 using System;
+using KJFramework.Net;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 {

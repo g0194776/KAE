@@ -1,4 +1,4 @@
-using KJFramework.Exception;
+using KJFramework.Exceptions;
 
 namespace KJFramework.Dynamic.Exceptions
 {

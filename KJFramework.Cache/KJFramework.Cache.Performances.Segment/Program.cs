@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using KJFramework.Cache.Containers;
-using KJFramework.Cache.Cores.Segments;
+using KJFramework.Containers;
+using KJFramework.Cores.Segments;
 using KJFramework.Timer;
 
 namespace KJFramework.Cache.Performances.Segment

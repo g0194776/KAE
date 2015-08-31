@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Tracing;

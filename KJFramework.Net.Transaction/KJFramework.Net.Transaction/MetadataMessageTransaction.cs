@@ -1,8 +1,7 @@
 ﻿using System;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;

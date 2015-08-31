@@ -1,12 +1,12 @@
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Helpers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using KJFramework.Net;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Data.Synchronization.Transactions
 {

@@ -1,9 +1,6 @@
 ﻿using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Resources;
-using KJFramework.Net.Channels.Enums;
-using KJFramework.Net.Channels.HostChannels;
-using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.ProtocolStack;
@@ -13,7 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using Uri = KJFramework.Net.Channels.Uri.Uri;
+using KJFramework.Net.Enums;
+using KJFramework.Net.HostChannels;
+using KJFramework.Net.Uri;
+using Uri = KJFramework.Net.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine.Helpers
 {

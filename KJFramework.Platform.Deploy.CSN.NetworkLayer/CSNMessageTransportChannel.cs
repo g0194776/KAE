@@ -2,17 +2,18 @@
 using KJFramework.Enums;
 using KJFramework.EventArgs;
 using KJFramework.Net.Channel;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Buffers;
-using KJFramework.Net.Channels.Enums;
-using KJFramework.Net.Channels.Identities;
-using KJFramework.Net.Channels.Managers;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using KJFramework.Net;
+using KJFramework.Net.Buffers;
+using KJFramework.Net.Enums;
+using KJFramework.Net.Identities;
+using KJFramework.Net.Managers;
+using Uri = KJFramework.Net.Uri.Uri;
 
 namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 {
@@ -258,7 +259,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         /// <summary>
         ///     获取或设置逻辑地址
         /// </summary>
-        public Net.Channels.Uri.Uri LogicalAddress
+        public Uri LogicalAddress
         {
             get { return _rawChannel.LogicalAddress; }
             set { _rawChannel.LogicalAddress = value; }

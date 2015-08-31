@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Remoting;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
 using KJFramework.ApplicationEngine.Extends;
@@ -19,10 +20,9 @@ using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Configurations;
-using KJFramework.Net.Channels.Identities;
-using KJFramework.Net.Channels.Uri;
+using KJFramework.Net;
+using KJFramework.Net.Configurations;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
@@ -30,9 +30,10 @@ using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
+using KJFramework.Net.Uri;
 using KJFramework.Tracing;
 using ILease = System.Runtime.Remoting.Lifetime.ILease;
-using Uri = KJFramework.Net.Channels.Uri.Uri;
+using Uri = KJFramework.Net.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine.Objects
 {
@@ -374,6 +375,16 @@ namespace KJFramework.ApplicationEngine.Objects
             _domain = null;
         }
 
+        /// <summary>
+        ///     延迟停止当前KAE APP
+        /// </summary>
+        public void DelayStop()
+        {
+            _application.Status = ApplicationStatus.Stoping;
+            if (_unRspCount != 0) Task.Delay(3000).ContinueWith(task => DelayStop());
+            else Stop();
+        }
+
         public void OnLoading()
         {
             _application.OnLoading();
@@ -433,7 +444,7 @@ namespace KJFramework.ApplicationEngine.Objects
             _application.UpdateConfiguration(key, value);
         }
 
-        internal void HandleBusiness(Tuple<KAENetworkResource, ApplicationLevel> tag, object transaction, MessageIdentity reqMsgIdentity, object reqMsg)
+        internal void HandleBusiness(Tuple<KAENetworkResource, ApplicationLevel> tag, object transaction, MessageIdentity reqMsgIdentity, object reqMsg, TransactionIdentity transactionIdentity)
         {
             //Targeted network protocol CANNOT be support.
             IDictionary<MessageIdentity, IDictionary<ApplicationLevel, int>> dic;
@@ -456,22 +467,22 @@ namespace KJFramework.ApplicationEngine.Objects
                 _handleErrorSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.NotSupportedApplicationLevel, "#We'd not supported current application's level yet!");
                 return;
             }
-            Interlocked.Increment(ref _unRspCount);
+            if (!transactionIdentity.IsOneway) Interlocked.Increment(ref _unRspCount);
             //acquires a business package for getting the return value from targeted application.
             BusinessPackage package = (BusinessPackage)CreateBusinessPackage();
             package.Transaction.Failed += delegate
             {
-                Interlocked.Decrement(ref _unRspCount);
+                if (!transactionIdentity.IsOneway) Interlocked.Decrement(ref _unRspCount);
                 _handleErrorSituation(ProtocolTypes.Metadata, transaction, KAEErrorCodes.TunnelCommunicationFailed, "#Occured failed while communicating with the targeted application.");
             };
             package.Transaction.Timeout += delegate
             {
-                Interlocked.Decrement(ref _unRspCount);
+                if (!transactionIdentity.IsOneway) Interlocked.Decrement(ref _unRspCount);
                 _handleErrorSituation(ProtocolTypes.Metadata, transaction, KAEErrorCodes.TunnelCommunicationTimeout, "#Occured timeout while communicating with the targeted application.");
             };
             package.Transaction.ResponseArrived += delegate(object o, LightSingleArgEventArgs<MetadataContainer> args)
             {
-                Interlocked.Decrement(ref _unRspCount);
+                if (!transactionIdentity.IsOneway) Interlocked.Decrement(ref _unRspCount);
                 package.State = BusinessPackageStates.ReceivedDeliveryResponse;
                 //error situation.
                 if (args.Target.GetAttributeByIdSafety<byte>(0x0A) != 0x00)

@@ -2,7 +2,7 @@
 
 using KJFramework.Messages.Attributes;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Net.Transaction.Messages
 {

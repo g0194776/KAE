@@ -1,6 +1,6 @@
 ﻿using System;
 using KJFramework.ApplicationEngine.Eums;
-using Uri = KJFramework.Net.Channels.Uri.Uri;
+using Uri = KJFramework.Net.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine.Resources
 {

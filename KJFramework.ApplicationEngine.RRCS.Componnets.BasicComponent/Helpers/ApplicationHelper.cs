@@ -4,7 +4,7 @@ using System.Data;
 using KJFramework.ApplicationEngine.Entities;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.Datas;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Results;
 
 namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Helpers

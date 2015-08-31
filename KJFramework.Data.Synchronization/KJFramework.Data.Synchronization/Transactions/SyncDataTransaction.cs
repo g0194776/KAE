@@ -1,10 +1,10 @@
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
+using KJFramework.Net;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Data.Synchronization.Transactions
 {

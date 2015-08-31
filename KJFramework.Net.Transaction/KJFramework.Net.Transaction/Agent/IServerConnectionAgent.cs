@@ -1,6 +1,5 @@
 ﻿using System;
 using KJFramework.EventArgs;
-using KJFramework.Net.Channels;
 
 namespace KJFramework.Net.Transaction.Agent
 {

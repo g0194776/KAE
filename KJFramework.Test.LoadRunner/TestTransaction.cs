@@ -2,7 +2,6 @@ using System;
 using KJFramework.Configurations;
 using KJFramework.Configurations.Items;
 using KJFramework.Dynamic.Configurations;
-using KJFramework.Net.Channels.Configurations;
 using KJFramework.Net.Configurations;
 using KJFramework.Tracing;
 using LoadRunner;

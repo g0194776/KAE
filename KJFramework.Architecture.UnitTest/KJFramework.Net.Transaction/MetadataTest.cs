@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.ValueStored;
 using NUnit.Framework;

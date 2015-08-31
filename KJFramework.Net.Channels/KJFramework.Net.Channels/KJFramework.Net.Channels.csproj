@@ -50,109 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Buffers\ReceiveBuffer.cs" />
-    <Compile Include="Caches\BuffStub.cs" />
-    <Compile Include="Caches\IMultiPacketStub.cs" />
-    <Compile Include="Caches\MultiPacketStub.cs" />
-    <Compile Include="Caches\SocketBuffStub.cs" />
-    <Compile Include="Caches\NoBuffSocketStub.cs" />
-    <Compile Include="Caches\SocketIOStub.cs" />
-    <Compile Include="ChannelConst.cs" />
-    <Compile Include="CommunicationObject.cs" />
-    <Compile Include="Configurations\ChannelInternalConfigSettings.cs" />
-    <Compile Include="Configurations\ChannelModelSettingConfigSection.cs" />
-    <Compile Include="Configurations\SettingConfiguration.cs" />
-    <Compile Include="Disconvery\DiscoveryInputPin.cs" />
-    <Compile Include="Disconvery\DiscoveryOnputPin.cs" />
-    <Compile Include="Disconvery\Protocols\CommonBoradcastProtocol.cs" />
-    <Compile Include="EndPoints\NamedPipeEndPoint.cs" />
-    <Compile Include="Enums\IdentitySerializationTypes.cs" />
-    <Compile Include="Enums\TransactionIdentityTypes.cs" />
-    <Compile Include="Enums\NetworkTypes.cs" />
-    <Compile Include="Enums\TransportChannelTypes.cs" />
-    <Compile Include="Events\SegmentReceiveEventArgs.cs" />
-    <Compile Include="ChannelCounter.cs" />
-    <Compile Include="Events\SocketSegmentReceiveEventArgs.cs" />
-    <Compile Include="Events\NamedPipeSegmentReceiveEventArgs.cs" />
-    <Compile Include="Extends\StringExtends.cs" />
-    <Compile Include="Health\AliveCheckTcpConnection.cs" />
-    <Compile Include="Identities\ErrorTransactionIdentity.cs" />
-    <Compile Include="Identities\MessageIdentity.cs" />
-    <Compile Include="Identities\NamedPipeTransactionIdentity.cs" />
-    <Compile Include="Identities\TCPTransactionIdentity.cs" />
-    <Compile Include="Identities\TransactionIdentity.cs" />
-    <Compile Include="Objects\SegmentNode.cs" />
-    <Compile Include="Parsers\ISegmentDataParser.cs" />
-    <Compile Include="Parsers\SegmentDataParser.cs" />
-    <Compile Include="SocketHelper.cs" />
-    <Compile Include="TcpTransportChannel.cs" />
-    <Compile Include="Enums\CommunicationStates.cs" />
-    <Compile Include="Enums\HttpChannelTypes.cs" />
-    <Compile Include="HostChannels\HostTransportChannel.cs" />
-    <Compile Include="HostChannels\HttpHostTransportChannel.cs" />
-    <Compile Include="HostChannels\IHostTransportChannel.cs" />
-    <Compile Include="HostChannels\IHttpHostTransportChannel.cs" />
-    <Compile Include="HostChannels\IPiepHostTransportChannel.cs" />
-    <Compile Include="HostChannels\PipeHostTransportChannel.cs" />
-    <Compile Include="HostChannels\TcpHostTransportChannel.cs" />
-    <Compile Include="HttpTransportChannel.cs" />
-    <Compile Include="ICommunicationChannelAddress.cs" />
-    <Compile Include="ICommunicationObject.cs" />
-    <Compile Include="IDecodeChannel.cs" />
-    <Compile Include="IEncodeChannel.cs" />
-    <Compile Include="IFunctionChannel.cs" />
-    <Compile Include="IHttpTransportChannel.cs" />
-    <Compile Include="IMessageTransportChannel.cs" />
-    <Compile Include="IProtocolChannel.cs" />
-    <Compile Include="IRawTransportChannel.cs" />
-    <Compile Include="IReconnectionTransportChannel.cs" />
-    <Compile Include="IServiceChannel.cs" />
-    <Compile Include="ITcpTransportChannel.cs" />
-    <Compile Include="ITransportChannel.cs" />
-    <Compile Include="Managers\IMultiPacketManager.cs" />
-    <Compile Include="Managers\MultiPacketManager.cs" />
-    <Compile Include="MessageTransportChannel.cs" />
-    <Compile Include="OneWay\IInputChannel.cs" />
-    <Compile Include="OneWay\InputChannel.cs" />
-    <Compile Include="OneWay\IOnewayChannel.cs" />
-    <Compile Include="OneWay\IOutputChannel.cs" />
-    <Compile Include="OneWay\OnewayChannel.cs" />
-    <Compile Include="OneWay\OutputChannel.cs" />
-    <Compile Include="PipeTransportChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtocolChannel.cs" />
-    <Compile Include="Receivers\TcpAsynDataRecevier.cs" />
-    <Compile Include="ReplyNow\IRequestChannel.cs" />
-    <Compile Include="ReplyNow\IResponseChannel.cs" />
-    <Compile Include="ServiceChannel.cs" />
-    <Compile Include="Spy\IMessageSpy.cs" />
-    <Compile Include="Statistics\PipeHostTransportChannelStatistic.cs" />
-    <Compile Include="Statistics\PipeTransportChannelStatistic.cs" />
-    <Compile Include="Statistics\TcpHostTransportChannelStatistic.cs" />
-    <Compile Include="Statistics\TcpTransportChannelStatistic.cs" />
-    <Compile Include="Transactions\IStreamTranscation.cs" />
-    <Compile Include="Transactions\PipeStreamTransaction.cs" />
-    <Compile Include="Transactions\Processors\ITransactionProcessor.cs" />
-    <Compile Include="Transactions\Processors\TransactionProcessor.cs" />
-    <Compile Include="Transactions\StreamTransaction.cs" />
-    <Compile Include="TransportChannel.cs" />
-    <Compile Include="Uri\PipeUri.cs" />
-    <Compile Include="Uri\TcpUri.cs" />
-    <Compile Include="Uri\Uri.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="2011-08-08.cd" />
-    <None Include="2011-09-20.cd" />
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\KJFramework.Cache\KJFramework.Cache\KJFramework.Cache.csproj">
-      <Project>{6F85C222-1CD2-44D4-8D06-22F557D4CF04}</Project>
-      <Name>KJFramework.Cache</Name>
-    </ProjectReference>
+    <Folder Include="Buffers\" />
+    <Folder Include="Configurations\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
       <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
       <Name>KJFramework.Messages</Name>

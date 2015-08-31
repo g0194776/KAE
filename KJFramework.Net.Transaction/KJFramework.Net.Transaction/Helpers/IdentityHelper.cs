@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Threading;
-using KJFramework.Net.Channels.Enums;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Enums;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Net.Transaction.Helpers
 {

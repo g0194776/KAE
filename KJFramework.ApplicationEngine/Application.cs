@@ -16,11 +16,6 @@ using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
 using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Configurations;
-using KJFramework.Net.Channels.HostChannels;
-using KJFramework.Net.Channels.Identities;
-using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
@@ -32,6 +27,11 @@ using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using KJFramework.Net;
+using KJFramework.Net.Configurations;
+using KJFramework.Net.HostChannels;
+using KJFramework.Net.Identities;
+using KJFramework.Net.Uri;
 using PaxScript.Net;
 
 namespace KJFramework.ApplicationEngine
@@ -78,7 +78,7 @@ namespace KJFramework.ApplicationEngine
         /// <summary>
         ///    获取应用当前的状态
         /// </summary>
-        public ApplicationStatus Status { get; private set; }
+        public ApplicationStatus Status { get; internal set; }
 
         /// <summary>
         ///    获取应用等级

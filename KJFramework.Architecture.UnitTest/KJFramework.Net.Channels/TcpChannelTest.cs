@@ -5,14 +5,14 @@ using System.Threading;
 using KJFramework.ApplicationEngine;
 using KJFramework.ApplicationEngine.Configurations.Settings;
 using KJFramework.Architecture.UnitTest.KAE;
-using KJFramework.Cache.Containers;
+using KJFramework.Containers;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Net.Channels.Caches;
-using KJFramework.Net.Channels.Enums;
-using KJFramework.Net.Channels.HostChannels;
+using KJFramework.Net.Caches;
+using KJFramework.Net.Enums;
+using KJFramework.Net.HostChannels;
 using KJFramework.Net.Transaction.ProtocolStack;
 using NUnit.Framework;
 

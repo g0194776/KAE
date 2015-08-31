@@ -20,14 +20,14 @@ using KJFramework.Counters;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Configurations;
-using KJFramework.Net.Channels.Identities;
-using KJFramework.Net.Channels.Uri;
+using KJFramework.Net;
+using KJFramework.Net.Configurations;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.ValueStored;
+using KJFramework.Net.Uri;
 using KJFramework.Results;
 using KJFramework.Tracing;
 
@@ -376,7 +376,7 @@ namespace KJFramework.ApplicationEngine
          *      ...
          *      Other Business Fields
          */
-        private void HandleBusiness(Tuple<KAENetworkResource, ApplicationLevel> tag, object transaction, MessageIdentity reqMsgIdentity, object reqMsg, Guid kppUniqueId)
+        private void HandleBusiness(Tuple<KAENetworkResource, ApplicationLevel> tag, object transaction, MessageIdentity reqMsgIdentity, object reqMsg, Guid kppUniqueId, TransactionIdentity transactionIdentity)
         {
             _rspRemainningCounter.Increment();
             ApplicationDynamicObject app = _hostedAppManager.GetApp(kppUniqueId);
@@ -385,7 +385,7 @@ namespace KJFramework.ApplicationEngine
                 HandleErrorSituation(tag.Item1.Protocol, transaction, KAEErrorCodes.SpecifiedKPPNotFound, "#Specified KPP's unique ID had not found!");
                 return;
             }
-            app.HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg);
+            app.HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg, transactionIdentity);
         }
 
         internal void HandleErrorSituation(ProtocolTypes protocol, object transaction, KAEErrorCodes errorCode, string reason)
@@ -450,6 +450,9 @@ namespace KJFramework.ApplicationEngine
                 rspMsg.SetAttribute(0x0A, new ByteValueStored(result.ErrorId));
                 if (result.ErrorId != (byte)KAEErrorCodes.OK)
                     rspMsg.SetAttribute(0x0B, new StringValueStored(result.GetResult<string>()));
+                string retValue = result.GetResult<string>();
+                if (!string.IsNullOrEmpty(retValue))
+                    rspMsg.SetAttribute(0x0C, new StringValueStored(retValue));
                 transaction.SendResponse(rspMsg);
             }
         }
@@ -465,6 +468,7 @@ namespace KJFramework.ApplicationEngine
             MetadataContainer reqMsg = transaction.Request;
             Tuple<KAENetworkResource, ApplicationLevel> tag = new Tuple<KAENetworkResource, ApplicationLevel>((KAENetworkResource)agent.Tag, (reqMsg.IsAttibuteExsits(0x05) ? (ApplicationLevel)reqMsg.GetAttributeAsType<byte>(0x05) : ApplicationLevel.Stable));
             MessageIdentity reqMsgIdentity = reqMsg.GetAttributeAsType<MessageIdentity>(0x00);
+            TransactionIdentity transactionIdentity = reqMsg.GetAttributeAsType<TransactionIdentity>(0x01);
             Guid uniqueId = reqMsg.GetAttributeAsType<Guid>(0x03);
             /*
              * We always makes a checking on the Metadata protocol network communication. 
@@ -472,7 +476,7 @@ namespace KJFramework.ApplicationEngine
              */
             if (reqMsgIdentity.ProtocolId >= 0xFC) HandleSystemCommand(transaction);
             //sends it to the appropriate application.
-            else HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg, uniqueId);
+            else HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg, uniqueId, transactionIdentity);
         }
 
         void IntellegenceNewTransaction(object sender, LightSingleArgEventArgs<IMessageTransaction<BaseMessage>> e)
@@ -482,7 +486,7 @@ namespace KJFramework.ApplicationEngine
             KAERequestMessage reqMsg = (KAERequestMessage)transaction.Request;
             Tuple<KAENetworkResource, ApplicationLevel> tag = new Tuple<KAENetworkResource, ApplicationLevel>((KAENetworkResource)agent.Tag, reqMsg.RequestedLevel);
             MessageIdentity reqMsgIdentity = reqMsg.MessageIdentity;
-            HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg, reqMsg.KPPUniqueId);
+            HandleBusiness(tag, transaction, reqMsgIdentity, reqMsg, reqMsg.KPPUniqueId, reqMsg.TransactionIdentity);
         }
 
         //Received a message from remoting CSN.

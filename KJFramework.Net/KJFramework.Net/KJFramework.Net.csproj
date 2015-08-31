@@ -36,6 +36,8 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +50,7 @@
     <DocumentationFile>bin\KJFramework.Net.XML</DocumentationFile>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -78,6 +81,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -95,12 +102,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buffers\ReceiveBuffer.cs" />
+    <Compile Include="Caches\BuffStub.cs" />
+    <Compile Include="Caches\IMultiPacketStub.cs" />
+    <Compile Include="Caches\MultiPacketStub.cs" />
+    <Compile Include="Caches\NoBuffSocketStub.cs" />
+    <Compile Include="Caches\SocketBuffStub.cs" />
+    <Compile Include="Caches\SocketIOStub.cs" />
+    <Compile Include="ChannelConst.cs" />
+    <Compile Include="ChannelCounter.cs" />
     <Compile Include="Channel\BasicChannelInfomation.cs" />
     <Compile Include="Channel\IChannel.cs" />
+    <Compile Include="CommunicationObject.cs" />
+    <Compile Include="Configurations\ChannelInternalConfigSettings.cs" />
+    <Compile Include="Configurations\ChannelModelSettingConfigSection.cs" />
     <Compile Include="Configurations\LocalConfiguration.cs" />
     <Compile Include="Configurations\NetworkLayerConfiguration.cs" />
-    <Compile Include="Buffer\BasicBufferPool.cs" />
-    <Compile Include="Buffer\IBufferPool.cs" />
+    <Compile Include="Buffers\BasicBufferPool.cs" />
+    <Compile Include="Buffers\IBufferPool.cs" />
+    <Compile Include="Configurations\SettingConfiguration.cs" />
+    <Compile Include="Disconvery\DiscoveryInputPin.cs" />
+    <Compile Include="Disconvery\DiscoveryOnputPin.cs" />
+    <Compile Include="Disconvery\Protocols\CommonBoradcastProtocol.cs" />
+    <Compile Include="EndPoints\NamedPipeEndPoint.cs" />
+    <Compile Include="Enums\CommunicationStates.cs" />
+    <Compile Include="Enums\HttpChannelTypes.cs" />
+    <Compile Include="Enums\IdentitySerializationTypes.cs" />
+    <Compile Include="Enums\NetworkTypes.cs" />
+    <Compile Include="Enums\TransactionIdentityTypes.cs" />
+    <Compile Include="Enums\TransportChannelTypes.cs" />
     <Compile Include="EventArgs\ConnectionCountChanagedEventArgs.cs" />
     <Compile Include="EventArgs\ConnectionCountFullEventArgs.cs" />
     <Compile Include="EventArgs\FsHreatTimeoutEventArgs.cs" />
@@ -124,6 +154,9 @@
     <Compile Include="EventArgs\UserDisconnectedEventArgs.cs" />
     <Compile Include="EventArgs\UserHreatTimeoutEventArgs.cs" />
     <Compile Include="EventArgs\ChannelDisconnectedEventArgs.cs" />
+    <Compile Include="Events\NamedPipeSegmentReceiveEventArgs.cs" />
+    <Compile Include="Events\SegmentReceiveEventArgs.cs" />
+    <Compile Include="Events\SocketSegmentReceiveEventArgs.cs" />
     <Compile Include="Exception\BufferPoolNotFoundException.cs" />
     <Compile Include="Exception\CheckerHasNullException.cs" />
     <Compile Include="Exception\CheckerMemberNotFoundException.cs" />
@@ -189,30 +222,98 @@
     <Compile Include="Exception\UdpResponseManagerNotFoundException.cs" />
     <Compile Include="Exception\UserIdUnCorrectExpcetion.cs" />
     <Compile Include="Exception\UserNetworkNotFoundException.cs" />
+    <Compile Include="Extends\StringExtends.cs" />
+    <Compile Include="Health\AliveCheckTcpConnection.cs" />
     <Compile Include="Helper\IMessageHelper.cs" />
     <Compile Include="Helper\NetHelper.cs" />
+    <Compile Include="HostChannels\HostTransportChannel.cs" />
+    <Compile Include="HostChannels\HttpHostTransportChannel.cs" />
+    <Compile Include="HostChannels\IHostTransportChannel.cs" />
+    <Compile Include="HostChannels\IHttpHostTransportChannel.cs" />
+    <Compile Include="HostChannels\IPiepHostTransportChannel.cs" />
+    <Compile Include="HostChannels\PipeHostTransportChannel.cs" />
+    <Compile Include="HostChannels\TcpHostTransportChannel.cs" />
+    <Compile Include="HttpTransportChannel.cs" />
+    <Compile Include="ICommunicationChannelAddress.cs" />
+    <Compile Include="ICommunicationObject.cs" />
+    <Compile Include="IDecodeChannel.cs" />
+    <Compile Include="Identities\ErrorTransactionIdentity.cs" />
+    <Compile Include="Identities\MessageIdentity.cs" />
+    <Compile Include="Identities\NamedPipeTransactionIdentity.cs" />
+    <Compile Include="Identities\TCPTransactionIdentity.cs" />
+    <Compile Include="Identities\TransactionIdentity.cs" />
+    <Compile Include="IEncodeChannel.cs" />
+    <Compile Include="IFunctionChannel.cs" />
+    <Compile Include="IHttpTransportChannel.cs" />
+    <Compile Include="IMessageTransportChannel.cs" />
+    <Compile Include="IProtocolChannel.cs" />
+    <Compile Include="IRawTransportChannel.cs" />
     <Compile Include="IReconnectable.cs" />
+    <Compile Include="IReconnectionTransportChannel.cs" />
+    <Compile Include="IServiceChannel.cs" />
+    <Compile Include="ITcpTransportChannel.cs" />
+    <Compile Include="ITransportChannel.cs" />
     <Compile Include="IUpdatable.cs" />
     <Compile Include="Listener\Asynchronous\BasicTcpAsynListenerV2.cs" />
     <Compile Include="Listener\BasicPortListenerInfomation.cs" />
     <Compile Include="Listener\IPortListener.cs" />
     <Compile Include="Listener\IPortListenerInfomation.cs" />
     <Compile Include="Listener\ITcpIocpListener.cs" />
+    <Compile Include="Managers\IMultiPacketManager.cs" />
+    <Compile Include="Managers\MultiPacketManager.cs" />
+    <Compile Include="MessageTransportChannel.cs" />
+    <Compile Include="Objects\SegmentNode.cs" />
+    <Compile Include="OneWay\IInputChannel.cs" />
+    <Compile Include="OneWay\InputChannel.cs" />
+    <Compile Include="OneWay\IOnewayChannel.cs" />
+    <Compile Include="OneWay\IOutputChannel.cs" />
+    <Compile Include="OneWay\OnewayChannel.cs" />
+    <Compile Include="OneWay\OutputChannel.cs" />
+    <Compile Include="Parsers\ISegmentDataParser.cs" />
+    <Compile Include="Parsers\SegmentDataParser.cs" />
+    <Compile Include="PipeTransportChannel.cs" />
     <Compile Include="Pool\SocketAsyncEventArgsPool.cs" />
     <Compile Include="Processor\IDataProcessor.cs" />
     <Compile Include="Processor\IProcessor.cs" />
+    <Compile Include="ProtocolChannel.cs" />
     <Compile Include="ProtocolStacks\IProtocolStack.cs" />
     <Compile Include="ProtocolStacks\ProtocolStack.cs" />
     <Compile Include="Listener\IListener.cs" />
     <Compile Include="NetworkDirecter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Receivers\TcpAsynDataRecevier.cs" />
+    <Compile Include="ReplyNow\IRequestChannel.cs" />
+    <Compile Include="ReplyNow\IResponseChannel.cs" />
+    <Compile Include="ServiceChannel.cs" />
+    <Compile Include="SocketHelper.cs" />
+    <Compile Include="Spy\IMessageSpy.cs" />
+    <Compile Include="Statistics\PipeHostTransportChannelStatistic.cs" />
+    <Compile Include="Statistics\PipeTransportChannelStatistic.cs" />
+    <Compile Include="Statistics\TcpHostTransportChannelStatistic.cs" />
+    <Compile Include="Statistics\TcpTransportChannelStatistic.cs" />
+    <Compile Include="TcpTransportChannel.cs" />
+    <Compile Include="Transactions\IStreamTranscation.cs" />
+    <Compile Include="Transactions\PipeStreamTransaction.cs" />
+    <Compile Include="Transactions\Processors\ITransactionProcessor.cs" />
+    <Compile Include="Transactions\Processors\TransactionProcessor.cs" />
+    <Compile Include="Transactions\StreamTransaction.cs" />
+    <Compile Include="TransportChannel.cs" />
     <Compile Include="UPnP.cs" />
+    <Compile Include="Uri\PipeUri.cs" />
+    <Compile Include="Uri\TcpUri.cs" />
+    <Compile Include="Uri\Uri.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="2011-08-08.cd" />
+    <None Include="2011-09-20.cd" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ClassDiagram1.cd" />
     <None Include="Config\app.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DllReference\ICSharpCode.SharpZipLib.dll" />
@@ -235,12 +336,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\KJFramework\KJFramework\KJFramework.csproj">
       <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
       <Name>KJFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

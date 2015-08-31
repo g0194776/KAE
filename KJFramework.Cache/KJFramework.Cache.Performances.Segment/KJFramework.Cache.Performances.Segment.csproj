@@ -77,10 +77,6 @@
       <Project>{000F6EB2-71D8-4700-9E40-2A7EAC9DB2B1}</Project>
       <Name>KJFramework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Cache\KJFramework.Cache.csproj">
-      <Project>{6F85C222-1CD2-44D4-8D06-22F557D4CF04}</Project>
-      <Name>KJFramework.Cache</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

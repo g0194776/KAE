@@ -1,9 +1,9 @@
 using KJFramework.Data.Synchronization.Enums;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels;
 using System;
 using System.Collections.Concurrent;
 using System.Net;
+using KJFramework.Net;
 
 namespace KJFramework.Data.Synchronization
 {

@@ -7,7 +7,7 @@ using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Results;
 
 namespace KJFramework.ApplicationEngine.Commands

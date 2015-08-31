@@ -1,9 +1,9 @@
-﻿using KJFramework.Cache.Cores;
-using KJFramework.Net.EventArgs;
+﻿using KJFramework.Net.EventArgs;
 using KJFramework.Tracing;
 using System;
 using System.Net.Sockets;
 using System.Threading;
+using KJFramework.Cores;
 
 namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 {

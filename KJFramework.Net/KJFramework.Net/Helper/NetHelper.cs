@@ -90,7 +90,7 @@ namespace KJFramework.Net.Helper
         {
             try
             {
-                Uri uri = new Uri("http://www.ikaka.com/ip/index.asp");
+                System.Uri uri = new System.Uri("http://www.ikaka.com/ip/index.asp");
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
                 req.Method = "POST";
                 req.ContentType = "application/x-www-form-urlencoded";

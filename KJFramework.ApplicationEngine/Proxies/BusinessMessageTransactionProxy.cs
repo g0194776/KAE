@@ -1,6 +1,6 @@
 ﻿using System;
 using KJFramework.ApplicationEngine.Clusters;
-using KJFramework.Net.Channels;
+using KJFramework.Net;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Messages;
 

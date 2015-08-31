@@ -1,6 +1,6 @@
 ﻿using System;
 using KJFramework.EventArgs;
-using KJFramework.Net.Channels;
+using KJFramework.Net;
 
 namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 {

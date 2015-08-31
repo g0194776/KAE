@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using KJFramework.EventArgs;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Tracing;
 
 namespace KJFramework.Net.Transaction

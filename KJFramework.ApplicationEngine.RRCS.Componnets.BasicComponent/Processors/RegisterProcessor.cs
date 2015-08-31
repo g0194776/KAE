@@ -6,13 +6,13 @@ using KJFramework.Enums;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Processors;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Results;
 using System.Collections.Generic;
+using KJFramework.Net;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent.Processors
 {

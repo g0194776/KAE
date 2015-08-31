@@ -2,7 +2,6 @@
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Proxies;
-using KJFramework.Net.Channels.HostChannels;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,8 +9,9 @@ using System.IO;
 using System.Management.Instrumentation;
 using System.Reflection;
 using System.Runtime.Remoting;
+using KJFramework.Net.HostChannels;
 using Rhino.Mocks;
-using Uri = KJFramework.Net.Channels.Uri.Uri;
+using Uri = KJFramework.Net.Uri.Uri;
 
 namespace KJFramework.Architecture.UnitTest.KAE
 {

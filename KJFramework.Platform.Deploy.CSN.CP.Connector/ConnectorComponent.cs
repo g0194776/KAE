@@ -9,12 +9,6 @@ using KJFramework.Enums;
 using KJFramework.Helpers;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.TypeProcessors.Maps;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Disconvery;
-using KJFramework.Net.Channels.Disconvery.Protocols;
-using KJFramework.Net.Channels.HostChannels;
-using KJFramework.Net.Channels.Identities;
-using KJFramework.Net.Channels.Uri;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
@@ -30,6 +24,11 @@ using KJFramework.Platform.Deploy.CSN.ProtocolStack;
 using KJFramework.Tracing;
 using System;
 using System.Configuration;
+using KJFramework.Net;
+using KJFramework.Net.Disconvery;
+using KJFramework.Net.Disconvery.Protocols;
+using KJFramework.Net.HostChannels;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Platform.Deploy.CSN.CP.Connector
 {

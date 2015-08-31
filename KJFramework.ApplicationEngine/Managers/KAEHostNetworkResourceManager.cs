@@ -8,17 +8,17 @@ using KJFramework.ApplicationEngine.Helpers;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.HostChannels;
-using KJFramework.Net.Channels.Uri;
+using KJFramework.Net;
+using KJFramework.Net.HostChannels;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
+using KJFramework.Net.Uri;
 using KJFramework.Tracing;
 
-using Uri = KJFramework.Net.Channels.Uri.Uri;
+using Uri = KJFramework.Net.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine.Managers
 {

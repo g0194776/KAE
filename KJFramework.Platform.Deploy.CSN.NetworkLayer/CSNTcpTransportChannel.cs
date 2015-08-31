@@ -1,12 +1,12 @@
-﻿using KJFramework.Cache.Cores;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Enums;
-using KJFramework.Net.EventArgs;
+﻿using KJFramework.Net.EventArgs;
 using KJFramework.Tracing;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using KJFramework.Cores;
+using KJFramework.Net;
+using KJFramework.Net.Enums;
 
 namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 {

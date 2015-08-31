@@ -2,10 +2,10 @@
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Objects;
 using KJFramework.EventArgs;
-using KJFramework.Net.Channels.Identities;
-using KJFramework.Net.Channels.Uri;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.Objects;
-using Uri = KJFramework.Net.Channels.Uri.Uri;
+using KJFramework.Net.Uri;
+using Uri = KJFramework.Net.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine.Proxies
 {

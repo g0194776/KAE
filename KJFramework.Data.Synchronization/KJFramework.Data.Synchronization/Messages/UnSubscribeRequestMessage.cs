@@ -1,7 +1,7 @@
 ﻿using System;
 using KJFramework.Data.Synchronization.Enums;
 using KJFramework.Messages.Attributes;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.Messages;
 
 namespace KJFramework.Data.Synchronization.Messages

@@ -23,7 +23,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         public void IllegalDestinationInstallingFilePath()
         {
             IRemotingApplicationDownloader downloader = new RemotingApplicationDownloader();
-            downloader.Download(Path.GetFullPath("."), string.Format("{0}.kl", DateTime.Now.Ticks));
+            downloader.DownloadFromList(Path.GetFullPath("."), string.Format("{0}.kl", DateTime.Now.Ticks));
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             try
             {
                 IRemotingApplicationDownloader downloader = new RemotingApplicationDownloader();
-                downloader.Download(Path.GetFullPath("."), file);
+                downloader.DownloadFromList(Path.GetFullPath("."), file);
             }
             finally
             {
@@ -60,7 +60,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             try
             {
                 IRemotingApplicationDownloader downloader = new RemotingApplicationDownloader();
-                downloader.Download(Path.GetFullPath("."), file);
+                downloader.DownloadFromList(Path.GetFullPath("."), file);
             }
             finally
             {
@@ -84,7 +84,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             try
             {
                 IRemotingApplicationDownloader downloader = new RemotingApplicationDownloader();
-                downloader.Download(Path.GetFullPath("."), file);
+                downloader.DownloadFromList(Path.GetFullPath("."), file);
             }
             finally
             {
@@ -117,7 +117,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             try
             {
                 IRemotingApplicationDownloader downloader = new RemotingApplicationDownloader();
-                downloader.Download(Path.GetFullPath("."), file);
+                downloader.DownloadFromList(Path.GetFullPath("."), file);
             }
             finally
             {
@@ -162,7 +162,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
             try
             {
                 IRemotingApplicationDownloader downloader = new RemotingApplicationDownloader();
-                downloader.Download(Path.GetFullPath("."), file);
+                downloader.DownloadFromList(Path.GetFullPath("."), file);
             }
             finally
             {

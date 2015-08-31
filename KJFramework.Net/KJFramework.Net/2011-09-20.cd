@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="KJFramework.Net.Channels.Buffers.ReceiveBuffer" Collapsed="true">
+    <Position X="32" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Buffers\ReceiveBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Caches.MultiPacketStub&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAACAIAACAAAAAFAAAAAAEAAA=</HashCode>
+      <FileName>Caches\MultiPacketStub.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Caches.SocketIoDataStub" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAABAACAAQAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Caches\SocketIoDataStub.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.ChannelConst" Collapsed="true">
+    <Position X="26.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAIQAAAAIAAAAAAAAAAAAgAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>ChannelConst.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.CommunicationObject" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACAAICgMAAA0LBAAFAAAgAAAAAEAAACIAAQ=</HashCode>
+      <FileName>CommunicationObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.HttpTransportChannel" Collapsed="true">
+    <Position X="3.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQAABAAAAAQyCAYMAAAIKhCgBEAAAAOAUZAAAAACA=</HashCode>
+      <FileName>HttpTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.MessageTransportChannel&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASCAAAAACIAYC5MAEAwDMAAlQEAgYACMAEAAgCAQAA=</HashCode>
+      <FileName>MessageTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.PipeTransportChannel" Collapsed="true">
+    <Position X="5.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQACABCAAAAAEDAIAABAIAgAAAIAAEQAQAAAAASABA=</HashCode>
+      <FileName>PipeTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.ProtocolChannel" Collapsed="true">
+    <Position X="8" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQABAAIAACAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>ProtocolChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.ServiceChannel" Collapsed="true">
+    <Position X="4.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADACBAACIAICwMIAD0LBAgNAUAgAAAIAEAAACIAAQ=</HashCode>
+      <FileName>ServiceChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.TcpTransportChannel" Collapsed="true">
+    <Position X="1.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAACBAAAAAAEDAIAAAIIBgAIAAABAAAAAAQAACAAA=</HashCode>
+      <FileName>TcpTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.TransportChannel" Collapsed="true">
+    <Position X="3.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAABwEAAAQADQAGAAgIAAAAAgAQACAAAAAkAAQAA=</HashCode>
+      <FileName>TransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.HostChannels.HostTransportChannel" Collapsed="true">
+    <Position X="13.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAiAAAAAAAAAAIgAABAABAAAAAAAAAAABAAQAAAAAA=</HashCode>
+      <FileName>HostChannels\HostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.HostChannels.HttpHostTransportChannel" Collapsed="true">
+    <Position X="15.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAgAAABCAgAgAAAAAAAAAAAAAAAAAAAAQAAAQBA=</HashCode>
+      <FileName>HostChannels\HttpHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.HostChannels.PipeHostTransportChannel" Collapsed="true">
+    <Position X="11" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABBAIAAAAAAAAABgAAAAAAQEAAAAAQAAAAAAQAAAAEA=</HashCode>
+      <FileName>HostChannels\PipeHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.HostChannels.TcpHostTransportChannel" Collapsed="true">
+    <Position X="13.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAACAAggAAAAAAAACgAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>HostChannels\TcpHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Managers.MultiPacketManager&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACAAAQAIAAABAAAEAAAAAAABAAAAAAAAAQA=</HashCode>
+      <FileName>Managers\MultiPacketManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.OneWay.InputChannel&lt;T&gt;" Collapsed="true">
+    <Position X="15.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OneWay\InputChannel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.OneWay.OnewayChannel&lt;T&gt;" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQgACAAABIAQAQSECCCkMAAAAEAAQACIBAAAEAAAAg=</HashCode>
+      <FileName>OneWay\OnewayChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.OneWay.OutputChannel&lt;T&gt;" Collapsed="true">
+    <Position X="13" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OneWay\OutputChannel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Statistics.PipeHostTransportChannelStatistic" Collapsed="true">
+    <Position X="28.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Statistics\PipeHostTransportChannelStatistic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Statistics.PipeTransportChannelStatistic" Collapsed="true">
+    <Position X="30.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAQAIAAAAAAAAFAAAgAAAAAAAAACAAAA=</HashCode>
+      <FileName>Statistics\PipeTransportChannelStatistic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Statistics.TcpHostTransportChannelStatistic" Collapsed="true">
+    <Position X="28.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Statistics\TcpHostTransportChannelStatistic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Statistics.TcpTransportChannelStatistic" Collapsed="true">
+    <Position X="30.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAQAIAAAAAAAAFAAAgAAAAAAAAACAAAA=</HashCode>
+      <FileName>Statistics\TcpTransportChannelStatistic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Transactions.ClientPipeStreamTransaction" Collapsed="true">
+    <Position X="1" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Transactions\ClientPipeStreamTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Transactions.PipeStreamTransaction&lt;TStream&gt;" Collapsed="true">
+    <Position X="2" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAACAA=</HashCode>
+      <FileName>Transactions\PipeStreamTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Transactions.ServerPipeStreamTransaction" Collapsed="true">
+    <Position X="3.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Transactions\ServerPipeStreamTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Transactions.StreamTransaction&lt;TStream&gt;" Collapsed="true">
+    <Position X="2" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wCIAAAAAESAAAAAEAAAAChAACAAIAAAQAAMAAgAACBA=</HashCode>
+      <FileName>Transactions\StreamTransaction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Transactions.Processors.TransactionProcessor&lt;TIn, TOut&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAEAgAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Transactions\Processors\TransactionProcessor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Uri.PipeUri" Collapsed="true">
+    <Position X="11" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAQAAAAAAAAAAAAAAAAAAABQEAAAAAAAAAA=</HashCode>
+      <FileName>Uri\PipeUri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Uri.TcpUri" Collapsed="true">
+    <Position X="13.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAgAAAgAAAAACAAQQAAQAEAAAAAABAA=</HashCode>
+      <FileName>Uri\TcpUri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KJFramework.Net.Channels.Uri.Uri" Collapsed="true">
+    <Position X="12" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAACAAQAAAASSABAAEAAAAA=</HashCode>
+      <FileName>Uri\Uri.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="KJFramework.Net.Channels.Caches.IMultiPacketStub&lt;T&gt;" Collapsed="true">
+    <Position X="26.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAACAIAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Caches\IMultiPacketStub.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.ICommunicationChannelAddress" Collapsed="true">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQACAAAAAAAAAAA=</HashCode>
+      <FileName>ICommunicationChannelAddress.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.ICommunicationObject" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAICgIAAAwDAAAFAAAgAAAAAEAAACAAAA=</HashCode>
+      <FileName>ICommunicationObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.IDecodeChannel" Collapsed="true">
+    <Position X="1" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IDecodeChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.IEncodeChannel" Collapsed="true">
+    <Position X="3.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IEncodeChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.IFunctionChannel" Collapsed="true">
+    <Position X="2" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IFunctionChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.IFunctionChannel&lt;T&gt;" Collapsed="true">
+    <Position X="26.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IFunctionChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.IHttpTransportChannel" Collapsed="true">
+    <Position X="6.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQQAAAMAAAAKBCgBEAAAAOAUZAAAAACA=</HashCode>
+      <FileName>IHttpTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.IMessageTransportChannel&lt;T&gt;" Collapsed="true">
+    <Position X="13" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAEAAgQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IMessageTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.IProtocolChannel" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQABAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>IProtocolChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.IRawTransportChannel" Collapsed="true">
+    <Position X="6.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IRawTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.IReconnectionTransportChannel" Collapsed="true">
+    <Position X="8.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IReconnectionTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.IServiceChannel" Collapsed="true">
+    <Position X="3.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IServiceChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.ITcpTransportChannel" Collapsed="true">
+    <Position X="10.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ITcpTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.ITransportChannel" Collapsed="true">
+    <Position X="9.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAQABAAEAAAIAAAAAAAAAAAAAAAgAAQAA=</HashCode>
+      <FileName>ITransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.HostChannels.IHostTransportChannel" Collapsed="true">
+    <Position X="0.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACAAAAAAAAAAAgAAAAAAAAAAAAAAAAABAAQAAAAAA=</HashCode>
+      <FileName>HostChannels\IHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.HostChannels.IHttpHostTransportChannel" Collapsed="true">
+    <Position X="28.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAABAAgAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>HostChannels\IHttpHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.HostChannels.IPiepHostTransportChannel" Collapsed="true">
+    <Position X="0.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAQAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>HostChannels\IPiepHostTransportChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.Managers.IMultiPacketManager&lt;T&gt;" Collapsed="true">
+    <Position X="32" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\IMultiPacketManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.OneWay.IInputChannel&lt;T&gt;" Collapsed="true">
+    <Position X="24.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OneWay\IInputChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.OneWay.IOnewayChannel&lt;T&gt;" Collapsed="true">
+    <Position X="23" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAABIAQAQAAAACAMAAAAEAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>OneWay\IOnewayChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.OneWay.IOutputChannel&lt;T&gt;" Collapsed="true">
+    <Position X="22" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OneWay\IOutputChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.ReplyNow.IRequestChannel" Collapsed="true">
+    <Position X="9.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ReplyNow\IRequestChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.ReplyNow.IResponseChannel" Collapsed="true">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAIAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>ReplyNow\IResponseChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.Spy.IMessageSpy&lt;T&gt;" Collapsed="true">
+    <Position X="30.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIE=</HashCode>
+      <FileName>Spy\IMessageSpy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.Transactions.IStreamTransaction&lt;TStream&gt;" Collapsed="true">
+    <Position X="28.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACgAACAAIAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Transactions\IStreamTranscation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="KJFramework.Net.Channels.Transactions.Processors.ITransactionProcessor&lt;TIn, TOut&gt;" Collapsed="true">
+    <Position X="30.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Transactions\Processors\ITransactionProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="KJFramework.Net.Channels.Enums.HttpChannelTypes" Collapsed="true">
+    <Position X="26.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums\HttpChannelTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

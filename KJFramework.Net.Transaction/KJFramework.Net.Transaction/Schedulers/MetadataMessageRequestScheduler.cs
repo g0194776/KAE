@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using KJFramework.Helpers;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Exception;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Objects;
@@ -11,6 +10,7 @@ using KJFramework.Tracing;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Net.Transaction.Schedulers
 {

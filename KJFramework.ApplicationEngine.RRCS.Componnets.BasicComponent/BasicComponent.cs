@@ -7,8 +7,6 @@ using KJFramework.Dynamic.Components;
 using KJFramework.Enums;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.HostChannels;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Managers;
@@ -17,6 +15,8 @@ using KJFramework.Net.Transaction.ProtocolStack;
 using KJFramework.Net.Transaction.Schedulers;
 using System;
 using System.Configuration;
+using KJFramework.Net;
+using KJFramework.Net.HostChannels;
 using KJFramework.Tracing;
 
 namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent

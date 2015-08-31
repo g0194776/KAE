@@ -5,7 +5,7 @@ using KJFramework.Messages.Engine;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors.Maps;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.Processors;
 using KJFramework.Net.Transaction.ValueStored;

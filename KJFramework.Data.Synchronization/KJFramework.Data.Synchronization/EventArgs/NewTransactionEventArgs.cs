@@ -1,6 +1,6 @@
 ﻿using KJFramework.Data.Synchronization.Transactions;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels;
+using KJFramework.Net;
 
 namespace KJFramework.Data.Synchronization.EventArgs
 {

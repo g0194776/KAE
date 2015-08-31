@@ -1,8 +1,7 @@
 using KJFramework.EventArgs;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Tracing;
 using System;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Net.Transaction
 {

@@ -1,5 +1,5 @@
 using KJFramework.Messages.Attributes;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Platform.Deploy.Metadata.Objects;
 

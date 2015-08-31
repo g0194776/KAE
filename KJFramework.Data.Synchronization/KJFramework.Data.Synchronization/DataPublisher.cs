@@ -5,13 +5,13 @@ using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
+using KJFramework.Net;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Data.Synchronization
 {

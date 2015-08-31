@@ -11,7 +11,7 @@ using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
 using KJFramework.Architecture.UnitTest.KAE.Applications;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using NUnit.Framework;
 
 namespace KJFramework.Architecture.UnitTest.KAE

@@ -1,4 +1,4 @@
-﻿using KJFramework.Cache.Cores;
+﻿using KJFramework.Cores;
 
 namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 {

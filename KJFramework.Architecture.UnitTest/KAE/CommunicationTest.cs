@@ -14,8 +14,6 @@ using KJFramework.Messages.Proxies;
 using KJFramework.Messages.ValueStored;
 using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.HostChannels;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Transaction;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;

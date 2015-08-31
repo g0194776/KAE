@@ -4,8 +4,8 @@ using KJFramework.Data.Synchronization.Policies;
 using KJFramework.Data.Synchronization.Transactions;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.Helpers;
 using KJFramework.Net.Transaction.ValueStored;
 

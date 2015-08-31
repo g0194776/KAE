@@ -272,3 +272,19 @@ What's the next:
 5. 添加了部分KAE错误码
 6. 在卸载KAE应用的系统命令中加入了同时移除远端ZK中注册的信令集功能
 7. 在安装KAE应用的系统命令中加入了同时添加远端ZK中注册的信令集功能
+
+
+
+
+
+
+2015-8-31进度
+------------------------------------------------
+1. 加入更新KPP的系统指令
+		统一了系统级别的控制指令前缀: SYS_CTRL
+		统一了系统级别获取信息的指令前缀: SYS_INFO
+2. 加入了获取KPP信息的KAE系统命令
+3. 将KJFramework.Net.Channels合并到KJFramework.Net项目中，用于提供基础网络层并且让框架设计更加紧凑以及合理
+4. 将KJFramework.Cache合并到KJFramework项目中，用于提供统一的基础层并且让框架设计更加紧凑以及合理
+5. 为KAE APP提供了延迟停止方法DelayStop用于在关闭KAE APP时能够优雅地处理其内部已经接收到的请求信息
+6. 为KAE APP内部计算的UnRspCount逻辑加入对于网络Oneway消息的判断

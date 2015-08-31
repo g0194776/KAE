@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using KJFramework.ApplicationEngine.Eums;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.Objects;
 
 namespace KJFramework.ApplicationEngine.Entities

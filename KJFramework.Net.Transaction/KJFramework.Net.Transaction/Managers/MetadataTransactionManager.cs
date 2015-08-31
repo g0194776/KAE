@@ -1,9 +1,8 @@
 ﻿using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Net.Transaction.Managers
 {

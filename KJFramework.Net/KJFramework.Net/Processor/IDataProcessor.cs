@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using KJFramework.Net.Buffer;
+using KJFramework.Net.Buffers;
 
 namespace KJFramework.Net.Processor
 {

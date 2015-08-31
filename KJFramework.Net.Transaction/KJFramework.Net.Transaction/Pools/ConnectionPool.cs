@@ -1,11 +1,11 @@
-﻿using KJFramework.Cache.Exception;
-using KJFramework.Net.Channels.Extends;
-using KJFramework.Net.ProtocolStacks;
+﻿using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using KJFramework.Exceptions;
+using KJFramework.Net.Extends;
 
 namespace KJFramework.Net.Transaction.Pools
 {

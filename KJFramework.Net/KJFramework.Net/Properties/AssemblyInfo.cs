@@ -13,6 +13,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © User 2009")]
 [assembly: AssemblyTrademark("KJFramework框架")]
 [assembly: AssemblyCulture("")]
+[assembly: InternalsVisibleTo("KJFramework.Platform.Deploy.CSN.NetworkLayer")]
+[assembly: InternalsVisibleTo("KJFramework.ApplicationEngine")]
+[assembly: InternalsVisibleTo("KJFramework.Architecture.UnitTest")]
 
 // 将 ComVisible 设置为 false 使此程序集中的类型
 // 对 COM 组件不可见。如果需要从 COM 访问此程序集中的类型，

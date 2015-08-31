@@ -2,12 +2,12 @@ using KJFramework.Data.Synchronization.EventArgs;
 using KJFramework.Data.Synchronization.Transactions;
 using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.HostChannels;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Tracing;
 using System;
 using System.Threading;
+using KJFramework.Net;
+using KJFramework.Net.HostChannels;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Data.Synchronization
 {

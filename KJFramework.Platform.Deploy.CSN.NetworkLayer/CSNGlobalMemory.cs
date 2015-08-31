@@ -1,4 +1,4 @@
-﻿using KJFramework.Cache.Containers;
+﻿using KJFramework.Containers;
 
 namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 {

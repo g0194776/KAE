@@ -5,7 +5,7 @@ using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Results;
 
 namespace KJFramework.ApplicationEngine.Commands
@@ -24,7 +24,7 @@ namespace KJFramework.ApplicationEngine.Commands
         {
             get
             {
-                return new MessageIdentity {ProtocolId = 0xFF, ServiceId = 0x01, DetailsId = 0x00};
+                return new MessageIdentity {ProtocolId = 0xFF, ServiceId = 0x00, DetailsId = 0x02};
             }
         }
 
@@ -51,7 +51,7 @@ namespace KJFramework.ApplicationEngine.Commands
             protocolRegister.UnRegister(app);
             stateLogger.Log(string.Format("#[Uninstalling KPP] Try uninstalling targeted KAE application: {0}, Internal un-rsp count: {1}", kppUniqueId, app.UnRspCount));
             hostedAppManager.Remove(kppUniqueId);
-            app.Stop();
+            app.DelayStop();
             stateLogger.Log(string.Format("#[Uninstalling KPP] Uninstalled KAE application: {0}, Internal un-rsp count: {1}", kppUniqueId, app.UnRspCount));
             return ExecuteResult.Succeed(null);
         }

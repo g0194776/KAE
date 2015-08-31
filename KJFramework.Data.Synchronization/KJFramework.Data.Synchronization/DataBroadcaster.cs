@@ -4,14 +4,14 @@ using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
 using KJFramework.Net.Exception;
 using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 using System.Net;
 using System.Threading;
+using KJFramework.Net;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Data.Synchronization
 {

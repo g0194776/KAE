@@ -3,8 +3,6 @@ using KJFramework.ApplicationEngine.Attributes;
 using KJFramework.Data.Synchronization.EventArgs;
 using KJFramework.EventArgs;
 using KJFramework.Helpers;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Enums;
 using KJFramework.Net.Transaction.Comparers;
 using KJFramework.Net.Transaction.Helpers;
 using KJFramework.Net.Transaction.Messages;
@@ -17,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using KJFramework.Net;
+using KJFramework.Net.Enums;
 
 namespace KJFramework.ApplicationEngine.Proxies
 {

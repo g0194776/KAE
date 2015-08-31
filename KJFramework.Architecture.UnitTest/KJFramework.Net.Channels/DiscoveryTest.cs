@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
-using KJFramework.Net.Channels.Disconvery;
-using KJFramework.Net.Channels.Disconvery.Protocols;
+using KJFramework.Net.Disconvery;
+using KJFramework.Net.Disconvery.Protocols;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

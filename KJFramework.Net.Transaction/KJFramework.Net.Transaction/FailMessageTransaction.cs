@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Tracing;
 
 namespace KJFramework.Net.Transaction

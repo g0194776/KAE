@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net;
-using KJFramework.Net.Channels.EndPoints;
-using KJFramework.Net.Channels.Enums;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.EndPoints;
+using KJFramework.Net.Enums;
+using KJFramework.Net.Identities;
 
 namespace KJFramework.Net.Transaction.Comparers
 {

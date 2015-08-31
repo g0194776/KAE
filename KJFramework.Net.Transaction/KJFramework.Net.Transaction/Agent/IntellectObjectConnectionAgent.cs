@@ -1,8 +1,7 @@
 using System;
 using System.Net;
 using KJFramework.EventArgs;
-using KJFramework.Net.Channels;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Helpers;
 using KJFramework.Net.Transaction.Managers;

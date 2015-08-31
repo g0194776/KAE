@@ -1,8 +1,7 @@
-﻿using KJFramework.Cache;
-using KJFramework.Cache.Cores;
-using KJFramework.Net.Channels;
-using KJFramework.Tracing;
+﻿using KJFramework.Tracing;
 using System.Net.Sockets;
+using KJFramework.Cores;
+using KJFramework.Net;
 
 namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
 {

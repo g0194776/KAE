@@ -2,11 +2,11 @@
 using KJFramework.Data.Synchronization;
 using KJFramework.Data.Synchronization.Enums;
 using KJFramework.Data.Synchronization.Factories;
-using KJFramework.Net.Channels.Uri;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
-using Uri = KJFramework.Net.Channels.Uri.Uri;
+using KJFramework.Net.Uri;
+using Uri = KJFramework.Net.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine.RRCS.Componnets.BasicComponent
 {

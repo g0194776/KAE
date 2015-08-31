@@ -1,7 +1,7 @@
 ﻿using KJFramework.ApplicationEngine.Loggers;
 using KJFramework.ApplicationEngine.Managers;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Results;
 
 namespace KJFramework.ApplicationEngine.Commands

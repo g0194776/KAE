@@ -3,7 +3,7 @@ using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Loggers;
 using KJFramework.ApplicationEngine.Managers;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels.Identities;
+using KJFramework.Net.Identities;
 using KJFramework.Results;
 using KJFramework.Tracing;
 

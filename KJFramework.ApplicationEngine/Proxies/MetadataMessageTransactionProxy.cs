@@ -1,7 +1,7 @@
 ﻿using System;
 using KJFramework.ApplicationEngine.Clusters;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Channels;
+using KJFramework.Net;
 using KJFramework.Net.Transaction;
 
 namespace KJFramework.ApplicationEngine.Proxies
