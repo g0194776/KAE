@@ -74,13 +74,17 @@ namespace KJFramework.Net.Channels.Caches
                     ChannelConst.NoBuffAsyncStubPool.Giveback(stub);
                     if (e.SocketError != SocketError.Success && channel.IsConnected)
                     {
-                        _tracing.Warn(
-                            string.Format(
-                                "The target channel SendAsync status has incorrectly, so the framework decided to disconnect it.\r\nL: {0}\r\nR: {1}\r\nSocket-Error: {2}\r\nBytesTransferred: {3}\r\n",
-                                channel.LocalEndPoint, 
-                                channel.RemoteEndPoint, 
-                                e.SocketError,
-                                e.BytesTransferred));
+                        try
+                        {
+                            _tracing.Warn(
+                                string.Format(
+                                    "The target channel SendAsync status has incorrectly, so the framework decided to disconnect it.\r\nL: {0}\r\nR: {1}\r\nSocket-Error: {2}\r\nBytesTransferred: {3}\r\n",
+                                    channel.LocalEndPoint,
+                                    channel.RemoteEndPoint,
+                                    e.SocketError,
+                                    e.BytesTransferred));
+                        }
+                        catch (System.ObjectDisposedException) { }
                         channel.Disconnect();
                     }
 
