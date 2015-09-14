@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("KJFramework.Platform.Deploy.CSN.NetworkLayer")]
 [assembly: InternalsVisibleTo("KJFramework.ApplicationEngine")]
 [assembly: InternalsVisibleTo("KJFramework.Architecture.UnitTest")]
+[assembly: InternalsVisibleTo("KJFramework.ApplicationEngine.Client")]
 
 // 将 ComVisible 设置为 false 使此程序集中的类型
 // 对 COM 组件不可见。如果需要从 COM 访问此程序集中的类型，

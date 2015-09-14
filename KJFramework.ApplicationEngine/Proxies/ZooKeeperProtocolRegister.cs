@@ -56,7 +56,7 @@ namespace KJFramework.ApplicationEngine.Proxies
             if (_client.Exists(_basePath, false) == null)
             {
                 try { _client.Create(_basePath, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent); }
-                catch (System.Exception) { }
+                catch (Exception) { }
             }
             //hosting node.
             string hostingPath = Path.Combine(_basePath, "hosting");
@@ -64,7 +64,7 @@ namespace KJFramework.ApplicationEngine.Proxies
             if (_client.Exists(hostingPath, false) == null)
             {
                 try { _client.Create(hostingPath, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent); }
-                catch (System.Exception) { }
+                catch (Exception) { }
             }
             //protocols node.
            _protocolPath = Path.Combine(_basePath, "protocols");
@@ -72,7 +72,7 @@ namespace KJFramework.ApplicationEngine.Proxies
            if (_client.Exists(_protocolPath, false) == null)
             {
                 try { _client.Create(_protocolPath, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent); }
-                catch (System.Exception) { }
+                catch (Exception) { }
             }
             //create resource node.
             string resourcePath = Path.Combine(_basePath, "hosting/", hostName);
@@ -80,7 +80,7 @@ namespace KJFramework.ApplicationEngine.Proxies
             if (_client.Exists(resourcePath, false) == null)
             {
                 try { _client.Create(resourcePath, Encoding.UTF8.GetBytes(basicCommunicationAddress.ToString()), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral); }
-                catch (System.Exception) { }
+                catch (Exception) { }
             }
         }
 
@@ -106,7 +106,7 @@ namespace KJFramework.ApplicationEngine.Proxies
                         string subPath = string.Format("{0}/{1};{2}", path, networkUri.Address, uniqueId);
                         AddPath(subPath, CreateMode.Ephemeral);
                     }
-                    catch (System.Exception ex) { _tracing.Error(ex, null); }
+                    catch (Exception ex) { _tracing.Error(ex, null); }
                 }
             }
         }
@@ -152,10 +152,10 @@ namespace KJFramework.ApplicationEngine.Proxies
                         {
                             if (!subPath.Contains(uniqueId)) continue;
                             try { _client.Delete(subPath, 0); }
-                            catch (System.Exception ex) { _tracing.Error(ex, null); }
+                            catch (Exception ex) { _tracing.Error(ex, null); }
                         }
                     }
-                    catch (System.Exception ex) { _tracing.Error(ex, null); }
+                    catch (Exception ex) { _tracing.Error(ex, null); }
                 }
             }
         }

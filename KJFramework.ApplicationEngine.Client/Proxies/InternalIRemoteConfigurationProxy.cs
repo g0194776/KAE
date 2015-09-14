@@ -4,6 +4,9 @@ using KJFramework.EventArgs;
 
 namespace KJFramework.ApplicationEngine.Client.Proxies
 {
+    /// <summary>
+    ///     内部远程配置代理器
+    /// </summary>
     public class InternalIRemoteConfigurationProxy : IRemoteConfigurationProxy
     {
         #region Methods.
