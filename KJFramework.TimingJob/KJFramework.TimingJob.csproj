@@ -30,6 +30,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EasyNetQ, Version=0.50.7.399, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyNetQ.0.50.7.399\lib\net40\EasyNetQ.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.5.4.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.5.4\lib\net40\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.0.481\lib\net45\StackExchange.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,10 +55,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\ILease.cs" />
+    <Compile Include="Clients\IRedisClient.cs" />
+    <Compile Include="Clients\Lease.cs" />
+    <Compile Include="Clients\RedisClient.cs" />
+    <Compile Include="Clients\RedisList.cs" />
+    <Compile Include="Compressors\DeflateCompressor.cs" />
+    <Compile Include="Compressors\ICompressor.cs" />
+    <Compile Include="Decoders\DefaultBinaryDataDecoder.cs" />
+    <Compile Include="Decoders\IDataDecoder.cs" />
+    <Compile Include="EASTTimingJobTimer.cs" />
+    <Compile Include="Encoders\DefaultBinaryDataEncoder.cs" />
+    <Compile Include="Encoders\IDataEncoder.cs" />
+    <Compile Include="Enums\CompressTypes.cs" />
+    <Compile Include="Enums\PushTypes.cs" />
+    <Compile Include="Enums\TaskPoolStates.cs" />
+    <Compile Include="Enums\TaskPoolTypes.cs" />
+    <Compile Include="EventArgs\DataRecvEventArgs.cs" />
+    <Compile Include="EventArgs\SerializerResultTypes.cs" />
+    <Compile Include="EventArgs\TaskRecvEventArgs.cs" />
+    <Compile Include="FEITimingJobTimer.cs" />
+    <Compile Include="FETTimingJobTimer.cs" />
+    <Compile Include="Formatters\GeneralSerializationStrategy.cs" />
+    <Compile Include="Formatters\ITaskDataFormatter.cs" />
+    <Compile Include="Formatters\ITaskJsonDataSerializer.cs" />
     <Compile Include="INotificationManager.cs" />
     <Compile Include="ITimingJob.cs" />
+    <Compile Include="ITimingJobTimer.cs" />
+    <Compile Include="Messages\EasyNetQMessage.cs" />
+    <Compile Include="Pools\IRemoteDataSource.cs" />
+    <Compile Include="Pools\IRemoteTaskPool.cs" />
+    <Compile Include="Pools\RabbitMQDataSource.cs" />
+    <Compile Include="Pools\RabbitMQLogger.cs" />
+    <Compile Include="Pools\RemoteTaskPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimingJobAgent.cs" />
+    <Compile Include="TimingJobTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KJFramework\KJFramework\KJFramework.csproj">
@@ -50,6 +98,10 @@
       <Name>KJFramework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
