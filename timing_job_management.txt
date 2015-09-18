@@ -1,0 +1,43 @@
+/*
+SQLyog Ultimate v11.27 (32 bit)
+MySQL - 5.6.21-log : Database - timing_job_mangement
+*********************************************************************
+*/
+
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`timing_job_mangement` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+
+USE `timing_job_mangement`;
+
+/*Table structure for table `jobs` */
+
+DROP TABLE IF EXISTS `jobs`;
+
+CREATE TABLE `jobs` (
+  `Name` varchar(128) COLLATE utf8_bin NOT NULL,
+  `Code` longtext COLLATE utf8_bin,
+  `CodeType` smallint(6) NOT NULL DEFAULT '0',
+  `DownloadAddress` varchar(1024) COLLATE utf8_bin DEFAULT NULL,
+  `StartInfo` varchar(1024) COLLATE utf8_bin NOT NULL,
+  `Parameters` varchar(5012) COLLATE utf8_bin DEFAULT NULL,
+  `Author` varchar(128) COLLATE utf8_bin NOT NULL,
+  `LastExecutingTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Extra-Namespaces` varchar(5012) COLLATE utf8_bin DEFAULT NULL COMMENT 'what extra DOTNET namespaces want to imports. this fields ONLY can be available when CodeType = 0',
+  `Extra-ImportedDotNetDlls` varchar(5012) COLLATE utf8_bin DEFAULT NULL COMMENT 'what extra DOTNET dlls want to imports. this fields ONLY can be available when CodeType = 0',
+  PRIMARY KEY (`Name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+/*Data for the table `jobs` */
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
