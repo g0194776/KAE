@@ -138,7 +138,7 @@ namespace KJFramework.PerformanceProvider
                 }
             }
 
-            PerformanceCounterCategory.Create(category.Name, category.Help, category.Type, collection);
+            PerformanceCounterCategory.Create(category.Name, (category.Help ?? string.Empty), category.Type, collection);
         }
 
         private static PerfCategoryAttribute GetCategoryAttribute(Type type)
