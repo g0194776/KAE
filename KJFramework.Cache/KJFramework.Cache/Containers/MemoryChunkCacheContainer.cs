@@ -30,15 +30,20 @@ namespace KJFramework.Cache.Containers
             _segmentSize = segmentSize;
             _memoryChunkSize = memoryChunkSize;
             #region Memory Fail Point Check.
-
-            //There is a BUG when your .NETFRAMEWORK version is .NET 4.5 and host enviroment is IIS
-            //MemoryFailPoint wil' not be work correctly...
-            //only execution host.
-            if (HttpContext.Current == null)
+            
+            #if(!MONO_ENV)
             {
-                int totalMemory = (memoryChunkSize / 1024) / 1024;
-                new MemoryFailPoint(totalMemory > 0 ? totalMemory : 1);
+                //There is a BUG when your .NETFRAMEWORK version is .NET 4.5 and host enviroment is IIS
+                //MemoryFailPoint wil' not be work correctly...
+                //only execution host.
+                if (HttpContext.Current == null)
+                {
+                    int totalMemory = (memoryChunkSize / 1024) / 1024;
+                    new MemoryFailPoint(totalMemory > 0 ? totalMemory : 1);
+                }
+
             }
+            #endif
 
             #endregion
             _data = new byte[_memoryChunkSize];
