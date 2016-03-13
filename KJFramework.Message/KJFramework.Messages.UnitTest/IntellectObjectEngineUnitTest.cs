@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
-using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.Enums;
 using KJFramework.Messages.Helpers;

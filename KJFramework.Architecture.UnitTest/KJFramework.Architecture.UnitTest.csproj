@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Depend Files\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
@@ -113,10 +113,6 @@
     <ProjectReference Include="..\KJFramework.Net.Channels\KJFramework.Net.Channels\KJFramework.Net.Channels.csproj">
       <Project>{33fe11d3-2810-4432-b64c-b16935bb47cd}</Project>
       <Name>KJFramework.Net.Channels</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KJFramework.Net.Cloud\KJFramework.Net.Cloud\KJFramework.Net.Cloud.csproj">
-      <Project>{ae41152b-69da-4f04-bbd9-4e3927ea9552}</Project>
-      <Name>KJFramework.Net.Cloud</Name>
     </ProjectReference>
     <ProjectReference Include="..\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
       <Project>{658c4853-7022-4c2f-bb82-7261dbdae55d}</Project>
