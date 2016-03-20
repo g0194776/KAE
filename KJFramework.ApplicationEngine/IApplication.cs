@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using KJFramework.ApplicationEngine.Eums;
-using KJFramework.Dynamic.Components;
 using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.Objects;
 
@@ -10,7 +9,7 @@ namespace KJFramework.ApplicationEngine
     /// <summary>
     ///    KPP接口
     /// </summary>
-    public interface IApplication : IDynamicDomainComponent
+    public interface IApplication
     {
         #region Members.
 
@@ -52,11 +51,6 @@ namespace KJFramework.ApplicationEngine
         #region Methods.
 
         /// <summary>
-        ///    获取应用内部所有已经支持的网络通讯协议
-        /// </summary>
-        /// <returns>返回支持的网络通信协议列表</returns>
-        IDictionary<ProtocolTypes, IList<MessageIdentity>> AcquireSupportedProtocols();
-        /// <summary>
         ///    更新网络缓存信息
         /// </summary>
         /// <param name="level">应用等级</param>
@@ -64,11 +58,6 @@ namespace KJFramework.ApplicationEngine
         /// <param name="protocol">通信协议</param>
         /// <param name="protocolTypes">协议类型</param>
         void UpdateCache(Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache);
-        /// <summary>
-        ///    更新灰度升级策略的源代码
-        /// </summary>
-        /// <param name="code">灰度升级策略的源代码</param>
-        void UpdateGreyPolicy(string code);
 
         #endregion
     }

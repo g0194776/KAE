@@ -92,7 +92,7 @@ namespace KJFramework.ApplicationEngine.Finders
                         }
                     }
                     catch (ReflectionTypeLoadException) { }
-                    catch (System.Exception ex) {  _tracing.Error(ex, null); }
+                    catch (Exception ex) {  _tracing.Error(ex, null); }
                 }
                 //use default application type when current package had missed the main application class.
                 targetAppType = targetAppType ?? typeof (Application);
@@ -110,7 +110,7 @@ namespace KJFramework.ApplicationEngine.Finders
                 return new Tuple<string, ApplicationEntryInfo, KPPDataStructure>(dataStructure.GetSectionField<string>(0x00, "PackName"), info, dataStructure);
             }
             catch (ReflectionTypeLoadException) { return null; }
-            catch (System.Exception ex)  
+            catch (Exception ex)  
             { 
                 _tracing.Error(ex, null); 
                 return null;

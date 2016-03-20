@@ -4,6 +4,7 @@ using System.Threading;
 
 using KJFramework.ApplicationEngine;
 using KJFramework.ApplicationEngine.Configurations.Settings;
+using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.Architecture.UnitTest.KAE;
 using KJFramework.Containers;
 using KJFramework.EventArgs;
@@ -32,7 +33,7 @@ namespace KJFramework.Net.Channels.UnitTest
         [SetUp]
         public void Initialize()
         {
-            SystemWorker.Initialize("KAEWorker", RemoteConfigurationSetting.Default, KAEHostTest.BuildConfigurationProxy());
+            SystemWorker.Initialize("KAEWorker", RemoteConfigurationSetting.Default, new EtcdRemoteConfigurationProxy(new System.Uri("")));
         }
 
 

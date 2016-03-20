@@ -19,7 +19,7 @@ namespace KJFramework.TimingJob
         /// <param name="policy">执行策略信息</param>
         public EASTTimingJobTimer(string policy)
         {
-            if (string.IsNullOrEmpty(policy)) throw new ArgumentNullException(nameof(policy));
+            if (string.IsNullOrEmpty(policy)) throw new ArgumentNullException("policy");
             TimeSpan[] timeSpans = policy.Split(new[] {";"}, StringSplitOptions.RemoveEmptyEntries).Select(v => TimeSpan.Parse(v)).ToArray();
             _executingIntervals = new Dictionary<int, List<TimeSpan>>();
             foreach (TimeSpan timeSpan in timeSpans)

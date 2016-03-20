@@ -27,7 +27,7 @@ namespace KJFramework.TimingJob.Clients
 		/// <param name="ttl">key生存时间，默认为1小时</param>
 		public RedisClient(string connector, uint ttl = 1)
 		{
-			if (string.IsNullOrEmpty(connector)) throw new ArgumentNullException(nameof(connector));
+            if (string.IsNullOrEmpty(connector)) throw new ArgumentNullException("connector");
 			_keyTtl = ttl;
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(connector);
 			_database = redis.GetDatabase();

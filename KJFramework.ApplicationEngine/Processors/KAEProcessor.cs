@@ -1,5 +1,4 @@
 ﻿using System;
-using KJFramework.Net.Transaction;
 using KJFramework.Tracing;
 
 namespace KJFramework.ApplicationEngine.Processors
@@ -34,16 +33,6 @@ namespace KJFramework.ApplicationEngine.Processors
         #region Methods.
 
         /// <summary>
-        ///    处理一个网络请求
-        /// </summary>
-        /// <param name="package">消息事务</param>
-        public void Process(IMessageTransaction<T> package)
-        {
-            try { InnerProcess(package); }
-            catch (System.Exception ex) { _tracing.Error(ex); }
-        }
-
-        /// <summary>
         ///    获取当前处理器所归属的KAE应用实例
         /// </summary>
         /// <returns>返回KAE应用实例</returns>
@@ -55,8 +44,23 @@ namespace KJFramework.ApplicationEngine.Processors
         /// <summary>
         ///    处理一个网络请求
         /// </summary>
+        /// <param name="request">请求消息</param>
+        /// <returns>返回该网络事务的应答消息</returns>
+        public T Process(T request)
+        {
+            try { return InnerProcess(request); }
+            catch (Exception ex)
+            {
+                _tracing.Error(ex);
+                return default(T);
+            }
+        }
+
+        /// <summary>
+        ///    处理一个网络请求
+        /// </summary>
         /// <param name="package">消息事务</param>
-        protected abstract void InnerProcess(IMessageTransaction<T> package);
+        protected abstract T InnerProcess(T package);
 
         #endregion
     }

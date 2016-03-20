@@ -17,7 +17,7 @@ namespace KJFramework.ApplicationEngine
         /// <summary>
         ///    KAE内部支持的协议
         /// </summary>
-        public static readonly IList<ProtocolTypes> SupportedProtocols = new[] { ProtocolTypes.Intellegence, ProtocolTypes.Metadata, ProtocolTypes.Json, ProtocolTypes.Xml, ProtocolTypes.INTERNAL_SPECIAL_RESOURCE };
+        public static readonly IList<ProtocolTypes> SupportedProtocols = new[] { ProtocolTypes.Metadata, ProtocolTypes.INTERNAL_SPECIAL_RESOURCE };
         /// <summary>
         ///    KAE内部支持的协议数量
         /// </summary>

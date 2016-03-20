@@ -50,7 +50,7 @@ namespace KJFramework.Dynamic.Components
         public void OnLoading()
         {
             try { InnerOnLoading(); }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 _tracing.Error(ex, null);
                 throw;

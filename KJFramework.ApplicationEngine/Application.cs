@@ -1,53 +1,40 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
-
 using KJFramework.ApplicationEngine.Attributes;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Exceptions;
-using KJFramework.ApplicationEngine.Helpers;
+using KJFramework.ApplicationEngine.Managers;
 using KJFramework.ApplicationEngine.Processors;
 using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
-using KJFramework.Dynamic.Components;
-using KJFramework.Encrypt;
-using KJFramework.Enums;
-using KJFramework.EventArgs;
 using KJFramework.Messages.Contracts;
-using KJFramework.Messages.Types;
-using KJFramework.Messages.ValueStored;
-using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
-using KJFramework.Net.Transaction;
-using KJFramework.Net.Transaction.Agent;
-using KJFramework.Net.Transaction.Comparers;
-using KJFramework.Net.Transaction.Managers;
-using KJFramework.Net.Transaction.Objects;
-using KJFramework.Net.Transaction.ProtocolStack;
-using KJFramework.Net.Transaction.ValueStored;
-using KJFramework.Tracing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using KJFramework.Net;
 using KJFramework.Net.Configurations;
 using KJFramework.Net.HostChannels;
 using KJFramework.Net.Identities;
-using KJFramework.Net.Uri;
+using KJFramework.Net.Transaction;
+using KJFramework.Net.Transaction.Objects;
+using KJFramework.Tracing;
 using PaxScript.Net;
+using Uri = KJFramework.Net.Uri.Uri;
 
 namespace KJFramework.ApplicationEngine
 {
     /// <summary>
     ///    KAE应用抽象父类
     /// </summary>
-    public class Application : DynamicDomainComponent, IApplication
+    public class Application : IApplication
     {
         #region Constructor.
 
         /// <summary>
         ///    KAE应用抽象父类
         /// </summary>
-        public Application()
+        public Application(Action<MetadataMessageTransaction, MetadataContainer> handleSucceedSituation, Action<MetadataMessageTransaction, KAEErrorCodes, string> handleErrorSituation)
         {
+            _handleSucceedSituation = handleSucceedSituation;
+            _handleErrorSituation = handleErrorSituation;
             Status = ApplicationStatus.Unknown;
         }
 
@@ -106,27 +93,15 @@ namespace KJFramework.ApplicationEngine
         private IHostTransportChannel _hostChannel;
         private ChannelInternalConfigSettings _settings;
         private PaxScripter _scripter = new PaxScripter();
-        private IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> _processors;
+        private IDictionary<MessageIdentity, MetadataKAEProcessor> _processors;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (Application));
-        private static readonly MetadataProtocolStack _protocolStack = new MetadataProtocolStack();
-        private static readonly MetadataTransactionManager _transactionManager = new MetadataTransactionManager(new TransactionIdentityComparer());
+        private readonly Action<MetadataMessageTransaction, KAEErrorCodes, string> _handleErrorSituation;
+        private readonly Action<MetadataMessageTransaction, MetadataContainer> _handleSucceedSituation;
 
         #endregion
 
         #region Methods.
-
-        /// <summary>
-        ///    获取应用内部所有已经支持的网络通讯协议
-        /// </summary>
-        /// <returns>返回支持的网络通信协议列表</returns>
-        public IDictionary<ProtocolTypes, IList<MessageIdentity>> AcquireSupportedProtocols()
-        {
-            IDictionary<ProtocolTypes, IList<MessageIdentity>> dic = new Dictionary<ProtocolTypes, IList<MessageIdentity>>();
-            foreach (KeyValuePair<ProtocolTypes, Dictionary<MessageIdentity, object>> pair in _processors)
-                dic.Add(pair.Key, pair.Value.Keys.ToList());
-            return dic;
-        }
-
+        
         /// <summary>
         ///    反向更新从CSN推送过来的KEY和VALUE配置信息
         /// </summary>
@@ -147,24 +122,6 @@ namespace KJFramework.ApplicationEngine
         public void UpdateCache(Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level, List<string> cache)
         {
             SystemWorker.UpdateCache(protocol, protocolTypes, level, cache);
-        }
-
-        /// <summary>
-        ///    更新灰度升级策略的源代码
-        /// </summary>
-        /// <param name="code">灰度升级策略的源代码</param>
-        public void UpdateGreyPolicy(string code)
-        {
-            string hash = EncryptHashHelper.HashString(code);
-            if (!string.IsNullOrEmpty(_previousCodeMD5) && _previousCodeMD5 == hash) return;
-            try
-            {
-                _scripter.Reset();
-                _scripter.AddModule(PackageName);
-                _scripter.AddCode(PackageName, code);
-                SystemWorker.UpdateGreyPolicy(dic => (ApplicationLevel)_scripter.Invoke(RunMode.Run, null, "KAE.GreyPolicy", new object[] { dic }));
-            }
-            catch (System.Exception ex) { _tracing.Error(ex); }
         }
 
         /// <summary>
@@ -189,61 +146,21 @@ namespace KJFramework.ApplicationEngine
             try
             {
                 SystemWorker.InitializeForKPP(PackageName, _proxy, _settings, GlobalUniqueId);
-                if (string.IsNullOrEmpty(greyPolicyCode)) SystemWorker.UpdateGreyPolicy(arg => ApplicationLevel.Stable);
-                else UpdateGreyPolicy(greyPolicyCode);
-                InnerInitialize();
                 _processors = CollectAbilityProcessors();
+                //registers supported business protocols to the remote ZooKeeper.
+                IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
+                Uri networkUri = KAEHostNetworkResourceManager.GetResourceUri(ProtocolTypes.Metadata);
+                foreach (MessageIdentity identity in _processors.Keys)
+                    protocolRegister.Register(identity, ProtocolTypes.Metadata, Level, networkUri, GlobalUniqueId);
+                InnerInitialize();
                 Status = ApplicationStatus.Initialized;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 _tracing.Error(ex);
                 Status = ApplicationStatus.Exception;
                 throw;
             }
-        }
-
-        protected override void InnerStart()
-        {
-            Status = ApplicationStatus.Running;
-        }
-
-        protected override void InnerStop()
-        {
-            if (Status != ApplicationStatus.Running) throw new IllegalApplicationStatusException("#Illegal application status that it couldn't start! #Status: " + Status);
-            Status = ApplicationStatus.Stoping;
-            try
-            {
-                if (_hostChannel != null)
-                {
-                    _hostChannel.ChannelCreated -= ChannelCreated;
-                    _hostChannel.UnRegist();
-                    _hostChannel = null;
-                }
-                TunnelAddress = null;
-            }
-            catch (System.Exception ex) { _tracing.Error(ex); }
-            finally { Status = ApplicationStatus.Stopped; }
-        }
-
-        protected override void InnerOnLoading()
-        {
-            //initializes something before actual business starting.
-            ExtensionTypeMapping.Regist(typeof(MessageIdentityValueStored));
-            ExtensionTypeMapping.Regist(typeof(TransactionIdentityValueStored));
-            if (Status != ApplicationStatus.Initialized && Status != ApplicationStatus.Stopped) throw new IllegalApplicationStatusException("#Illegal application status that it couldn't start! #Status: " + Status);
-            //URL FORMAT: pipe://./{APP-Name}_ulong(MD5(DateTime.Now),4 ,8)
-            string url = string.Format("pipe://./{0}_{1}", PackageName, DateTime.Now.Ticks);
-            _hostChannel = new PipeHostTransportChannel(new PipeUri(url), 254);
-            if (!_hostChannel.Regist()) throw new AllocResourceFailedException("#Sadly, We couldn't alloc current network resource. #Resource: " + url);
-            _hostChannel.ChannelCreated += ChannelCreated;
-            TunnelAddress = url;
-            Status = ApplicationStatus.Loaded; 
-        }
-
-        protected override HealthStatus InnerCheckHealth()
-        {
-            return HealthStatus.Good;
         }
 
         /// <summary>
@@ -252,54 +169,33 @@ namespace KJFramework.ApplicationEngine
         /// <returns>返回消息处理器可以处理的消息标示集合</returns>
         /// <exception cref="DuplicatedProcessorException">具有多个能处理相同MessageIdentity的KAE处理器</exception>
         /// <exception cref="NotSupportedException">不支持的Protocol Type</exception>
-        protected virtual IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> CollectAbilityProcessors()
+        protected virtual IDictionary<MessageIdentity, MetadataKAEProcessor> CollectAbilityProcessors()
         {
-            IDictionary<ProtocolTypes, Dictionary<MessageIdentity, object>> dic = new Dictionary<ProtocolTypes, Dictionary<MessageIdentity, object>>();
+            IDictionary<MessageIdentity, MetadataKAEProcessor> dic = new Dictionary<MessageIdentity, MetadataKAEProcessor>();
             Type[] types = Assembly.Load(File.ReadAllBytes(_structure.GetSectionField<string>(0x00, "ApplicationMainFileName"))).GetTypes();
             foreach (Type type in types)
             {
                 try
                 {
                     if (type.IsAbstract) continue;
-                    if (!type.IsSubclassOf(typeof (IntellegenceKAEProcessor)) &&
-                        !type.IsSubclassOf(typeof (JsonKAEProcessor)) &&
-                        !type.IsSubclassOf(typeof (MetadataKAEProcessor))) continue;
-                    KAEProcessorPropertiesAttribute[] attributes =
-                        (KAEProcessorPropertiesAttribute[])
-                            type.GetCustomAttributes(typeof (KAEProcessorPropertiesAttribute), true);
+                    if (!type.IsSubclassOf(typeof (MetadataKAEProcessor))) continue;
+                    KAEProcessorPropertiesAttribute[] attributes = (KAEProcessorPropertiesAttribute[])type.GetCustomAttributes(typeof (KAEProcessorPropertiesAttribute), true);
                     if (attributes.Length == 0)
                     {
-                        _tracing.Warn(
-                            "#Found a KAE processor, type: {0}. BUT there wasn't any KAEProcessorPropertiesAttribute can be find.",
-                            type.Name);
+                        _tracing.Warn("#Found a KAE processor, type: {0}. BUT there wasn't any KAEProcessorPropertiesAttribute can be find.", type.Name);
                         continue;
                     }
-                    Dictionary<MessageIdentity, object> subDic;
-                    ProtocolTypes targetProtocolType;
                     MessageIdentity identity = new MessageIdentity
                     {
                         ProtocolId = attributes[0].ProtocolId,
                         ServiceId = attributes[0].ServiceId,
                         DetailsId = attributes[0].DetailsId
                     };
-                    if (type.IsSubclassOf(typeof (IntellegenceKAEProcessor)))
-                        targetProtocolType = ProtocolTypes.Intellegence;
-                    else if (type.IsSubclassOf(typeof (JsonKAEProcessor))) targetProtocolType = ProtocolTypes.Json;
-                    else if (type.IsSubclassOf(typeof (MetadataKAEProcessor)))
-                        targetProtocolType = ProtocolTypes.Metadata;
-                    else throw new NotSupportedException();
-                    if (!dic.TryGetValue(targetProtocolType, out subDic))
-                        dic.Add(targetProtocolType, (subDic = new Dictionary<MessageIdentity, object>()));
-                    if (subDic.ContainsKey(identity))
-                        throw new DuplicatedProcessorException(
-                            "#Duplicated KAE processor which it has same ability to handle a type of message. #MessageIdentity: " +
-                            identity);
-                    subDic.Add(identity, Activator.CreateInstance(type, this));
+                    if (dic.ContainsKey(identity))
+                        throw new DuplicatedProcessorException("#Duplicated KAE processor which it has same ability to handle a type of message. #MessageIdentity: " + identity);
+                    dic.Add(identity, (MetadataKAEProcessor)Activator.CreateInstance(type, this));
                 }
-                catch (System.Exception ex)
-                {
-                    _tracing.Error(ex);
-                }
+                catch (Exception ex) { _tracing.Error(ex); }
             }
             return dic;
         }
@@ -311,104 +207,22 @@ namespace KJFramework.ApplicationEngine
         {
             
         }
-
-        private object AssembleNewTransparencyTransaction(IMessageTransaction<MetadataContainer> preTransaction)
+        
+        internal void HandleBusiness(Tuple<KAENetworkResource, ApplicationLevel> tag, MetadataMessageTransaction transaction, MessageIdentity reqMsgIdentity, object reqMsg, TransactionIdentity transactionIdentity)
         {
-            ProtocolTypes protocol = (ProtocolTypes) preTransaction.Request.GetAttributeAsType<byte>(0x0A);
-            switch (protocol)
+            MetadataKAEProcessor processor;
+            //Targeted MessageIdentity CANNOT be support.
+            if (!_processors.TryGetValue(reqMsgIdentity, out processor))
             {
-                case ProtocolTypes.Metadata:
-                    MetadataMessageTransaction transaction = new MetadataMessageTransaction(preTransaction.GetChannel());
-                    transaction.Identity = preTransaction.Identity;
-                    transaction.Request = preTransaction.Request.GetAttributeAsType<ResourceBlock>(0x0B).AsMetadataContainer();
-                    //reset current transaction identity to the original.
-                    transaction.Request.SetAttribute(0x01, new TransactionIdentityValueStored(preTransaction.Identity));
-                    transaction.NeedResponse = !transaction.Identity.IsOneway;
-                    return transaction;
+                _handleErrorSituation(transaction, KAEErrorCodes.NotSupportedMessageIdentity, "#We'd not supported current business protocol yet!");
+                return;
             }
-            return null;
+            MetadataContainer rsp = processor.Process(transaction.Request);
+            if (!transaction.NeedResponse) return;
+            if (rsp == null) _handleErrorSituation(transaction, KAEErrorCodes.UnhandledExceptionOccured, string.Empty);
+            else _handleSucceedSituation(transaction, rsp);
         }
 
         #endregion
-
-        #region Events.
-
-        //Interval piped name channel connected event.
-        private void ChannelCreated(object sender, LightSingleArgEventArgs<ITransportChannel> e)
-        {
-            MetadataConnectionAgent agent = new MetadataConnectionAgent(new MessageTransportChannel<MetadataContainer>((IRawTransportChannel) e.Target, _protocolStack), _transactionManager);
-            agent.Disconnected += AgentDisconnected;
-            agent.NewTransaction += AgentNewTransaction;
-        }
-
-        private void AgentDisconnected(object sender, System.EventArgs e)
-        {
-            MetadataConnectionAgent agent = (MetadataConnectionAgent) sender;
-            agent.Disconnected -= AgentDisconnected;
-            agent.NewTransaction -= AgentNewTransaction;
-        }
-
-        /*
-         * Application's tunnel MSG construction.
-         * REQ Message:
-         *      0x00 - MessageIdentity
-         *      0x01 - TransactionIdentity
-         *      0x0A - Protocol Type
-         *      0x0B - Specified Value
-         * RSP Message:
-         *      0x00 - MessageIdentity
-         *      0x01 - TransactionIdentity
-         *      0x0A - Error Id
-         *      0x0B - Error Reason
-         *      0x0C - Specified Value
-         */
-        private void AgentNewTransaction(object sender, LightSingleArgEventArgs<IMessageTransaction<MetadataContainer>> e)
-        {
-            MetadataContainer reqMsg = e.Target.Request;
-            ProtocolTypes protocol = (ProtocolTypes) reqMsg.GetAttributeAsType<byte>(0x0A);
-            MessageIdentity messageIdentity = reqMsg.GetAttributeAsType<ResourceBlock>(0x0B).GetAttributeAsType<MessageIdentity>(0x00);
-            object transaction = AssembleNewTransparencyTransaction(e.Target);
-            object pObject;
-            Dictionary<MessageIdentity, object> dic;
-            if (!_processors.TryGetValue(protocol, out dic))
-            {
-                HandleErrorSituation(e.Target, KAEErrorCodes.NotSupportedNetworkType);
-                return;
-            }
-            if (!dic.TryGetValue(messageIdentity, out pObject))
-            {
-                HandleErrorSituation(e.Target, KAEErrorCodes.NotSupportedMessageIdentity);
-                return;
-            }
-            //handles concrete message by respective protocol's processor.
-            switch (protocol)
-            {
-                case ProtocolTypes.Metadata:
-                    MetadataKAEProcessor p1 = (MetadataKAEProcessor) pObject;
-                    p1.Process((IMessageTransaction<MetadataContainer>) transaction);
-                    break;
-                case ProtocolTypes.Intellegence:
-                    IntellegenceKAEProcessor p2 = (IntellegenceKAEProcessor)pObject;
-                    p2.Process((IMessageTransaction<IntellectObject>) transaction);
-                    break;
-                case ProtocolTypes.Json:
-                    JsonKAEProcessor p3 = (JsonKAEProcessor)pObject;
-                    p3.Process((IMessageTransaction<string>) transaction);
-                    break;
-            }
-        }
-
-        private void HandleErrorSituation(IMessageTransaction<MetadataContainer> transaction, KAEErrorCodes errorCode)
-        {
-            MessageIdentity msgIdentity = transaction.Request.GetAttributeAsType<MessageIdentity>(0x00);
-            msgIdentity.DetailsId += 1;
-            MetadataContainer rspMsg = new MetadataContainer();
-            rspMsg.SetAttribute(0x00, new MessageIdentityValueStored(msgIdentity));
-            rspMsg.SetAttribute(0x0A, new ByteValueStored((byte)errorCode));
-            rspMsg.SetAttribute(0x0B, new StringValueStored(string.Empty));
-            transaction.SendResponse(rspMsg);
-        }
-
-    #endregion
     }
 }

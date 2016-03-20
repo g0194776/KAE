@@ -1,12 +1,8 @@
-﻿using KJFramework.ApplicationEngine.Packages;
-using KJFramework.Net.Transaction;
-
-namespace KJFramework.ApplicationEngine.Processors
+﻿namespace KJFramework.ApplicationEngine.Processors
 {
     /// <summary>
     ///    KAE消息处理器接口
     /// </summary>
-    /// <typeparam name="T">网络消息类型</typeparam>
     public interface IKAEProcessor<T>
     {
         #region Methods.
@@ -14,8 +10,9 @@ namespace KJFramework.ApplicationEngine.Processors
         /// <summary>
         ///    处理一个网络请求
         /// </summary>
-        /// <param name="package">消息事务</param>
-        void Process(IMessageTransaction<T> package);
+        /// <param name="request">请求消息</param>
+        /// <returns>返回该网络事务的应答消息</returns>
+        T Process(T request);
 
         #endregion
     }

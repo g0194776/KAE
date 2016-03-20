@@ -76,18 +76,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KAE\ApplicationDynamicObjectTest.cs" />
     <Compile Include="KAE\ApplicationFinderTest.cs" />
-    <Compile Include="KAE\Applications\Processors\TestJsonKAEProcessor.cs" />
-    <Compile Include="KAE\Applications\TestApplication.cs" />
-    <Compile Include="KAE\ApplicationTest.cs" />
     <Compile Include="KAE\CommunicationTest.cs" />
     <Compile Include="KAE\FakedInternalResourceFactory.cs" />
     <Compile Include="KAE\FileCompressionTest.cs" />
-    <Compile Include="KAE\KAEHostTest.cs" />
     <Compile Include="KAE\KPPDataHeadTest.cs" />
     <Compile Include="KAE\KPPResourceTest.cs" />
-    <Compile Include="KAE\LocalCSNTest.cs" />
     <Compile Include="KAE\PackageAttributeDataSectionTest.cs" />
     <Compile Include="KAE\RemotingApplicationDownloaderTestCases.cs" />
     <Compile Include="KJFramework.Data.ObjectDB\OutterUnitTest.cs" />
@@ -175,6 +169,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="KAE\Applications\Processors\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

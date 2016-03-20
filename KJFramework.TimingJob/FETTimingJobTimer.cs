@@ -17,7 +17,7 @@ namespace KJFramework.TimingJob
         /// <param name="policy">执行策略信息</param>
         public FETTimingJobTimer(string policy)
         {
-            if (string.IsNullOrEmpty(policy)) throw new ArgumentNullException(nameof(policy));
+            if (string.IsNullOrEmpty(policy)) throw new ArgumentNullException("policy");
             _executingInterval = TimeSpan.Parse(policy);
         }
 

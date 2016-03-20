@@ -19,8 +19,8 @@ namespace KJFramework.TimingJob.Messages
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         public EasyNetQMessage(MessageProperties properties, JObject body)
         {
-            if (properties == null) throw new ArgumentNullException(nameof(properties));
-            if (body == null) throw new ArgumentNullException(nameof(body));
+            if (properties == null) throw new ArgumentNullException("properties");
+            if (body == null) throw new ArgumentNullException("body");
             Properties = properties;
             Body = body;
         }
@@ -37,14 +37,20 @@ namespace KJFramework.TimingJob.Messages
         /// <summary>
         ///    获取消息属性
         /// </summary>
-        public MessageProperties Properties { get; }
+        public MessageProperties Properties { get; internal set; }
 
-        public Type MessageType => typeof(JObject);
+        /// <summary>
+        /// The message <see cref="T:System.Type"/>. This is a shortcut to GetBody().GetType().
+        /// </summary>
+        public Type MessageType
+        {
+            get { return typeof (JObject); }
+        }
 
         /// <summary>
         ///    获取消息对象
         /// </summary>
-        public JObject Body { get; }
+        public JObject Body { get; internal set; }
 
         #endregion
     }

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Loggers;
-using KJFramework.ApplicationEngine.Managers;
 using KJFramework.Messages.Contracts;
 using KJFramework.Net.Identities;
 using KJFramework.Results;
@@ -28,8 +28,6 @@ namespace KJFramework.ApplicationEngine.Commands
         /// </summary>
         public static void Initialize()
         {
-            RegisterCommand(new InstallKPPCommand());
-            RegisterCommand(new UninstallKPPCommand());
         }
 
         /// <summary>
@@ -40,14 +38,14 @@ namespace KJFramework.ApplicationEngine.Commands
         /// <param name="hostedAppManager">KAE宿主所包含的APP管理器</param>
         /// <param name="logger">状态记录器实例</param>
         /// <returns>返回执行后的结果</returns>
-        public static IExecuteResult Execute(MetadataContainer msg, KAEHost host, IKAEHostAppManager hostedAppManager, IKAEStateLogger logger)
+        public static IExecuteResult Execute(MetadataContainer msg, IKAEStateLogger logger)
         {
             MessageIdentity messageIdentity = msg.GetAttributeAsType<MessageIdentity>(0x00);
             IKAESystemCommand command;
             if (!_commands.TryGetValue(messageIdentity, out command))
                 return ExecuteResult.Fail((byte) KAEErrorCodes.NotSupportedCommand, string.Empty);
-            try { return command.Execute(msg, host, hostedAppManager, logger); }
-            catch (System.Exception ex)
+            try { return command.Execute(msg, logger); }
+            catch (Exception ex)
             {
                 logger.Log(string.Format("#Occured an unhandled exception while executing a system level KAE command. #Command msg struct: {0}. \r\n#Error: {1}", msg, ex.Message));
                 _tracing.Error(ex, null);

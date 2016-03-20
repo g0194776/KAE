@@ -1,7 +1,7 @@
-﻿using KJFramework.ApplicationEngine.Attributes;
+﻿using System;
+using KJFramework.ApplicationEngine.Attributes;
 using KJFramework.ApplicationEngine.Processors;
 using KJFramework.Messages.Contracts;
-using KJFramework.Net.Transaction;
 
 namespace KJFramework.ApplicationEngine.Apps.DistributedLock.Processors
 {
@@ -29,10 +29,10 @@ namespace KJFramework.ApplicationEngine.Apps.DistributedLock.Processors
         /// <summary>
         ///    处理一个网络请求
         /// </summary>
-        /// <param name="package">消息事务</param>
-        protected override void InnerProcess(IMessageTransaction<MetadataContainer> package)
+        /// <param name="request">消息事务</param>
+        protected override MetadataContainer InnerProcess(MetadataContainer request)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
 

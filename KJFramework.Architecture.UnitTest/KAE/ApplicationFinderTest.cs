@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Remoting;
 using KJFramework.ApplicationEngine;
 using KJFramework.ApplicationEngine.Configurations.Settings;
 using KJFramework.ApplicationEngine.Factories;
 using KJFramework.ApplicationEngine.Finders;
 using KJFramework.ApplicationEngine.Objects;
+using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.ApplicationEngine.Resources;
 using NUnit.Framework;
 
@@ -19,7 +19,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         [SetUp]
         public void Initialize()
         {
-            SystemWorker.Initialize("KAEWroker", RemoteConfigurationSetting.Default, KAEHostTest.BuildConfigurationProxy());
+            SystemWorker.Initialize("KAEWroker", RemoteConfigurationSetting.Default, new EtcdRemoteConfigurationProxy(new Uri("")));
             KAESystemInternalResource.Factory = new DefaultInternalResourceFactory();
             KAESystemInternalResource.Factory.Initialize();
         }

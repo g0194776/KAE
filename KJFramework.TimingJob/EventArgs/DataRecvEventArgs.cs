@@ -16,7 +16,7 @@ namespace KJFramework.TimingJob.EventArgs
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         public DataRecvEventArgs(object obj)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            if (obj == null) throw new ArgumentNullException("obj");
             Data = obj;
         }
 

@@ -26,11 +26,11 @@ namespace KJFramework.TimingJob.Pools
         /// <exception cref="ArgumentNullException">参数不能为空</exception>
         public RabbitMQDataSource(string connectionStr, string exchange, string exchangeType, string queueName, string routingKey)
         {
-            if (string.IsNullOrEmpty(connectionStr)) throw new ArgumentNullException(nameof(connectionStr));
-            if (string.IsNullOrEmpty(exchange)) throw new ArgumentNullException(nameof(exchange));
-            if (string.IsNullOrEmpty(exchangeType)) throw new ArgumentNullException(nameof(exchangeType));
-            if (string.IsNullOrEmpty(queueName)) throw new ArgumentNullException(nameof(queueName));
-            if (string.IsNullOrEmpty(routingKey)) throw new ArgumentNullException(nameof(routingKey));
+            if (string.IsNullOrEmpty(connectionStr)) throw new ArgumentNullException("connectionStr");
+            if (string.IsNullOrEmpty(exchange)) throw new ArgumentNullException("exchange");
+            if (string.IsNullOrEmpty(exchangeType)) throw new ArgumentNullException("exchangeType");
+            if (string.IsNullOrEmpty(queueName)) throw new ArgumentNullException("queueName");
+            if (string.IsNullOrEmpty(routingKey)) throw new ArgumentNullException("routingKey");
             _bus = RabbitHutch.CreateBus(connectionStr, x => x.Register<IMessageSerializationStrategy>(_ => new GeneralSerializationStrategy()).Register(_ => RabbitMQLogger.Instance));
             _exchange = _bus.Advanced.ExchangeDeclare(exchange, exchangeType);
             _queue = _bus.Advanced.QueueDeclare(queueName, true);

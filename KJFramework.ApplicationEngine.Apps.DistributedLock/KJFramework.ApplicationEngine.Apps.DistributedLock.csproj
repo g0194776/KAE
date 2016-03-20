@@ -39,7 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DistributedLockApplication.cs" />
     <Compile Include="IDistributedLock.cs" />
     <Compile Include="LockingManager.cs" />
     <Compile Include="Processors\HoldLockHeartbeatMessageProcessor .cs" />

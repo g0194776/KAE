@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APPExecuter.cs" />
     <Compile Include="Application.cs" />
     <Compile Include="Attributes\CodeItemAttribute.cs" />
     <Compile Include="Attributes\KAEProcessorPropertiesAttribute.cs" />
@@ -86,10 +87,7 @@
     <Compile Include="Clusters\NetworkCluster.cs" />
     <Compile Include="Commands\IKAESystemCommand.cs" />
     <Compile Include="Commands\RetrieveKPPInfoCommand.cs" />
-    <Compile Include="Commands\UpgradeKPPCommand.cs" />
     <Compile Include="Commands\KAECommandsExector.cs" />
-    <Compile Include="Commands\InstallKPPCommand.cs" />
-    <Compile Include="Commands\UninstallKPPCommand.cs" />
     <Compile Include="Configurations\DeployConfigSection.cs" />
     <Compile Include="Configurations\DeploySettingConfiguration.cs" />
     <Compile Include="Configurations\Loaders\RemoteConfigurationLoader.cs" />
@@ -121,13 +119,12 @@
     <Compile Include="Loggers\KAEStateLogger.cs" />
     <Compile Include="Loggers\IKAEStateLogger.cs" />
     <Compile Include="KAESystemInternalResource.cs" />
-    <Compile Include="Managers\IKAEHostAppManager.cs" />
-    <Compile Include="Managers\KAEHostAppManager.cs" />
     <Compile Include="Objects\Package.cs" />
     <Compile Include="Objects\PackageInfo.cs" />
     <Compile Include="Objects\PackageList.cs" />
     <Compile Include="ProtocolStackContainer.cs" />
     <Compile Include="Proxies\BusinessMessageTransactionProxy.cs" />
+    <Compile Include="Proxies\EtcdRemoteConfigurationProxy.cs" />
     <Compile Include="Proxies\IMessageTransactionProxy.cs" />
     <Compile Include="IProtocolStackContainer.cs" />
     <Compile Include="Proxies\IProtocolResource.cs" />
@@ -142,21 +139,16 @@
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="Helpers\ResourceBlockExtend.cs" />
     <Compile Include="IApplication.cs" />
-    <Compile Include="IKAEHost.cs" />
-    <Compile Include="KAEHost.cs" />
     <Compile Include="KAESettings.cs" />
     <Compile Include="Managers\KAEHostNetworkResourceManager.cs" />
     <Compile Include="Messages\KAEResponseMessage.cs" />
     <Compile Include="Messages\KAERequestMessage.cs" />
     <Compile Include="Messages\KAETunnelTransportResponseMessage.cs" />
-    <Compile Include="Objects\ApplicationDynamicObject.cs" />
     <Compile Include="Objects\ApplicationEntryInfo.cs" />
     <Compile Include="Packages\BusinessPackage.cs" />
     <Compile Include="Packages\IBusinessPackage.cs" />
     <Compile Include="Processors\IKAEProcessor.cs" />
     <Compile Include="Processors\MetadataKAEProcessor.cs" />
-    <Compile Include="Processors\IntellegenceKAEProcessor.cs" />
-    <Compile Include="Processors\JsonKAEProcessor.cs" />
     <Compile Include="Processors\KAEProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\IRemoteConfigurationProxy.cs" />

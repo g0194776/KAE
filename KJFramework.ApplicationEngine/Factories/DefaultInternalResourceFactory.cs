@@ -25,8 +25,8 @@ namespace KJFramework.ApplicationEngine.Factories
         {
             _resources.Add(KAESystemInternalResource.APPDownloader, new RemotingApplicationDownloader());
             _resources.Add(KAESystemInternalResource.APPFinder, new DefaultApplicationFinder());
-            _resources.Add(KAESystemInternalResource.KISProxy, new RemotingKISProxy(SystemWorker.ConfigurationProxy.GetField("KAEWorker", "KIS-Address")));
-            _resources.Add(KAESystemInternalResource.ProtocolRegister, new ZooKeeperProtocolRegister(SystemWorker.ConfigurationProxy.GetField("KAEWorker", "ZooKeeperAddresses"), TimeSpan.Parse(SystemWorker.ConfigurationProxy.GetField("KAEWorker", "ZooKeeper-SessionTimeout"))));
+            _resources.Add(KAESystemInternalResource.KISProxy, new RemotingKISProxy(SystemWorker.ConfigurationProxy.GetField("kae-system", "kis-address")));
+            _resources.Add(KAESystemInternalResource.ProtocolRegister, new ZooKeeperProtocolRegister(SystemWorker.ConfigurationProxy.GetField("kae-system", "ZooKeeper-Addresses"), TimeSpan.Parse(SystemWorker.ConfigurationProxy.GetField("kae-system", "ZooKeeper-SessionTimeout"))));
         }
 
         /// <summary>

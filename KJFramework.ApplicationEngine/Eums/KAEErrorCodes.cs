@@ -51,6 +51,10 @@
         /// </summary>
         KPPAlreadyInstalled = 0xEC,
         /// <summary>
+        ///    未捕获的异常发生在与KAE Processor的交互中
+        /// </summary>
+        UnhandledExceptionOccured = 0xED,
+        /// <summary>
         ///     不被支持的KAE系统命令
         /// </summary>
         NotSupportedCommand = 0xEF,

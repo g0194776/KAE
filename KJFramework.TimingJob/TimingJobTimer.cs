@@ -19,7 +19,7 @@ namespace KJFramework.TimingJob
         /// <exception cref="ArgumentException">无效参数</exception>
         public static ITimingJobTimer New(string policy)
         {
-            if (string.IsNullOrEmpty(policy)) throw new ArgumentNullException(nameof(policy));
+            if (string.IsNullOrEmpty(policy)) throw new ArgumentNullException("policy");
             string[] arguments = policy.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
             if(arguments.Length != 2) throw new ArgumentException("#Illegal input argument.");
             switch (arguments[0].ToUpper())
