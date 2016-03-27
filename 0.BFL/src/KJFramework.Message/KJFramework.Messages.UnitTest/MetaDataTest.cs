@@ -10,15 +10,14 @@ using KJFramework.Messages.Proxies;
 using KJFramework.Messages.Structs;
 using KJFramework.Messages.Types;
 using KJFramework.Messages.ValueStored;
-using KJFramework.Messages.ValueStored.DataProcessor.Mapping;
 using KJFramework.Messages.ValueStored.Helper;
 using KJFramework.Timer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KJFramework.Messages.Contracts;
+using NUnit.Framework;
 
 namespace KJFramework.Messages.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class MetaDataTest
     {
         #region Members
@@ -29,13 +28,13 @@ namespace KJFramework.Messages.UnitTest
 
         #region Method
 
-        [TestInitialize]
+        [SetUp]
         public void Initilize()
         {
             _metadataObject = new MetadataContainer();
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试int16类型")]
         public void GetInt16Test()
         {
@@ -51,7 +50,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试uint16类型")]
         public void GetUInt16Test()
         {
@@ -67,7 +66,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试int32类型")]
         public void GetInt32Test()
         {
@@ -83,7 +82,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试uint32类型")]
         public void GetUInt32Test()
         {
@@ -99,7 +98,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试int64类型")]
         public void GetInt64Test()
         {
@@ -115,7 +114,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试uint64类型")]
         public void GetUInt64Test()
         {
@@ -131,7 +130,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试float类型")]
         public void GetFloatTest()
         {
@@ -147,7 +146,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试double类型")]
         public void GetDoubleTest()
         {
@@ -163,7 +162,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Boolean类型")]
         public void GetBooleanTest()
         {
@@ -178,7 +177,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Byte类型")]
         public void GetByteTest()
         {
@@ -194,7 +193,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Char类型")]
         public void GetCharTest()
         {
@@ -210,7 +209,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Decimal类型")]
         public void GetDecimalTest()
         {
@@ -226,7 +225,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试SByte类型")]
         public void GetSByteTest()
         {
@@ -242,7 +241,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DateTime类型")]
         public void GetDateTimeTest()
         {
@@ -258,7 +257,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Guid类型")]
         public void GetGuidTest()
         {
@@ -274,7 +273,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试IPEndPoint类型")]
         public void GetIPEndPointTest()
         {
@@ -290,7 +289,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试IntPtr类型")]
         public void GetIntPtrTest()
         {
@@ -306,7 +305,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试TimeSpan类型")]
         public void GetTimeSpanTest()
         {
@@ -322,7 +321,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试BitFlag类型")]
         public void GetBitFlagTest()
         {
@@ -338,7 +337,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Blob类型")]
         public void GetBlobTest()
         {
@@ -356,7 +355,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试string类型")]
         public void GetStringTest()
         {
@@ -372,7 +371,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试string类型")]
         public void GetStringIsNullTest()
         {
@@ -387,7 +386,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试string类型")]
         public void GetStringIsEmptyTest()
         {
@@ -403,7 +402,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试CharArray类型")]
         public void GetCharArrayTest()
         {
@@ -424,7 +423,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试BooleanArray类型")]
         public void GetBooleanArrayTest()
         {
@@ -445,7 +444,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试ByteArray类型")]
         public void GetByteArrayTest()
         {
@@ -466,7 +465,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试SByteArray类型")]
         public void GetSByteArrayTest()
         {
@@ -486,7 +485,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DecimalArray类型")]
         public void GetDecimalArrayTest()
         {
@@ -502,7 +501,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DoubleArray类型")]
         public void GetDoubleArrayTest()
         {
@@ -518,7 +517,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试FloatArray类型")]
         public void GetFloatArrayTest()
         {
@@ -534,7 +533,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Int32Array类型")]
         public void GetInt32ArrayTest()
         {
@@ -550,7 +549,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Int32Array大于10个元素类型")]
         public void GetInt32ArrayMoreThanTenTest()
         {
@@ -566,7 +565,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试UInt32Array类型")]
         public void GetUInt32ArrayTest()
         {
@@ -582,7 +581,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试UInt32Array大于10个元素类型")]
         public void GetUInt32ArrayMoreThanTenTest()
         {
@@ -598,7 +597,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Int16Array大于10个元素类型")]
         public void GetInt16ArrayMoreThanTenTest()
         {
@@ -614,7 +613,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Int16Array类型")]
         public void GetInt16ArrayTest()
         {
@@ -630,7 +629,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试UInt16Array类型")]
         public void GetUInt16ArrayTest()
         {
@@ -646,7 +645,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试UInt16Array大于10个元素类型")]
         public void GetUInt16ArrayMoreThanTenTest()
         {
@@ -662,7 +661,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Int64Array类型")]
         public void GetInt64ArrayTest()
         {
@@ -678,7 +677,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Int64Array大于10个元素类型")]
         public void GetInt64ArrayMoreThanTenTest()
         {
@@ -694,7 +693,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试UInt64Array类型")]
         public void GetUInt64ArrayTest()
         {
@@ -710,7 +709,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试UInt64Array大于10个元素类型")]
         public void GetUInt64ArrayMoreThanTenTest()
         {
@@ -726,7 +725,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DateTimeArray类型")]
         public void GetDateTimeArrayTest()
         {
@@ -742,7 +741,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试GuidArray类型")]
         public void GetGuidArrayTest()
         {
@@ -758,7 +757,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试IntPtrArray类型")]
         public unsafe void GetIntPtrArrayTest()
         {
@@ -782,7 +781,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试TimeSpanArray类型")]
         public void GetTimeSpanArrayTest()
         {
@@ -798,7 +797,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试IPEndPointArray类型")]
         public void GetIPEndPointArrayTest()
         {
@@ -815,7 +814,7 @@ namespace KJFramework.Messages.UnitTest
         }
 
 
-        [TestMethod]
+        [Test]
         [Description("测试智能对象类型")]
         public void GetIntellectObjectTest()
         {
@@ -834,7 +833,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试string数组类型")]
         public void GetStringArrayTest()
         {
@@ -854,7 +853,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试string数组类型中存在空的情况")]
         public void GetStringArrayHasNullTest()
         {
@@ -875,7 +874,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试IntellectObjectArray数组类型")]
         public void GetIntellectObjectArrayTest()
         {
@@ -897,7 +896,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试IntellectObjectArray数组中有空对象情况类型")]
         public void GetIntellectObjectArrayHasNullTest()
         {
@@ -923,7 +922,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试IntellectObjectArray数组中全为空对象情况类型")]
         public void GetIntellectObjectArrayAllNullTest()
         {
@@ -943,7 +942,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试可空值类型")]
         public void GetNullValueTest()
         {
@@ -958,7 +957,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试BooleanArray类型")]
         public void GetBooleanArrayWithLengthZeroTest()
         {
@@ -974,7 +973,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试ByteArray类型")]
         public void GetByteArrayWithLengthZeroTest()
         {
@@ -990,7 +989,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试CharArray类型")]
         public void GetCharArrayWithLengthZeroTest()
         {
@@ -1006,7 +1005,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DateTimeArray类型")]
         public void GetDateTimeArrayWithLengthZeroTest()
         {
@@ -1022,7 +1021,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DecimalArray类型")]
         public void GetDecimalArrayWithLengthZeroTest()
         {
@@ -1038,7 +1037,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DoubleArray类型")]
         public void GetDoubleArrayWithLengthZeroTest()
         {
@@ -1054,7 +1053,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试FloatArray类型")]
         public void GetFloatArrayWithLengthZeroTest()
         {
@@ -1070,7 +1069,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试GuidArray类型")]
         public void GetGuidArrayWithLengthZeroTest()
         {
@@ -1086,7 +1085,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Int16Array类型")]
         public void GetInt16ArrayWithLengthZeroTest()
         {
@@ -1102,7 +1101,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Int32Array类型")]
         public void GetInt32ArrayWithLengthZeroTest()
         {
@@ -1118,7 +1117,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试Int64Array类型")]
         public void GetInt64ArrayWithLengthZeroTest()
         {
@@ -1134,7 +1133,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试UInt16Array类型")]
         public void GetUInt16ArrayWithLengthZeroTest()
         {
@@ -1150,7 +1149,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试UInt32Array类型")]
         public void GetUInt32ArrayWithLengthZeroTest()
         {
@@ -1166,7 +1165,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试UInt64Array类型")]
         public void GetUInt64ArrayWithLengthZeroTest()
         {
@@ -1182,7 +1181,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试IntPtrArray类型")]
         public void GetIntPtrArrayWithLengthZeroTest()
         {
@@ -1198,7 +1197,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试IPEndPointArray类型")]
         public void GetIPEndPointArrayWithLengthZeroTest()
         {
@@ -1214,7 +1213,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试SByteArray类型")]
         public void GetSByteArrayWithLengthZeroTest()
         {
@@ -1230,7 +1229,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试StringArray类型")]
         public void GetStringArrayWithLengthZeroTest()
         {
@@ -1246,7 +1245,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试IIntellectObjectArray类型")]
         public void GetIntellectObjectArrayWithLengthZeroTest()
         {
@@ -1262,7 +1261,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetBooleanDefaultValueTest()
         {
@@ -1278,7 +1277,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetByteDefaultValueTest()
         {
@@ -1294,7 +1293,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetCharDefaultValueTest()
         {
@@ -1310,7 +1309,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetDateTimeDefaultValueTest()
         {
@@ -1326,7 +1325,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetDecimalDefaultValueTest()
         {
@@ -1342,7 +1341,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetDoubleDefaultValueTest()
         {
@@ -1358,7 +1357,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetFloatDefaultValueTest()
         {
@@ -1374,7 +1373,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetGuidDefaultValueTest()
         {
@@ -1390,7 +1389,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetInt16DefaultValueTest()
         {
@@ -1406,7 +1405,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetUInt16DefaultValueTest()
         {
@@ -1422,7 +1421,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetInt32DefaultValueTest()
         {
@@ -1438,7 +1437,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetUInt32DefaultValueTest()
         {
@@ -1454,7 +1453,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetInt64DefaultValueTest()
         {
@@ -1470,7 +1469,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetUInt64DefaultValueTest()
         {
@@ -1486,7 +1485,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetIntPtrDefaultValueTest()
         {
@@ -1502,7 +1501,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetSByteDefaultValueTest()
         {
@@ -1518,7 +1517,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试DefaultValue的存储与解析")]
         public void GetTimeSpanDefaultValueTest()
         {
@@ -1534,7 +1533,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试ResourceBlock类型")]
         public void GetResourceBlockTest()
         {
@@ -1564,7 +1563,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadata2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试ResourceBlockArray类型")]
         public void GetResourceBlockArrayTest()
         {
@@ -1593,7 +1592,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadata2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试ResourceBlockArray类型")]
         public void GetResourceBlockArrayHasNullTest()
         {
@@ -1622,7 +1621,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadata2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试ResourceBlockArray与ResourceBlock混合多重嵌套含空元素类型，这特么都行我特么就不信还有测不过的！！！！！！！！！")]
         public void GetResourceBlockArrayMultipleNestedHasNullTest()
         {
@@ -1664,7 +1663,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadata2.ToString());
         }
 
-        //[TestMethod]
+        //[Test]
         //public void SetT()
         //{
         //    _metadataObject.SetAttributeAsT<uint>(2, 12);
@@ -1673,7 +1672,7 @@ namespace KJFramework.Messages.UnitTest
         //    //Console.WriteLine(_metadataObject.GetAttributeAsT(2));
         //}
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器跨内存段回写void*测试")]
         public unsafe void WriteMemoryTest1()
         {
@@ -1724,7 +1723,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(bytes.Length == MemoryAllotter.SegmentSize * 2 + 4);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器跨内存段回写void*值测试")]
         public unsafe void WriteMemoryTest2()
         {
@@ -1769,7 +1768,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(bytes[9] == 0);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器跨内存段回写void*值测试")]
         public unsafe void WriteMemoryTest3()
         {
@@ -1811,7 +1810,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(bytes[260] == 0);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器跨内存段回写void*值测试")]
         public unsafe void WriteMemoryTest4()
         {
@@ -1870,7 +1869,7 @@ namespace KJFramework.Messages.UnitTest
             }
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试metadata Object")]
         public void MetaDataObjectTest()
         {
@@ -1895,7 +1894,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(metadataObject2.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试metadata Object")]
         public void ExtremeBindTest()
         {
@@ -1929,7 +1928,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("测试metadata Object")]
         public void ExtremePickupTest()
         {

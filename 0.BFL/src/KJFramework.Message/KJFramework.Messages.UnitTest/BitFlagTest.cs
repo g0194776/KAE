@@ -1,15 +1,15 @@
 ﻿using System;
 using KJFramework.Messages.Types;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace KJFramework.Messages.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class BitFlagTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SetTest()
         {
             BitFlag flag = new BitFlag();
@@ -20,7 +20,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(flag);
         }
 
-        [TestMethod]
+        [Test]
         public void GetTest()
         {
             BitFlag flag = new BitFlag(0x05);
@@ -29,7 +29,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(flag);
         }
 
-        [TestMethod]
+        [Test]
         public void ToStringTest()
         {
             BitFlag flag = new BitFlag();
@@ -38,7 +38,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(flag);
         }
 
-        [TestMethod]
+        [Test]
         public void ToStringTest2()
         {
             BitFlag flag = new BitFlag(0xFF);
@@ -46,7 +46,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(flag);
         }
 
-        [TestMethod]
+        [Test]
         public void ToStringTest3()
         {
             BitFlag flag = new BitFlag();
@@ -54,7 +54,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(flag);
         }
 
-        [TestMethod]
+        [Test]
         public void GetDataTest()
         {
             BitFlag flag = new BitFlag();

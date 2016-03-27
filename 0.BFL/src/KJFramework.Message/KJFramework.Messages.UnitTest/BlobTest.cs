@@ -4,16 +4,16 @@ using System.Net;
 using System.Text;
 using KJFramework.Messages.Enums;
 using KJFramework.Messages.Types;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace KJFramework.Messages.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class BlobTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         [Description("GZIP压缩测试")]
         public void GZipCompressTest()
         {
@@ -38,7 +38,7 @@ namespace KJFramework.Messages.UnitTest
         }
 
 
-        [TestMethod]
+        [Test]
         [Description("BZip2压缩测试")]
         public void BZip2CompressTest2()
         {
@@ -62,7 +62,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(blob);
         }
 
-        [TestMethod]
+        [Test]
         [Description("GZip解压缩测试")]
         public void GZipDecompressTest()
         {
@@ -94,7 +94,7 @@ namespace KJFramework.Messages.UnitTest
                 Assert.IsTrue(data[i] == decompressedData[i]);
         }
 
-        [TestMethod]
+        [Test]
         [Description("BZip2解压缩测试")]
         public void BZip2DecompressTest()
         {
@@ -127,7 +127,7 @@ namespace KJFramework.Messages.UnitTest
                 Assert.IsTrue(data[i] == decompressedData[i]);
         }
 
-        [TestMethod]
+        [Test]
         [Description("解压缩测试")]
         public void CompressionFulLTest()
         {

@@ -2,14 +2,14 @@
 using System.Net;
 using System.Text;
 using KJFramework.Messages.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace KJFramework.Messages.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class DataHelperUnitTest
     {
-        [TestMethod]
+        [Test]
         [Description("准字节数测试")]
         public void NormalBindTest()
         {
@@ -20,7 +20,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("准字节数解析测试")]
         public void NormalPickupTest()
         {
@@ -36,7 +36,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.ServicelId == 2);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有浮动数据类型的标准测试")]
         public void NormalBindTest1()
         {
@@ -59,7 +59,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有浮动数据类型的标准解析测试")]
         public void NormalPickupTest1()
         {
@@ -96,7 +96,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Name == "YangJie我~");
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有固定数据类型数组的标准测试")]
         public void NormalBindTest2()
         {
@@ -108,7 +108,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有固定数据类型数组的标准解析测试")]
         public void NormalPickupTest2()
         {
@@ -129,7 +129,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Numbers[1] == 2222);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有浮动数据类型数组的标准测试")]
         public void NormalBindTest3()
         {
@@ -141,7 +141,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有浮动数据类型数组的标准解析测试")]
         public void NormalPickupTest3()
         {
@@ -163,7 +163,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Names[2] == "jie");
         }
 
-        [TestMethod]
+        [Test]
         [Description("智能对象数组的序列化测试")]
         public void NormalBindTest4()
         {
@@ -176,7 +176,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("智能对象数组的反序列化测试")]
         public void NormalPickupTest4()
         {
@@ -194,7 +194,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < results.Length; i++) results[i] = array[i];
         }
 
-        [TestMethod]
+        [Test]
         [Description("智能对象数组的序列化测试")]
         public void NormalBindTest5()
         {
@@ -207,7 +207,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("智能对象数组的反序列化测试")]
         public void NormalPickupTest5()
         {
@@ -225,7 +225,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < results.Length; i++) results[i] = array[i];
         }
 
-        [TestMethod]
+        [Test]
         [Description("智能对象数组的序列化测试")]
         public void NormalBindTest6()
         {
@@ -238,7 +238,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("智能对象数组的反序列化测试")]
         public void NormalPickupTest6()
         {
@@ -256,7 +256,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < results.Length; i++) results[i] = array[i];
         }
 
-        [TestMethod]
+        [Test]
         [Description("bool序列化测试")]
         public void BooleanBindTest()
         {
@@ -266,7 +266,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("int?序列化测试")]
         public void NullableInt32BindTest()
         {
@@ -276,7 +276,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("int? - null value序列化测试")]
         public void Nullable_NullValue_BindTest()
         {
@@ -284,7 +284,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsNull(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("bool反序列化测试")]
         public void BooleanPickupTest()
         {
@@ -297,7 +297,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         [Description("sbyte序列化测试")]
         public void SByteBindTest()
         {
@@ -307,7 +307,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("sbyte反序列化测试")]
         public void SBytePickupTest()
         {
@@ -320,7 +320,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == 0x0F);
         }
 
-        [TestMethod]
+        [Test]
         [Description("byte序列化测试")]
         public void ByteBindTest()
         {
@@ -330,7 +330,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("byte反序列化测试")]
         public void BytePickupTest()
         {
@@ -343,7 +343,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == 0xFF);
         }
 
-        [TestMethod]
+        [Test]
         [Description("decimal序列化测试")]
         public void DecimalBindTest()
         {
@@ -353,7 +353,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("decimal反序列化测试")]
         public void DecimalPickupTest()
         {
@@ -366,7 +366,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == 0xFF);
         }
 
-        [TestMethod]
+        [Test]
         [Description("byte数组序列化测试")]
         public void ByteArrayBindTest()
         {
@@ -376,7 +376,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("byte数组反序列化测试")]
         public void ByteArrayPickupTest()
         {
@@ -390,7 +390,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(Encoding.UTF8.GetString(result) == "kevin");
         }
 
-        [TestMethod]
+        [Test]
         [Description("char序列化测试")]
         public void CharBindTest()
         {
@@ -400,7 +400,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("char反序列化测试")]
         public void CharPickupTest()
         {
@@ -413,7 +413,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == 'm');
         }
 
-        [TestMethod]
+        [Test]
         [Description("double序列化测试")]
         public void DoubleBindTest()
         {
@@ -423,7 +423,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("double反序列化测试")]
         public void DoublePickupTest()
         {
@@ -436,7 +436,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == 3.5);
         }
 
-        [TestMethod]
+        [Test]
         [Description("float序列化测试")]
         public void FloatBindTest()
         {
@@ -446,7 +446,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("float反序列化测试")]
         public void FloatPickupTest()
         {
@@ -459,7 +459,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == (float)6.6);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int16序列化测试")]
         public void Int16BindTest()
         {
@@ -469,7 +469,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int16反序列化测试")]
         public void Int16PickupTest()
         {
@@ -482,7 +482,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == (short)3);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int32序列化测试")]
         public void Int32BindTest()
         {
@@ -492,7 +492,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int32反序列化测试")]
         public void Int32PickupTest()
         {
@@ -505,7 +505,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == (int)3);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int64序列化测试")]
         public void Int64BindTest()
         {
@@ -515,7 +515,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int64反序列化测试")]
         public void Int64PickupTest()
         {
@@ -528,7 +528,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == (long)3);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int16数组序列化测试")]
         public void Int16ArrayBindTest()
         {
@@ -538,7 +538,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int16数组反序列化测试")]
         public void Int16ArrayPickupTest()
         {
@@ -557,7 +557,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result[5] == 6);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int32数组序列化测试")]
         public void Int32ArrayBindTest()
         {
@@ -567,7 +567,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int32数组反序列化测试")]
         public void Int32ArrayPickupTest()
         {
@@ -586,7 +586,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result[5] == 6);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int64数组序列化测试")]
         public void Int64ArrayBindTest()
         {
@@ -596,7 +596,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int64数组反序列化测试")]
         public void Int64ArrayPickupTest()
         {
@@ -615,7 +615,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result[5] == 6);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt16数组序列化测试")]
         public void UInt16ArrayBindTest()
         {
@@ -625,7 +625,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt16数组反序列化测试")]
         public void UInt16ArrayPickupTest()
         {
@@ -644,7 +644,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result[5] == 6);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt32数组序列化测试")]
         public void UInt32ArrayBindTest()
         {
@@ -654,7 +654,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt32数组反序列化测试")]
         public void UInt32ArrayPickupTest()
         {
@@ -673,7 +673,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result[5] == 6);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt64数组序列化测试")]
         public void UInt64ArrayBindTest()
         {
@@ -683,7 +683,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt64数组反序列化测试")]
         public void UInt64ArrayPickupTest()
         {
@@ -702,7 +702,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result[5] == 6);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt16序列化测试")]
         public void UInt16BindTest()
         {
@@ -712,7 +712,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt16反序列化测试")]
         public void UInt16PickupTest()
         {
@@ -725,7 +725,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == (ushort) 3);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt32序列化测试")]
         public void UInt32BindTest()
         {
@@ -735,7 +735,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt32反序列化测试")]
         public void UInt32PickupTest()
         {
@@ -748,7 +748,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == (uint)3);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt64序列化测试")]
         public void UInt64BindTest()
         {
@@ -758,7 +758,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt64反序列化测试")]
         public void UInt64PickupTest()
         {
@@ -771,7 +771,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == (ulong)5);
         }
 
-        [TestMethod]
+        [Test]
         [Description("string序列化测试")]
         public void StringBindTest()
         {
@@ -782,7 +782,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("string反序列化测试")]
         public void StringPickupTest()
         {
@@ -796,7 +796,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == testStr);
         }
 
-        [TestMethod]
+        [Test]
         [Description("DateTime序列化测试")]
         public void DateTimeBindTest()
         {
@@ -807,7 +807,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("DateTime反序列化测试")]
         public void DateTimePickupTest()
         {
@@ -821,7 +821,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == now);
         }
 
-        [TestMethod]
+        [Test]
         [Description("DateTime数组序列化测试")]
         public void DateTimeArrayBindTest()
         {
@@ -832,7 +832,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("DateTime数组反序列化测试")]
         public void DateTimeArrayPickupTest()
         {
@@ -847,7 +847,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < array.Length; i++) Assert.IsTrue(result[i] == array[i]);
         }
 
-        [TestMethod]
+        [Test]
         [Description("TimeSpan序列化测试")]
         public void TimeSpanBindTest()
         {
@@ -858,7 +858,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("TimeSpan反序列化测试")]
         public void TimeSpanPickupTest()
         {
@@ -872,7 +872,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == now);
         }
 
-        [TestMethod]
+        [Test]
         [Description("TimeSpan数组序列化测试")]
         public void TimeSpanArrayBindTest()
         {
@@ -883,7 +883,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("TimeSpan数组反序列化测试")]
         public void TimeSpanArrayPickupTest()
         {
@@ -898,7 +898,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < array.Length; i++) Assert.IsTrue(result[i] == array[i]);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Guid序列化测试")]
         public void GuidBindTest()
         {
@@ -909,7 +909,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Guid反序列化测试")]
         public void GuidPickupTest()
         {
@@ -923,7 +923,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == guid);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Guid数组序列化测试")]
         public void GuidArrayBindTest()
         {
@@ -934,7 +934,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Guid数组反序列化测试")]
         public void GuidArrayPickupTest()
         {
@@ -949,7 +949,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < array.Length; i++) Assert.IsTrue(result[i] == array[i]);
         }
 
-        [TestMethod]
+        [Test]
         [Description("IPEndPoint序列化测试")]
         public void IPEndPointBindTest()
         {
@@ -960,7 +960,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("IPEndPoint反序列化测试")]
         public void IPEndPointPickupTest()
         {
@@ -974,7 +974,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result.Equals(iep));
         }
 
-        [TestMethod]
+        [Test]
         [Description("IPEndPoint数组序列化测试")]
         public void IPEndPointArrayBindTest()
         {
@@ -986,7 +986,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("IPEndPoint数组反序列化测试")]
         public void IPEndPointArrayPickupTest()
         {
@@ -1002,7 +1002,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < array.Length; i++) Assert.IsTrue(result[i].Equals(array[i]));
         }
 
-        [TestMethod]
+        [Test]
         [Description("IntPtr序列化测试")]
         public void IntPtrBindTest()
         {
@@ -1013,7 +1013,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("IntPtr反序列化测试")]
         public void IntPtrPickupTest()
         {
@@ -1027,7 +1027,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(result == intPtr);
         }
 
-        [TestMethod]
+        [Test]
         [Description("IntPtr数组序列化测试")]
         public void IntPtrArrayBindTest()
         {
@@ -1038,7 +1038,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("IntPtr数组反序列化测试")]
         public void IntPtrArrayPickupTest()
         {
@@ -1053,7 +1053,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < array.Length; i++) Assert.IsTrue(result[i] == array[i]);
         }
 
-        [TestMethod]
+        [Test]
         [Description("string数组序列化测试")]
         public void StringArrayBindTest()
         {
@@ -1065,7 +1065,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("string数组反序列化测试")]
         public void StringArrayPickupTest()
         {
@@ -1081,7 +1081,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < array.Length; i++) Assert.IsTrue(result[i] == array[i]);
         }
 
-        [TestMethod]
+        [Test]
         [Description("string数组序列化测试, 数组中部分元素为null")]
         public void StringArrayAndLessElementsBindTest()
         {
@@ -1093,7 +1093,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("string数组反序列化测试, 数组中部分元素为null")]
         public void StringArrayAndLessElementsPickupTest()
         {
@@ -1109,7 +1109,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < array.Length; i++) Assert.IsTrue(result[i] == array[i]);
         }
 
-        [TestMethod]
+        [Test]
         [Description("string数组序列化测试, 数组中部分元素为null")]
         public void StringArrayAndLossAllElementsBindTest()
         {
@@ -1120,7 +1120,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("string数组反序列化测试, 数组中部分元素为null")]
         public void StringArrayAndLossAllElementsPickupTest()
         {
@@ -1135,7 +1135,7 @@ namespace KJFramework.Messages.UnitTest
             for (int i = 0; i < array.Length; i++) Assert.IsTrue(result[i] == array[i]);
         }
 
-        [TestMethod]
+        [Test]
         [Description("string序列化测试")]
         public void LongStringBindTest()
         {
@@ -1146,7 +1146,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("string反序列化测试")]
         public void LongStringPickupTest()
         {

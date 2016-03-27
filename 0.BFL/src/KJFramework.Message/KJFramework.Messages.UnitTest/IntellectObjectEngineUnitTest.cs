@@ -6,21 +6,20 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
-using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.Enums;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.Types;
 using KJFramework.Timer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace KJFramework.Messages.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class IntellectObjectEngineUnitTest
     {
-        [TestMethod]
+        [Test]
         [Description("准字节数测试")]
         public void NormalBindTest()
         {
@@ -31,7 +30,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test1.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("准字节数解析测试")]
         public void NormalPickupTest()
         {
@@ -46,7 +45,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.ServicelId == 2);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有浮动数据类型的标准测试")]
         public void NormalBindTest1()
         {
@@ -69,7 +68,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test2.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有浮动数据类型的标准解析测试")]
         public void NormalPickupTest1()
         {
@@ -106,7 +105,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Name == "YangJie我~");
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有固定数据类型数组的标准测试")]
         public void NormalBindTest2()
         {
@@ -118,7 +117,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test3.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有固定数据类型数组的标准解析测试")]
         public void NormalPickupTest2()
         {
@@ -139,7 +138,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Numbers[1] == 2222);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有浮动数据类型数组的标准测试")]
         public void NormalBindTest3()
         {
@@ -151,7 +150,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test4.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有浮动数据类型数组的标准解析测试")]
         public void NormalPickupTest3()
         {
@@ -173,7 +172,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Names[2] == "jie");
         }
 
-        [TestMethod]
+        [Test]
         [Description("具有内部智能对象自包含的标准测试")]
         public void SelfContainNormalBindTest()
         {
@@ -185,7 +184,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(test5.Body.Length == 43);
         }
 
-        [TestMethod]
+        [Test]
         [Description("具有内部智能对象自包含的标准解析测试")]
         public void SelfContainNormalPickupTest()
         {
@@ -206,7 +205,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.InnerObject.ServicelId == 5);
         }
 
-        [TestMethod]
+        [Test]
         [Description("具有内部智能对象数组的标准测试")]
         public void SelfContainNormalBindTest1()
         {
@@ -230,7 +229,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test6.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("具有内部智能对象数组的标准解析测试")]
         public void SelfContainNormalPickupTest1()
         {
@@ -310,7 +309,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.InnerObjects.Length == 0);
         }
 
-        [TestMethod]
+        [Test]
         [Description("复杂对象绑定测试")]
         public void ComplexObjectBindTest()
         {
@@ -336,7 +335,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(testObject.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("复杂对象解析测试")]
         public void ComplexObjectPickupTest()
         {
@@ -390,7 +389,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsNull(newObj.NullableValue4);
         }
 
-        [TestMethod]
+        [Test]
         [Description("极限绑定测试")]
         public void ExtremeBindTest()
         {
@@ -441,7 +440,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine("Total bind spend time : " + totalWatch.Elapsed);
         }
 
-        [TestMethod]
+        [Test]
         [Description("极限解析测试")]
         public void ExtremePickupTest()
         {
@@ -502,7 +501,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine("Total pickup spend time : " + watch1.Elapsed);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有固定数据类型枚举的准字节数测试")]
         public void NormalBindTest4()
         {
@@ -517,7 +516,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有固定数据类型枚举的准字节数解析测试")]
         public void NormalPickupTest4()
         {
@@ -537,7 +536,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Color == Colors.Yellow);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有托管指针数据类型的准字节数测试")]
         public void NormalBindTest5()
         {
@@ -548,7 +547,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test8.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有托管指针数据类型的准字节数解析测试")]
         public void NormalPickupTest5()
         {
@@ -565,7 +564,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Ptr.ToInt32() == intPtr.ToInt32());
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有索引器的准字节数测试")]
         public void NormalBindTest6()
         {
@@ -576,7 +575,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test9.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有索引器的准字节数解析测试")]
         public void NormalPickupTest6()
         {
@@ -591,7 +590,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.ServicelId == 2);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有字节数组的准字节绑定测试")]
         public void NormalBindTest7()
         {
@@ -603,7 +602,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test10.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有字节数组的准字节绑定测试")]
         public void NormalPickupTest7()
         {
@@ -626,7 +625,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Data[4] == 0x05);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有Guid类型的准字节绑定测试")]
         public void NormalBindTest8()
         {
@@ -638,7 +637,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test11.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("带有字节数组的准字节绑定测试")]
         public void NormalPickupTest8()
         {
@@ -655,7 +654,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(test11.Guid == newObj.Guid);
         }
 
-        [TestMethod]
+        [Test]
         [Description("普通对象ToString方法测试")]
         public void NormalToStringTest()
         {
@@ -669,7 +668,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("含有Guid对象的ToString方法测试")]
         public void HasGuidToStringTest()
         {
@@ -683,7 +682,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("含有IntPtr对象的ToString方法测试")]
         public void HasIntPtrToStringTest()
         {
@@ -697,7 +696,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("内嵌智能对象的ToString方法测试")]
         public void HasIntellectObjectToStringTest()
         {
@@ -717,7 +716,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("内部包含智能对象数组的ToString方法测试")]
         public void HasIntellectObjectArrayToStringTest()
         {
@@ -752,7 +751,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("复杂对象的ToString方法测试")]
         public void ComplexObjectToStringTest()
         {
@@ -781,7 +780,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("极限复杂对象ToString方法测试")]
         public void ExtremeComplexObjectToStringTest()
         {
@@ -806,7 +805,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         public void UlongBindTest()
         {
             Test12 test12 = new Test12 {ProtocolId = 1, ServiceId = 2, DetailsId = 3};
@@ -815,7 +814,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(test12.Body.Length == 23);
         }
 
-        [TestMethod]
+        [Test]
         public void UShortBindTest()
         {
             Test15 test15 = new Test15 { ProtocolId = 1, ServiceId = 2, DetailsId = 3 };
@@ -824,7 +823,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(test15.Body.Length == 17);
         }
 
-        [TestMethod]
+        [Test]
         public void UIntBindTest()
         {
             Test16 test16 = new Test16 { ProtocolId = 1, ServiceId = 2, DetailsId = 3 };
@@ -833,7 +832,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(test16.Body.Length == 19);
         }
 
-        [TestMethod]
+        [Test]
         public void UlongPickupTest()
         {
             Test12 test12 = new Test12 { ProtocolId = 1, ServiceId = 2, DetailsId = 3 };
@@ -849,7 +848,7 @@ namespace KJFramework.Messages.UnitTest
         }
 
 
-        [TestMethod]
+        [Test]
         public void UShortPickupTest()
         {
             Test15 test15 = new Test15 { ProtocolId = 1, ServiceId = 2, DetailsId = 3 };
@@ -864,7 +863,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.DetailsId == 3);
         }
 
-        [TestMethod]
+        [Test]
         public void UIntPickupTest()
         {
             Test16 test16 = new Test16 { ProtocolId = 1, ServiceId = 2, DetailsId = 3 };
@@ -879,7 +878,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.DetailsId == 3);
         }
 
-        [TestMethod]
+        [Test]
         public void SbyteBindTest()
         {
             Test13 test13 = new Test13 { ProtocolId = 1, ServiceId = 2, DetailsId = 127 };
@@ -889,7 +888,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test13.Body);
         }
 
-        [TestMethod]
+        [Test]
         public void SbytePickupTest()
         {
             Test13 test13 = new Test13 { ProtocolId = 1, ServiceId = 2, DetailsId = 127 };
@@ -904,7 +903,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.DetailsId == 127);
         }
 
-        [TestMethod]
+        [Test]
         public void DecimalBindTest()
         {
             Test14 test14 = new Test14 { ProtocolId = 1, ServiceId = 2, DetailsId = 250 };
@@ -914,7 +913,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test14.Body);
         }
 
-        [TestMethod]
+        [Test]
         public void DecimalPickupTest()
         {
             Test14 test14 = new Test14 { ProtocolId = 1, ServiceId = 2, DetailsId = 250 };
@@ -929,7 +928,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.DetailsId == test14.DetailsId);
         }
 
-        [TestMethod]
+        [Test]
         [Description("序列化差异测试，用于检测相同类型的不同实例是否具有不同的二进制数据")]
         public void DifferenceInstanceTest()
         {
@@ -951,7 +950,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(obj2.ServicelId == 4);
         }
 
-        [TestMethod]
+        [Test]
         [Description("可空类型一般性绑定二进制数据测试")]
         public void NullableTypeBindTest1()
         {
@@ -962,7 +961,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test17.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("可空类型一般性绑定二进制数据测试")]
         public void NullableTypeBindTest2()
         {
@@ -973,7 +972,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test17.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("可空类型一般性绑定数据解析测试")]
         public void NullableTypePickupTest1()
         {
@@ -990,7 +989,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.DetailsId == 3);
         }
 
-        [TestMethod]
+        [Test]
         [Description("可空类型一般性绑定数据解析测试")]
         public void NullableTypePickupTest2()
         {
@@ -1007,7 +1006,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsNull(newObj.DetailsId);
         }
 
-        [TestMethod]
+        [Test]
         [Description("空数组的绑定和解析一般性测试")]
         public void EmptyArrayTest()
         {
@@ -1024,7 +1023,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newobj.Users.Length == 0);
         }
 
-        [TestMethod]
+        [Test]
         [Description("BitFlag绑定一般性测试")]
         public void BitFlagToBytesTest()
         {
@@ -1041,7 +1040,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("BitFlag解析一般性测试")]
         public void BitFlagGetObjectTest()
         {
@@ -1064,7 +1063,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("IPEndPoint绑定一般性测试")]
         public void IPEndPointBindTest()
         {
@@ -1079,7 +1078,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
         
-        [TestMethod]
+        [Test]
         [Description("IPEndPoint数组绑定一般性测试")]
         public void IPEndPointArrayBindTest()
         {
@@ -1094,7 +1093,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("IPEndPoint数组解析一般性测试")]
         public void IPEndPointArrayPickupTest()
         {
@@ -1120,7 +1119,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("IPEndPoint解析一般性测试")]
         public void IPEndPointPickupTest()
         {
@@ -1143,7 +1142,7 @@ namespace KJFramework.Messages.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [Description("Guid的一般性绑定测试")]
         public void GuidBindTest()
         {
@@ -1155,7 +1154,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test21.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Guid的一般性解析测试")]
         public void GuidPickupTest()
         {
@@ -1173,7 +1172,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Identity == test21.Identity);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Guid类型序列化压力测试")]
         public void GuidExtremeBindTest()
         {
@@ -1189,7 +1188,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test21.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Guid类型反序列化压力测试")]
         public void GuidExtremePickupTest()
         {
@@ -1211,7 +1210,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test21.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("TimeSpan一般性绑定测试")]
         public void TimeSpanBindTest()
         {
@@ -1223,7 +1222,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test22.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("TimeSpan一般性解析测试")]
         public void TimeSpanPickupTest()
         {
@@ -1241,7 +1240,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(test22.Time.Equals(newObj.Time));
         }
 
-        [TestMethod]
+        [Test]
         [Description("对于标记了IsRequired属性字段的安全性测试")]
         public void SecurityBindCheckTest()
         {
@@ -1262,7 +1261,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsNull(test23.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("int类型数组的优化绑定测试")]
         public void IntArrayOptimizeBindTest()
         {
@@ -1285,7 +1284,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("double类型数组的优化绑定测试")]
         public void DoubleArrayOptimizeBindTest()
         {
@@ -1308,7 +1307,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("float类型数组的优化绑定测试")]
         public void FloatArrayOptimizeBindTest()
         {
@@ -1331,7 +1330,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("long类型数组的优化绑定测试")]
         public void LongArrayOptimizeBindTest()
         {
@@ -1354,7 +1353,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("short类型数组的优化绑定测试")]
         public void ShortArrayOptimizeBindTest()
         {
@@ -1377,7 +1376,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("byte类型数组的优化绑定测试")]
         public void ByteArrayOptimizeBindTest()
         {
@@ -1415,7 +1414,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj.ToString());
         }
 
-        [TestMethod]
+        [Test]
         [Description("数组序列化优化方案研究测试")]
         public unsafe void ArrayOptimizeTotalTest()
         {
@@ -1461,7 +1460,7 @@ namespace KJFramework.Messages.UnitTest
             #endregion
         }
 
-        [TestMethod]
+        [Test]
         [Description("char数组序列化测试")]
         public void CharArrayBindTest()
         {
@@ -1504,7 +1503,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(new string(newObj.Values) == content);
         }
 
-        [TestMethod]
+        [Test]
         [Description("int32数组序列化测试")]
         public void Int32ArrayBindTest()
         {
@@ -1548,7 +1547,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("bool数组序列化测试")]
         public void BoolArrayBindTest()
         {
@@ -1592,7 +1591,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("byte数组序列化测试")]
         public void ByteArrayBindTest()
         {
@@ -1637,7 +1636,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("double数组序列化测试")]
         public void DoubleArrayBindTest()
         {
@@ -1681,7 +1680,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("float数组序列化测试")]
         public void FloatArrayBindTest()
         {
@@ -1725,7 +1724,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("guid数组序列化测试")]
         public void GuidArrayBindTest()
         {
@@ -1770,7 +1769,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("short数组序列化测试")]
         public void ShortArrayBindTest()
         {
@@ -1814,7 +1813,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("long数组序列化测试")]
         public void LongArrayBindTest()
         {
@@ -1854,7 +1853,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("datetime数组序列化测试")]
         public void DateTimeArrayBindTest()
         {
@@ -1899,7 +1898,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("decimal数组序列化测试")]
         public void DecimalArrayBindTest()
         {
@@ -1943,7 +1942,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("intptr数组序列化测试")]
         public void IntPtrArrayBindTest()
         {
@@ -1987,7 +1986,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("sbyte数组序列化测试")]
         public void SByteArrayBindTest()
         {
@@ -2031,7 +2030,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("timespan数组序列化测试")]
         public void TimeSpanArrayBindTest()
         {
@@ -2076,7 +2075,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("ushort数组序列化测试")]
         public void UShortArrayBindTest()
         {
@@ -2120,7 +2119,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("uint数组序列化测试")]
         public void UIntArrayBindTest()
         {
@@ -2164,7 +2163,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("ulong数组序列化测试")]
         public void ULongArrayBindTest()
         {
@@ -2208,7 +2207,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values.Length == 100);
         }
 
-        [TestMethod]
+        [Test]
         [Description("字符串数组一般性测试")]
         public void StringArrayNormalTest()
         {
@@ -2272,7 +2271,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newObj.Values[2] == null);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内部含有的智能对象为空序列化测试")]
         public void IntellectObjNullBindTest()
         {
@@ -2289,7 +2288,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsNull(newObj.InnerObject);
         }
 
-        [TestMethod]
+        [Test]
         [Description("综合性int32数组测试")]
         public void ComplexIntArrayTest()
         {
@@ -2652,7 +2651,7 @@ namespace KJFramework.Messages.UnitTest
                 Assert.IsTrue(newObj.Values[i] == c.Values[i]);
         }
 
-        [TestMethod]
+        [Test]
         [Description("综合性string测试")]
         public void ComplexStringTest()
         {
@@ -2667,7 +2666,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(test2.Name == newObj.Name);
         }
 
-        [TestMethod]
+        [Test]
         [Description("兼容性测试-允许")]
         public void CompatibleModeTest()
         {
@@ -2683,7 +2682,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(mode);
         }
 
-        [TestMethod]
+        [Test]
         [Description("兼容性测试-不允许")]
         public void CompatibleModeTest2()
         {
@@ -2700,7 +2699,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(e.Message);
         }
 
-        [TestMethod]
+        [Test]
         [Description("无意义的字段Attribute值测试")]
         public void NoMeaningTest1()
         {
@@ -2709,7 +2708,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsFalse(test44.IsBind);
         }
 
-        [TestMethod]
+        [Test]
         [Description("无意义的字段Attribute值测试")]
         public void NoMeaningTest2()
         {
@@ -2718,7 +2717,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsFalse(test44.IsBind);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int32类型默认值不参与传输测试")]
         public void DefaultNull_Int32_Test()
         {
@@ -2735,7 +2734,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt32类型默认值不参与传输测试")]
         public void DefaultNull_UInt32_Test()
         {
@@ -2752,7 +2751,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Int16类型默认值不参与传输测试")]
         public void DefaultNull_Int16_Test()
         {
@@ -2769,7 +2768,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("UInt16类型默认值不参与传输测试")]
         public void DefaultNull_UInt16_Test()
         {
@@ -2786,7 +2785,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Guid类型默认值不参与传输测试")]
         public void DefaultNull_Guid_Test()
         {
@@ -2803,7 +2802,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("DateTime类型默认值不参与传输测试")]
         public void DefaultNull_DateTime_Test()
         {
@@ -2820,7 +2819,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("TimeSpan类型默认值不参与传输测试")]
         public void DefaultNull_TimeSpan_Test()
         {
@@ -2837,7 +2836,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("IntPtr类型默认值不参与传输测试")]
         public void DefaultNull_IntPtr_Test()
         {
@@ -2854,7 +2853,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Double类型默认值不参与传输测试")]
         public void DefaultNull_Double_Test()
         {
@@ -2871,7 +2870,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Float类型默认值不参与传输测试")]
         public void DefaultNull_Float_Test()
         {
@@ -2888,7 +2887,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Long类型默认值不参与传输测试")]
         public void DefaultNull_Long_Test()
         {
@@ -2905,7 +2904,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("ULong类型默认值不参与传输测试")]
         public void DefaultNull_ULong_Test()
         {
@@ -2922,7 +2921,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Decimal类型默认值不参与传输测试")]
         public void DefaultNull_Decimal_Test()
         {
@@ -2939,7 +2938,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Char类型默认值不参与传输测试")]
         public void DefaultNull_Char_Test()
         {
@@ -2956,7 +2955,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Boolean类型默认值不参与传输测试")]
         public void DefaultNull_Boolean_Test()
         {
@@ -2973,7 +2972,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("Byte类型默认值不参与传输测试")]
         public void DefaultNull_Byte_Test()
         {
@@ -2990,7 +2989,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("SByte类型默认值不参与传输测试")]
         public void DefaultNull_SByte_Test()
         {
@@ -3007,7 +3006,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("类型默认值不参与传输综合测试1")]
         public void DefaultNullTest1()
         {
@@ -3027,7 +3026,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("将一个定义为非公共开类转换为二进制数据测试")]
         public void BindUnpublicClassTest()
         {
@@ -3047,7 +3046,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(throwEx is MethodAccessException);
         }
 
-        [TestMethod]
+        [Test]
         [Description("将一个定义为非公共开SET可序列化字段的类转换为二进制数据测试")]
         public void BindUnpublicPropertyTest()
         {
@@ -3057,7 +3056,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test65.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("将一个定义为非公共开SET可序列化字段的类反序列化测试")]
         public void PickupUnpublicPropertyTest()
         {
@@ -3072,7 +3071,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(newObj);
         }
         
-        [TestMethod]
+        [Test]
         [Description("拥有字节数组集合的智能对象，打印描述信息的测试方法")]
         public void ByteArrayToStringTest()
         {
@@ -3081,7 +3080,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine(testObject);
         }
 
-        [TestMethod]
+        [Test]
         [Description("用于测试内部字段为智能对象数组形式的时候，依旧可以反序列化")]
         public void MultiIntellectObjectPickupTest()
         {
@@ -3093,7 +3092,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsNotNull(newObj);
         }
 
-        [TestMethod]
+        [Test]
         [Description("拥有Blob的智能对象序列化测试方法")]
         public void BlobBindTest()
         {
@@ -3117,7 +3116,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test68.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("拥有空值Blob的智能对象序列化测试方法")]
         public void BlobNullValueBindTest()
         {
@@ -3131,7 +3130,7 @@ namespace KJFramework.Messages.UnitTest
             PrintBytes(test68.Body);
         }
 
-        [TestMethod]
+        [Test]
         [Description("拥有Blob的智能对象反序列化测试方法")]
         public void BlobPickupTest()
         {
@@ -3169,7 +3168,7 @@ namespace KJFramework.Messages.UnitTest
             Console.WriteLine();
         }
 
-        [TestMethod]
+        [Test]
         [Description("拥有OneField的智能对象反序列化测试方法")]
         public void OneFieldPickupTest()
         {

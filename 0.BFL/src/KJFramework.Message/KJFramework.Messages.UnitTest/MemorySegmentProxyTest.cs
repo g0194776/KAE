@@ -4,16 +4,16 @@ using System.Text;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors;
 using KJFramework.Messages.TypeProcessors.Maps;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace KJFramework.Messages.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public unsafe class MemorySegmentProxyTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器初始化测试")]
         public void InitializeTest()
         {
@@ -22,7 +22,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(proxy.SegmentCount == 0);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器跳过指定字节长度测试")]
         public void SkipTest()
         {
@@ -36,7 +36,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(position.SegmentOffset == 8);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器跨内存段跳过指定字节长度测试")]
         public void MultiSkipTest()
         {            
@@ -57,7 +57,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(position.SegmentOffset == 4);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器回写int值测试")]
         public void WriteBackInt32Test()
         {
@@ -83,7 +83,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器跨内存段回写int值测试")]
         public void MultiWriteBackInt32Test()
         {
@@ -119,7 +119,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器跨内存段回写int值测试")]
         public void MultiWriteBackInt32Test1()
         {
@@ -160,7 +160,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器跨内存段回写int值测试")]
         public void MultiWriteBackInt32Test2()
         {
@@ -201,7 +201,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入int值测试")]
         public void WriteInt32Test()
         {
@@ -216,7 +216,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入short测试")]
         public void WriteInt16Test()
         {
@@ -231,7 +231,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入long测试")]
         public void WriteInt64Test()
         {
@@ -246,7 +246,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入uint值测试")]
         public void WriteUInt32Test()
         {
@@ -261,7 +261,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入ushort测试")]
         public void WriteUInt16Test()
         {
@@ -276,7 +276,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入ulong测试")]
         public void WriteUInt64Test()
         {
@@ -291,7 +291,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入float测试")]
         public void WriteFloatTest()
         {
@@ -307,7 +307,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入double测试")]
         public void WriteDoubleTest()
         {
@@ -323,7 +323,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入byte测试")]
         public void WriteByteTest()
         {
@@ -339,7 +339,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入sbyte测试")]
         public void WriteSByteTest()
         {
@@ -355,7 +355,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入decimal测试")]
         public void WriteDecimalTest()
         {
@@ -371,7 +371,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入bool测试")]
         public void WriteBooleanTest()
         {
@@ -388,7 +388,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入string测试")]
         public void WriteStringTest()
         {
@@ -404,7 +404,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入guid测试")]
         public void WriteGuidTest()
         {
@@ -420,7 +420,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入datetime测试")]
         public void WriteDateTimeTest()
         {
@@ -436,7 +436,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入timespan测试")]
         public void WriteTimeSpanTest()
         {
@@ -452,7 +452,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入ipendpoint测试")]
         public void WriteIPEndPointTest()
         {
@@ -470,7 +470,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入intptr测试")]
         public void WriteIntPtrTest()
         {
@@ -486,7 +486,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入char测试")]
         public void WriteCharTest()
         {
@@ -502,7 +502,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("内存片段代理器写入memory-block测试")]
         public void WriteMemoryTest()
         {
@@ -518,7 +518,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(bytes);
         }
 
-        [TestMethod]
+        [Test]
         [Description("多内存片段写入测试")]
         public void MultiSegmentWriteTest()
         {
@@ -546,7 +546,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(str.Substring((int) MemoryAllotter.SegmentSize) == "kevin");
         }
 
-        [TestMethod]
+        [Test]
         [Description("多内存片段写入测试(含有int做结尾值)")]
         public void MultiSegmentWriteTest1()
         {
@@ -577,7 +577,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(newInt == intValue);
         }
 
-        [TestMethod]
+        [Test]
         [Description("多内存片段写入测试(含有memory-block做结尾值)")]
         public void MultiSegmentWriteTest2()
         {
@@ -602,7 +602,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("多内存片段写入测试(含有memory-block做结尾值)")]
         public void MultiSegmentWriteTest3()
         {
@@ -628,7 +628,7 @@ namespace KJFramework.Messages.UnitTest
             IntellectObjectEngineUnitTest.PrintBytes(data);
         }
 
-        [TestMethod]
+        [Test]
         [Description("多内存片段写入，并回收内部资源测试")]
         public void RecoverTest()
         {
@@ -649,7 +649,7 @@ namespace KJFramework.Messages.UnitTest
             Assert.IsTrue(str.Substring((int)MemoryAllotter.SegmentSize) == "kevin");
         }
 
-        [TestMethod]
+        [Test]
         [Description("获取内存位置标记测试")]
         public void GetPositionTest()
         {
