@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <configSections>
+    <section name="CustomerConfig" type="KJFramework.Configurations.CustomerConfig, KJFramework"/>
+  </configSections>
+  <CustomerConfig>
+    <Logger>
+      <ConfigurationSettings LogPath="E:\Logs\{1}\"/>
+    </Logger>
+    <!--服务设置-->
+    <Setting>
+      <Service Name="{0}" Path="{2}"/>
+    </Setting>
+    <System>
+      <!--系统编码器-->
+      <Encoder Id="Default" Num="65001"/>
+    </System>
+	<KJFramework>
+      <!--KJFramework.ServiceModel配置节， 提供了相关的基础配置-->
+      <KJFramework.ServiceModel 
+        RecvBufferSize="409600"
+        RequestCenterWaitObjectPoolCount="10000"
+        RequestMessageTaskBoxObjectPoolCount="50000"
+        RequestServiceMessagePoolCount="10000"
+        ResponseServiceMessagePoolCount="100000"
+        ServiceCallContextPoolCount="50000"
+        ServiceReturnValuePoolCount="100000"
+        ServiceProviderObjectPoolCount="10000"
+        BoxThreadCount="10"
+        AllowClientCache="false"/>
+      <!--KJFramework 网络层配置文件，提供了相关的基础配置，请不要擅自修改。-->
+      <KJFramework.Net
+          BufferSize="4096"
+          BufferPoolSize="4096"
+          MessageHeaderLength="80"
+          MessageHeaderFlag="#KJMS"
+          MessageHeaderFlagLength="5"
+          MessageHeaderEndFlag="€"
+          MessageHeaderEndFlagLength="1"
+          MessageDealerFolder="D:\Dealers\"
+          MessageHookFolder="D:\Hooks\"
+          SpyFolder="D:\Spys\"
+          BasicSessionStringTemplate="BASE-KEY:{USERID:{0}}-TIME:{1}"
+          UserHreatCheckTimeSpan="10000"
+          UserHreatTimeout="15000"
+          UserHreatAlertCount="3"
+          FSHreatCheckTimeSpan="10000"
+          FSHreatTimeout="15000"
+          FSHreatAlertCount="3"
+          SessionExpireCheckTimeSpan="5000"
+          DefaultConnectionPoolConnectCount="1024"
+          PredominantCpuUsage="10"
+          PredominantMemoryUsage="150"
+          DefaultChannelGroupLayer="3"
+          DefaultDecleardSize="20"/>
+    </KJFramework>
+  </CustomerConfig>
+</configuration>

@@ -1,0 +1,24 @@
+{
+    "message-identity": {
+        "protocol-id": "239",
+        "service-id": "0",
+        "details-id": "0"
+    },
+    "value-slots": [
+        {
+            "id": "10",
+            "type": "string",
+            "value": "kevin"
+        },
+        {
+            "id": "11",
+            "type": "string",
+            "value": "passsword"
+        },
+        {
+            "id": "12",
+            "type": "int",
+            "value": "60"
+        }
+    ]
+}

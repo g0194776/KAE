@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{902711A1-8E1E-4F60-AD34-1DC3E4BE35E3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework.Architecture.UnitTest</RootNamespace>
+    <AssemblyName>KJFramework.Architecture.UnitTest</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks">
+      <HintPath>..\packages\NUnit.Mocks.2.6.3\lib\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="KAE\ApplicationFinderTest.cs" />
+    <Compile Include="KAE\CommunicationTest.cs" />
+    <Compile Include="KAE\FakedInternalResourceFactory.cs" />
+    <Compile Include="KAE\FileCompressionTest.cs" />
+    <Compile Include="KAE\KPPDataHeadTest.cs" />
+    <Compile Include="KAE\KPPResourceTest.cs" />
+    <Compile Include="KAE\PackageAttributeDataSectionTest.cs" />
+    <Compile Include="KAE\RemotingApplicationDownloaderTestCases.cs" />
+    <Compile Include="KJFramework.Data.Synchronization\DataBroadcasterTest.cs" />
+    <Compile Include="KJFramework.Data.Synchronization\DataPublisherTest.cs" />
+    <Compile Include="KJFramework.Data.Synchronization\RemoteDataSubscriberTest.cs" />
+    <Compile Include="KJFramework.Data.Synchronization\Test.cs" />
+    <Compile Include="KJFramework.Dynamic\DynamicDomainServiceUnitTest.cs" />
+    <Compile Include="KJFramework.Net.Channels\TcpChannelTest.cs" />
+    <Compile Include="KJFramework.Net.Channels\DiscoveryTest.cs" />
+    <Compile Include="KJFramework.Net.Channels\PipeChannelTest.cs" />
+    <Compile Include="KJFramework.Net.Transaction\MetadataConnectionAgentTest.cs" />
+    <Compile Include="KJFramework.Net.Transaction\IntellectConnectionAgentTest.cs" />
+    <Compile Include="KJFramework.Net.Transaction\MetadataTest.cs" />
+    <Compile Include="KJFramework.Net.Transaction\ProtocolStack\TestResponseMessage.cs" />
+    <Compile Include="KJFramework.Net.Transaction\ProtocolStack\TestProtocolStack.cs" />
+    <Compile Include="KJFramework.Net.Transaction\ProtocolStack\TestRequestMessage.cs" />
+    <Compile Include="KJFramework.Net.Transaction\TCPTransactionIdentityTest.cs" />
+    <Compile Include="KJFramework.Net.Transaction\TransactionTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="KAE\Scripts\demo-pkgs2.kl" />
+    <None Include="KAE\Scripts\demo-pkgs.kl" />
+    <None Include="KAE\Scripts\empty.kl" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\2.PA\KAE\src\KJFramework.ApplicationEngine\KJFramework.ApplicationEngine.csproj">
+      <Project>{0a0e8766-fad6-4e67-acec-8d76abfa7822}</Project>
+      <Name>KJFramework.ApplicationEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Data.Synchronization\KJFramework.Data.Synchronization\KJFramework.Data.Synchronization.csproj">
+      <Project>{9c08ac15-9965-4f6e-bfd8-c37bda1ee845}</Project>
+      <Name>KJFramework.Data.Synchronization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Dynamic\KJFramework.Dynamic.Template.Service\KJFramework.Dynamic.Template.Service.csproj">
+      <Project>{bc6d3125-2a56-4e96-8ed5-37f26d284934}</Project>
+      <Name>KJFramework.Dynamic.Template.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Dynamic\KJFramework.Dynamic\KJFramework.Dynamic.csproj">
+      <Project>{47672612-8aa3-4729-a210-4f30e3fb39e4}</Project>
+      <Name>KJFramework.Dynamic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
+      <Project>{658c4853-7022-4c2f-bb82-7261dbdae55d}</Project>
+      <Name>KJFramework.Net.Transaction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
+      <Project>{35fd171e-de60-4e34-9a35-e33c3ba8c02f}</Project>
+      <Name>KJFramework.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Test.LoadRunner\KJFramework.Test.LoadRunner.csproj">
+      <Project>{7647a48c-0a33-4210-9eb5-6d5e485ecc81}</Project>
+      <Name>KJFramework.Test.LoadRunner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res-files\2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="res-files\1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="KAE\Applications\Processors\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

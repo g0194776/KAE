@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1C6E6F93-515A-4C9B-A577-046D2BC8F486}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KJFramework.Platform.Deploy.CSN.NetworkLayer</RootNamespace>
+    <AssemblyName>KJFramework.Platform.Deploy.CSN.NetworkLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\KJFramework.Platform.Deploy.CSN.NetworkLayer.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\KJFramework.Platform.Deploy.CSN.NetworkLayer.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CSNBuffSocketStub.cs" />
+    <Compile Include="CSNBusinessMessageTransaction.cs" />
+    <Compile Include="CSNChannelConst.cs" />
+    <Compile Include="CSNChannelCounter.cs" />
+    <Compile Include="CSNGlobal.cs" />
+    <Compile Include="CSNGlobalMemory.cs" />
+    <Compile Include="CSNMessageTransactionManager.cs" />
+    <Compile Include="CSNMessageTransportChannel.cs" />
+    <Compile Include="CSNNoBuffSocketStub.cs" />
+    <Compile Include="CSNSegmentDataParser.cs" />
+    <Compile Include="CSNSegmentNode.cs" />
+    <Compile Include="CSNSegmentReceiveEventArgs.cs" />
+    <Compile Include="CSNTcpAsynDataRecevier.cs" />
+    <Compile Include="CSNTcpTransportChannel.cs" />
+    <Compile Include="CSNTransportChannel.cs" />
+    <Compile Include="ICSNRawTransportChannel.cs" />
+    <Compile Include="ICSNSegmentDataParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Net.Transaction\KJFramework.Net.Transaction\KJFramework.Net.Transaction.csproj">
+      <Project>{658c4853-7022-4c2f-bb82-7261dbdae55d}</Project>
+      <Name>KJFramework.Net.Transaction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
+      <Project>{35fd171e-de60-4e34-9a35-e33c3ba8c02f}</Project>
+      <Name>KJFramework.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KJFramework.Platform.Deploy.CSN.Common\KJFramework.Platform.Deploy.CSN.Common.csproj">
+      <Project>{09c9cd08-db98-41a5-ae44-d581138c88d2}</Project>
+      <Name>KJFramework.Platform.Deploy.CSN.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
