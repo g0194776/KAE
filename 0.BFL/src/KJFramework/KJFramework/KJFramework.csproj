@@ -169,7 +169,6 @@
     <Compile Include="Counters\NumberOfItems64PerfCounter.cs" />
     <Compile Include="Counters\NumberOfItems32PerfCounter.cs" />
     <Compile Include="Datas\Database.cs" />
-    <Compile Include="Datas\DatabaseManager.cs" />
     <Compile Include="Datas\DatabaseOperation.cs" />
     <Compile Include="Datas\DataReader.cs" />
     <Compile Include="Datas\DbType.cs" />
