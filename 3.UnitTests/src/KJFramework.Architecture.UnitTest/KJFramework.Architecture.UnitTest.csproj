@@ -55,17 +55,18 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="nunit.mocks">
-      <HintPath>..\packages\NUnit.Mocks.2.6.3\lib\nunit.mocks.dll</HintPath>
+      <HintPath>..\..\..\packages\NUnit.Mocks.2.6.4\lib\nunit.mocks.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks">
-      <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -139,10 +140,6 @@
     <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Net\KJFramework.Net\KJFramework.Net.csproj">
       <Project>{35fd171e-de60-4e34-9a35-e33c3ba8c02f}</Project>
       <Name>KJFramework.Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\0.BFL\src\KJFramework.Test.LoadRunner\KJFramework.Test.LoadRunner.csproj">
-      <Project>{7647a48c-0a33-4210-9eb5-6d5e485ecc81}</Project>
-      <Name>KJFramework.Test.LoadRunner</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\0.BFL\src\KJFramework\KJFramework\KJFramework.csproj">
       <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>

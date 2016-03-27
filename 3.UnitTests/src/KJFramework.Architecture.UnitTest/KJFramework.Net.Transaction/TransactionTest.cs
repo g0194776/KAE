@@ -11,7 +11,9 @@ using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.Processors;
 using KJFramework.Net.Transaction.UnitTest.ProtocolStack;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace KJFramework.Net.Transaction.UnitTest
 {

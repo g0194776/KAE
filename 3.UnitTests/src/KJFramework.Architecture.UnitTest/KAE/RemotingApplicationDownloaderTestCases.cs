@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Management.Instrumentation;
 using System.Runtime.Remoting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KJFramework.Architecture.UnitTest.KAE
 {
@@ -18,7 +19,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         #region Methods.
 
         [Test]
-        [Description("传递一个不存在的装配清单文件地址")]
+        [NUnit.Framework.Description("传递一个不存在的装配清单文件地址")]
         [ExpectedException(typeof(FileNotFoundException))]
         public void IllegalDestinationInstallingFilePath()
         {
@@ -27,7 +28,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         }
 
         [Test]
-        [Description("传递一个什么内容都没有的装配清单文件地址")]
+        [NUnit.Framework.Description("传递一个什么内容都没有的装配清单文件地址")]
         [ExpectedException(typeof(InstanceNotFoundException))]
         public void EmptyInstallingFile()
         {
@@ -46,7 +47,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         }
 
         [Test]
-        [Description("传递一个内部拥有非法格式内容的装配清单文件地址")]
+        [NUnit.Framework.Description("传递一个内部拥有非法格式内容的装配清单文件地址")]
         [ExpectedException(typeof(JsonReaderException))]
         public void IllegalContentFormatInstallingFile()
         {
@@ -69,7 +70,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         }
 
         [Test]
-        [Description("传递一个具有错误KPP完整包名格式的装配清单文件地址")]
+        [NUnit.Framework.Description("传递一个具有错误KPP完整包名格式的装配清单文件地址")]
         [ExpectedException(typeof(FormatException))]
         public void IllegalPackageNameFormat()
         {
@@ -93,7 +94,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         }
 
         [Test]
-        [Description("无法从远程KIS获取KPP详细信息")]
+        [NUnit.Framework.Description("无法从远程KIS获取KPP详细信息")]
         [ExpectedException(typeof(RemotingException))]
         public void GetRemotingKPPInformationFail()
         {
@@ -128,7 +129,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
 
 
         [Test]
-        [Description("无法从一个KIS返回的包详细地址中下载指定的KPP")]
+        [NUnit.Framework.Description("无法从一个KIS返回的包详细地址中下载指定的KPP")]
         [ExpectedException(typeof(WebException))]
         public void DownloadInformationFail()
         {
