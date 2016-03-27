@@ -75,7 +75,6 @@
     <Compile Include="Finders\IDynamicDomainComponentFinder.cs" />
     <Compile Include="Finders\IDynamicDomainServiceFinder.cs" />
     <Compile Include="Finders\IDynamicFinder.cs" />
-    <Compile Include="Installers\DynamicServiceInstaller.cs" />
     <Compile Include="Loaders\AssemblyLoader.cs" />
     <Compile Include="Loaders\IDynamicLoader.cs" />
     <Compile Include="PluginInfomation.cs" />

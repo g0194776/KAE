@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Configuration;
+using System.Net;
 using System.Threading;
 using KJFramework.Data.Synchronization;
 using KJFramework.Data.Synchronization.Enums;
@@ -6,9 +8,14 @@ using KJFramework.Data.Synchronization.Factories;
 using KJFramework.Dynamic;
 using KJFramework.Dynamic.Components;
 using KJFramework.Enums;
-using KJFramework.Helpers;
+using KJFramework.EventArgs;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.TypeProcessors.Maps;
+using KJFramework.Net;
+using KJFramework.Net.Disconvery;
+using KJFramework.Net.Disconvery.Protocols;
+using KJFramework.Net.HostChannels;
+using KJFramework.Net.Identities;
 using KJFramework.Net.ProtocolStacks;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Comparers;
@@ -22,13 +29,6 @@ using KJFramework.Platform.Deploy.CSN.Common.Datas;
 using KJFramework.Platform.Deploy.CSN.CP.Connector.Processors;
 using KJFramework.Platform.Deploy.CSN.ProtocolStack;
 using KJFramework.Tracing;
-using System;
-using System.Configuration;
-using KJFramework.Net;
-using KJFramework.Net.Disconvery;
-using KJFramework.Net.Disconvery.Protocols;
-using KJFramework.Net.HostChannels;
-using KJFramework.Net.Identities;
 
 namespace KJFramework.Platform.Deploy.CSN.CP.Connector
 {
@@ -75,7 +75,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             TcpHostTransportChannel hostChannel = new TcpHostTransportChannel(CSNSettingConfigSection.Current.Settings.HostPort);
             bool regist = hostChannel.Regist();
             Console.WriteLine("Regist network result: " + regist);
-            if (!regist) throw new System.Exception("#CSN regist network failed!");
+            if (!regist) throw new Exception("#CSN regist network failed!");
             hostChannel.ChannelCreated += ChannelCreated;
             Console.WriteLine("Regist network node at local tcp port: " + CSNSettingConfigSection.Current.Settings.HostPort);
             Console.WriteLine("Openning data publisher......");
@@ -83,7 +83,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             if (_defaultPublisher.Open() != PublisherState.Open)
             {
                 _tracing.Critical("#CSN couldn't open a defaut remoting server publisher.");
-                throw new System.Exception("#CSN couldn't open a defaut remoting server publisher.");
+                throw new Exception("#CSN couldn't open a defaut remoting server publisher.");
             }
             Console.WriteLine("Initializing CSN protocol stack......");
             _protocolStack = new CSNProtocolStack();
@@ -138,12 +138,12 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
                     Database database = Database.GetDatabase(connectionStringSettings.ConnectionString);
                     Global.DBCacheFactory.RegistDatabase(connectionStringSettings.Name, database);
                     Global.DBCacheFactory.Initialize();
-                    ConsoleHelper.PrintLine("#Database registed. #name: " + connectionStringSettings.Name, ConsoleColor.DarkGray);
+                    Console.WriteLine("#Database registed. #name: " + connectionStringSettings.Name);
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
                     _tracing.Error(ex, null);
-                    ConsoleHelper.PrintLine(ex.Message, ConsoleColor.DarkRed);
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
@@ -157,7 +157,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             string environment = ConfigurationManager.AppSettings["Environment"];
             string localAddress = ConfigurationManager.AppSettings["LocalAddress"];
             if (string.IsNullOrEmpty(broadcastAddress) || string.IsNullOrEmpty(environment) || string.IsNullOrEmpty(localAddress))
-                throw new System.Exception("Cannot find any BroadcastAddress or Environment or LocalAddress in CSN config file");
+                throw new Exception("Cannot find any BroadcastAddress or Environment or LocalAddress in CSN config file");
             int offset = broadcastAddress.LastIndexOf(':');
             string iep = broadcastAddress.Substring(0, offset);
             int port = int.Parse(broadcastAddress.Substring(offset + 1, broadcastAddress.Length - (offset + 1)));
@@ -181,7 +181,7 @@ namespace KJFramework.Platform.Deploy.CSN.CP.Connector
             }
         }
 
-        void ChannelCreated(object sender, EventArgs.LightSingleArgEventArgs<ITransportChannel> e)
+        void ChannelCreated(object sender, LightSingleArgEventArgs<ITransportChannel> e)
         {
             IMessageTransportChannel<BaseMessage> msgChannel = new MessageTransportChannel<BaseMessage>((IRawTransportChannel)e.Target, _protocolStack);
             IServerConnectionAgent<BaseMessage> agent = new IntellectObjectConnectionAgent(msgChannel, _transactionManager);

@@ -206,9 +206,7 @@
     <Compile Include="Exceptions\PluginPathNotFoundException.cs" />
     <Compile Include="Helpers\ByteArrayHelper.cs" />
     <Compile Include="Helpers\CommandHelper.cs" />
-    <Compile Include="Helpers\ConsoleHelper.cs" />
     <Compile Include="Helpers\DirectoryHelper.cs" />
-    <Compile Include="Helpers\ProcessHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Hook\IIOHook.cs" />
     <Compile Include="Hook\IKeyboardHook.cs" />
