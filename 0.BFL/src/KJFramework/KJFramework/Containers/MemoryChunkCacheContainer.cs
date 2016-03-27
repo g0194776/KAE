@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Runtime;
 using System.Web;
+using KJFramework.Enums;
 using KJFramework.Objects;
 
 namespace KJFramework.Containers
@@ -34,10 +35,10 @@ namespace KJFramework.Containers
             //There is a BUG when your .NETFRAMEWORK version is .NET 4.5 and host enviroment is IIS
             //MemoryFailPoint wil' not be work correctly...
             //only execution host.
-            if (HttpContext.Current == null)
+            if (HttpContext.Current == null && Env.Target == Envs.Dotnet)
             {
                 int totalMemory = (memoryChunkSize / 1024) / 1024;
-                new MemoryFailPoint(totalMemory > 0 ? totalMemory : 1);
+                new MemoryFailPoint(totalMemory > 0 ? totalMemory : 1024);
             }
 
             #endregion

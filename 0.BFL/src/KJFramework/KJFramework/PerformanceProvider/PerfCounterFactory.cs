@@ -74,7 +74,7 @@ namespace KJFramework.PerformanceProvider
 				EnsureCategoryExist(category, counters.Values);
 				return CreateInstance<T>(category, instance, counters);
 			}
-			catch (System.Exception ex) 
+			catch (Exception ex) 
             {
                 _tracing.Error(ex, null);
 				return CreateEmptyInstance<T>(category, instance, counters);
@@ -138,14 +138,14 @@ namespace KJFramework.PerformanceProvider
                 }
             }
 
-            PerformanceCounterCategory.Create(category.Name, category.Help, category.Type, collection);
+            PerformanceCounterCategory.Create(category.Name, (category.Help ?? string.Empty), category.Type, collection);
         }
 
         private static PerfCategoryAttribute GetCategoryAttribute(Type type)
         {
             object[] attributes = type.GetCustomAttributes(typeof(PerfCategoryAttribute), true);
             if (attributes.Length != 1)
-                throw new System.Exception("unknown performance counter category type");
+                throw new Exception("unknown performance counter category type");
             return (PerfCategoryAttribute)attributes[0];
         }
 
@@ -161,7 +161,7 @@ namespace KJFramework.PerformanceProvider
             {
                 object[] counterAttrs = field.GetCustomAttributes(typeof(PerfCounterAttribute), true);
                 if (counterAttrs.Length != 1)
-                    throw new System.Exception("unknown performance counter type");
+                    throw new Exception("unknown performance counter type");
 
                 result.Add(field, (PerfCounterAttribute)counterAttrs[0]);
             }

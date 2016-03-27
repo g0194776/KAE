@@ -179,6 +179,7 @@
     <Compile Include="Enums\BindingTypes.cs" />
     <Compile Include="Enums\ConfigurationLoaderTypes.cs" />
     <Compile Include="Enums\DataPriority.cs" />
+    <Compile Include="Enums\Envs.cs" />
     <Compile Include="Enums\ExecuteResults.cs" />
     <Compile Include="Enums\HealthStatus.cs" />
     <Compile Include="Enums\InfomationCollectorTypes.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="Enums\StatisticTypes.cs" />
     <Compile Include="Enums\TaskPriority.cs" />
     <Compile Include="Enums\TimerStartType.cs" />
+    <Compile Include="Env.cs" />
     <Compile Include="EventArgs\ExpiredCacheEventArgs.cs" />
     <Compile Include="EventArgs\FulfilEventArgs.cs" />
     <Compile Include="EventArgs\MouseMoveEventArgs.cs" />
