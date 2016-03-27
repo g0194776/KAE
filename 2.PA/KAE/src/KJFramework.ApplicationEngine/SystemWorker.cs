@@ -19,6 +19,7 @@ using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
+using KJFramework.Enums;
 using KJFramework.Net;
 using KJFramework.Net.Configurations;
 using KJFramework.Net.Identities;
@@ -88,6 +89,7 @@ namespace KJFramework.ApplicationEngine
         public static void Initialize(string role, RemoteConfigurationSetting setting, IRemoteConfigurationProxy configurationProxy, ITracingNotificationHandler notificationHandler = null, IKAEResourceProxy proxy = null)
         {
             if (IsInitialized) return;
+            Env.Target = Envs.Mono;
             if (setting == null) setting = RemoteConfigurationSetting.Default;
             if (proxy == null) proxy = new KAEHostResourceProxy();
             if (string.IsNullOrEmpty(role)) throw new ArgumentNullException("role");
