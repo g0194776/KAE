@@ -1,15 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.IO;
 using KJFramework.ApplicationEngine;
 using KJFramework.ApplicationEngine.Objects;
 using KJFramework.ApplicationEngine.Proxies;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using NUnit.Mocks;
-using System;
-using System.IO;
-using System.Management.Instrumentation;
-using System.Runtime.Remoting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KJFramework.Architecture.UnitTest.KAE
 {
@@ -19,8 +14,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         #region Methods.
 
         [Test]
-        [NUnit.Framework.Description("传递一个不存在的装配清单文件地址")]
-        [ExpectedException(typeof(FileNotFoundException))]
+        [Description("传递一个不存在的装配清单文件地址")]
         public void IllegalDestinationInstallingFilePath()
         {
             IRemotingApplicationDownloader downloader = new RemotingApplicationDownloader();
@@ -28,8 +22,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         }
 
         [Test]
-        [NUnit.Framework.Description("传递一个什么内容都没有的装配清单文件地址")]
-        [ExpectedException(typeof(InstanceNotFoundException))]
+        [Description("传递一个什么内容都没有的装配清单文件地址")]
         public void EmptyInstallingFile()
         {
             string file = Path.Combine(Path.GetFullPath("."), string.Format("{0}.kl", DateTime.Now.Ticks));
@@ -47,8 +40,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         }
 
         [Test]
-        [NUnit.Framework.Description("传递一个内部拥有非法格式内容的装配清单文件地址")]
-        [ExpectedException(typeof(JsonReaderException))]
+        [Description("传递一个内部拥有非法格式内容的装配清单文件地址")]
         public void IllegalContentFormatInstallingFile()
         {
             string file = Path.Combine(Path.GetFullPath("."), string.Format("{0}.kl", DateTime.Now.Ticks));
@@ -70,8 +62,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         }
 
         [Test]
-        [NUnit.Framework.Description("传递一个具有错误KPP完整包名格式的装配清单文件地址")]
-        [ExpectedException(typeof(FormatException))]
+        [Description("传递一个具有错误KPP完整包名格式的装配清单文件地址")]
         public void IllegalPackageNameFormat()
         {
             string content = "{packages: [{\"package\":\"test-app0-v1.0.0.0\"},{\"package\":\"test-app1-v1.0.0.0\"}]}";
@@ -94,8 +85,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
         }
 
         [Test]
-        [NUnit.Framework.Description("无法从远程KIS获取KPP详细信息")]
-        [ExpectedException(typeof(RemotingException))]
+        [Description("无法从远程KIS获取KPP详细信息")]
         public void GetRemotingKPPInformationFail()
         {
             FakedInternalResourceFactory factory = new FakedInternalResourceFactory();
@@ -129,8 +119,7 @@ namespace KJFramework.Architecture.UnitTest.KAE
 
 
         [Test]
-        [NUnit.Framework.Description("无法从一个KIS返回的包详细地址中下载指定的KPP")]
-        [ExpectedException(typeof(WebException))]
+        [Description("无法从一个KIS返回的包详细地址中下载指定的KPP")]
         public void DownloadInformationFail()
         {
             FakedInternalResourceFactory factory = new FakedInternalResourceFactory();

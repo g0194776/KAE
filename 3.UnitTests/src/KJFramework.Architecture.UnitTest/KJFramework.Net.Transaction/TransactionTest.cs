@@ -2,7 +2,6 @@
 using System.Net;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.TypeProcessors.Maps;
-using KJFramework.Net.Channels;
 using KJFramework.Net.Enums;
 using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.Comparers;
@@ -11,9 +10,7 @@ using KJFramework.Net.Transaction.Managers;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.Processors;
 using KJFramework.Net.Transaction.UnitTest.ProtocolStack;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
 namespace KJFramework.Net.Transaction.UnitTest
 {
@@ -53,7 +50,6 @@ namespace KJFramework.Net.Transaction.UnitTest
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void TimeoutExceptionTest()
         {
             MessageTransactionManager manager = new MessageTransactionManager(new TransactionIdentityComparer());
