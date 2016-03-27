@@ -112,8 +112,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJFramework.Architecture.UnitTest", "3.UnitTests\src\KJFramework.Architecture.UnitTest\KJFramework.Architecture.UnitTest.csproj", "{902711A1-8E1E-4F60-AD34-1DC3E4BE35E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedLock", "2.PA\KAE\apps\DistributedLock\DistributedLock.csproj", "{AFA4994E-4130-4877-9007-32691AC8C797}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0AAD70A8-D467-4F1A-9AA2-B349F9F479BE} = {0AAD70A8-D467-4F1A-9AA2-B349F9F479BE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityQuota", "2.PA\KAE\apps\SecurityQuota\SecurityQuota.csproj", "{39FD2CB0-AF94-4799-90F7-776ABCC297D7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0AAD70A8-D467-4F1A-9AA2-B349F9F479BE} = {0AAD70A8-D467-4F1A-9AA2-B349F9F479BE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

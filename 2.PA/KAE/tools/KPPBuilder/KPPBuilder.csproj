@@ -54,6 +54,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\0.BFL\src\KJFramework.Message\KJFramework.Messages\KJFramework.Messages.csproj">
+      <Project>{aca46f02-5b48-4520-8cb2-3ca01f19b498}</Project>
+      <Name>KJFramework.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\0.BFL\src\KJFramework\KJFramework\KJFramework.csproj">
+      <Project>{000f6eb2-71d8-4700-9e40-2a7eac9db2b1}</Project>
+      <Name>KJFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\KJFramework.ApplicationEngine\KJFramework.ApplicationEngine.csproj">
       <Project>{0A0E8766-FAD6-4E67-ACEC-8D76ABFA7822}</Project>
       <Name>KJFramework.ApplicationEngine</Name>
