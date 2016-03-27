@@ -160,3 +160,7 @@ $RECYCLE.BIN/
 *.application
 *.dll.config
 *.gitignore
+
+
+packages/
+*.kpp
