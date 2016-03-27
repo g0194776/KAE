@@ -1,2 +1,6 @@
 language: csharp
 solution: KJFramework-Family.sln
+install:
+  - nuget restore KJFramework-Family.sln
+script:
+  - xbuild /p:Configuration=Debug KJFramework-Family.sln
