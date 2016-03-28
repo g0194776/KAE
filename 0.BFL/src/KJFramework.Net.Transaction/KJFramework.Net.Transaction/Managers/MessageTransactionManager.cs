@@ -57,7 +57,7 @@ namespace KJFramework.Net.Transaction.Managers
         {
             if (channel == null) throw new ArgumentNullException("channel");
             BusinessMessageTransaction transaction = new BusinessMessageTransaction(new Lease(DateTime.Now.Add(Global.TransactionTimeout)), channel) { TransactionManager = this, Identity = identity };
-            return Add(identity, transaction) ? transaction : null;
+            return (Add(identity, transaction) ? transaction : null);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace KJFramework.Net.Transaction.Managers
         {
             if (channel == null) throw new ArgumentNullException("channel");
             BusinessMessageTransaction transaction = new BusinessMessageTransaction(new Lease(DateTime.Now.Add(timeout)), channel) { TransactionManager = this, Identity = identity };
-            return Add(identity, transaction) ? transaction : null;
+            return (Add(identity, transaction) ? transaction : null);
         }
 
         #endregion

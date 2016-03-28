@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using KJFramework.Cores;
@@ -40,9 +39,9 @@ namespace KJFramework.Containers
             _category = category;
             _createTime = DateTime.Now;
             _expireTime = DateTime.MaxValue;
-            _caches = comparer == null
-                          ? new ConcurrentDictionary<K, ICacheStub<V>>()
-                          : new ConcurrentDictionary<K, ICacheStub<V>>(comparer);
+            _caches = (comparer == null
+                          ? new Dictionary<K, ICacheStub<V>>()
+                          : new Dictionary<K, ICacheStub<V>>(comparer));
             //10s.
             Initialize();
         }
@@ -76,22 +75,21 @@ namespace KJFramework.Containers
                                 Discard();
                                 return;
                             }
-                            IList<K> keys = new List<K>();
-                            foreach (KeyValuePair<K, ICacheStub<V>> pair in _caches)
+                            lock (_lockObj)
                             {
-                                if (pair.Value.GetLease().IsDead)
+                                IList<K> keys = new List<K>();
+                                foreach (KeyValuePair<K, ICacheStub<V>> pair in _caches)
+                                    if (pair.Value.GetLease().IsDead) keys.Add(pair.Key);
+                                //clear it.
+                                if (keys.Count <= 0) return;
+                                foreach (K key in keys)
                                 {
-                                    keys.Add(pair.Key);
+                                    ICacheStub<V> stub;
+                                    if(!_caches.TryGetValue(key, out stub)) continue;
+                                    _caches.Remove(key);
+                                    K tempKey = key;
+                                    ThreadPool.QueueUserWorkItem(delegate { CacheExpiredHandler(new ExpiredCacheEventArgs<K, V>(tempKey, ((IFixedCacheStub<V>)stub).Cache)); });
                                 }
-                            }
-                            //clear it.
-                            if (keys.Count <= 0) return;
-                            foreach (K key in keys)
-                            {
-                                ICacheStub<V> stub;
-                                if (!_caches.TryRemove(key, out stub)) continue;
-                                K tempKey = key;
-                                ThreadPool.QueueUserWorkItem(delegate { CacheExpiredHandler(new ExpiredCacheEventArgs<K, V>(tempKey, ((IFixedCacheStub<V>)stub).Cache)); });
                             }
                         }
                         //clear all.
@@ -121,7 +119,8 @@ namespace KJFramework.Containers
         protected DateTime _expireTime;
         protected string _category;
         protected bool _isRemotable;
-        protected ConcurrentDictionary<K, ICacheStub<V>> _caches;
+        protected readonly object _lockObj = new object();
+        protected Dictionary<K, ICacheStub<V>> _caches;
 
         /// <summary>
         ///     获取一个值，该值表示了当前的缓存是否已经处于死亡的状态
@@ -152,14 +151,15 @@ namespace KJFramework.Containers
         /// </summary>
         public void Discard()
         {
-            if (_isDead) throw new System.Exception("Cannot execute discard operation on a dead container.");
+            if (_isDead) throw new Exception("Cannot execute discard operation on a dead container.");
             _isDead = true;
-            //discard all cache.
-            foreach (ICacheStub<V> stub in _caches.Values)
+            lock (_lockObj)
             {
-                stub.GetLease().Discard();
+                //discard all cache.
+                foreach (ICacheStub<V> stub in _caches.Values)
+                    stub.GetLease().Discard();
+                RecycleResource();
             }
-            RecycleResource();
         }
 
         /// <summary>
@@ -170,14 +170,15 @@ namespace KJFramework.Containers
         /// <exception cref="System.Exception">更新失败</exception>
         public DateTime Renew(TimeSpan timeSpan)
         {
-            if (_isDead) throw new System.Exception("Cannot execute renew operation on a dead container.");
-            _expireTime = _expireTime == DateTime.MaxValue ? DateTime.Now.Add(timeSpan) : _expireTime.Add(timeSpan);
-            //renew all.
-            foreach (ICacheStub<V> stub in _caches.Values)
+            if (_isDead) throw new Exception("Cannot execute renew operation on a dead container.");
+            _expireTime = (_expireTime == DateTime.MaxValue ? DateTime.Now.Add(timeSpan) : _expireTime.Add(timeSpan));
+            lock (_lockObj)
             {
-                stub.GetLease().Renew(timeSpan);
+                //renew all.
+                foreach (ICacheStub<V> stub in _caches.Values)
+                    stub.GetLease().Renew(timeSpan);
+                return _expireTime;
             }
-            return _expireTime;
         }
 
         #endregion
@@ -208,8 +209,8 @@ namespace KJFramework.Containers
         /// <returns>返回是否存在的状态</returns>
         public bool IsExists(K key)
         {
-            if (_isDead) throw new System.Exception("Cannot execute isexists operation on a dead container.");
-            return _caches.ContainsKey(key);
+            if (_isDead) throw new Exception("Cannot execute isexists operation on a dead container.");
+            lock (_lockObj) return _caches.ContainsKey(key);
         }
 
         /// <summary>
@@ -219,9 +220,12 @@ namespace KJFramework.Containers
         /// <returns>返回删除后的状态</returns>
         public bool Remove(K key)
         {
-            if (_isDead) throw new System.Exception("Cannot execute remove operation on a dead container.");
-            ICacheStub<V> stub;
-            return _caches.TryRemove(key, out stub);
+            if (_isDead) throw new Exception("Cannot execute remove operation on a dead container.");
+            lock (_lockObj)
+            {
+                _caches.Remove(key);
+                return true;
+            }
         }
 
         /// <summary>
@@ -232,7 +236,7 @@ namespace KJFramework.Containers
         /// <returns>返回缓存对象</returns>
         public IReadonlyCacheStub<V> Add(K key, V obj)
         {
-            if (_isDead) throw new System.Exception("Cannot execute add operation on a dead container.");
+            if (_isDead) throw new Exception("Cannot execute add operation on a dead container.");
             return Add(key, obj, DateTime.MaxValue);
         }
 
@@ -245,7 +249,7 @@ namespace KJFramework.Containers
         /// <returns>返回缓存对象</returns>
         public IReadonlyCacheStub<V> Add(K key, V obj, TimeSpan timeSpan)
         {
-            if (_isDead) throw new System.Exception("Cannot execute add operation on a dead container.");
+            if (_isDead) throw new Exception("Cannot execute add operation on a dead container.");
             return Add(key, obj, DateTime.Now.Add(timeSpan));
         }
 
@@ -258,14 +262,15 @@ namespace KJFramework.Containers
         /// <returns>返回缓存对象</returns>
         public IReadonlyCacheStub<V> Add(K key, V obj, DateTime expireTime)
         {
-            if (_isDead) throw new System.Exception("Cannot execute add operation on a dead container.");
+            if (_isDead) throw new Exception("Cannot execute add operation on a dead container.");
             ICacheStub<V> stub = new CacheStub<V>(expireTime) {Cache = new CacheItem<V>()};
             stub.Cache.SetValue(obj);
-            if (_caches.TryAdd(key, stub))
+            lock (_lockObj)
             {
+                ICacheStub<V> tmpStub;
+                if(!_caches.TryGetValue(key, out tmpStub)) _caches.Add(key, stub);
                 return (IReadonlyCacheStub<V>) stub;
             }
-            return null;
         }
 
         /// <summary>
@@ -275,13 +280,14 @@ namespace KJFramework.Containers
         /// <returns>返回缓存对象</returns>
         public IReadonlyCacheStub<V> Get(K key)
         {
-            if (_isDead) throw new System.Exception("Cannot execute get operation on a dead container.");
-            ICacheStub<V> stub;
-            if (_caches.TryGetValue(key, out stub))
+            if (_isDead) throw new Exception("Cannot execute get operation on a dead container.");
+            lock (_lockObj)
             {
-                return (IReadonlyCacheStub<V>) stub;
+                ICacheStub<V> stub;
+                if (_caches.TryGetValue(key, out stub))
+                    return (IReadonlyCacheStub<V>) stub;
+                return null;
             }
-            return null;
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using KJFramework.Messages.Contracts;
@@ -13,7 +13,8 @@ namespace KJFramework.Messages.Helpers
     {
         #region Members
 
-        private static ConcurrentDictionary<string, object> _methods = new ConcurrentDictionary<string, object>();
+        private static readonly object _lockObj = new object();
+        private static readonly Dictionary<string, object> _methods = new Dictionary<string, object>();
 
         #endregion
 
@@ -28,22 +29,24 @@ namespace KJFramework.Messages.Helpers
         public static Func<int, T[]> GetFunc<T>(Type type)
             where T : IntellectObject
         {
-            object obj;
-            string fullname = type.FullName;
-            if (_methods.TryGetValue(fullname, out obj)) return (Func<int, T[]>) obj;
-            //create cache method.
-            DynamicMethod dynamicMethod = new DynamicMethod(string.Format("CreateArrayInstnaceBy: {0}", fullname),
-                                                            MethodAttributes.Public | MethodAttributes.Static,
-                                                            CallingConventions.Standard, type,
-                                                            new[] {typeof (int)}, typeof (object), true);
-            ILGenerator generator = dynamicMethod.GetILGenerator();
-            generator.Emit(OpCodes.Ldarg_0);
-            generator.Emit(OpCodes.Newarr, type.GetElementType());
-            generator.Emit(OpCodes.Ret);
-            Func<int, T[]> func = (Func<int, T[]>) dynamicMethod.CreateDelegate(typeof (Func<int, T[]>));
-            if (!_methods.TryAdd(fullname, func))
-                throw new InvalidOperationException("#Cannot add specific func to ConcurrentDictionary");
-            return func;
+            lock (_lockObj)
+            {
+                object obj;
+                string fullname = type.FullName;
+                if (_methods.TryGetValue(fullname, out obj)) return (Func<int, T[]>)obj;
+                //create cache method.
+                DynamicMethod dynamicMethod = new DynamicMethod(string.Format("CreateArrayInstnaceBy: {0}", fullname),
+                                                                MethodAttributes.Public | MethodAttributes.Static,
+                                                                CallingConventions.Standard, type,
+                                                                new[] { typeof(int) }, typeof(object), true);
+                ILGenerator generator = dynamicMethod.GetILGenerator();
+                generator.Emit(OpCodes.Ldarg_0);
+                generator.Emit(OpCodes.Newarr, type.GetElementType());
+                generator.Emit(OpCodes.Ret);
+                Func<int, T[]> func = (Func<int, T[]>)dynamicMethod.CreateDelegate(typeof(Func<int, T[]>));
+                _methods.Add(fullname, func);
+                return func;
+            }
         }
 
         #endregion

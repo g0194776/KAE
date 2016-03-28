@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Timers;
 using KJFramework.EventArgs;
 using KJFramework.Net.Identities;
 using KJFramework.Tracing;
@@ -27,7 +27,7 @@ namespace KJFramework.Net.Transaction
         {
             if (interval <= 0) throw new ArgumentException("Illegal check time interval!");
             _interval = interval;
-            _transactions = comparer == null ? new ConcurrentDictionary<TransactionIdentity, IMessageTransaction<TMessage>>() : new ConcurrentDictionary<TransactionIdentity, IMessageTransaction<TMessage>>(comparer); 
+            _transactions = comparer == null ? new Dictionary<TransactionIdentity, IMessageTransaction<TMessage>>() : new Dictionary<TransactionIdentity, IMessageTransaction<TMessage>>(comparer); 
             _timer = new System.Timers.Timer { Interval = _interval };
             _timer.Elapsed += TimerElapsed;
             _timer.Start();
@@ -39,7 +39,8 @@ namespace KJFramework.Net.Transaction
 
         protected readonly int _interval;
         protected readonly System.Timers.Timer _timer;
-        protected readonly ConcurrentDictionary<TransactionIdentity, IMessageTransaction<TMessage>> _transactions;
+        protected readonly object _lockObj = new object();
+        protected readonly Dictionary<TransactionIdentity, IMessageTransaction<TMessage>> _transactions;
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(TransactionManager<TMessage>));
 
         /// <summary>
@@ -78,11 +79,7 @@ namespace KJFramework.Net.Transaction
                     (temp.Response == null ? "" : temp.Response.ToString()));
                 return false;
             }
-            if (!_transactions.TryAdd(key, transaction))
-            {
-                _tracing.Error("#Add MessageTransaction to current TransactionManager failed. #key: " + key);
-                return false;
-            }
+            lock (_lockObj) _transactions.Add(key, transaction);
             return true;
         }
 
@@ -93,9 +90,12 @@ namespace KJFramework.Net.Transaction
         /// <returns>事务</returns>
         public virtual IMessageTransaction<TMessage> GetTransaction(TransactionIdentity key)
         {
-            IMessageTransaction<TMessage> transaction;
-            if (_transactions.TryGetValue(key, out transaction)) return transaction;
-            return default(IMessageTransaction<TMessage>);
+            lock (_lockObj)
+            {
+                IMessageTransaction<TMessage> transaction;
+                if (_transactions.TryGetValue(key, out transaction)) return transaction;
+                return default(IMessageTransaction<TMessage>);
+            }
         }
 
         /// <summary>
@@ -104,8 +104,7 @@ namespace KJFramework.Net.Transaction
         /// <param name="key">事务唯一键值</param>
         public virtual void Remove(TransactionIdentity key)
         {
-            IMessageTransaction<TMessage> transaction;
-            _transactions.TryRemove(key, out transaction);
+            lock (_lockObj) _transactions.Remove(key);
         }
 
         /// <summary>
@@ -131,8 +130,13 @@ namespace KJFramework.Net.Transaction
         /// <returns>返回获取到的事务</returns>
         public virtual IMessageTransaction<TMessage> GetRemove(TransactionIdentity key)
         {
-            IMessageTransaction<TMessage> transaction;
-            return _transactions.TryRemove(key, out transaction) ? transaction : default(IMessageTransaction<TMessage>);
+            lock (_lockObj)
+            {
+                IMessageTransaction<TMessage> transaction;
+                if (!_transactions.TryGetValue(key, out transaction)) return null;
+                _transactions.Remove(key);
+                return transaction;
+            }
         }        
         
         /// <summary>
@@ -142,8 +146,8 @@ namespace KJFramework.Net.Transaction
         /// <param name="response">响应消息</param>
         public void Active(TransactionIdentity identity, TMessage response)
         {
-            IMessageTransaction<TMessage> transaction;
-            if (!_transactions.TryRemove(identity, out transaction)) return;
+            IMessageTransaction<TMessage> transaction = GetRemove(identity);
+            if (transaction == null) return;
             transaction.SetResponse(response);
         } 
 
@@ -164,7 +168,7 @@ namespace KJFramework.Net.Transaction
         /// <summary>
         ///    事务超时计算函数
         /// </summary>
-        protected virtual void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        protected virtual void TimerElapsed(object sender, ElapsedEventArgs e)
         {
             if (_transactions.Count == 0) return;
             IList<TransactionIdentity> expireValues = new List<TransactionIdentity>();
@@ -175,8 +179,8 @@ namespace KJFramework.Net.Transaction
             //remove expired transactions.
             foreach (TransactionIdentity expireValue in expireValues)
             {
-                IMessageTransaction<TMessage> transaction;
-                if (_transactions.TryRemove(expireValue, out transaction))
+                IMessageTransaction<TMessage> transaction = GetRemove(expireValue);
+                if (transaction != null)
                 {
                     ((MessageTransaction<TMessage>)transaction).SetTimeout();
                     TransactionExpiredHandler(new LightSingleArgEventArgs<IMessageTransaction<TMessage>>(transaction));

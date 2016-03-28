@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using KJFramework.Messages.Helpers;
 using KJFramework.Messages.Objects;
 
@@ -12,7 +12,8 @@ namespace KJFramework.Messages.Analysers
     {
         #region 成员
 
-        protected ConcurrentDictionary<string, T> _result = new ConcurrentDictionary<string, T>();
+        protected readonly object _lockObj = new object();
+        protected Dictionary<string, T> _result = new Dictionary<string, T>();
 
         #endregion
 
@@ -25,8 +26,11 @@ namespace KJFramework.Messages.Analysers
         /// <returns>返回分析结果</returns>
         protected T GetObject(string token)
         {
-            T result;
-            return _result.TryGetValue(token, out result) ? result : default(T);
+            lock (_lockObj)
+            {
+                T result;
+                return (_result.TryGetValue(token, out result) ? result : default(T));
+            }
         }
 
         /// <summary>
@@ -36,9 +40,11 @@ namespace KJFramework.Messages.Analysers
         /// <param name="result">分析结果</param>
         protected void RegistAnalyseResult(string token, T result)
         {
-            if (_result.ContainsKey(token)) return;
-            if (!_result.TryAdd(token, result))
-                throw new System.Exception("Cannot regist an analyze result! #type token: " + token);
+            lock (_lockObj)
+            {
+                if (_result.ContainsKey(token)) return;
+                _result.Add(token, result);
+            }
         }
 
         protected VT GetVT(Type type)
@@ -65,7 +71,7 @@ namespace KJFramework.Messages.Analysers
         /// </summary>
         public void Clear()
         {
-            _result.Clear();
+            lock (_lockObj) _result.Clear();
         }
 
         #endregion

@@ -1,15 +1,15 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using KJFramework.EventArgs;
 using KJFramework.Helpers;
+using KJFramework.Net.Identities;
 using KJFramework.Net.Transaction.Agent;
 using KJFramework.Net.Transaction.Messages;
 using KJFramework.Net.Transaction.Objects;
 using KJFramework.Net.Transaction.Processors;
 using KJFramework.PerformanceProvider;
 using KJFramework.Tracing;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using KJFramework.Net.Identities;
 
 namespace KJFramework.Net.Transaction.Schedulers
 {
@@ -32,10 +32,11 @@ namespace KJFramework.Net.Transaction.Schedulers
 
         #region Members
 
-        private object _lockObj = new object();
+        private readonly object _lockObj = new object();
+        private readonly object _processorLockObj = new object();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(BaseMessageRequestScheduler));
         private readonly IList<IConnectionAgent> _agents = new List<IConnectionAgent>();
-        private readonly ConcurrentDictionary<Protocols, ProcessorObject> _processors = new ConcurrentDictionary<Protocols, ProcessorObject>();
+        private readonly Dictionary<Protocols, ProcessorObject> _processors = new Dictionary<Protocols, ProcessorObject>();
         private readonly string _perfCategroy;
 
         #endregion
@@ -65,10 +66,13 @@ namespace KJFramework.Net.Transaction.Schedulers
         {
             if (processor == null) throw new ArgumentNullException("processor");
             ProcessorObject p;
-            if (_processors.TryGetValue(protocol, out p)) return this;
-            p= new ProcessorObject {Processor = processor};
-            if (!_processors.TryAdd(protocol, p)) throw new System.Exception("Cannot add a message processor.");
-            return this;
+            lock (_processorLockObj)
+            {
+                if (_processors.TryGetValue(protocol, out p)) return this;
+                p = new ProcessorObject {Processor = processor};
+                _processors.Add(protocol, p);
+                return this;
+            }
         }
 
         #endregion
@@ -80,57 +84,61 @@ namespace KJFramework.Net.Transaction.Schedulers
         /// </summary>
         public void CreateDynamicCounters()
         {
-            if(_processors.Count == 0) return;
-            AppDomain.CurrentDomain.ProcessExit +=  delegate
+            lock (_processorLockObj)
             {
-                PerformanceCounterCategory.Delete(_perfCategroy);
-            };
-            CounterCreationDataCollection dataCollection = new CounterCreationDataCollection();
-            #region Ensure performance counter category.
-
-            try
-            {
-                bool exists = PerformanceCounterCategory.Exists(_perfCategroy);
-                if (exists) PerformanceCounterCategory.Delete(_perfCategroy);
-                foreach (ProcessorObject obj in _processors.Values)
+                if (_processors.Count == 0) return;
+                AppDomain.CurrentDomain.ProcessExit += delegate
                 {
-                    string defaultCounterName = string.Format("#Frequency Calls:{0}", obj.Processor.GetType().Name);
-                    PerfCounterAttribute[] attributes;
-                    if ((attributes = AttributeHelper.GetCustomerAttributes<PerfCounterAttribute>(obj.Processor.GetType())) != null && attributes.Length > 0)
+                    PerformanceCounterCategory.Delete(_perfCategroy);
+                };
+                CounterCreationDataCollection dataCollection = new CounterCreationDataCollection();
+
+                #region Ensure performance counter category.
+
+                try
+                {
+                    bool exists = PerformanceCounterCategory.Exists(_perfCategroy);
+                    if (exists) PerformanceCounterCategory.Delete(_perfCategroy);
+                    foreach (ProcessorObject obj in _processors.Values)
                     {
-                        foreach (PerfCounterAttribute attribute in attributes)
-                            dataCollection.Add(new CounterCreationData(attribute.Name, attribute.Help, attribute.Type));
+                        string defaultCounterName = string.Format("#Frequency Calls:{0}", obj.Processor.GetType().Name);
+                        PerfCounterAttribute[] attributes;
+                        if ((attributes = AttributeHelper.GetCustomerAttributes<PerfCounterAttribute>(obj.Processor.GetType())) != null && attributes.Length > 0)
+                        {
+                            foreach (PerfCounterAttribute attribute in attributes)
+                                dataCollection.Add(new CounterCreationData(attribute.Name, attribute.Help, attribute.Type));
+                        }
+                        //add default performance counter for each processor.
+                        dataCollection.Add(new CounterCreationData(defaultCounterName, "This was automic created by KJFramework. It'll be used for the infomation collections.", PerformanceCounterType.RateOfCountsPerSecond32));
                     }
-                    //add default performance counter for each processor.
-                    dataCollection.Add(
-                        new CounterCreationData(defaultCounterName,
-                                                "This was automic created by KJFramework. It'll be used for the infomation collections.",
-                                                PerformanceCounterType.RateOfCountsPerSecond32));
+                    if (dataCollection.Count > 0)
+                        PerformanceCounterCategory.Create(_perfCategroy, string.Format("#This was automic created by KJFramework for process: {0}, Pls *DO NOT* remove it by manual.", Process.GetCurrentProcess().ProcessName), PerformanceCounterCategoryType.MultiInstance, dataCollection);
+
+                    #region Dynamic create performance for each processor.
+
+                    foreach (ProcessorObject obj in _processors.Values)
+                    {
+                        obj.Counters = new List<PerfCounter>();
+                        string defaultCounterName = string.Format("#Frequency Calls:{0}", obj.Processor.GetType().Name);
+                        PerfCounterAttribute[] attributes;
+                        if ((attributes = AttributeHelper.GetCustomerAttributes<PerfCounterAttribute>(obj.Processor.GetType())) != null && attributes.Length > 0)
+                        {
+                            foreach (PerfCounterAttribute attribute in attributes)
+                                obj.Counters.Add(new PerfCounter(_perfCategroy, Process.GetCurrentProcess().ProcessName, attribute));
+                        }
+                        //add default performance counter for each processor.
+                        obj.Counters.Add(new PerfCounter(_perfCategroy, Process.GetCurrentProcess().ProcessName, new PerfCounterAttribute(defaultCounterName, PerformanceCounterType.RateOfCountsPerSecond32)));
+                    }
+
+                    #endregion
                 }
-                if (dataCollection.Count > 0)
-                    PerformanceCounterCategory.Create(_perfCategroy, string.Format("#This was automic created by KJFramework for process: {0}, Pls *DO NOT* remove it by manual.", Process.GetCurrentProcess().ProcessName), PerformanceCounterCategoryType.MultiInstance, dataCollection);
-                
-                #region Dynamic create performance for each processor.
-
-                foreach (ProcessorObject obj in _processors.Values)
+                catch (System.Exception ex)
                 {
-                    obj.Counters = new List<PerfCounter>();
-                    string defaultCounterName = string.Format("#Frequency Calls:{0}", obj.Processor.GetType().Name);
-                    PerfCounterAttribute[] attributes;
-                    if ((attributes = AttributeHelper.GetCustomerAttributes<PerfCounterAttribute>(obj.Processor.GetType())) != null && attributes.Length > 0)
-                    {
-                        foreach (PerfCounterAttribute attribute in attributes)
-                            obj.Counters.Add(new PerfCounter(_perfCategroy, Process.GetCurrentProcess().ProcessName, attribute));
-                    }
-                    //add default performance counter for each processor.
-                    obj.Counters.Add(new PerfCounter(_perfCategroy, Process.GetCurrentProcess().ProcessName, new PerfCounterAttribute(defaultCounterName, PerformanceCounterType.RateOfCountsPerSecond32)));
+                    _tracing.Error(ex, null);
                 }
 
                 #endregion
             }
-            catch (System.Exception ex) { _tracing.Error(ex, null); }
-
-            #endregion
         }
 
         /// <summary>
@@ -146,7 +154,7 @@ namespace KJFramework.Net.Transaction.Schedulers
 
         #region Events
 
-        void NewTransaction(object sender, KJFramework.EventArgs.LightSingleArgEventArgs<IMessageTransaction<BaseMessage>> e)
+        void NewTransaction(object sender, LightSingleArgEventArgs<IMessageTransaction<BaseMessage>> e)
         {
             ProcessorObject obj;
             BusinessMessageTransaction transaction = (BusinessMessageTransaction)e.Target;

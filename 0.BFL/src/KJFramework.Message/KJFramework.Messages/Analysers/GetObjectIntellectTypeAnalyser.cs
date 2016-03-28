@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using KJFramework.Helpers;
 using KJFramework.Messages.Attributes;
-using KJFramework.Messages.Helpers;
 
 namespace KJFramework.Messages.Analysers
 {

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using KJFramework.Messages.Contracts;
 using KJFramework.Messages.Engine;
 using KJFramework.Messages.Exceptions;
@@ -5,8 +7,6 @@ using KJFramework.Messages.Objects;
 using KJFramework.Messages.Proxies;
 using KJFramework.Messages.TypeProcessors;
 using KJFramework.Messages.TypeProcessors.Maps;
-using System;
-using System.Collections.Concurrent;
 
 namespace KJFramework.Messages.Helpers
 {
@@ -17,8 +17,10 @@ namespace KJFramework.Messages.Helpers
     {
         #region Members
 
-        private static readonly ConcurrentDictionary<string, Action<IMemorySegmentProxy, object>> _serializers = new ConcurrentDictionary<string, Action<IMemorySegmentProxy, object>>();
-        private static readonly ConcurrentDictionary<string, Func<byte[], object>> _deserializers = new ConcurrentDictionary<string, Func<byte[], object>>(); 
+        private static readonly object _serLockObj = new object();
+        private static readonly object _deserLockObj = new object();
+        private static readonly Dictionary<string, Func<byte[], object>> _deserializers = new Dictionary<string, Func<byte[], object>>(); 
+        private static readonly Dictionary<string, Action<IMemorySegmentProxy, object>> _serializers = new Dictionary<string, Action<IMemorySegmentProxy, object>>();
 
         #endregion
 
@@ -83,101 +85,104 @@ namespace KJFramework.Messages.Helpers
         {
             Type innerType;
             Action<IMemorySegmentProxy, object> cache;
-            if (_serializers.TryGetValue(type.FullName, out cache))
+            lock (_serLockObj)
             {
-                cache(proxy, instance);
-                return;
-            }
-            IIntellectTypeProcessor intellectTypeProcessor;
-
-            #region 普通类型判断
-
-            intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(type);
-            if (intellectTypeProcessor != null)
-            {
-                //添加热缓存
-                IIntellectTypeProcessor processor = intellectTypeProcessor;
-                _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) => processor.Process(innerProxy, innerObj)));
-            }
-
-            #endregion
-
-            #region 枚举类型判断
-
-            //枚举类型
-            else if (type.IsEnum)
-            {
-                //获取枚举类型
-                Type enumType = Enum.GetUnderlyingType(type);
-                intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(enumType);
-                if (intellectTypeProcessor == null) throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
-                IIntellectTypeProcessor processor = intellectTypeProcessor;
-                _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) => processor.Process(innerProxy, innerObj)));
-            }
-
-            #endregion
-
-            #region 可空类型判断
-
-            else if ((innerType = Nullable.GetUnderlyingType(type)) != null)
-            {
-                intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(innerType);
-                if (intellectTypeProcessor == null) throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, innerType));
-                IIntellectTypeProcessor processor = intellectTypeProcessor;
-                _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) => processor.Process(innerProxy, innerObj)));
-            }
-
-            #endregion
-
-            #region 智能对象类型判断
-
-            else if (type.IsSubclassOf(typeof(IntellectObject)))
-                _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) => { IntellectObjectEngine.ToBytes((IIntellectObject)innerObj, innerProxy); }));
-
-            #endregion
-
-            #region 数组的判断
-
-            else if (type.IsArray)
-            {
-                if (!type.HasElementType)
-                    throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
-                Type elementType = type.GetElementType();
-                VT vt = FixedTypeManager.IsVT(elementType);
-                IIntellectTypeProcessor arrayProcessor = ArrayTypeProcessorMapping.Instance.GetProcessor(type);
-                if (arrayProcessor != null)
-                    _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) => arrayProcessor.Process(innerProxy, innerObj)));
-                else if (vt != null)
-                    throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
-                else if (elementType.IsSubclassOf(typeof(IntellectObject)))
+                if (_serializers.TryGetValue(type.FullName, out cache))
                 {
-                    //Add hot cache.
-                    _serializers.TryAdd(type.FullName, (cache = (innerProxy, innerObj) =>
-                    {
-                        IIntellectObject[] array = (IIntellectObject[]) innerObj;
-                        if (array == null || array.Length == 0) return;
-                        //write array length.
-                        innerProxy.WriteUInt32((uint)array.Length);
-                        for (int i = 0; i < array.Length; i++)
-                        {
-                            if (array[i] == null) innerProxy.WriteUInt16(0);
-                            else
-                            {
-                                MemoryPosition innerStartObjPosition = innerProxy.GetPosition();
-                                innerProxy.Skip(Size.UInt16);
-                                IntellectObjectEngine.ToBytes(array[i], innerProxy);
-                                MemoryPosition innerEndObjPosition = innerProxy.GetPosition();
-                                innerProxy.WriteBackUInt16(innerStartObjPosition, (ushort)(MemoryPosition.CalcLength(innerProxy.SegmentCount, innerStartObjPosition, innerEndObjPosition) - 2));
-                            }
-                        }
-                    }));
+                    cache(proxy, instance);
+                    return;
                 }
-                else throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
+                IIntellectTypeProcessor intellectTypeProcessor;
+
+                #region 普通类型判断
+
+                intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(type);
+                if (intellectTypeProcessor != null)
+                {
+                    //添加热缓存
+                    IIntellectTypeProcessor processor = intellectTypeProcessor;
+                    _serializers.Add(type.FullName, (cache = (innerProxy, innerObj) => processor.Process(innerProxy, innerObj)));
+                }
+
+                #endregion
+
+                #region 枚举类型判断
+
+                //枚举类型
+                else if (type.IsEnum)
+                {
+                    //获取枚举类型
+                    Type enumType = Enum.GetUnderlyingType(type);
+                    intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(enumType);
+                    if (intellectTypeProcessor == null) throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
+                    IIntellectTypeProcessor processor = intellectTypeProcessor;
+                    _serializers.Add(type.FullName, (cache = (innerProxy, innerObj) => processor.Process(innerProxy, innerObj)));
+                }
+
+                #endregion
+
+                #region 可空类型判断
+
+                else if ((innerType = Nullable.GetUnderlyingType(type)) != null)
+                {
+                    intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(innerType);
+                    if (intellectTypeProcessor == null) throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, innerType));
+                    IIntellectTypeProcessor processor = intellectTypeProcessor;
+                    _serializers.Add(type.FullName, (cache = (innerProxy, innerObj) => processor.Process(innerProxy, innerObj)));
+                }
+
+                #endregion
+
+                #region 智能对象类型判断
+
+                else if (type.IsSubclassOf(typeof(IntellectObject)))
+                    _serializers.Add(type.FullName, (cache = (innerProxy, innerObj) => { IntellectObjectEngine.ToBytes((IIntellectObject)innerObj, innerProxy); }));
+
+                #endregion
+
+                #region 数组的判断
+
+                else if (type.IsArray)
+                {
+                    if (!type.HasElementType)
+                        throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
+                    Type elementType = type.GetElementType();
+                    VT vt = FixedTypeManager.IsVT(elementType);
+                    IIntellectTypeProcessor arrayProcessor = ArrayTypeProcessorMapping.Instance.GetProcessor(type);
+                    if (arrayProcessor != null)
+                        _serializers.Add(type.FullName, (cache = (innerProxy, innerObj) => arrayProcessor.Process(innerProxy, innerObj)));
+                    else if (vt != null)
+                        throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
+                    else if (elementType.IsSubclassOf(typeof(IntellectObject)))
+                    {
+                        //Add hot cache.
+                        _serializers.Add(type.FullName, (cache = (innerProxy, innerObj) =>
+                        {
+                            IIntellectObject[] array = (IIntellectObject[])innerObj;
+                            if (array == null || array.Length == 0) return;
+                            //write array length.
+                            innerProxy.WriteUInt32((uint)array.Length);
+                            for (int i = 0; i < array.Length; i++)
+                            {
+                                if (array[i] == null) innerProxy.WriteUInt16(0);
+                                else
+                                {
+                                    MemoryPosition innerStartObjPosition = innerProxy.GetPosition();
+                                    innerProxy.Skip(Size.UInt16);
+                                    IntellectObjectEngine.ToBytes(array[i], innerProxy);
+                                    MemoryPosition innerEndObjPosition = innerProxy.GetPosition();
+                                    innerProxy.WriteBackUInt16(innerStartObjPosition, (ushort)(MemoryPosition.CalcLength(innerProxy.SegmentCount, innerStartObjPosition, innerEndObjPosition) - 2));
+                                }
+                            }
+                        }));
+                    }
+                    else throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
+                }
+
+                #endregion
+
+                cache(proxy, instance);
             }
-
-            #endregion
-
-            cache(proxy, instance);
         }
 
         /// <summary>
@@ -203,95 +208,109 @@ namespace KJFramework.Messages.Helpers
             if (data == null) return null;
             Type innerType;
             Func<byte[], object> cache;
-            if (_deserializers.TryGetValue(type.FullName, out cache)) return cache(data);
             IIntellectTypeProcessor intellectTypeProcessor;
-
-            #region 普通类型判断
-
-            intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(type);
-            if (intellectTypeProcessor != null)
+            lock (_deserLockObj)
             {
-                //添加热缓存
-                IIntellectTypeProcessor processor = intellectTypeProcessor;
-                _deserializers.TryAdd(type.FullName, cache = parameter => { return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); });
-            }
+                if (_deserializers.TryGetValue(type.FullName, out cache)) return cache(data);
 
-            #endregion
+                     #region 普通类型判断
 
-            #region 枚举类型判断
-
-            //枚举类型
-            else if (type.IsEnum)
-            {
-                Type enumType = Enum.GetUnderlyingType(type);
-                intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(enumType);
-                if (intellectTypeProcessor == null) throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
-                IIntellectTypeProcessor processor = intellectTypeProcessor;
-                _deserializers.TryAdd(type.FullName, cache = parameter => { return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); });
-            }
-
-            #endregion
-
-            #region 可空类型判断
-
-            else if ((innerType = Nullable.GetUnderlyingType(type)) != null)
-            {
-                intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(innerType);
-                if (intellectTypeProcessor == null) throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
-                IIntellectTypeProcessor processor = intellectTypeProcessor;
-                _deserializers.TryAdd(type.FullName, cache = parameter => { return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); });
-            }
-
-            #endregion
-
-            #region 智能类型的判断
-
-            //智能对象的判断
-            else if (type.IsSubclassOf(typeof(IntellectObject)))
-                _deserializers.TryAdd(type.FullName, cache = parameter => { return IntellectObjectEngine.GetObject<object>(type, parameter); });
-
-            #endregion
-
-            #region 数组的判断
-
-            else if (type.IsArray)
-            {
-                Type elementType = type.GetElementType();
-                IIntellectTypeProcessor arrayProcessor = ArrayTypeProcessorMapping.Instance.GetProcessor(type);
-                //VT type.
-                if (arrayProcessor != null)
-                    _deserializers.TryAdd(type.FullName, cache = parameter => { return arrayProcessor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); });
-                else if (elementType.IsSubclassOf(typeof(IntellectObject)))
+                intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(type);
+                if (intellectTypeProcessor != null)
                 {
-                    #region IntellectObject type array processor.
-
-                    _deserializers.TryAdd(type.FullName, cache = parameter =>
-                    {
-                        Func<int, IntellectObject[]> func = IntellectObjectArrayHelper.GetFunc<IntellectObject>(type);
-                        int arrLen = BitConverter.ToInt32(parameter, 0);
-                        if (arrLen == 0) return func(0);
-                        IntellectObject[] array = func(arrLen);
-                        int innerOffset = 4;
-                        ushort size;
-                        for (int i = 0; i < array.Length; i++)
-                        {
-                            size = BitConverter.ToUInt16(parameter, innerOffset);
-                            innerOffset += 2;
-                            if (size == 0) array[i] = null;
-                            else array[i] = IntellectObjectEngine.GetObject<IntellectObject>(elementType, parameter, innerOffset, size);
-                            innerOffset += size;
-                        }
-                        return array;
-                    });
+                    //添加热缓存
+                    IIntellectTypeProcessor processor = intellectTypeProcessor;
+                    _deserializers.Add(type.FullName,
+                        cache =
+                            parameter =>
+                            {
+                                return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter);
+                            });
+                }
 
                     #endregion
-                }
-                else throw new NotSupportedException(string.Format(ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
-            }
 
-            #endregion
-            
-            return cache(data);
+                    #region 枚举类型判断
+
+                //枚举类型
+                else if (type.IsEnum)
+                {
+                    Type enumType = Enum.GetUnderlyingType(type);
+                    intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(enumType);
+                    if (intellectTypeProcessor == null)
+                        throw new NotSupportedException(string.Format(
+                            ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
+                    IIntellectTypeProcessor processor = intellectTypeProcessor;
+                    _deserializers.Add(type.FullName, cache = parameter => { return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); });
+                }
+
+                    #endregion
+
+                    #region 可空类型判断
+
+                else if ((innerType = Nullable.GetUnderlyingType(type)) != null)
+                {
+                    intellectTypeProcessor = IntellectTypeProcessorMapping.Instance.GetProcessor(innerType);
+                    if (intellectTypeProcessor == null)
+                        throw new NotSupportedException(string.Format(
+                            ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
+                    IIntellectTypeProcessor processor = intellectTypeProcessor;
+                    _deserializers.Add(type.FullName, cache = parameter => { return processor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); });
+                }
+
+                    #endregion
+
+                    #region 智能类型的判断
+
+                     //智能对象的判断
+                    else if (type.IsSubclassOf(typeof (IntellectObject)))
+                    _deserializers.Add(type.FullName, cache = parameter => { return IntellectObjectEngine.GetObject<object>(type, parameter); }); 
+
+                    #endregion
+
+                    #region 数组的判断
+
+                else if (type.IsArray)
+                {
+                    Type elementType = type.GetElementType();
+                    IIntellectTypeProcessor arrayProcessor = ArrayTypeProcessorMapping.Instance.GetProcessor(type);
+                    //VT type.
+                    if (arrayProcessor != null)
+                        _deserializers.Add(type.FullName, cache = parameter => { return arrayProcessor.Process(IntellectTypeProcessorMapping.DefaultAttribute, parameter); });
+                    else if (elementType.IsSubclassOf(typeof (IntellectObject)))
+                    {
+                        #region IntellectObject type array processor.
+
+                        _deserializers.Add(type.FullName, cache = parameter => { Func<int, IntellectObject[]> func = IntellectObjectArrayHelper.GetFunc<IntellectObject>(type); 
+                            int arrLen = BitConverter.ToInt32(parameter, 0);
+                            if (arrLen == 0) return func(0);
+                            IntellectObject[] array = func(arrLen);
+                            int innerOffset = 4;
+                            ushort size;
+                            for (int i = 0; i < array.Length; i++)
+                            {
+                                size = BitConverter.ToUInt16(parameter, innerOffset);
+                                innerOffset += 2;
+                                if (size == 0) array[i] = null;
+                                else
+                                    array[i] = IntellectObjectEngine.GetObject<IntellectObject>(elementType, parameter,
+                                        innerOffset, size);
+                                innerOffset += size;
+                            }
+                            return array;
+                        });
+
+                        #endregion
+                    }
+                    else
+                        throw new NotSupportedException(string.Format(
+                            ExceptionMessage.EX_NOT_SUPPORTED_VALUE_TEMPORARY, type));
+                }
+
+                #endregion
+
+                return cache(data);
+            }
         }
 
         #endregion

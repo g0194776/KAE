@@ -51,9 +51,10 @@ namespace KJFramework.Containers
         private readonly byte[] _data;
         private const int _timeoutInterval = 30000;
         private readonly ISegmentCachePolicy _policy;
+        private readonly object _lockObj = new object();
         private static readonly ITracing _tracing = TracingManager.GetTracing(typeof (SegmentCacheContainer<T>));
         private Dictionary<int, ConcurrentStack<ISegmentCacheStub>> _pools;
-        private readonly ConcurrentDictionary<T, IHightSpeedSegmentCache> _caches = new ConcurrentDictionary<T, IHightSpeedSegmentCache>();
+        private readonly Dictionary<T, IHightSpeedSegmentCache> _caches = new Dictionary<T, IHightSpeedSegmentCache>();
 
         #endregion
 
@@ -194,7 +195,7 @@ namespace KJFramework.Containers
                 _tracing.Error(ex, null);
                 return null;
             }
-            catch(System.Exception ex)
+            catch(Exception ex)
             {
                 _tracing.Error(ex, null);
                 throw;
@@ -222,12 +223,7 @@ namespace KJFramework.Containers
         {
             //giveback now.
             foreach (ISegmentCacheStub stub in segmentCacheStubs)
-            {
-                if (stub != null)
-                {
-                    _pools[stub.Indexer.SegmentSize].Push(stub);
-                }
-            }
+                if (stub != null) _pools[stub.Indexer.SegmentSize].Push(stub);
         }
 
         /// <summary>
@@ -313,7 +309,8 @@ namespace KJFramework.Containers
                 item.SetValue(tempData, usedSize);
                 hightSpeedCache.Add(segmentCacheStub);
             }
-            return _caches.TryAdd(key, hightSpeedCache);
+            lock (_lockObj) _caches[key] = hightSpeedCache;
+            return true;
         }
 
         /// <summary>
@@ -323,13 +320,16 @@ namespace KJFramework.Containers
         /// <returns>返回缓存数据</returns>
         public byte[] Get(T key)
         {
-            IHightSpeedSegmentCache cache;
-            if (_caches.TryGetValue(key, out cache))
+            lock (_lockObj)
             {
-                //already dead, waiting for giveback.
-                return cache.IsDead ? null : cache.GetBody();
+                IHightSpeedSegmentCache cache;
+                if (_caches.TryGetValue(key, out cache))
+                {
+                    //already dead, waiting for giveback.
+                    return cache.IsDead ? null : cache.GetBody();
+                }
+                return null;
             }
-            return null;
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace KJFramework.Containers
         /// <returns>返回是否存在的标识</returns>
         public bool IsExists(T key)
         {
-            return _caches.ContainsKey(key);
+            lock (_lockObj) return _caches.ContainsKey(key);
         }
 
         /// <summary>
@@ -348,10 +348,14 @@ namespace KJFramework.Containers
         /// <param name="key">缓存唯一标识</param>
         public void Remove(T key)
         {
-            IHightSpeedSegmentCache cache;
-            if (!_caches.TryRemove(key, out cache)) return;
-            IList<ISegmentCacheStub> segmentCacheStubs = cache.GetStubs();
-            Giveback(segmentCacheStubs);
+            lock (_lockObj)
+            {
+                IHightSpeedSegmentCache cache;
+                if (!_caches.TryGetValue(key, out cache)) return;
+                _caches.Remove(key);
+                IList<ISegmentCacheStub> segmentCacheStubs = cache.GetStubs();
+                Giveback(segmentCacheStubs);
+            }
         }
 
         /// <summary>

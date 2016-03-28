@@ -57,7 +57,7 @@ namespace KJFramework.Platform.Deploy.CSN.NetworkLayer
         {
             if (channel == null) throw new ArgumentNullException("channel");
             CSNBusinessMessageTransaction transaction = new CSNBusinessMessageTransaction(new Lease(DateTime.MaxValue), channel) { TransactionManager = this, Identity = identity };
-            return Add(identity, transaction) ? transaction : null;
+            return (Add(identity, transaction) ? transaction : null);
         }
 
         #endregion
