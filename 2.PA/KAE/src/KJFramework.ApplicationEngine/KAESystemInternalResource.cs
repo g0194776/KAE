@@ -1,4 +1,5 @@
-﻿using KJFramework.ApplicationEngine.Factories;
+﻿using System;
+using KJFramework.ApplicationEngine.Factories;
 
 namespace KJFramework.ApplicationEngine
 {
@@ -24,6 +25,7 @@ namespace KJFramework.ApplicationEngine
         /// <summary>
         ///     KAE内部使用的远程协议注册器
         /// </summary>
+        [Obsolete("Useless property unless you want to register yours protocol to the remote ZooKeepeer.", true)]
         public static string ProtocolRegister = "KAE.Remoting.ProtocolRegister";
         /// <summary>
         ///     KAE内部使用的资源工厂

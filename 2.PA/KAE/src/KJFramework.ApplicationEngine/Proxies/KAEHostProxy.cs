@@ -42,23 +42,6 @@ namespace KJFramework.ApplicationEngine.Proxies
             return new List<string> {iep};
         }
 
-        /// <summary>
-        ///     根据一组参数向KAE宿主获取远程目标地址的集合
-        /// </summary>
-        /// <param name="appUniqueId">索取远程目标地址的源KAE APP唯一ID</param>
-        /// <param name="protocol">业务协议编号</param>
-        /// <param name="level">KAE应用等级</param>
-        /// <param name="protocolTypes">通信协议类型</param>
-        /// <returns>返回远程目标可访问地址的集合, 如果返回null, 则证明不存在指定条件的远程目标</returns>
-        public IList<string> GetRemoteAddresses(Guid appUniqueId, Protocols protocol, ProtocolTypes protocolTypes, ApplicationLevel level)
-        {
-            IRemotingProtocolRegister protocolRegister = (IRemotingProtocolRegister)KAESystemInternalResource.Factory.GetResource(KAESystemInternalResource.ProtocolRegister);
-            IProtocolResource protocolResource = protocolRegister.GetProtocolResource(protocol, protocolTypes, level);
-            protocolResource.RegisterInterestedApp(appUniqueId);
-            IList<string> result = protocolResource.GetResult();
-            return result;
-        }
-
         #endregion
     }
 }

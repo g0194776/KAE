@@ -29,9 +29,9 @@ namespace KJFramework.ApplicationEngine.Factories
             _resources.Add(KAESystemInternalResource.APPDownloader, new RemotingApplicationDownloader());
             _resources.Add(KAESystemInternalResource.APPFinder, new DefaultApplicationFinder());
             _resources.Add(KAESystemInternalResource.KISProxy, new RemotingKISProxy(SystemWorker.ConfigurationProxy.GetField("kae-system", "KIS-Address", false)));
-            ZooKeeperProtocolRegister protocolRegister = new ZooKeeperProtocolRegister(SystemWorker.ConfigurationProxy.GetField("kae-system", "ZooKeeper-Addresses", false), TimeSpan.Parse(SystemWorker.ConfigurationProxy.GetField("kae-system", "ZooKeeper-SessionTimeout", false)));
-            protocolRegister.Initialize(Environment.MachineName, (TcpUri) KAEHostNetworkResourceManager.GetResourceUri(ProtocolTypes.INTERNAL_SPECIAL_RESOURCE));
-            _resources.Add(KAESystemInternalResource.ProtocolRegister, protocolRegister);
+            //ZooKeeperProtocolRegister protocolRegister = new ZooKeeperProtocolRegister(SystemWorker.ConfigurationProxy.GetField("kae-system", "ZooKeeper-Addresses", false), TimeSpan.Parse(SystemWorker.ConfigurationProxy.GetField("kae-system", "ZooKeeper-SessionTimeout", false)));
+            //protocolRegister.Initialize(Environment.MachineName, (TcpUri) KAEHostNetworkResourceManager.GetResourceUri(ProtocolTypes.INTERNAL_SPECIAL_RESOURCE));
+            //_resources.Add(KAESystemInternalResource.ProtocolRegister, protocolRegister);
         }
 
         /// <summary>
