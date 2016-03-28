@@ -63,7 +63,7 @@ namespace KJFramework.ApplicationEngine.Managers
             }
             hostChannel.Tag = new KAENetworkResource { NetworkUri = uri, Protocol = ProtocolTypes.Metadata };
             _resources.Add(ProtocolTypes.Metadata, new Tuple<IHostTransportChannel, Uri>(hostChannel, uri));
-            _tracing.DebugInfo("\t\t#Initialized network resource.\t(P: {0},\tURL: {1})", ConsoleColor.DarkGray, ProtocolTypes.Metadata, uri);
+            _tracing.DebugInfo("\t\t#Initialized network resource.\t(P: {0},\tURL: {1})", ConsoleColor.Gray, ProtocolTypes.Metadata, uri);
             /*Openning TCP port for system management*/
             uri = new TcpUri(string.Format("tcp://{0}:{1}", localIP, systemPort));
             hostChannel = new TcpHostTransportChannel(systemPort);
@@ -75,7 +75,7 @@ namespace KJFramework.ApplicationEngine.Managers
             }
             hostChannel.Tag = new KAENetworkResource { NetworkUri = uri, Protocol = ProtocolTypes.INTERNAL_SPECIAL_RESOURCE };
             _resources.Add(ProtocolTypes.INTERNAL_SPECIAL_RESOURCE, new Tuple<IHostTransportChannel, Uri>(hostChannel, uri));
-            _tracing.DebugInfo("\t\t#Initialized network resource.\t(P: {0},\tURL: {1})", ConsoleColor.DarkGray, ProtocolTypes.INTERNAL_SPECIAL_RESOURCE, uri);
+            _tracing.DebugInfo("\t\t#Initialized network resource.\t(P: {0},\tURL: {1})", ConsoleColor.Gray, ProtocolTypes.INTERNAL_SPECIAL_RESOURCE, uri);
         }
 
         #region Reserved for openning TCP port automatically.
