@@ -10,6 +10,8 @@ using KJFramework.Configurations.Statistics;
 using KJFramework.Enums;
 using KJFramework.Helpers;
 using KJFramework.Statistics;
+using NUnit.Framework.Compatibility;
+using AttributeHelper = KJFramework.Helpers.AttributeHelper;
 
 namespace KJFramework.Configurations.Loaders
 {
@@ -167,7 +169,7 @@ namespace KJFramework.Configurations.Loaders
                 Dictionary<String, String> sectionValues = XmlHelper.GetNodeAttributes(grouping.OutputXml);
                 if (sectionValues != null)
                 {
-                    Object obj = fieldWithAttribute.FieldInfo.FieldType.Assembly.CreateInstance(fieldWithAttribute.FieldInfo.FieldType.FullName);
+                    Object obj = fieldWithAttribute.FieldInfo.FieldType.GetTypeInfo().Assembly.CreateInstance(fieldWithAttribute.FieldInfo.FieldType.FullName);
                     List<FieldWithName> names = TypeHelper.GetFields(obj.GetType());
                     var result = names.Select(name => TypeHelper.SetValue(obj, name.FieldInfo, sectionValues.Where(value => name.Name == value.Key).First().Value));
                     //¿ªÊ¼¸³Öµ
@@ -189,7 +191,7 @@ namespace KJFramework.Configurations.Loaders
                 Object list = fieldWithAttribute.FieldInfo.GetType().Assembly.CreateInstance(fieldWithAttribute.FieldInfo.FieldType.FullName);
                 foreach (var infomation in grouping)
                 {
-                    Object fieldInstance = fieldWithAttribute.Attribute.ElementType.Assembly.CreateInstance(fieldWithAttribute.Attribute.ElementType.FullName);
+                    Object fieldInstance = fieldWithAttribute.Attribute.ElementType.GetTypeInfo().Assembly.CreateInstance(fieldWithAttribute.Attribute.ElementType.FullName);
                     List<FieldWithName> names = TypeHelper.GetFields(fieldInstance.GetType());
                     Dictionary<String, String> sectionValues = XmlHelper.GetNodeAttributes(infomation.OutputXml);
                     var result = names.Select(name => TypeHelper.SetValue(fieldInstance, name.FieldInfo, sectionValues.Where(value => name.Name == value.Key).First().Value));

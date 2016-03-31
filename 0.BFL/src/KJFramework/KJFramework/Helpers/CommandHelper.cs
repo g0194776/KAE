@@ -20,7 +20,7 @@ namespace KJFramework.Helpers
         /// <returns>
         ///     返回执行结果
         /// </returns>
-        public static StreamReader ExecuteCommand(String command)
+        public static StreamReader ExecuteCommand(string command)
         {
             using(Process commandProcess = new Process())
             {
@@ -35,9 +35,8 @@ namespace KJFramework.Helpers
                     commandProcess.StartInfo.RedirectStandardOutput = true;
                     commandProcess.Start();
                     return commandProcess.StandardOutput;
-                    
                 }
-                catch (System.Exception)
+                catch (Exception)
                 {
                     return null;
                 }

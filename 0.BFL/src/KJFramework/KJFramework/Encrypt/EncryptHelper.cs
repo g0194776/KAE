@@ -82,7 +82,7 @@ namespace KJFramework.Encrypt
             try
             {
                 var rsa = new RSACryptoServiceProvider();
-                var reader = new StreamReader(@"d:\PublicKey.xml");
+                var reader = File.OpenText(@"d:\PublicKey.xml");
                 string pKey = reader.ReadToEnd();
                 rsa.FromXmlString(pKey);
                 reader.Close();
@@ -107,7 +107,7 @@ namespace KJFramework.Encrypt
             try
             {
                 var rsa = new RSACryptoServiceProvider();
-                var reader = new StreamReader(@"d:\PublicAndPrivateKey.xml");
+                var reader = File.OpenText(@"d:\PublicAndPrivateKey.xml");
                 string ppKey = reader.ReadToEnd();
                 rsa.FromXmlString(ppKey);
                 reader.Close();

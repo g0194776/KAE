@@ -122,7 +122,7 @@ namespace KJFramework.Tracing
                     ITracingProvider provider = _provider;
                     if (provider != null)
                     {
-                        provider.Write(pid, pname, Environment.MachineName, items);
+                        provider.Write(pid, pname, Environment.GetEnvironmentVariable("COMPUTERNAME"), items);
                         TracingPerfCounter.Default.RateOfCommit.IncrementBy(items.Length);
                         TracingPerfCounter.Default.NumberOfCommit.IncrementBy(items.Length);
                     }
